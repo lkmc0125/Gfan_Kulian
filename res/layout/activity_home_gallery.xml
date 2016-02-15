@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mappn.gfan.common.widget.TopGallery xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gallery" 
+    android:layout_width="fill_parent"
+    android:layout_height="93dp" 
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:spacing="5dp" 
+    android:focusable="false"
+    android:fadingEdge="none"
+    android:background="@drawable/list_item_bg_selector" />

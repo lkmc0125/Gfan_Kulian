@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="rating">
+		<item>很差</item>
+		<item>较差</item>
+		<item>还行</item>
+		<item>推荐</item>
+		<item>力荐</item>
+	</string-array>
+
+</resources>

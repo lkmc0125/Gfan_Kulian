@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 产品列表项 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="68dp"
+    android:background="@drawable/list_item_bg_selector">
+
+    <!-- 应用icon -->
+    <ImageView android:id="@+id/iv_logo" 
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        style="@style/personal_account_icon"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/loading_icon"
+        android:scaleType="fitCenter"
+        android:visibility="invisible"  />
+
+    <!-- 应用的名称 -->
+    <TextView android:id="@+id/tv_name"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_logo"
+        android:layout_toLeftOf="@+id/iv_devider" 
+        android:layout_alignParentTop="true"
+        android:singleLine="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="8dp"
+        android:textAppearance="@style/app_text_style1"
+        android:visibility="invisible"   />
+
+    <!-- 应用的当前版本 -->
+    <TextView android:id="@+id/tv_current_version"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name" 
+        android:layout_toRightOf="@id/iv_logo"
+        android:layout_toLeftOf="@+id/tv_update_version"
+        android:layout_alignParentBottom="true"
+        android:singleLine="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:textAppearance="@style/app_text_style3"
+        android:visibility="invisible"   />
+        
+    <!-- 应用的最新版本 -->
+    <TextView android:id="@+id/tv_update_version"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/iv_devider"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_marginRight="2dp" 
+        android:singleLine="true"
+        android:textAppearance="@style/app_text_style3"
+        android:visibility="invisible" />
+
+    <!-- 下载按钮 -->
+    <TextView android:id="@+id/tv_operation"
+        android:layout_width="48dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true" 
+        android:gravity="center_horizontal"
+        android:paddingTop="8dp"
+        android:drawableTop="@drawable/btn_downloading"
+        android:textAppearance="@style/app_text_style3"
+        android:clickable="true"
+        android:background="@drawable/list_item_bg_selector"
+        android:visibility="invisible"  />
+        
+    <!-- 分隔符 -->
+    <ImageView android:id="@+id/iv_devider" 
+        android:layout_width="0.8dp"
+        android:layout_height="56dp"
+        android:layout_toLeftOf="@id/tv_operation"
+        android:layout_centerVertical="true"
+        android:src="@color/gray_2"  />
+
+</RelativeLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="13dp" >
+    
+    <TextView android:id="@+id/app_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_alignParentRight="true"/>
+    
+    <TextView android:id="@+id/app_size_label" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/app_size"
+        android:textColor="@color/black"
+        android:text="@string/lable_size"/>
+    
+    <TextView android:id="@+id/app_version_label" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/black"
+        android:text="@string/lable_version"/>
+    
+    <TextView android:id="@+id/app_version" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@id/app_version_label"
+        android:layout_toLeftOf="@id/app_size_label"/>
+    
+    <TextView android:id="@+id/app_download_label" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/black"
+        android:layout_below="@id/app_version_label"
+        android:text="@string/lable_download"/>
+    
+    <TextView android:id="@+id/app_download" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@id/app_download_label"
+        android:layout_below="@id/app_version_label"/>
+
+
+</RelativeLayout>

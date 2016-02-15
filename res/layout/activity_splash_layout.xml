@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  
+  <ImageView android:id="@+id/iv_splashBg" 
+    android:layout_width="fill_parent"
+  	android:layout_height="fill_parent"
+    android:background="@drawable/splash"
+  	android:scaleType="matrix"/>
+  
+  <LinearLayout android:layout_width="wrap_content"
+  	android:layout_height="wrap_content" 
+  	android:background="@drawable/toast_bg"
+  	android:layout_centerHorizontal="true"
+  	android:layout_marginBottom="40dp"
+  	android:layout_alignParentBottom="true"
+  	android:gravity="center">
+  	
+  	<TextView android:id="@+id/splash_text"
+  		android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:text="@string/init_data"
+    	style="@style/toast_text" />
+    
+  	<ProgressBar android:id="@+id/splash_loading"
+   		android:layout_width="54dp"
+    	android:layout_height="12dp"
+    	android:indeterminateOnly="true" />
+    
+  </LinearLayout>
+  
+</RelativeLayout>

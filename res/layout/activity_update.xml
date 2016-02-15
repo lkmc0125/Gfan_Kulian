@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+
+    <ImageView
+		android:id="@+id/iv_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_margin="10dp" 
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible"/>
+
+	<TextView
+		android:text="title"
+		android:id="@+id/tv_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+	    android:textSize="22sp"
+        android:layout_toRightOf="@id/iv_icon" />
+
+    <!-- 分割线 -->
+	<ImageView
+        android:id="@+id/iv_devider"
+		android:layout_width="300dp"
+		android:layout_height="0.5dp"
+        android:src="@color/black"
+        android:layout_below="@id/tv_title"/>
+        
+	<TextView
+		android:id="@+id/tv_content"
+        android:layout_weight="1"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textSize="18sp"
+        android:textColor="@color/black"
+        android:scrollbars="vertical"
+        android:maxLines="13"
+        android:layout_below="@id/iv_devider"
+		android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"/>
+        
+    <Button 
+        android:id="@+id/btn_1"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="ok"
+        android:textSize = "18sp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/tv_content"/>
+    
+	<Button
+		android:id="@+id/btn_2"
+		android:text="cancel"
+		android:layout_width="100dp"
+		android:layout_height="wrap_content"
+		android:textSize="18sp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_content"/>
+            
+	<Button
+		android:text="ok"
+		android:id="@+id/btn_single"
+		android:layout_width="130dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:layout_marginLeft="80dp"
+		android:layout_marginRight="80dp"
+		android:textSize="14sp"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/tv_content"/>
+        
+    
+</RelativeLayout>

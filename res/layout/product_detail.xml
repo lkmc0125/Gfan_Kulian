@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:scrollbarThumbVertical="@drawable/scrollbar"
+    android:background="@color/background_color">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 产品描述信息-->
+        <include layout="@layout/product_description"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" />
+            
+        <include layout="@layout/product_info"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" />
+
+        <!-- 缩略图 -->
+        <com.mappn.gfan.common.widget.ScreenShotGallery
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/gallery" 
+            android:layout_width="fill_parent"
+            android:layout_height="266dp" 
+            android:spacing="6.5dp"
+            android:background="@drawable/gallery" />
+        
+        <!-- 权限声明 -->
+        <TextView android:id="@+id/security_settings_desc"
+            android:text="@string/permissions_desc"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"
+            android:textColor="#000000" 
+            android:textSize="15sp"
+            android:layout_marginTop="12dp" 
+            android:layout_marginLeft="13dp"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout android:id="@+id/security_settings_list"
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0" 
+            android:orientation="vertical" />
+        
+    </LinearLayout>
+
+</ScrollView>
+

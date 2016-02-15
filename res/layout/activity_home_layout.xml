@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <!-- Top bar -->
+    <include android:id="@+id/top_bar" 
+        layout="@layout/top_bar" />
+
+    <!-- 多级页面（专题和分类） -->
+    <ViewAnimator android:id="@+id/va_hirachy"
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent">
+
+        <!-- 首页推荐列表 -->
+        <include android:id="@+id/recommend_list" 
+            layout="@layout/common_list_view"
+            android:layout_height="fill_parent" 
+            android:layout_width="fill_parent" />
+
+    </ViewAnimator>
+
+</LinearLayout>

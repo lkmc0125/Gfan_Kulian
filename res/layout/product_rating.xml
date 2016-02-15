@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content" >
+
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/rating_view"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+        android:background="@drawable/list_item_bg_selector"
+		android:visibility="gone">
+
+		<TextView android:id="@+id/tv_myrating" 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:text="@string/lable_myrating" 
+			android:layout_alignParentLeft="true"
+			android:layout_centerVertical="true"
+			android:layout_marginTop="15dp"
+			android:layout_marginLeft="13dp"
+			style="@style/info_font" />
+
+		<RatingBar android:id="@+id/rb_myrating"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/tv_myrating" 
+			android:layout_marginTop="15dp"
+			android:layout_marginLeft="8dp"
+			android:numStars="5" 
+			android:stepSize="1.0" 
+			style="@style/RatingBarLarge"
+			android:layout_centerVertical="true" />
+
+		<TextView android:id="@+id/tv_ranking" 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_centerVertical="true"
+			android:layout_marginTop="15dp" 
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="13dp"
+			android:layout_toRightOf="@id/rb_myrating"
+			style="@style/info_font" />
+	    
+	</RelativeLayout>
+
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/info_view"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+        android:background="@drawable/list_item_bg_selector"
+		android:visibility="visible">
+
+		<ImageView android:id="@+id/iv_icon" 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_marginLeft="13dp"
+			android:layout_marginTop="15dp"
+			android:layout_marginRight="5dp" 
+			android:layout_alignParentLeft="true"
+			android:layout_centerVertical="true" />
+
+		<ImageView android:id="@+id/iv_indicator"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_marginTop="15dp" 
+			android:layout_centerVertical="true"
+			android:layout_marginRight="13dp"
+			android:src="@drawable/more_indicator" />
+
+		<TextView android:id="@+id/tv_info" 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_centerVertical="true"
+			android:layout_marginTop="15dp"
+			android:layout_toRightOf="@id/iv_icon" 
+			android:layout_toLeftOf="@id/iv_indicator"
+			style="@style/info_font" />
+	    
+	</RelativeLayout>
+
+</FrameLayout>

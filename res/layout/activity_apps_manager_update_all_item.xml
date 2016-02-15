@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 更新全部 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="68dp"
+    android:paddingLeft="8dip"
+    android:paddingRight="8dip"
+    android:gravity="center"
+    android:background="@drawable/list_item_bg_selector">
+    
+    <!-- 更新全部提醒 -->
+    <TextView android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawableLeft="@drawable/down_btn_9"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:textAppearance="@style/app_text_style1" />
+        
+</RelativeLayout>

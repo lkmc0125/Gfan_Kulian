@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:padding="13dp">
+
+	<FrameLayout android:id="@+id/app_description"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:fadingEdge="horizontal"
+		android:fadingEdgeLength="5dp">
+
+		<TextView android:id="@+id/app_description1"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textColor="@color/black"
+			android:maxLines="4"
+			android:textSize="16dp" />
+
+		<TextView android:id="@+id/app_description2"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textColor="@color/black"
+			android:textSize="16dp" />
+			
+	</FrameLayout>
+
+	<Button android:id="@+id/btn_more" 
+	    android:layout_width="50dp"
+		android:layout_height="25dp" 
+		android:layout_marginRight="10dp"
+		android:background="@drawable/btn_more" 
+		android:text="@string/label_more"
+		android:textSize="15sp" 
+		android:gravity="center"
+		android:layout_alignParentRight="true" 
+		android:layout_below="@id/app_description"
+		android:visibility="gone" />
+
+	<ImageView android:id="@+id/iv_more" 
+	    android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/more_line"
+		android:layout_alignBaseline="@id/btn_more"
+		android:layout_toLeftOf="@id/btn_more" 
+		android:layout_below="@id/app_description"
+		android:visibility="gone" />
+
+
+</RelativeLayout>

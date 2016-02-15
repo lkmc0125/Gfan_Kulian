@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+	<EditText
+		android:id="@+id/et_input"
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent"
+		android:autoText="false"
+		android:gravity="fill_horizontal"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_margin="20dip"
+		android:minHeight="180dp"
+		android:scrollHorizontally="false"
+		android:maxWidth="180dp" />
+</LinearLayout>

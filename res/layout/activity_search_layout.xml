@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <!-- Top bar -->
+    <include android:id="@+id/top_bar" 
+        layout="@layout/top_bar" />
+
+    <include layout="@layout/common_tab_host" 
+        android:visibility="gone"/>
+    
+    <!-- 热词布局 -->
+    <LinearLayout android:id="@+id/tab_content_linearLayout"
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent"
+        android:paddingTop="20dp"
+        android:orientation="vertical" />
+
+</LinearLayout>

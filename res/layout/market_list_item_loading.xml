@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="center">
+	<ProgressBar
+		android:id="@+id/pb_foot_loading"
+		android:layout_width="54dp"
+		android:layout_height="12dp"
+		android:layout_marginRight="3dp"
+		android:indeterminateOnly="true"
+		android:indeterminateBehavior="repeat"
+		android:indeterminateDuration="3500"
+		android:layout_gravity="center"
+		android:layout_marginTop="20dp"
+		android:layout_marginBottom="20dp" />
+	<ImageView
+		android:id="@+id/iv_foot_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@drawable/ic_warning"
+		android:layout_marginLeft="10dp" />
+	<TextView
+		android:id="@+id/tv_foot_hint"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:text="@string/no_network"
+		android:layout_weight="1" />
+	<Button
+		android:text="@string/retry"
+		android:id="@+id/btn_foot_retry"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginRight="10dp" />
+</LinearLayout>

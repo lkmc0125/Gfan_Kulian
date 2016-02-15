@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	android:background="@color/background_color">
+
+	<include android:id="@+id/top_bar" 
+	   layout="@layout/top_bar"
+	   android:layout_alignParentTop="true" />
+
+	<EditText android:id="@+id/et_comment" 
+	   android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp" 
+		android:layout_weight="1"
+		android:minLines="6" 
+		android:maxLines="6" 
+		android:gravity="top|left"
+		android:layout_below="@id/top_bar"
+		android:hint="@string/feedback_hint_message" />
+		
+	<Button android:id="@+id/ib_send" 
+	    android:layout_width="100dp"
+		android:layout_height="50dp" 
+		android:layout_marginLeft="5dp"
+		android:layout_below="@id/et_comment"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="5dp"
+		android:text="@string/lable_send"/>
+
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	 
+    <!-- Top bar -->
+    <include android:id="@+id/top_bar" 
+        layout="@layout/top_bar"  />
+        
+    <include android:id="@+id/list" 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        layout="@layout/common_list_view" />
+
+    <include android:id="@+id/loading" 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        layout="@layout/loading" />
+	
+</LinearLayout>

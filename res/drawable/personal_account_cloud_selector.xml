@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+   <!--已经选中，且被按下-->
+   <item android:state_pressed="true" android:state_checked="true"
+        android:drawable="@drawable/cloud_on_ing" />
+   <!--未被选中，且被按下-->
+   <item android:state_pressed="true" android:state_checked="false"
+        android:drawable="@drawable/cloud_on_ing" />
+   <!--已经选中，且被聚焦-->
+   <item android:state_checked="true" android:state_focused="true" 
+        android:drawable="@drawable/cloud_on_ing" />
+   <!--未被选中，且被聚焦-->
+   <item android:state_checked="false" android:state_focused="true"
+        android:drawable="@drawable/cloud_on_ing" />
+   <!--未被选中-->
+   <item android:state_checked="false"
+        android:drawable="@drawable/cloud_off" />
+   <!--已经选中-->
+   <item android:state_checked="true"
+        android:drawable="@drawable/cloud_on" />
+</selector>

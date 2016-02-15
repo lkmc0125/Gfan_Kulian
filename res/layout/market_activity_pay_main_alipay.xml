@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:titleSpinner="http://schemas.android.com/apk/res/com.mappn.gfan"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<include layout="@layout/top_bar"></include>
+	<ScrollView android:layout_height="wrap_content"
+		android:layout_weight="1" android:layout_width="fill_parent">
+		<RelativeLayout android:layout_height="wrap_content"
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:paddingLeft="10dp" android:paddingRight="10dp"
+			android:paddingTop="10dp">
+			<TextView android:id="@+id/tvContent" android:layout_width="fill_parent"
+				android:textSize="16sp" android:layout_height="wrap_content" android:paddingTop="10dp"
+				android:text="@string/alipay_charge_content" android:layout_marginBottom="10dp" />
+			<EditText android:id="@+id/et_input" android:numeric="integer"
+				android:layout_below="@id/tvContent" android:singleLine="true"
+				android:layout_alignParentLeft="true" android:layout_marginTop="10dp"
+				android:layout_width="100dp" android:layout_height="wrap_content"
+				android:maxLength="3" />
+			<TextView android:id="@+id/tv_info" android:textSize="16sp"
+				android:layout_marginLeft="10dp" android:layout_marginTop="20dp"
+				android:text="@string/alipay_charge_info" android:layout_toRightOf="@id/et_input"
+				android:layout_below="@id/tvContent" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+			<TextView android:id="@+id/tv_charge_tip"
+				android:layout_below="@id/et_input" android:paddingLeft="10dp"
+				android:layout_marginTop="10dp" android:text="@string/charge_hint_alipay"
+				android:layout_width="wrap_content" android:layout_height="wrap_content" />
+			<CheckBox android:id="@+id/cb_make_default_charge_type"
+				android:layout_below="@id/tv_charge_tip" android:layout_width="wrap_content"
+				android:text="@string/checkbox_default_charge_type" android:layout_marginTop="10dp"
+				android:layout_marginBottom="10dp" android:layout_height="wrap_content" />
+			<Button android:id="@+id/btn_charge_alipay" android:layout_below="@id/cb_make_default_charge_type"
+				android:layout_width="150dp" android:layout_marginTop="10dp"
+				android:layout_centerHorizontal="true" android:layout_height="wrap_content"
+				android:text="@string/ok" android:enabled="false" />
+		</RelativeLayout>
+	</ScrollView>
+</LinearLayout>

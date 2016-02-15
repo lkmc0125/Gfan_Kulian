@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loading" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent">
+
+    <!-- 进度条 -->
+    <ProgressBar android:id="@+id/progressbar"
+        android:layout_width="54dp" 
+        android:layout_height="12dp"
+        android:layout_gravity="center"
+        android:indeterminateOnly="true" 
+        android:visibility="gone" />
+
+    <!-- 重试按钮
+    <ImageButton android:id="@+id/retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/btn_retry"
+        android:background="@null" 
+        android:layout_gravity="center"
+        android:visibility="gone" /> -->
+
+    <!--无数据时的提示框 -->
+    <TextView android:id="@+id/no_data" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/btn_retry"
+        android:drawablePadding="10dp"
+        android:text="@string/no_data" 
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
+</FrameLayout>

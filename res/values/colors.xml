@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_1">#969696</color>
+    <color name="gray_2">#DCDCDC</color>
+    <color name="gray_3">#787878</color>
+    <color name="orange">#FFB400</color>
+    <color name="list_view_bg_color">#00000000</color>
+    <color name="splash_notification_bg">#7FFF</color>
+    <color name="splash_color">#7FFF</color>
+    <color name="background_color">#F0F0F0</color>
+    <color name="tab_text_color">#B4B4B4</color>
+
+    <color name="tab_font_black">#FF404040</color>
+    <color name="tab_text_gray">#FF808080</color>
+    <color name="tab_text_gray1">#787878</color>
+    <color name="tab_app_num">#FFB400</color>
+
+    <color name="hot1">#FF5000</color>
+    <color name="hot2">#FF7800</color>
+    <color name="hot3">#FF9600</color>
+    <color name="hot4">#FFB400</color>
+
+    <color name="divider_gray">#FFDFDFDF</color>
+    <color name="vertical_splitter_color">#C8C8C8</color>
+    <color name="text_dark_gray">#FF505050</color>
+    <color name="info_font_light_orange">#FFFFAD00</color>
+
+    <!-- 评论时间字体颜色 -->
+    <color name="comment_time_font_color">#FF646464</color>
+</resources>

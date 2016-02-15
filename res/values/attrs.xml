@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <declare-styleable name="Gallery">
+        <attr name="android:galleryItemBackground" />
+    </declare-styleable>
+    
+    <declare-styleable name="BubbleTextView">
+        <attr name="number" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="TitleSpinner">
+        <attr name="prompt" format="reference" />
+    </declare-styleable>
+</resources>

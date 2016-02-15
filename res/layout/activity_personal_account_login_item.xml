@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="68dp"
+    android:background="@drawable/list_item_bg_selector">
+
+    <!-- 分类Icon -->
+    <ImageView android:id="@+id/iv_icon" 
+        android:layout_width="48dp"
+        android:layout_height="48dp" 
+        android:layout_alignParentLeft="true"
+        style="@style/personal_account_icon"
+        android:scaleType="center"  />
+
+    <!-- 分类名 -->
+    <TextView android:id="@+id/tv_name"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_icon"
+        android:layout_alignParentTop="true"
+        style="@style/personal_account_name"
+        android:textAppearance="@style/app_text_style1" />
+
+    <!-- 分类应用数量 -->
+    <TextView android:id="@+id/tv_time"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/tv_name"
+        android:textAppearance="@style/app_text_style3" />
+
+    <!-- 分类应用列表 -->
+    <TextView android:id="@+id/tv_description"
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:singleLine="true" 
+        android:ellipsize="end"
+        android:layout_toRightOf="@id/iv_icon"
+        android:layout_toLeftOf="@id/tv_time"
+        android:layout_below="@id/tv_name"
+        android:textAppearance="@style/app_text_style3"  />
+
+</RelativeLayout>
