@@ -66,12 +66,13 @@
     <string name="main_tab_mine">我的</string>
 
     <!--排行页 -->
-    <string name="rank_top_title">应用排行</string>
+    <string name="rank_top_title">赚金币</string>
+    <string name="rank_tab_rcmd">推荐</string>
     <string name="rank_tab_game">游戏</string>
     <string name="rank_tab_app">应用</string>
     <string name="rank_tab_book">电子书</string>
     <string name="rank_tab_fast">风向标</string>
-
+    <string name="rank_tab_task">任务</string>
     <!-- 下载 -->
     <string name="download_unknown_title">"&lt;未命名&gt;"</string>
     <string name="notification_filename_separator">", "</string>

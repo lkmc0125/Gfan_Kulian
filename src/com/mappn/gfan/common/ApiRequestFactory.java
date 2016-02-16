@@ -53,18 +53,21 @@ import com.mappn.gfan.common.vo.UpgradeInfo;
  */
 public class ApiRequestFactory {
 
+    private static ArrayList<Integer> S_GET_REQUESTS = new ArrayList<Integer>();
     private static ArrayList<Integer> S_XML_REQUESTS = new ArrayList<Integer>();
     private static ArrayList<Integer> S_JSON_REQUESTS = new ArrayList<Integer>();
     private static ArrayList<Integer> S_ENCRYPT_REQUESTS = new ArrayList<Integer>();
     private static ArrayList<Integer> S_ENCODE_FORM_REQUESTS = new ArrayList<Integer>(); 
     static {
+        // GET
+        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_RANK_BY_CATEGORY);
+        // XML POST
         S_XML_REQUESTS.add(MarketAPI.ACTION_GET_HOME_RECOMMEND);
         S_XML_REQUESTS.add(MarketAPI.ACTION_GET_CATEGORY);
         S_XML_REQUESTS.add(MarketAPI.ACTION_GET_SEARCH_KEYWORDS);
         S_XML_REQUESTS.add(MarketAPI.ACTION_SEARCH);
         S_XML_REQUESTS.add(MarketAPI.ACTION_GET_TOP_RECOMMEND);
         S_XML_REQUESTS.add(MarketAPI.ACTION_CHECK_NEW_SPLASH);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_RANK_BY_CATEGORY);
         S_XML_REQUESTS.add(MarketAPI.ACTION_GET_GROW_FAST);
         S_XML_REQUESTS.add(MarketAPI.ACTION_GET_DETAIL);
         S_XML_REQUESTS.add(MarketAPI.ACTION_GET_PRODUCT_DETAIL);
@@ -86,7 +89,7 @@ public class ApiRequestFactory {
         S_XML_REQUESTS.add(MarketAPI.ACTION_SYNC_BUYLOG);
         S_XML_REQUESTS.add(MarketAPI.ACTION_SYNC_APPS);
         
-        // JSON
+        // JSON POST
         S_JSON_REQUESTS.add(MarketAPI.ACTION_BIND_ACCOUNT);
         S_JSON_REQUESTS.add(MarketAPI.ACTION_GET_ALIPAY_ORDER_INFO);
         S_JSON_REQUESTS.add(MarketAPI.ACTION_QUERY_ALIPAY_RESULT);
@@ -155,9 +158,11 @@ public class ApiRequestFactory {
     public static HttpUriRequest getRequest(String url, int action, HttpEntity entity,
             Session session) throws IOException {
 
-        if (MarketAPI.ACTION_UNBIND == action
-                || MarketAPI.ACTION_GET_RANK_BY_CATEGORY == action) {
+        if (MarketAPI.ACTION_UNBIND == action) {
             HttpGet request = new HttpGet(url + session.getUid());
+            return request;
+        } else if (S_GET_REQUESTS.contains(action)) {
+            HttpGet request = new HttpGet(url+"?"+entity.getContent());
             return request;
         } else if (UCENTER_API.contains(action)) {
             HttpPost request = new HttpPost(url);
@@ -190,8 +195,9 @@ public class ApiRequestFactory {
      */
     public static HttpEntity getRequestEntity(int action, Object params)
             throws UnsupportedEncodingException {
-
-        if (S_XML_REQUESTS.contains(action)) {
+        if (S_GET_REQUESTS.contains(action)) {
+            return getGetRequest(params);
+        } else if (S_XML_REQUESTS.contains(action)) {
             // 普通的XML请求内容
             return getXmlRequest(params);
         } else if (S_ENCODE_FORM_REQUESTS.contains(action)) {
@@ -207,6 +213,11 @@ public class ApiRequestFactory {
             // 不需要请求内容
             return null;
         }
+    }
+    
+    private static StringEntity getGetRequest(Object params) throws UnsupportedEncodingException {
+        String paraString = generateGetParameters(params);
+        return new StringEntity(paraString, HTTP.UTF_8);
     }
     
     /**
@@ -354,6 +365,28 @@ public class ApiRequestFactory {
         return buf.toString();
     }
     
+    @SuppressWarnings("unchecked")
+    private static String generateGetParameters(Object params) {
+        if (params == null) {
+            return "";
+        }
+
+        HashMap<String, Object> requestParams;
+        if (params instanceof HashMap) {
+            requestParams = (HashMap<String, Object>) params;
+        } else {
+            return "";
+        }
+
+        final Iterator<String> keySet = requestParams.keySet().iterator();
+        String parameters = "";
+        while (keySet.hasNext()) {
+            final String key = keySet.next();
+            parameters = parameters + "&" + key + "=" + requestParams.get(key);
+        }
+
+        return parameters;
+    }
     /**
      * Generate the API JSON request body 
      */

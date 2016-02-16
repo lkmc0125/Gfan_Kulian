@@ -40,6 +40,10 @@ public interface Constants {
     /** 截屏图片缓存目录 */
     static final String IMAGE_SNAPSHOT_DIR = ROOT_DIR + "/.snapshot";
 
+    /** 推荐分类 */
+    static final String CATEGORY_RCMD = "rcmd";
+    /** 任务分类 */
+    static final String CATEGORY_TASK = "task";
     /** 应用分类 */
     static final String CATEGORY_APP = "app";
     /** 游戏分类 */

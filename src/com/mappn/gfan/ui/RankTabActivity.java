@@ -59,46 +59,46 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 		mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
 
         Intent appIntent = new Intent(getApplicationContext(), ProductListActivity.class);
-        appIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_APP);
+        appIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
         appIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
 		TabSpec tab1 = mTabHost
-				.newTabSpec(Constants.CATEGORY_APP)
+				.newTabSpec(Constants.CATEGORY_RCMD)
 				.setIndicator(
 						Utils.createTabView(getApplicationContext(),
-								getString(R.string.rank_tab_app)))
+								getString(R.string.rank_tab_rcmd)))
 				.setContent(appIntent);
 		mTabHost.addTab(tab1);
 		
         Intent gameIntent = new Intent(getApplicationContext(), ProductListActivity.class);
-        gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_GAME);
+        gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_APP);
         gameIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
 		TabSpec tab2 = mTabHost
-				.newTabSpec(Constants.CATEGORY_GAME)
+				.newTabSpec(Constants.CATEGORY_APP)
 				.setIndicator(
 						Utils.createTabView(getApplicationContext(),
-								getString(R.string.rank_tab_game)))
+								getString(R.string.rank_tab_app)))
 				.setContent(gameIntent);
 		mTabHost.addTab(tab2);
 		
         Intent bookIntent = new Intent(getApplicationContext(), ProductListActivity.class);
-        bookIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_EBOOK);
+        bookIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_GAME);
         bookIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
 		TabSpec tab3 = mTabHost
-				.newTabSpec(Constants.CATEGORY_EBOOK)
+				.newTabSpec(Constants.CATEGORY_GAME)
 				.setIndicator(
 						Utils.createTabView(getApplicationContext(),
-								getString(R.string.rank_tab_book)))
+								getString(R.string.rank_tab_game)))
 				.setContent(bookIntent);
 		mTabHost.addTab(tab3);
 		
         Intent growIntent = new Intent(getApplicationContext(), ProductListActivity.class);
-        growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_GROW);
+        growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);
         growIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
 		TabSpec tab4 = mTabHost
-				.newTabSpec(Constants.CATEGORY_GROW)
+				.newTabSpec(Constants.CATEGORY_TASK)
 				.setIndicator(
 						Utils.createTabView(getApplicationContext(),
-								getString(R.string.rank_tab_fast)))
+								getString(R.string.rank_tab_task)))
 				.setContent(growIntent);
 		mTabHost.addTab(tab4);
 		mTabHost.setOnTabChangedListener(this);
@@ -109,8 +109,8 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 	 */
 	private void initTopBar() {
         TopBar.createTopBar(getApplicationContext(), 
-                new View[] { findViewById(R.id.top_bar_title), findViewById(R.id.top_bar_search) }, 
-                new int[] { View.VISIBLE, View.VISIBLE }, getString(R.string.rank_top_title));
+                new View[] { findViewById(R.id.top_bar_title) }, 
+                new int[] { View.VISIBLE }, getString(R.string.rank_top_title));
 	}
 	
     @Override

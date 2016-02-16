@@ -22,10 +22,12 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.mappn.gfan.Constants;
 import com.mappn.gfan.Session;
 import com.mappn.gfan.common.ApiAsyncTask.ApiRequestListener;
 import com.mappn.gfan.common.codec.binary.Base64;
@@ -147,7 +149,7 @@ public class MarketAPI {
             API_HOST_JAVA + "getTopRecommend",
             // ACTION_GET_RANK_BY_CATEGOR
 //            API_HOST_JAVA + "getRankByCategory",
-            "http://livew.mobdsp.com/cb/applist_page?apptype=1&page=1&phone_number=13800138000",
+            "http://livew.mobdsp.com/cb/applist_page",
             // ACTION_GET_GROW_FAST
             API_HOST_JAVA + "getGrowFast",
             // ACTION_GET_ALL_CATEGORY
@@ -385,7 +387,16 @@ public class MarketAPI {
 //        params.put("platform", session.getOsVersion());
 //        params.put("screen_size", session.getScreenSize());
 //        params.put("match_type", session.isFilterApps());
-
+        HashMap<String, String> categoryMap = new HashMap<String, String>(3);
+        categoryMap.put(Constants.CATEGORY_RCMD, "1");
+        categoryMap.put(Constants.CATEGORY_APP, "2");
+        categoryMap.put(Constants.CATEGORY_GAME, "3");
+        
+        final HashMap<String, Object> params = new HashMap<String, Object>(3);
+        params.put("apptype", categoryMap.get(category));
+        params.put("page", 1);
+        params.put("phone_number", "13800138000");
+        
         new ApiAsyncTask(context,
                 ACTION_GET_RANK_BY_CATEGORY, handler, null).execute();
     }
