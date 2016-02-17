@@ -60,50 +60,17 @@ public class PreloadActivity extends BaseActivity implements ApiRequestListener 
         mProgress.setIndeterminateDrawable(new LoadingDrawable(
                 getApplicationContext()));
         mProgress.setVisibility(View.VISIBLE);
-        
-        if (checkBarcode(intent)) {
-            
-            String packageName = intent.getStringExtra(Constants.EXTRA_PACKAGE_NAME);
-            if (TextUtils.isEmpty(packageName)) {
-                // 通过产品ID来获取内容			
-                String pId = intent.getStringExtra(Constants.EXTRA_PRODUCT_ID);
-                String sourceType = intent.getStringExtra(Constants.EXTRA_SOURCE_TYPE);
-                if (TextUtils.isEmpty(sourceType)) {
-                    sourceType = Constants.SOURCE_TYPE_GFAN;
-                }
-                MarketAPI.getProductDetailWithId(this, this, -1, pId, sourceType);
-            } else {
-                // 通过产品包名来获取内容
-                MarketAPI.getProductDetailWithPackageName(this, this, -1, packageName);
-            }
+
+        String packageName = intent.getStringExtra(Constants.EXTRA_PACKAGE_NAME);
+        if (TextUtils.isEmpty(packageName)) {
+            // 通过产品ID来获取内容			
+            String pId = intent.getStringExtra(Constants.EXTRA_PRODUCT_ID);
+            String category = intent.getStringExtra(Constants.EXTRA_CATEGORY);
+            MarketAPI.getProductDetailWithId(this, this, pId, category);
+        } else {
+            // 通过产品包名来获取内容
+            MarketAPI.getProductDetailWithPackageName(this, this, -1, packageName);
         }
-    }
-   
-    /*
-     * 处理二维码消息
-     */
-    private boolean checkBarcode(Intent intent) {
-        Uri uri = intent.getData();
-        if (uri != null) {
-            HashMap<String, String> params = Utils.parserUri(uri);
-            if (params != null) {
-                String query = params.get("p");
-                if (!TextUtils.isEmpty(query)) {
-                    String[] temp = query.split(":");
-                    String key = temp[0];
-                    String value = temp[1];
-                    if (ACTION_PID.equalsIgnoreCase(key)) {
-                        MarketAPI.getProductDetailWithId(this, this, -1, value,
-                                Constants.SOURCE_TYPE_GFAN);
-                        return false;
-                    } else if (ACTION_PACKAGENAME.equalsIgnoreCase(key)) {
-                        MarketAPI.getProductDetailWithPackageName(this, this, -1, value);
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
     }
 
     @Override

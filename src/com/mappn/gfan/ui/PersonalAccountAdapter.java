@@ -290,22 +290,12 @@ public class PersonalAccountAdapter extends BaseAdapter implements
 			holder[i] = v.findViewById(to[i]);
 
 		if (mSession.isLogin()) {
-			if (position == 1) {
-				v.findViewById(R.id.cb_operation).setVisibility(View.VISIBLE);
-				v.findViewById(R.id.iv_arrow).setVisibility(View.GONE);
-
-			} else if (position == 0 || position == 2) {
-				v.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
-				v.findViewById(R.id.cb_operation).setVisibility(View.GONE);
-			}
+			v.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
+			v.findViewById(R.id.cb_operation).setVisibility(View.GONE);
 		} else {
 			if (position == 0)
 				v.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
 			if (position == 1) {
-				v.findViewById(R.id.cb_operation).setVisibility(View.VISIBLE);
-				v.findViewById(R.id.iv_arrow).setVisibility(View.GONE);
-			}
-			if (position == 2) {
 				v.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
 				v.findViewById(R.id.cb_operation).setVisibility(View.GONE);
 			}

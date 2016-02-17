@@ -167,6 +167,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
         String pid = (String) item.get(Constants.KEY_PRODUCT_ID);
         Intent detailIntent = new Intent(getApplicationContext(), PreloadActivity.class);
         detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
+        detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
         startActivity(detailIntent);
     }
 

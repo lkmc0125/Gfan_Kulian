@@ -7,20 +7,11 @@
     android:focusableInTouchMode="true" 
     android:gravity="center_vertical">
 
-    <!-- 搜索按钮 -->
-    <ImageButton android:id="@+id/top_bar_search"
-        android:layout_width="wrap_content" 
-        android:layout_height="fill_parent"
-        android:layout_alignParentRight="true" 
-        android:background="@drawable/topbar_btn_bg"
-        android:src="@drawable/topbar_btn_search"
-        android:visibility="gone" />
-
     <!-- 个人帐号图片 -->
     <ImageButton android:id="@+id/top_bar_account"
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/top_bar_search"
+        android:layout_alignParentRight="true"
         android:background="@drawable/topbar_btn_account_bg"
         android:src="@drawable/topbar_account" 
         android:visibility="gone" />
@@ -29,7 +20,7 @@
     <ImageButton android:id="@+id/top_bar_files"
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/top_bar_search"
+        android:layout_alignParentRight="true"
         android:background="@drawable/topbar_btn_account_bg"
         android:src="@drawable/local_apps" 
         android:visibility="gone" />
@@ -58,23 +49,6 @@
         android:gravity="center_vertical"
         android:visibility="gone" />
 
-    <!-- 搜索输入框 -->
-    <AutoCompleteTextView android:id="@+id/top_bar_input"
-        android:layout_width="fill_parent" 
-        android:layout_height="32dp"
-        android:gravity="left|center_vertical" 
-        android:layout_toLeftOf="@id/top_bar_search"
-        android:layout_alignWithParentIfMissing="true" 
-        android:hint="@string/hint_search"
-        android:textAppearance="@style/app_text_style7"
-        android:background="@drawable/edit_box"
-        android:paddingLeft="8dp"
-        android:layout_marginLeft="6dp" 
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="8dp" 
-        android:layout_marginBottom="8dp"
-        android:completionThreshold="1"
-        android:singleLine="true"
-        android:visibility="gone" />
+
 
 </RelativeLayout>

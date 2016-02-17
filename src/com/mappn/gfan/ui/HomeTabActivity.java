@@ -323,21 +323,7 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
 
     @Override
     public void onTabChanged(String tabId) {
-        
-        // 行为统计代码
-        if (TAB_APP.equals(tabId)) {
-            Utils.trackEvent(getApplicationContext(), Constants.GROUP_4,
-                    Constants.CLICK_MANAGER_TAB);
-        } else if (TAB_CATEGORY.equals(tabId)) {
-            Utils.trackEvent(getApplicationContext(), Constants.GROUP_4,
-                    Constants.CLICK_CATEGORY_TAB);
-        } else if (TAB_RANK.equals(tabId)) {
-            Utils.trackEvent(getApplicationContext(), Constants.GROUP_4,
-                    Constants.CLICK_RANK_TAB);
-        } else if (TAB_HOME.equals(tabId)) {
-            Utils.trackEvent(getApplicationContext(), Constants.GROUP_4,
-                    Constants.CLICK_HOME_TAB);
-        }
+
         final View tab = getTabHost().getCurrentTabView();
         final int endX = tab.getLeft();
 
@@ -530,7 +516,7 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         case DIALOG_EXIT:
             return new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_info)
-                    .setTitle(getString(R.string.exit_gmarket))
+                    .setTitle(getString(R.string.exit_wifikulian))
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             // 退出机锋市场

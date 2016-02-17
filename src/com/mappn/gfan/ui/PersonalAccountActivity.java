@@ -194,18 +194,15 @@ public class PersonalAccountActivity extends BaseActivity implements
 		ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
 
 		int[] icons = new int[] { R.drawable.person_center_logo,
-				R.drawable.person_center_cloud,
 				R.drawable.person_center_payment };
 		String[] titles = new String[] {
 				getString(R.string.account_logo_title),
-				getString(R.string.account_clound_title),
 				getString(R.string.account_payment_title) };
 
 		String[] descs = new String[] { getString(R.string.account_logo_desc),
-				getString(R.string.account_clound_desc),
 				getString(R.string.account_payment_desc) };
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < icons.length; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put(Constants.ACCOUNT_ICON, icons[i]);
 			map.put(Constants.ACCOUNT_TITLE, titles[i]);
@@ -273,29 +270,10 @@ public class PersonalAccountActivity extends BaseActivity implements
 			}
 			break;
 
-			// 绑定云推送
-		case MarketAPI.ACTION_BIND_ACCOUNT:
-			mSession.setDeviceBinded(true);
-			Utils.makeEventToast(getApplicationContext(),
-                    getString(R.string.account_bind_success), true);
-			HashMap<String, Object> cloud = mAdapter.getDataSource().get(1);
-			cloud.put(Constants.ACCOUNT_DOWNLOAD, R.drawable.cloud_on);
-			mAdapter.notifyDataSetChanged();
-			isBinding = false;
-			break;
-			
-		// 云推送解除绑定
-		case MarketAPI.ACTION_UNBIND:
-			mSession.setDeviceBinded(false);
-			HashMap<String, Object> clouds = mAdapter.getDataSource().get(1);
-			clouds.put(Constants.ACCOUNT_DOWNLOAD, R.drawable.cloud_off);
-			mAdapter.notifyDataSetChanged();
-			break;
-			
 		// 获取帐号余额
 		case MarketAPI.ACTION_GET_BALANCE:
 			HashMap<String, Object> balanceMap = mAdapter.getDataSource()
-					.get(2);
+					.get(1);
 			balanceMap
 					.put(Constants.ACCOUNT_DESC,
 							getString(R.string.account_payment_balance,
@@ -316,14 +294,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 				ArrayList<HashMap<String, Object>> data = doInitFuncData();
 				mAdapter.changeDataSource(data);
 				break;
-			// 云推送绑定
-			case CLOUD_BIND:
-				showDialog(ACCOUNT_BIND);
-				break;
-			// 云推送解除绑定
-			case CLOUD_UNBIND:
-				unBindAccount();
-				break;
 			}
 		};
 	};
@@ -331,14 +301,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 	@Override
 	public void onError(int method, int statusCode) {
 		switch (method) {
-		case MarketAPI.ACTION_BIND_ACCOUNT:
-			Utils.W("bind account error");
-			Utils.makeEventToast(getApplicationContext(),
-					getString(R.string.account_bind_error), true);
-			HashMap<String, Object> map = mAdapter.getDataSource().get(1);
-			map.put(Constants.ACCOUNT_DOWNLOAD, R.drawable.cloud_off);
-			mAdapter.notifyDataSetChanged();
-			break;
 
 		default:
 			break;
@@ -358,17 +320,8 @@ public class PersonalAccountActivity extends BaseActivity implements
                 showDialog(ACCOUNT_REGIST);
             }
             break;
-		case 1:
-			if (mSession.isDeviceBinded()) {
-				unBindAccount();
-			} else {
-				if(isBinding)
-					return ;
-				showDialog(ACCOUNT_BIND);
-			}
-			break;
 
-		case 2:
+		case 1:
             String type = mSession.getDefaultChargeType();
             if (type == null) {
                 Intent intent = new Intent(this, ChargeTypeListActivity.class);
@@ -386,17 +339,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 		}
 	}
 
-	/**
-	 * 解除云推送绑定
-	 */
-	private void unBindAccount() {
-		HudeeUtils.unregisterLPNS(getApplicationContext(),
-				mSession.getDeviceId());
-
-		MarketAPI.unbindAccount(getApplicationContext(),
-				PersonalAccountActivity.this);
-	}
-
 	@Override
 	protected Dialog onCreateDialog(final int id) {
 		switch (id) {
@@ -412,15 +354,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 									mSession.setLogin(false);
 									mSession.setUid(null);
 									isFirstAccess = true;
-									if (mSession.isDeviceBinded()) {
-										
-										HudeeUtils.unregisterLPNS(
-												getApplicationContext(),
-												mSession.getDeviceId());
-										MarketAPI.unbindAccount(
-												getApplicationContext(),
-												PersonalAccountActivity.this);
-									}
 									mHandler.sendEmptyMessage(REGIST);
 								}
 							})
@@ -431,38 +364,10 @@ public class PersonalAccountActivity extends BaseActivity implements
 										int which) {
 									PersonalAccountActivity.this
 											.dismissDialog(id);
-									mAdapter.getDataSource()
-											.get(1)
-											.put(Constants.ACCOUNT_DOWNLOAD,
-													R.drawable.cloud_off);
 									mAdapter.notifyDataSetChanged();
 								}
 							}).create();
-			// 云推送绑定
-		case ACCOUNT_BIND:
-			return new AlertDialog.Builder(this)
-					.setIcon(android.R.drawable.ic_dialog_info)
-					.setTitle(getString(R.string.account_remind))
-					.setMessage(R.string.sure_to_bind)
-					.setPositiveButton(R.string.open_push, new OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							isBinding = true;
-                            Utils.makeEventToast(getApplicationContext(),
-                                    getString(R.string.account_binding), true);
-							HudeeUtils.registerLPNS(getApplicationContext(),
-									mSession.getDeviceId());
-							HashMap<String, Object> cloudMap = mAdapter
-									.getDataSource().get(1);
-							cloudMap.put(Constants.ACCOUNT_DOWNLOAD,
-									R.drawable.cloud_on_ing);
-							mAdapter.notifyDataSetChanged();
-						}
-					}).setNegativeButton(R.string.cancel, new OnClickListener() {
 
-						public void onClick(DialogInterface dialog, int which) {
-							PersonalAccountActivity.this.dismissDialog(id);
-						}
-					}).create();
 		default:
 			break;
 		}

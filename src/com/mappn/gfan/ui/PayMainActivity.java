@@ -410,9 +410,6 @@ public class PayMainActivity extends BaseActivity implements OnClickListener, Ap
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.top_bar_search:
-			onSearchRequested();
-			break;
 		case R.id.btn_retry:
 			onClickRetry();
 			break;

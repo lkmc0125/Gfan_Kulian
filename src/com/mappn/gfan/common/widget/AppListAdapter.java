@@ -374,38 +374,12 @@ public class AppListAdapter extends BaseAdapter implements Observer, ApiRequestL
 
         for (int i = 0; i < count; i++) {
             holder[i] = v.findViewById(to[i]);
-
-            if (R.id.cb_install == to[i]) {
-                if (holder[i] != null) {
-                    ((CheckBox) holder[i]).setOnCheckedChangeListener(mCheckChangeListener);
-                }
-            }
         }
 
 		v.setTag(holder);
 		return v;
 	}
 	
-	/*
-	 * 装机必备安装选项
-	 */
-    private OnCheckedChangeListener mCheckChangeListener = new OnCheckedChangeListener() {
-
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            int position = (Integer) buttonView.getTag();
-            
-            HashMap<String, Object> item =(HashMap<String, Object>) mDataSource.get(position) ;
-            item.put(Constants.INSTALL_APP_IS_CHECKED, isChecked);
-            
-            if (isChecked) {
-                mCheckedList.put((String) item.get(Constants.KEY_PRODUCT_ID), item);
-            } else {
-                mCheckedList.remove((String) item.get(Constants.KEY_PRODUCT_ID));
-            }
-            buttonView.setChecked(isChecked);
-        }
-    };
-
 	/*
 	 * bind the background data to the view
 	 */

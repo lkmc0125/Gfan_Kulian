@@ -82,7 +82,9 @@ public class ApiResponseFactory {
         String inputBody = null;
         if (MarketAPI.ACTION_GET_ALIPAY_ORDER_INFO == action
                 || MarketAPI.ACTION_QUERY_ALIPAY_RESULT == action
-                || MarketAPI.ACTION_GET_RANK_BY_CATEGORY == action) {
+                || MarketAPI.ACTION_GET_RANK_BY_CATEGORY == action
+                || MarketAPI.ACTION_GET_PRODUCT_DETAIL == action
+                ) {
             inputBody = Utils.getStringResponse(response);
             if (TextUtils.isEmpty(inputBody)) {
                 return null;
@@ -113,27 +115,6 @@ public class ApiResponseFactory {
                 result = parseLoginOrRegisterResult(XmlElement.parseXml(in));
                 break;
                 
-            case MarketAPI.ACTION_GET_TOP_RECOMMEND:
-                
-                // 获取首页顶部推荐
-                requestMethod = "ACTION_GET_TOP_RECOMMEND";
-                result = parseTopRecommend(XmlElement.parseXml(in));
-                break;
-                
-            case MarketAPI.ACTION_GET_HOME_RECOMMEND:
-                
-                // 获取首页推荐
-                requestMethod = "ACTION_GET_HOME_RECOMMEND";
-                result = parseProductList(context, XmlElement.parseXml(in), true);
-                break;
-            
-            case MarketAPI.ACTION_GET_SEARCH_KEYWORDS:
-                
-                // 获取搜索热词
-                requestMethod = "ACTION_GET_SEARCH_KEYWORDS";
-                result = parseSearchKeywords(XmlElement.parseXml(in));
-                break;
-
             case MarketAPI.ACTION_GET_COMMENTS:
                 
                 // 获取评论列表
@@ -166,15 +147,13 @@ public class ApiResponseFactory {
                 
                 // 获取应用详细
                 requestMethod = "ACTION_GET_PRODUCT_DETAIL";
-                result = parseProductDetail(XmlElement.parseXml(in));
+                result = parseProductDetail2(context, inputBody);
                 break;
 
             case MarketAPI.ACTION_GET_RANK_BY_CATEGORY:
             {
                 // 获取排行列表
                 requestMethod = "ACTION_GET_RANK_BY_CATEGORY";
-//                result = parseProductList(context, XmlElement.parseXml(in), false);
-//                String searchResult = new BufferedReader(new InputStreamReader(in)).readLine();
                 result = parseProductList2(context, inputBody);
                 break;
             }
@@ -227,13 +206,6 @@ public class ApiResponseFactory {
                 result = parseDownloadInfo(XmlElement.parseXml(in));
                 break;
                 
-            case MarketAPI.ACTION_GET_ALL_CATEGORY:
-                
-                // 获得全部分类
-                requestMethod = "ACTION_GET_ALL_CATEGORY";
-                result = parseAllCategory(XmlElement.parseXml(in));
-                break;
-                
             case MarketAPI.ACTION_GET_PRODUCTS:
                 
                 // 获得分类产品列表
@@ -241,41 +213,6 @@ public class ApiResponseFactory {
                 result = parseProductList(context, XmlElement.parseXml(in), false);
                 break;
                 
-            case MarketAPI.ACTION_GET_RECOMMEND_PRODUCTS:
-                
-                // 获得专题推荐产品列表
-                requestMethod = "ACTION_GET_RECOMMEND_PRODUCTS";
-                result = parseProductList(context, XmlElement.parseXml(in), false);
-                break;
-                
-            case MarketAPI.ACTION_BBS_SEARCH:
-                
-                // 获得BBS附件搜索列表
-                requestMethod = "ACTION_BBS_SEARCH";
-                String searchResult = new BufferedReader(new InputStreamReader(in)).readLine();
-                result = parseBbsSearchResult(searchResult);
-                break;
-                
-            case MarketAPI.ACTION_SEARCH:
-                
-                // 获得BBS附件搜索列表
-                requestMethod = "ACTION_SEARCH";
-                result = parseProductList(context, XmlElement.parseXml(in), false);
-                break;
-                
-            case MarketAPI.ACTION_GET_REQUIRED:
-                
-                // 装机必备
-                requestMethod = "ACTION_GET_REQUIRED";
-                result = parseGetRequired(context, XmlElement.parseXml(in));
-                break;
-                
-            case MarketAPI.ACTION_GET_TOPIC:
-                
-                // 获得专题列表
-                requestMethod = "ACTION_GET_TOPIC";
-                result = parseTopicList(context, XmlElement.parseXml(in));
-                break;
                 
             case MarketAPI.ACTION_CHECK_UPGRADE:
                 
@@ -470,6 +407,67 @@ public class ApiResponseFactory {
                 result.add(item);
             }
         }
+        return result;
+    }
+    
+    private static Object parseProductDetail2(Context context, String body) {
+        if (body == null) {
+            return null;
+        }
+
+        ProductDetail result = null;
+        try {
+            JSONObject jsonObj = new JSONObject(body);
+            if (jsonObj.getInt("ret_code") == 0) {
+                JSONObject product = jsonObj.getJSONObject("detail_info");
+
+                if (product != null) {
+                    result = new ProductDetail();
+                    result.setPid(product.getString("AppId"));
+//                    result.setProductType(product.getString(Constants.KEY_PRODUCT_TYPE));
+                    result.setName(product.getString("AppName"));
+//                    result.setPrice(Utils.getInt(product.getString(Constants.KEY_PRODUCT_PRICE)));
+//                    result.setPayCategory(Utils.getInt(product.getString(Constants.KEY_PRODUCT_PAY_TYPE)));
+//                    result.setRating(Utils.getInt(product.getString(Constants.KEY_PRODUCT_RATING)));
+                    result.setIconUrl(product.getString("AppLogo"));
+//                    result.setIconUrlLdpi(product.getString(Constants.KEY_PRODUCT_ICON_URL_LDPI));
+                    result.setShotDes(product.getString("BriefSummary"));
+                    result.setAppSize(Utils.getInt(product.getString("AppSize")));
+//                    result.setSourceType(product.getString(Constants.KEY_PRODUCT_SOURCE_TYPE));
+                    result.setPackageName(product.getString("PackageName"));
+                    result.setVersionName(product.getString("AppVersion"));
+//                    result.setVersionCode(Utils.getInt(product
+//                            .getString(Constants.KEY_PRODUCT_VERSION_CODE)));
+//                    result.setCommentsCount(Utils.getInt(product
+//                            .getString(Constants.KEY_PRODUCT_COMMENTS_COUNT)));
+//                    result.setRatingCount(Utils.getInt(product
+//                            .getString(Constants.KEY_PRODUCT_RATING_COUNT)));
+//                    result.setDownloadCount(Utils.getInt(product
+//                            .getString(Constants.KEY_PRODUCT_DOWNLOAD_COUNT)));
+                    result.setLongDescription(product.getString("AppSummary"));
+//                    result.setAuthorName(product.getString(Constants.KEY_PRODUCT_AUTHOR));
+//                    result.setPublishTime(Utils.getInt(product
+//                            .getString(Constants.KEY_PRODUCT_PUBLISH_TIME)));
+//                    final String[] screenShot = new String[5];
+//                    screenShot[0] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_1);
+//                    screenShot[1] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_2);
+//                    screenShot[2] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_3);
+//                    screenShot[3] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_4);
+//                    screenShot[4] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_5);
+
+                    final ArrayList<String> screenShot = new ArrayList<String>();
+                    screenShot.add(product.getString("ImageSrc"));
+                    JSONArray array = product.getJSONArray("ImageSrcList");
+                    for (int i = 0; i < array.length(); i++) {
+                        screenShot.add(array.getString(i));
+                    }
+                    result.setScreenshot((String[])screenShot.toArray());
+                    result.setUpTime(Utils.getLong(product.getString(Constants.KEY_PRODUCT_UP_TIME)));
+                }
+            }
+        } catch (JSONException e) {
+          Utils.D("have json exception when parse search result from bbs", e);
+      }
         return result;
     }
     
@@ -823,94 +821,7 @@ public class ApiResponseFactory {
         }
         return count;
     }
-    
-    /*
-     * 解析专题列表
-     */
-    private static ArrayList<HashMap<String, Object>> parseTopicList(Context context,
-            XmlElement xmlDocument) {
 
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        XmlElement topics = xmlDocument.getChild(Constants.KEY_TOPICS, 0);
-        ArrayList<HashMap<String, Object>> topicArray = null;
-        if (topics != null) {
-            final String MUST_HAVE_ID = "5";
-            List<XmlElement> topicList = topics.getChildren(Constants.KEY_TOPIC);
-            topicArray = new ArrayList<HashMap<String, Object>>();
-            for (XmlElement element : topicList) {
-                HashMap<String, Object> item = new HashMap<String, Object>();
-                    
-                String id = element.getAttribute(Constants.KEY_ID);
-                if (MUST_HAVE_ID.equals(id)) {
-                    // 装机必备不需要在这个列表中展示
-                    continue;
-                }
-                item.put(Constants.KEY_ID, id);
-                item.put(Constants.KEY_CATEGORY_NAME,
-                        element.getAttribute(Constants.KEY_TOPIC_NAME));
-                item.put(Constants.KEY_CATEGORY_ICON_URL,
-                        element.getAttribute(Constants.KEY_TOPIC_ICON_LDPI));
-
-                String app1 = element.getAttribute(Constants.KEY_APP_1);
-                String app2 = element.getAttribute(Constants.KEY_APP_2);
-                String app3 = element.getAttribute(Constants.KEY_APP_3);
-                String description = app1 + ", ";
-                if (!TextUtils.isEmpty(app2)) {
-                    description += (app2 + ", ");
-                }
-                if (!TextUtils.isEmpty(app3)) {
-                    description += (app3 + ", ");
-                }
-                if (description.length() > 1) {
-                    description = description.substring(0, description.lastIndexOf(",") - 2);
-                }
-                item.put(Constants.KEY_TOP_APP, description);
-                item.put(Constants.KEY_APP_COUNT, element.getAttribute(Constants.KEY_APP_COUNT));
-                topicArray.add(item);
-            }
-        }
-        return topicArray;
-    }
-
-    /*
-     * 解析首页顶部推荐项列表
-     */
-    private static ArrayList<HashMap<String, Object>> parseTopRecommend(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        List<XmlElement> recommends = xmlDocument.getAllChildren();
-        ArrayList<HashMap<String, Object>> recommendList = null;
-        if (recommends != null) {
-            recommendList = new ArrayList<HashMap<String, Object>>();
-            for (XmlElement element : recommends) {
-                HashMap<String, Object> item = new HashMap<String, Object>();
-                if (Constants.KEY_CATEGORY.equals(element.getName())) {
-                    item.put(Constants.KEY_RECOMMEND_TYPE, Constants.KEY_CATEGORY);
-                } else if (Constants.KEY_TOPIC.equals(element.getName())) {
-                    item.put(Constants.KEY_RECOMMEND_TYPE, Constants.KEY_TOPIC);
-                } else if (Constants.KEY_PRODUCT.equals(element.getName())) {
-                    item.put(Constants.KEY_RECOMMEND_TYPE, Constants.KEY_PRODUCT);
-                } else {
-                    item.put(Constants.KEY_RECOMMEND_TYPE, -1);
-                }
-                item.put(Constants.KEY_ID,
-                        element.getAttribute(Constants.KEY_ID));
-                item.put(Constants.KEY_RECOMMEND_ICON,
-                        element.getAttribute(Constants.KEY_RECOMMEND_ICON));
-                item.put(Constants.KEY_RECOMMEND_TITLE,
-                        element.getAttribute(Constants.KEY_RECOMMEND_TITLE));
-                recommendList.add(item);
-            }
-        }
-        return recommendList;
-    }
-    
     /**
      * 获取同步购买列表
      */
@@ -989,132 +900,6 @@ public class ApiResponseFactory {
         return item;
     }
 
-    /*
-     * 解析搜索热词列表
-     */
-    private static ArrayList<String> parseSearchKeywords(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        XmlElement keyList = xmlDocument.getChild(Constants.KEY_KEYLIST, 0);
-        ArrayList<String> keywords = null;
-        if (keyList != null) {
-            keywords = new ArrayList<String>();
-            List<XmlElement> keys = keyList.getAllChildren();
-            for (XmlElement key : keys) {
-                keywords.add(key.getAttribute(Constants.KEY_TEXT));
-            }
-        }
-        return keywords;
-    }
-    
-    /*
-     * 解析搜索结果（BBS附件搜索）
-     */
-    private static HashMap<String, Object> parseBbsSearchResult(String body) {
-
-        if (body == null) {
-            return null;
-        }
-        HashMap<String, Object> result = null;
-        try {
-            JSONObject jsonBody = new JSONObject(body);
-            result = new HashMap<String, Object>();
-            result.put(Constants.KEY_TOTAL_SIZE, jsonBody.getInt("totalSize"));
-            result.put(Constants.KEY_END_POSITION, jsonBody.getInt("endPosition"));
-            JSONArray array = jsonBody.getJSONArray(Constants.KEY_JK_LIST);
-
-            final int length = array.length();
-            if (length > 0) {
-                ArrayList<HashMap<String, Object>> topicList = new ArrayList<HashMap<String, Object>>();
-                for (int i = 0; i < length; i++) {
-                    HashMap<String, Object> map = new HashMap<String, Object>();
-                    JSONObject item = array.getJSONObject(i);
-                    map.put(Constants.SEARCH_RESULT_TITLE,
-                            String.valueOf(item.get(Constants.KEY_SUBJECT)));
-                    map.put(Constants.KEY_PLACEHOLDER, true);
-                    topicList.add(map);
-                    JSONArray subArray = item.getJSONArray(Constants.KEY_FILE_LIST);
-                    for (int j = 0, len = subArray.length(); j < len; j++) {
-                        HashMap<String, Object> subMap = new HashMap<String, Object>();
-                        JSONObject subItem = subArray.getJSONObject(j);
-                        subMap.put(Constants.KEY_PLACEHOLDER, false);
-                        subMap.put(Constants.SEARCH_RESULT_TITLE,
-                                String.valueOf(subItem.get(Constants.KEY_FILE_NAME)));
-                        subMap.put(Constants.KEY_DOWN_URL,
-                                String.valueOf(subItem.getString(Constants.KEY_DOWN_URL)));
-                        topicList.add(subMap);
-                    }
-                }
-                result.put(Constants.KEY_JK_LIST, topicList);
-            }
-        } catch (JSONException e) {
-            Utils.D("have json exception when parse search result from bbs", e);
-        }
-        return result;
-    }
-    
-    /*
-     * 获取装机必备列表
-     */
-    private static Object parseGetRequired(Context context, XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        ArrayList<HashMap<String, Object>> result = null;
-        List<XmlElement> productGroup = 
-                xmlDocument.getChildren(Constants.KEY_REQUIRED_CATEGORY);
-        if (productGroup != null && productGroup.size() > 0) {
-
-            result = new ArrayList<HashMap<String, Object>>();
-            
-            // 获取已经安装的应用列表
-            Session session = Session.get(context);
-            ArrayList<String> installedApps = session.getInstalledApps();
-            
-            for (XmlElement group : productGroup) {
-
-                // 分组信息
-                HashMap<String, Object> groupItem = new HashMap<String, Object>();
-                groupItem.put(Constants.INSTALL_PLACE_HOLDER, true);
-                groupItem.put(Constants.INSTALL_APP_TITLE,
-                        group.getAttribute(Constants.KEY_PRODUCT_NAME));
-                List<XmlElement> productList = group.getChildren(Constants.KEY_PRODUCT);
-                result.add(groupItem);
-
-                if (productList == null || productList.size() == 0) {
-                    continue;
-                }
-
-                // 分组下的产品列表信息
-                for (XmlElement product : productList) {
-                    HashMap<String, Object> productItem = new HashMap<String, Object>();
-                    productItem.put(Constants.INSTALL_PLACE_HOLDER, false);
-                    productItem.put(Constants.KEY_PRODUCT_ID,
-                            product.getAttribute(Constants.KEY_PRODUCT_ID));
-                    productItem.put(Constants.INSTALL_APP_LOGO,
-                            product.getAttribute(Constants.KEY_PRODUCT_ICON_URL));
-                    productItem.put(Constants.INSTALL_APP_TITLE,
-                            product.getAttribute(Constants.KEY_PRODUCT_NAME));
-                    productItem.put(Constants.INSTALL_APP_DESCRIPTION,
-                            product.getAttribute(Constants.KEY_PRODUCT_SHORT_DESCRIPTION));
-                    String packageName = product.getAttribute(Constants.KEY_PRODUCT_PACKAGE_NAME);
-                    if (installedApps.contains(packageName)) {
-                        productItem.put(Constants.KEY_PRODUCT_IS_INSTALLED, true);
-                    } else {
-                        productItem.put(Constants.INSTALL_APP_IS_CHECKED, false);    
-                    }
-                    result.add(productItem);
-                }
-            }
-        }
-        return result;
-    }
-    
     /*
      * 解析新的Splash页
      */

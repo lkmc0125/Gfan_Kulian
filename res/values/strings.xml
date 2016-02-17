@@ -2,23 +2,13 @@
 <resources>
 
     <!-- Application Name -->
-    <string name="app_name">机锋市场</string>
-    <string name="app_name_en">aMarket2.0</string>
+    <string name="app_name">WIFI酷连</string>
+    <string name="app_name_en">WIFI KuLian</string>
 
     <!-- Notification -->
     <string name="notification_update_info">今天更新%1$s款软件,您有%2$s款需要更新。</string>
     <string name="notification_server_error">服务器暂时无法访问，请稍候重试。</string>
     <string name="notification_client_error">客户端访问错误，请检查设置。</string>
-
-    <!-- 搜索页 -->
-    <string name="tab_product">市场应用</string>
-    <string name="tab_bbs">论坛附件</string>
-    <string name="tab_product_result">市场应用(%1$s)</string>
-    <string name="tab_bbs_result">论坛附件(%1$s)</string>
-    <string name="hint_search">搜索机锋市场软件及论坛附件</string>
-    <string name="search_no_result">没有搜索到内容</string>
-    <string name="warning_no_input">请输入搜索关键词</string>
-    <string name="start_download_bbs_apk">马上开始下载附件</string>
 
     <!-- 注册页 -->
     <string name="register">注册</string>
@@ -412,7 +402,7 @@
     <string name="ic_preference">设置</string>
     <string name="ic_exit">退出</string>
     <string name="ic_logout">注销</string>
-    <string name="exit_gmarket">退出机锋市场？</string>
+    <string name="exit_wifikulian">退出WIFI酷连？</string>
     <string name="alert_safe">安全保证</string>
 
     <!-- About Activity -->

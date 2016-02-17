@@ -106,7 +106,8 @@ public class MarketAPI {
             // ACTION_GET_RECOMMEND_PRODUCTS
             API_HOST_JAVA + "getRecommendProducts",
             // ACTION_GET_PRODUCT_DETAIL
-            API_HOST_JAVA + "getProductDetail",
+//            API_HOST_JAVA + "getProductDetail",
+            "http://livew.mobdsp.com/cb/appdetail",
             // ACTION_GET_DOWNLOAD_URL
             API_HOST_JAVA + "getDownloadUrl",
             // ACTION_GET_HOME_RECOMMEND
@@ -651,14 +652,17 @@ public class MarketAPI {
 	 * 获取商品详细信息
 	 */
 	public static void getProductDetailWithId(Context context,
-			ApiRequestListener handler, int localVersion, String pId,
-			String sourceType) {
+			ApiRequestListener handler, String pId, String category) {
+
+        HashMap<String, String> categoryMap = new HashMap<String, String>(3);
+        categoryMap.put(Constants.CATEGORY_RCMD, "1");
+        categoryMap.put(Constants.CATEGORY_APP, "2");
+        categoryMap.put(Constants.CATEGORY_GAME, "3");
 
 		final HashMap<String, Object> params = new HashMap<String, Object>(3);
-		params.put("local_version", localVersion);
-		params.put("p_id", pId);
-		params.put("source_type", sourceType);
-
+		params.put("appid", pId);
+		params.put("apptype", categoryMap.get(category));
+        params.put("phone_number", "13800138000");
 		new ApiAsyncTask(context, ACTION_GET_PRODUCT_DETAIL, handler, params)
 				.execute();
 	}
