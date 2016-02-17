@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.mappn.gfan.Constants;
 import com.mappn.gfan.R;
 import com.mappn.gfan.ui.FileManagerActivity;
-import com.mappn.gfan.ui.SearchActivity;
 
 /**
  * TopBar utility class
@@ -51,19 +50,6 @@ public class TopBar {
             }
 
             switch (v.getId()) {
-            case R.id.top_bar_search:
-
-                // go to search activity
-                v.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View arg0) {
-                        Utils.trackEvent(context, Constants.GROUP_2, Constants.OPEN_SEARCH);
-                        Intent intent = new Intent(context, SearchActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                    }
-                });
-                break;
 
             case R.id.top_bar_title:
 

@@ -12,8 +12,8 @@ import com.gfan.sdk.statistics.Collector;
 import com.gfan.sdk.statistics.Collector.IResponse;
 import com.mappn.gfan.R;
 import com.mappn.gfan.common.util.DialogUtil.InputDialogListener;
+import com.mappn.gfan.ui.ConnectionActivity;
 import com.mappn.gfan.ui.FileManagerActivity;
-import com.mappn.gfan.ui.HomeActivity;
 
 public class MenuUtil {
 	// Menu dialog
@@ -76,7 +76,7 @@ public class MenuUtil {
 
 	public static void onMenuSelectedHome(Context context) {
 		final Activity act = (Activity) context;
-		Intent intent = new Intent(act, HomeActivity.class);
+		Intent intent = new Intent(act, ConnectionActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		act.startActivity(intent);
 	}

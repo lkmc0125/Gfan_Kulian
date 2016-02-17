@@ -749,7 +749,7 @@ public class ApiResponseFactory {
                     item.put(Constants.KEY_PRODUCT_PACKAGE_NAME, packageName);
                     int price = Utils.getInt(obj.getString("GiveCoin"));
                     String priceText = price == 0 ? context.getString(R.string.free) : context
-                            .getString(R.string.duihuanquan_unit, price);
+                            .getString(R.string.coin_unit, price);
                     item.put(Constants.KEY_PRODUCT_PRICE, priceText);
                     // 忽略星标
                     item.put(Constants.KEY_PRODUCT_IS_STAR, false);

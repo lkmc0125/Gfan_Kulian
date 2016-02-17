@@ -380,13 +380,6 @@ public class MarketAPI {
 
         Session session = Session.get(context);
 
-//        final HashMap<String, Object> params = new HashMap<String, Object>(6);
-//        params.put("size", size);
-//        params.put("start_position", startPosition);
-//        params.put("category", category);
-//        params.put("platform", session.getOsVersion());
-//        params.put("screen_size", session.getScreenSize());
-//        params.put("match_type", session.isFilterApps());
         HashMap<String, String> categoryMap = new HashMap<String, String>(3);
         categoryMap.put(Constants.CATEGORY_RCMD, "1");
         categoryMap.put(Constants.CATEGORY_APP, "2");
@@ -398,7 +391,7 @@ public class MarketAPI {
         params.put("phone_number", "13800138000");
         
         new ApiAsyncTask(context,
-                ACTION_GET_RANK_BY_CATEGORY, handler, null).execute();
+                ACTION_GET_RANK_BY_CATEGORY, handler, params).execute();
     }
     
     /**

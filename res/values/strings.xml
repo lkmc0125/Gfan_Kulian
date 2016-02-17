@@ -95,6 +95,7 @@
     <string name="has_update">有新版本</string>
     <string name="has_installed">已安装</string>
     <string name="duihuanquan_unit">%d券</string>
+    <string name="coin_unit">%d金币</string>
     <string name="lable_description">简介</string>
     <string name="comment_lab">评论(%d)</string>
     <string name="warning_comment_later">已经开始下载，请稍候</string>

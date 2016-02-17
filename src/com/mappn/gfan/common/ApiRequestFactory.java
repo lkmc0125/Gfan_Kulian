@@ -32,6 +32,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -162,7 +163,8 @@ public class ApiRequestFactory {
             HttpGet request = new HttpGet(url + session.getUid());
             return request;
         } else if (S_GET_REQUESTS.contains(action)) {
-            HttpGet request = new HttpGet(url+"?"+entity.getContent());
+            String requestString = url+"?"+EntityUtils.toString(entity);
+            HttpGet request = new HttpGet(requestString);
             return request;
         } else if (UCENTER_API.contains(action)) {
             HttpPost request = new HttpPost(url);
@@ -382,7 +384,10 @@ public class ApiRequestFactory {
         String parameters = "";
         while (keySet.hasNext()) {
             final String key = keySet.next();
-            parameters = parameters + "&" + key + "=" + requestParams.get(key);
+            if (parameters.length() > 0) {
+                parameters = parameters + "&";
+            }
+            parameters = parameters + key + "=" + requestParams.get(key);
         }
 
         return parameters;
