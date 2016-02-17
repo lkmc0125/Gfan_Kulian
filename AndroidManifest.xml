@@ -18,12 +18,6 @@
             </intent-filter>
         </activity>
     
-        <!-- 搜索页 -->
-        <activity android:name=".ui.SearchActivity"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".ui.SearchResultActivity"
-            android:configChanges="keyboardHidden|orientation" />
-
         <!-- 首页 -->
         <activity android:name=".ui.HomeTabActivity" 
             android:screenOrientation="portrait" 
@@ -38,14 +32,6 @@
             android:screenOrientation="portrait" 
             android:configChanges="keyboardHidden|orientation"/>
         
-       <!-- 分类页 -->
-       <activity android:name=".ui.CategoryActivity" 
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation"/>
-       <activity android:name=".ui.InstallNecessaryActivity" 
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation"/>
-
         <!-- 排行页 -->
         <activity android:name=".ui.RankTabActivity"
             android:screenOrientation="portrait" 
@@ -81,9 +67,6 @@
             android:screenOrientation="portrait" 
             android:configChanges="keyboardHidden|orientation" 
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
-        <activity android:name=".ui.SafeActivity"
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation" />
 
         <!--Menu 相关页面 -->
         <activity android:name=".ui.ClientPreferenceActivity"

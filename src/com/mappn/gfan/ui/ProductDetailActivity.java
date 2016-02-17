@@ -405,22 +405,4 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
             }
         }
     }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        final MenuItem item = menu.add(0, 0, 0, getString(R.string.alert_safe));
-        item.setIcon(R.drawable.ic_safe);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case 0:
-            Intent i = new Intent(getApplicationContext(), SafeActivity.class);
-            startActivity(i);
-            return true;
-        }
-        return false;
-    }
 }

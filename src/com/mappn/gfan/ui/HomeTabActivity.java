@@ -98,6 +98,8 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
     // Tab id
     private static final String TAB_HOME = "home";
     private static final String TAB_CATEGORY = "category";
+    private static final String TAB_HUMOR = "humor";
+    private static final String TAB_MINE = "mine";
     private static final String TAB_RANK = "rank";
     private static final String TAB_APP = " app";
 
@@ -291,7 +293,7 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         // mTabHost.addTab(tab3);
 
         TabSpec tab4 = mTabHost
-                .newTabSpec(TAB_CATEGORY)
+                .newTabSpec(TAB_HUMOR)
                 .setIndicator(
                         createTabView(getApplicationContext(), getString(R.string.main_tab_humor),
                                 R.drawable.main_tab_humor_selector))
@@ -299,11 +301,11 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         mTabHost.addTab(tab4);
 
         TabSpec tab5 = mTabHost
-                .newTabSpec(TAB_APP)
+                .newTabSpec(TAB_MINE)
                 .setIndicator(
                         createTabView(getApplicationContext(), getString(R.string.main_tab_mine), 
                                 R.drawable.main_tab_mine_selector))
-                .setContent(new Intent(this, AppsManagerActivity.class));
+                .setContent(new Intent(this, PersonalAccountActivity.class));
         mTabHost.addTab(tab5);
 
         mTabHost.getViewTreeObserver().addOnPreDrawListener(new OnPreDrawListener() {
