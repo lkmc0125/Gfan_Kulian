@@ -204,17 +204,17 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
 		tab1.setContent(i1);
 		mTabHost.addTab(tab1);
 		
-		TabSpec tab2 = mTabHost.newTabSpec(getString(R.string.comment_lab));
-		int commentCount = product.getCommentsCount() > 0 ? product.getCommentsCount() : 0;
-		tab2.setIndicator(createTabView(getApplicationContext(),
-				getString(R.string.comment_lab, commentCount)));
-		Intent i2 = new Intent(this, ProductCommentActivity.class);
-		i2.putExtra(Constants.EXTRA_PRDUCT_DETAIL, product);
-		tab2.setContent(i2);
-		mTabHost.addTab(tab2);
-        if (Constants.SOURCE_TYPE_GOOGLE.equals(product.getSourceType())) {
-            mTabHost.getTabWidget().setEnabled(false);
-        }
+//		TabSpec tab2 = mTabHost.newTabSpec(getString(R.string.comment_lab));
+//		int commentCount = product.getCommentsCount() > 0 ? product.getCommentsCount() : 0;
+//		tab2.setIndicator(createTabView(getApplicationContext(),
+//				getString(R.string.comment_lab, commentCount)));
+//		Intent i2 = new Intent(this, ProductCommentActivity.class);
+//		i2.putExtra(Constants.EXTRA_PRDUCT_DETAIL, product);
+//		tab2.setContent(i2);
+//		mTabHost.addTab(tab2);
+//        if (Constants.SOURCE_TYPE_GOOGLE.equals(product.getSourceType())) {
+//            mTabHost.getTabWidget().setEnabled(false);
+//        }
         mTabHost.setCurrentTab(0);
 	}
 	

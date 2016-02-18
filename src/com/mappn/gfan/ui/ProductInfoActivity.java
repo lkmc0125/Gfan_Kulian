@@ -33,7 +33,6 @@ import android.widget.TextView;
 
 import com.mappn.gfan.Constants;
 import com.mappn.gfan.R;
-import com.mappn.gfan.common.util.AppSecurityPermissions;
 import com.mappn.gfan.common.util.ImageUtils;
 import com.mappn.gfan.common.util.StringUtils;
 import com.mappn.gfan.common.util.Utils;
@@ -159,16 +158,6 @@ public class ProductInfoActivity extends BaseActivity {
         appDownload.setText(StringUtils.getDownloadInterval(product.getDownloadCount()));
 
         initGallery(product);
-	        
-        // display the permission list
-        String permission = product.getPermission();
-        String[] permissionList = null;
-        if (!TextUtils.isEmpty(permission)) {
-            permissionList = permission.split(",");
-        }
-        AppSecurityPermissions asp = new AppSecurityPermissions(this, permissionList);
-        LinearLayout securityList = (LinearLayout) findViewById(R.id.security_settings_list);
-        securityList.addView(asp.getPermissionsView());
     }
     
     /*
@@ -176,7 +165,7 @@ public class ProductInfoActivity extends BaseActivity {
      */
     private void initGallery(ProductDetail product) {
         ArrayList<String> mUrls = new ArrayList<String>();
-        String[] screenUrl = product.getScreenshotLdpi();
+        String[] screenUrl = product.getScreenshot();//Ldpi();
         for (String url : screenUrl) {
             if (TextUtils.isEmpty(url)) {
                 continue;

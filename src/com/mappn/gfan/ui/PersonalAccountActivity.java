@@ -309,8 +309,7 @@ public class PersonalAccountActivity extends BaseActivity implements
 
 	// Heade Item的点击事件
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
 		switch (position) {
         case 0:
             if (!mSession.isLogin()) {

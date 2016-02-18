@@ -455,22 +455,24 @@ public class ApiResponseFactory {
 //                    screenShot[3] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_4);
 //                    screenShot[4] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_5);
 
-                    final ArrayList<String> screenShot = new ArrayList<String>();
-                    screenShot.add(product.getString("ImageSrc"));
+                    final ArrayList<String> screenShotList = new ArrayList<String>();
                     JSONArray array = product.getJSONArray("ImageSrcList");
                     for (int i = 0; i < array.length(); i++) {
-                        screenShot.add(array.getString(i));
+                        screenShotList.add(array.getString(i));
                     }
-                    result.setScreenshot((String[])screenShot.toArray());
-                    result.setUpTime(Utils.getLong(product.getString(Constants.KEY_PRODUCT_UP_TIME)));
+                    if (screenShotList.size() > 0) {
+                        String screenShotArray[] = (String[])screenShotList.toArray(new String[screenShotList.size()]);
+                        result.setScreenshot(screenShotArray);
+                    }
+//                    result.setUpTime(Utils.getLong(product.getString(Constants.KEY_PRODUCT_UP_TIME)));
                 }
             }
         } catch (JSONException e) {
           Utils.D("have json exception when parse search result from bbs", e);
-      }
+        }
         return result;
     }
-    
+
     /*
      * 获取产品详细信息 
      */

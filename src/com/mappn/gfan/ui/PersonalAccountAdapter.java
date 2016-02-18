@@ -46,8 +46,7 @@ import com.mappn.gfan.common.vo.PayAndChargeLog;
  * @date 2011-5-17
  * 
  */
-public class PersonalAccountAdapter extends BaseAdapter implements
-		OnCheckedChangeListener {
+public class PersonalAccountAdapter extends BaseAdapter {
 
 	private ArrayList<HashMap<String, Object>> mDataSource;
 	private int mResource;
@@ -184,22 +183,7 @@ public class PersonalAccountAdapter extends BaseAdapter implements
 				int res = 0;
 				Drawable drawable = null;
 
-				if (view instanceof CheckBox) {
-					if (data != null && data instanceof Integer) {
-						if (mSession.isLogin()) {
-							if (mSession.isDeviceBinded()) {
-								((CheckBox) (v.findViewById(R.id.cb_operation)))
-										.setButtonDrawable(R.drawable.cloud_on);
-							} else {
-								((CheckBox) view)
-										.setButtonDrawable((Integer) data);
-							}
-						} else
-							((CheckBox) (v.findViewById(R.id.cb_operation)))
-									.setButtonDrawable(R.drawable.cloud_off);
-						((CheckBox) view).setOnCheckedChangeListener(this);
-					}
-				} else if (view instanceof TextView) {
+				if (view instanceof TextView) {
 					TextView txt = (TextView) view;
 					setTextViewValue(txt, data, position);
 
@@ -357,18 +341,6 @@ public class PersonalAccountAdapter extends BaseAdapter implements
 		if (newData != null) {
 			mDataSource.add(getCount(), newData);
 			notifyDataSetChanged();
-		}
-	}
-	
-	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		PersonalAccountActivity accountActivity = (PersonalAccountActivity) mContext;
-		if(mSession.isLogin()){
-			if (!mSession.isDeviceBinded()) {
-				if(!accountActivity.getCurrentBindStatue())
-					mHandler.sendEmptyMessage(PersonalAccountActivity.CLOUD_BIND);
-			} else 
-				mHandler.sendEmptyMessage(PersonalAccountActivity.CLOUD_UNBIND);
 		}
 	}
 }

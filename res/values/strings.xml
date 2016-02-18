@@ -93,7 +93,7 @@
     <!-- 个人中心页 -->
     <string name="person_account_title">个人中心</string>
     <string name="account_logined">已登录，点击注销</string>
-    <string name="account_logo_title">登录机锋帐号</string>
+    <string name="account_logo_title">登录</string>
     <string name="account_clound_title">云推送</string>
     <string name="account_logo_desc">登陆后可开启以下功能与服务</string>
     <string name="account_clound_desc">从机锋市场推送APK到手机</string>
