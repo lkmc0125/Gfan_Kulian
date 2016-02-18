@@ -108,11 +108,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_person_account_layout);
 
-		IntentFilter lpnsFilter = new IntentFilter();
-		lpnsFilter.addAction(HudeeUtils.BIND_RESULT);
-		lpnsFilter.addCategory("com.mappn.gfan");
-		registerReceiver(mReceiver, lpnsFilter, null, null);
-		
 		initTopBar();
 		initView();
 	}

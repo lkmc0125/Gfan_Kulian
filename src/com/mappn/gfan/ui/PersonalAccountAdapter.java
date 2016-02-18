@@ -183,7 +183,22 @@ public class PersonalAccountAdapter extends BaseAdapter {
 				int res = 0;
 				Drawable drawable = null;
 
-				if (view instanceof TextView) {
+                if (view instanceof CheckBox) {
+                    if (data != null && data instanceof Integer) {
+                        if (mSession.isLogin()) {
+                            if (mSession.isDeviceBinded()) {
+                                ((CheckBox) (v.findViewById(R.id.cb_operation)))
+                                        .setButtonDrawable(R.drawable.cloud_on);
+                            } else {
+                                ((CheckBox) view)
+                                        .setButtonDrawable((Integer) data);
+                            }
+                        } else
+                            ((CheckBox) (v.findViewById(R.id.cb_operation)))
+                                    .setButtonDrawable(R.drawable.cloud_off);
+//                        ((CheckBox) view).setOnCheckedChangeListener(this);
+                    }
+                } else if (view instanceof TextView) {
 					TextView txt = (TextView) view;
 					setTextViewValue(txt, data, position);
 
