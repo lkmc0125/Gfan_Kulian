@@ -48,6 +48,14 @@
         android:layout_alignWithParentIfMissing="true"
         android:textAppearance="@style/app_text_style2"
         android:visibility="invisible"   />
+        
+    <!-- 分隔符 -->
+    <ImageView android:id="@+id/iv_devider" 
+        android:layout_width="0.8dp"
+        android:layout_height="56dp"
+        android:layout_toLeftOf="@id/tv_download"
+        android:layout_centerVertical="true"
+        android:src="@color/gray_2"  />
 
     <!-- 下载按钮 -->
     <TextView android:id="@+id/tv_download"
@@ -60,15 +68,7 @@
         android:textAppearance="@style/app_text_style3"
         android:background="@drawable/list_item_bg_selector"
         android:visibility="invisible"  />
-        
-    <!-- 分隔符 -->
-    <ImageView android:id="@+id/iv_devider" 
-        android:layout_width="0.8dp"
-        android:layout_height="56dp"
-        android:layout_toLeftOf="@id/tv_download"
-        android:layout_centerVertical="true"
-        android:src="@color/gray_2"  />
-        
+    
     <!-- 应用大小 -->
     <TextView android:id="@+id/tv_size" 
         android:layout_width="wrap_content"

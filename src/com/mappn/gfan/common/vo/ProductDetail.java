@@ -12,6 +12,7 @@ public class ProductDetail implements Serializable {
     private int rating;
     private String iconUrl;
     private String iconUrlLdpi;
+    private String apkUrl;
     private String shotDes;
     private int appSize;
     private String sourceType;
@@ -100,6 +101,13 @@ public class ProductDetail implements Serializable {
         this.iconUrl = iconUrl;
     }
 
+    public String getApkUrl() {
+        return apkUrl;
+    }
+    
+    public void setApkUrl(String apkUrl) {
+        this.apkUrl = apkUrl;
+    }
     public String getShotDes() {
         return shotDes;
     }

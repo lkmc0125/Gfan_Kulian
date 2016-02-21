@@ -45,6 +45,12 @@
     <string name="error_login_username">用户名不存在，请重新输入。</string>
     <string name="error_login_password">密码不正确，请重新输入。</string>
     <string name="error_login_other">登录失败，请稍候重试。</string>
+
+    <!-- 连接页 -->
+    <string name="connection_title">连接</string>
+
+    <!-- 幽默页 -->
+    <string name="humor_title">幽默搞笑</string>
     
     <!-- 装机必备 -->
     <string name="warning_no_download">没有选择任何一款应用</string>

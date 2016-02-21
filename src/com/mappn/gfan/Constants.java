@@ -161,6 +161,8 @@ public interface Constants {
 
     static final String KEY_PRODUCT_ICON_URL_LDPI = "ldpi_icon_url";
 
+    static final String KEY_PRODUCT_APK_URL = "apk_url";
+    
     static final String KEY_PRODUCT_PACKAGE_NAME = "packagename";
 
     static final String KEY_PRODUCT_VERSION_NAME = "version_name";

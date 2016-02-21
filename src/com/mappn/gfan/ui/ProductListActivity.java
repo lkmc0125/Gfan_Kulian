@@ -75,20 +75,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
 
     @Override
     public void doLazyload() {
-
-        if (Constants.ORDER_TYPE_INSTALLED_NUM == mSortType) {
-            MarketAPI.getProducts(getApplicationContext(), this, getItemsPerPage(),
-                    getStartIndex(), mSortType, mCategoryId);
-        } else if (Constants.ORDER_TYPE_TIME == mSortType) {
-            MarketAPI.getProducts(getApplicationContext(), this, getItemsPerPage(),
-                    getStartIndex(), mSortType, mCategoryId);
-        } else if (Constants.CATEGORY_GROW.equals(mCategory)) {
-            MarketAPI.getGrowFast(getApplicationContext(), this, 
-                            getStartIndex(), getItemsPerPage());
-        } else {
-            MarketAPI.getRankByCategory(getApplicationContext(), this, getStartIndex(),
-                    getItemsPerPage(), mCategory);
-        }
+        MarketAPI.getRankByCategory(getApplicationContext(), this, getStartIndex(), getItemsPerPage(), mCategory);
     }
 
     @Override
@@ -99,16 +86,16 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
                 new String[] { 
                     Constants.KEY_PRODUCT_ICON_URL,
                     Constants.KEY_PRODUCT_NAME, 
-                    Constants.KEY_PRODUCT_AUTHOR,
+                    Constants.KEY_PRODUCT_SHORT_DESCRIPTION,
                     Constants.KEY_PRODUCT_IS_STAR, 
-                    Constants.KEY_PRODUCT_RATING,
+//                    Constants.KEY_PRODUCT_RATING,
                     Constants.KEY_PRODUCT_DOWNLOAD }, 
                 new int[] { 
                     R.id.iv_logo, 
                     R.id.tv_name,
                     R.id.tv_description, 
                     R.id.iv_star,
-                    R.id.rb_app_rating,
+//                    R.id.rb_app_rating,
                     R.id.tv_download });
         mAdapter.setProductList();
         if (!TextUtils.isEmpty(mCategory)) {

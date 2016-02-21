@@ -5,6 +5,8 @@
     android:background="#fcfcfc"
     android:orientation="vertical" >
 
+    <include android:id="@+id/top_bar" layout="@layout/top_bar" />
+    
     <WebView
         android:id="@+id/humor_webview"
         android:layout_height="fill_parent"

@@ -4,21 +4,37 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#fcfcfc"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    >
+    
+    <include android:id="@+id/top_bar" layout="@layout/top_bar" />
     
     <ImageView android:src="@drawable/wifi_state_on"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         />
+
     
-    <Button
-        android:id="@+id/authenticationBtn"
-        android:text="认证上网"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:onClick="authentication"   />
+    <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="horizontal"
+	    android:weightSum="2"
+	    android:gravity="center"
+	    >
+    
+	    <Button
+		    android:id="@+id/authenticationBtn"
+		    android:text="认证上网"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:clickable="true"
+		    android:layout_gravity="center"
+		    android:layout_weight="1"
+		    android:onClick="authentication"   />
+
+    </LinearLayout>
     
 </LinearLayout>

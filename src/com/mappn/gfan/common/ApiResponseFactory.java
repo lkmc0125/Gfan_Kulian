@@ -154,15 +154,9 @@ public class ApiResponseFactory {
             {
                 // 获取排行列表
                 requestMethod = "ACTION_GET_RANK_BY_CATEGORY";
-                result = parseProductList2(context, inputBody);
+                result = parseProductList(context, inputBody);
                 break;
             }
-            case MarketAPI.ACTION_GET_GROW_FAST:
-
-                // 获取增长最快排行
-                requestMethod = "ACTION_GET_GROW_FAST";
-                result = parseProductList(context, XmlElement.parseXml(in), false);
-                break;
 
             case MarketAPI.ACTION_GET_DETAIL:
 
@@ -198,21 +192,6 @@ public class ApiResponseFactory {
                 requestMethod = "ACTION_PURCHASE_PRODUCT";
                 result = true;
                 break;
-                
-            case MarketAPI.ACTION_GET_DOWNLOAD_URL:
-                
-                // 获得下载链接地址
-                requestMethod = "ACTION_GET_DOWNLOAD_URL";
-                result = parseDownloadInfo(XmlElement.parseXml(in));
-                break;
-                
-            case MarketAPI.ACTION_GET_PRODUCTS:
-                
-                // 获得分类产品列表
-                requestMethod = "ACTION_GET_PRODUCTS";
-                result = parseProductList(context, XmlElement.parseXml(in), false);
-                break;
-                
                 
             case MarketAPI.ACTION_CHECK_UPGRADE:
                 
@@ -436,6 +415,7 @@ public class ApiResponseFactory {
 //                    result.setSourceType(product.getString(Constants.KEY_PRODUCT_SOURCE_TYPE));
                     result.setPackageName(product.getString("PackageName"));
                     result.setVersionName(product.getString("AppVersion"));
+                    result.setApkUrl(product.getString("AppSource"));
 //                    result.setVersionCode(Utils.getInt(product
 //                            .getString(Constants.KEY_PRODUCT_VERSION_CODE)));
 //                    result.setCommentsCount(Utils.getInt(product
@@ -628,103 +608,7 @@ public class ApiResponseFactory {
         return result;
     }
 
-    /*
-     * 解析应用列表
-     */
-    private static HashMap<String, Object> parseProductList(Context context,
-            XmlElement xmlDocument, boolean isIgnoreStar) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-        final String IS_STAR_PRODUCT = "1";
-        XmlElement products = xmlDocument.getChild(Constants.KEY_PRODUCTS, 0);
-        HashMap<String, Object> result = null;
-        ArrayList<HashMap<String, Object>> productArray = null;
-        if (products != null) {
-
-            // 获取已经安装的应用列表
-            Session session = Session.get(context);
-            ArrayList<String> installedApps = session.getInstalledApps();
-
-            List<XmlElement> productList = products.getChildren(Constants.KEY_PRODUCT);
-            if (productList == null) {
-                return null;
-            }
-            result = new HashMap<String, Object>();
-            result.put(Constants.KEY_TOTAL_SIZE,
-                    Utils.getInt(products.getAttribute(Constants.KEY_TOTAL_SIZE)));
-            result.put(Constants.KEY_END_POSITION,
-                    Utils.getInt(products.getAttribute(Constants.KEY_END_POSITION)));
-            productArray = new ArrayList<HashMap<String, Object>>();
-            for (XmlElement element : productList) {
-                HashMap<String, Object> item = new HashMap<String, Object>();
-                item.put(Constants.KEY_PRODUCT_ID, element.getAttribute(Constants.KEY_PRODUCT_ID));
-                String packageName = element.getAttribute(Constants.KEY_PRODUCT_PACKAGE_NAME);
-                item.put(Constants.KEY_PRODUCT_PACKAGE_NAME, packageName);
-                int price = Utils.getInt(element.getAttribute(Constants.KEY_PRODUCT_PRICE));
-                String priceText = price == 0 ? context.getString(R.string.free) : context
-                        .getString(R.string.duihuanquan_unit, price);
-                item.put(Constants.KEY_PRODUCT_PRICE, priceText);
-                boolean isStar = IS_STAR_PRODUCT.equals(element
-                        .getAttribute(Constants.KEY_PRODUCT_IS_STAR)) ? true : false;
-                if (isIgnoreStar) {
-                    // 忽略星标
-                    item.put(Constants.KEY_PRODUCT_IS_STAR, false);
-                } else {
-                    item.put(Constants.KEY_PRODUCT_IS_STAR, isStar);
-                }
-                
-                if (installedApps.contains(packageName)) {
-                    
-                    if (isIgnoreStar && !isStar) {
-                        // 首页忽略已经安装的应用
-                        continue;
-                    }
-                    
-                    // 应用已经安装，显示已经安装的信息提示
-                    item.put(Constants.KEY_PRODUCT_DOWNLOAD, Constants.STATUS_INSTALLED);
-                } else {
-                    // 应用未安装，显示正常信息提示
-                    item.put(Constants.KEY_PRODUCT_DOWNLOAD, Constants.STATUS_NORMAL);
-                }
-
-                item.put(Constants.KEY_PRODUCT_NAME,
-                        element.getAttribute(Constants.KEY_PRODUCT_NAME));
-                item.put(Constants.KEY_PRODUCT_AUTHOR,
-                        element.getAttribute(Constants.KEY_PRODUCT_AUTHOR));
-                item.put(
-                        Constants.KEY_PRODUCT_SUB_CATEGORY,
-                        element.getAttribute(Constants.KEY_PRODUCT_TYPE) + " > "
-                                + element.getAttribute(Constants.KEY_PRODUCT_SUB_CATEGORY));
-                
-                item.put(Constants.KEY_PRODUCT_PAY_TYPE,
-                        Utils.getInt(element.getAttribute(Constants.KEY_PRODUCT_PAY_TYPE)));
-                item.put(Constants.KEY_PRODUCT_RATING,
-                        Utils.getInt(element.getAttribute(Constants.KEY_PRODUCT_RATING)));
-                item.put(Constants.KEY_PRODUCT_SIZE,
-                        StringUtils.formatSize(element.getAttribute(Constants.KEY_PRODUCT_SIZE)));
-                item.put(Constants.KEY_PRODUCT_ICON_URL,
-                        element.getAttribute(Constants.KEY_PRODUCT_ICON_URL));
-                item.put(Constants.KEY_PRODUCT_ICON_URL_LDPI,
-                        element.getAttribute(Constants.KEY_PRODUCT_ICON_URL_LDPI));
-                item.put(Constants.KEY_PRODUCT_SHORT_DESCRIPTION,
-                        element.getAttribute(Constants.KEY_PRODUCT_SHORT_DESCRIPTION));
-                
-                String source = element.getAttribute(Constants.KEY_PRODUCT_SOURCE_TYPE);
-                if (Constants.SOURCE_TYPE_GOOGLE.equals(source)) {
-                    item.put(Constants.KEY_PRODUCT_SOURCE_TYPE,
-                            context.getString(R.string.leble_google));
-                }
-                
-                productArray.add(item);
-            }
-            result.put(Constants.KEY_PRODUCT_LIST, productArray);
-        }
-        return result;
-    }
-    
-    private static HashMap<String, Object> parseProductList2(Context context, String body) {
+    private static HashMap<String, Object> parseProductList(Context context, String body) {
         if (body == null) {
             return null;
         }
@@ -747,6 +631,7 @@ public class ApiResponseFactory {
                     item.put(Constants.KEY_PRODUCT_ID, obj.getString("AppId"));
                     String packageName = obj.getString("PackageName");
                     item.put(Constants.KEY_PRODUCT_PACKAGE_NAME, packageName);
+                    item.put(Constants.KEY_PRODUCT_APK_URL, obj.getString("AppSource"));
                     int price = Utils.getInt(obj.getString("GiveCoin"));
                     String priceText = price == 0 ? context.getString(R.string.free) : context
                             .getString(R.string.coin_unit, price);

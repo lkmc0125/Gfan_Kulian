@@ -64,10 +64,10 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener {
         // 初始化加载页
         initSplashBg();
 
-        final ProgressBar mLoading = (ProgressBar) findViewById(R.id.splash_loading);
-        mLoading.setIndeterminateDrawable(new LoadingDrawable(getApplicationContext(),
-                LoadingDrawable.SIZE_SMALL, R.color.white, R.color.splash_notification_bg, 200));
-        
+//        final ProgressBar mLoading = (ProgressBar) findViewById(R.id.splash_loading);
+//        mLoading.setIndeterminateDrawable(new LoadingDrawable(getApplicationContext(),
+//                LoadingDrawable.SIZE_SMALL, R.color.white, R.color.splash_notification_bg, 200));
+//        
         mHandler.sendEmptyMessage(LOAD);
     }
 
@@ -84,23 +84,13 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener {
         // 加载屏幕大小
         mSession.setScreenSize(this);
         
-        // 加载已经安装的应用列表
-        mSession.getInstalledApps();
-
-        if (!Utils.isNetworkAvailable(getApplicationContext())) {
-            mPreloadResult = 2;
-            mHandler.sendEmptyMessageDelayed(VALID, 800);
-            return;
-        }
+        mHandler.sendEmptyMessageDelayed(VALID, 800);
+        
         // 检查用户是否使用CMWAP网络
         HttpHost proxy = Utils.detectProxy(getApplicationContext());
         if (proxy != null) {
             HttpClientFactory.get().getHttpClient().useProxyConnection(proxy);
         }
-
-        // 为首页预先加载内容
-        MarketAPI.getTopRecommend(getApplicationContext(), this);
-        MarketAPI.getHomeRecommend(getApplicationContext(), this, 0, 50);
     }
 
     private Handler mHandler = new Handler() {
@@ -109,14 +99,7 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener {
             switch (msg.what) {
             case VALID:
                 
-                if (isFinishing() || mPreloadResult != 2) {
-                    // wait for the preload result
-                    return;
-                }
                 Intent i = new Intent(getApplicationContext(), HomeTabActivity.class);
-                if (mContent != null) {
-                    i.putExtra(Constants.EXTRA_HOME_DATA, mContent);
-                }
                 startActivity(i);
                 finish();
                 break;
@@ -157,26 +140,10 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener {
     @SuppressWarnings("unchecked")
     @Override
     public void onSuccess(int method, Object obj) {
-
-        mPreloadResult++;
-
-        if (method == MarketAPI.ACTION_GET_TOP_RECOMMEND) {
-
-            handleTopRecommend(obj);
-
-        } else if (method == MarketAPI.ACTION_GET_HOME_RECOMMEND) {
-
-            handleHomeRecommend((HashMap<String, Object>) obj);
-
-        }
-
-        mHandler.sendEmptyMessage(VALID);
     }
 
     @Override
     public void onError(int method, int statusCode) {
-        mPreloadResult++;
-        mHandler.sendEmptyMessage(VALID);
     }
     
     /*
@@ -192,52 +159,6 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener {
         } else {
             v.setImageBitmap(scaledBitmap);
         }
-    }
-    
-    /*
-     * 首页产品预加载结果标识
-     */
-    private int mPreloadResult;
-    /*
-     * 首页产品预加载结果内容
-     */
-    private HashMap<String, Object> mContent;
-    
-    /*
-     * 解析首页的顶部推荐列表
-     */
-    @SuppressWarnings("unchecked")
-    private void handleTopRecommend(Object obj) {
-        ArrayList<HashMap<String, Object>> result = (ArrayList<HashMap<String, Object>>) obj;
-
-        if (result == null || result.size() <= 0) {
-            return;
-        }
-        if (mContent == null) {
-            mContent = new HashMap<String, Object>();
-        }
-        mContent.put(Constants.EXTRA_HOME_DATA_TOP, result);
-    }
-
-    /*
-     * 解析首页的推荐列表
-     */
-    @SuppressWarnings("unchecked")
-    private void handleHomeRecommend(HashMap<String, Object> obj) {
-
-        ArrayList<HashMap<String, Object>> result = (ArrayList<HashMap<String, Object>>) obj
-                .get(Constants.KEY_PRODUCT_LIST);
-
-        if (result == null || result.size() <= 0) {
-            if (mContent != null) {
-                mContent = null;
-            }
-            return;
-        }
-        if (mContent == null) {
-            mContent = new HashMap<String, Object>();
-        }
-        mContent.put(Constants.EXTRA_HOME_DATA_BOTTOM, result);
     }
 
 }

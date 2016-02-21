@@ -1,5 +1,6 @@
 package com.mappn.gfan.ui;
 
+import com.mappn.gfan.common.util.TopBar;
 import com.mappn.gfan.common.widget.BaseActivity;
 
 import android.os.Bundle;
@@ -16,7 +17,8 @@ public class HumorActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_humor);
-        
+        initTopBar();
+
         WebView webView = (WebView)findViewById(R.id.humor_webview);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
     //  webView = new WebView(this);
@@ -32,6 +34,13 @@ public class HumorActivity extends BaseActivity {
                 }
                 });
         webView.loadUrl("http://xhaz.come11.com");
+    }
+
+    private void initTopBar() {
+        TopBar.createTopBar(getApplicationContext(),
+                new View[] { findViewById(R.id.top_bar_title) },
+                new int[] { View.VISIBLE },
+                getString(R.string.humor_title));
     }
     
 }

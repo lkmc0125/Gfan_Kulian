@@ -587,12 +587,18 @@ public class AppListAdapter extends BaseAdapter implements Observer, ApiRequestL
                     String pid = (String) item.get(Constants.KEY_PRODUCT_ID);
                     String iconUrl = (String) item.get(Constants.KEY_PRODUCT_ICON_URL_LDPI);
                     String pkgName = (String) item.get(Constants.KEY_PRODUCT_PACKAGE_NAME);
+                    String apkUrl  = (String) item.get(Constants.KEY_PRODUCT_APK_URL);
                     // 开始下载，避免用户多次点击
                     item.put(Constants.KEY_PRODUCT_DOWNLOAD, Constants.STATUS_PENDING);
                     mIconCache.put(pkgName, iconUrl);
-                    MarketAPI.getDownloadUrl(mContext, AppListAdapter.this, pid,
-                            Constants.SOURCE_TYPE_GFAN);
+//                    MarketAPI.getDownloadUrl(mContext, AppListAdapter.this, pid,
+//                            Constants.SOURCE_TYPE_GFAN);
+                    DownloadItem info = new DownloadItem();
+                    info.packageName = pkgName;
+                    info.pId = pid;
+                    info.url = apkUrl;
                     mDownloadExtraInfo.put(pid, item);
+                    download(info);
                     notifyDataSetChanged();
                 }
                 
@@ -619,22 +625,21 @@ public class AppListAdapter extends BaseAdapter implements Observer, ApiRequestL
         }
     };
 
+    private void download(DownloadItem info) {
+        HashMap<String, Object> downloadItem = mDownloadExtraInfo.get(info.pId);
+        Request request = new Request(Uri.parse(info.url));
+        request.setTitle((String)downloadItem.get(Constants.KEY_PRODUCT_NAME));
+        request.setPackageName(info.packageName);
+        request.setIconUrl(mIconCache.get(info.packageName));
+        request.setSourceType(com.mappn.gfan.common.download.Constants.DOWNLOAD_FROM_MARKET);
+        request.setMD5(info.fileMD5);
+        mDownloadManager.enqueue(request);
+        Utils.makeEventToast(mContext, mContext.getString(R.string.download_start), false);
+    }
+    
     @Override
     public void onSuccess(int method, Object obj) {
         switch (method) {
-        case  MarketAPI.ACTION_GET_DOWNLOAD_URL:
-            
-            DownloadItem info = (DownloadItem) obj;
-            HashMap<String, Object> downloadItem = mDownloadExtraInfo.get(info.pId);
-            Request request = new Request(Uri.parse(info.url));
-            request.setTitle((String)downloadItem.get(Constants.KEY_PRODUCT_NAME));
-            request.setPackageName(info.packageName);
-            request.setIconUrl(mIconCache.get(info.packageName));
-            request.setSourceType(com.mappn.gfan.common.download.Constants.DOWNLOAD_FROM_MARKET);
-            request.setMD5(info.fileMD5);
-            mDownloadManager.enqueue(request);
-            Utils.makeEventToast(mContext, mContext.getString(R.string.download_start), false);
-            break;
 
         default:
             break;
