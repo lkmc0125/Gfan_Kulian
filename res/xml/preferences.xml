@@ -25,7 +25,7 @@
                 android:title="@string/pref_cache_settings_auto"
                 android:summary="@string/pref_cache_settings_auto_summary" />
         
-        <com.mappn.gfan.common.widget.ClientDialogPreference
+        <com.xiaohong.kulian.common.widget.ClientDialogPreference
                 android:key="manual_clear_cache"
                 android:title="@string/pref_cache_settings_manual"
                 android:summary="@string/pref_cache_settings_manual_summary"
@@ -36,7 +36,7 @@
     <PreferenceCategory
             android:title="@string/pref_search_settings">
             
-        <com.mappn.gfan.common.widget.ClientDialogPreference
+        <com.xiaohong.kulian.common.widget.ClientDialogPreference
                 android:key="manual_clear_search_history"
                 android:title="@string/pref_search_settings_title"
                 android:summary="@string/pref_search_settings_summary"

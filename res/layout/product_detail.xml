@@ -20,7 +20,7 @@
             android:layout_height="wrap_content" />
 
         <!-- 缩略图 -->
-        <com.mappn.gfan.common.widget.ScreenShotGallery
+        <com.xiaohong.kulian.common.widget.ScreenShotGallery
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/gallery" 
             android:layout_width="fill_parent"

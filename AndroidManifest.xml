@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mappn.gfan" android:versionCode="1"
+    package="com.xiaohong.kulian" android:versionCode="1"
     android:versionName="0.7.0">
 
     <application android:label="@string/app_name"
         android:icon="@drawable/app_icon" 
-        android:theme="@android:style/Theme.Light.NoTitleBar"
-        android:name="com.hudee.pns.Application">
+        android:theme="@android:style/Theme.Light.NoTitleBar" >
 
         <!-- Splash页 -->
         <activity android:name=".ui.SplashActivity"
@@ -17,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    
+
         <!-- 首页 -->
         <activity android:name=".ui.HomeTabActivity" 
             android:screenOrientation="portrait" 
@@ -56,7 +55,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="gfan" />
+                <data android:scheme="kulian" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.ProductInfoActivity"
@@ -98,13 +97,13 @@
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="adjustResize"/>
             
-        <!-- 机锋市场Content Provider -->
+        <!-- Content Provider -->
         <provider android:name=".common.util.MarketProvider"
-            android:authorities="gfan" />
+            android:authorities="kulian" />
 
         <!-- Download Service -->
         <provider android:name=".common.download.DownloadProvider"
-            android:authorities="gfan_downloads" />
+            android:authorities="kulian_downloads" />
         <service android:name=".common.download.DownloadService" />
         <receiver android:name=".common.download.DownloadReceiver"
             android:exported="false">
@@ -117,103 +116,54 @@
         <!-- Splash Receiver -->
         <receiver android:name=".common.util.CheckSplashUpdateReceiver">
             <intent-filter>
-                <action android:name="com.mappn.market.broadcast.splash.CHECK_UPGRADE" />
+                <action android:name="com.xiaohong.market.broadcast.splash.CHECK_UPGRADE" />
             </intent-filter>
         </receiver>
         
-        <!-- Hudee Service -->
-        <receiver android:name=".common.hudee.C2DMReceiver">
-            <!-- Receive the actual message -->
-            <intent-filter>
-                <action android:name="com.hudee.pns.intent.MESSAGE" />
-                <category android:name="com.mappn.gfan" />
-            </intent-filter>
-            <!-- Receive the registration id -->
-            <intent-filter>
-                <action android:name="com.hudee.pns.intent.REGISTRATION" />
-                <category android:name="com.mappn.gfan" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name="com.hudee.pns.service.RegistrationService">
-            <intent-filter>
-                <action android:name="com.hudee.pns.intent.REGISTER" />
-                <action android:name="com.hudee.pns.intent.UNREGISTER" />
-            </intent-filter>
-        </service>
-
-        <service android:name="com.hudee.pns.service.SendMessageService">
-            <intent-filter>
-                <action android:name="com.hudee.pns.intent.SENDMSG" />
-            </intent-filter>
-        </service>
-
-        <service android:name="com.hudee.pns.service.PushService">
-            <intent-filter>
-                <action android:name="com.hudee.pns.intent.START_PUSH_SERVICE" />
-                <action android:name="com.hudee.pns.intent.STOP_PUSH_SERVICE" />
-                <action android:name="com.hudee.pns.intent.RESTART_PUSH_SERVICE" />
-            </intent-filter>
-        </service>
-
-        <service android:name="com.hudee.pns.service.SubscriptionService">
-            <intent-filter>
-                <action android:name="com.hudee.pns.intent.SUBSCRIBE" />
-            </intent-filter>
-        </service>
-
-        <receiver android:name="com.hudee.pns.receiver.SystemEventReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-                <data android:scheme="package" android:path="com.hudee.pns" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="com.hudee.pns.receiver.ScreenEventReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.SCREEN_OFF" />
-                <action android:name="android.intent.action.SCREEN_ON" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="com.hudee.pns.receiver.ParametersSyncReceiver">
-            <intent-filter>
-                <action android:name="com.hudee.pns.sync.parameters" />
-            </intent-filter>
-        </receiver>
-        
-        <!-- GFan SDK uses -->
-        <meta-data android:name="gfan_cpid" android:value="机锋市场" />
-        <meta-data android:name="gfan_statistics_appkey"
-            android:value="05607E221ACFEBE77B74" />
-        <meta-data android:name="gfan_type" android:value="tongjisdk" />
+        <meta-data android:name="kulian_cpid" android:value="WIFI酷连" />
         <!-- content ID -->
-        <meta-data android:name="gfan_cid" android:value="9" />
+        <meta-data android:name="kulian_cid" android:value="9" />
         <!-- upgrade uses -->
-        <meta-data android:name="gfan_debug" android:value="1" />
-
+        <meta-data android:name="kulian_debug" android:value="1" />
     </application>
 
     <!-- Only this application can receive the messages and registration result -->
-    <permission android:name="com.hudee.pns.permission.RECEIVE"
-        android:protectionLevel="normal" />
-    <permission android:name="com.mappn.gfan.permission.C2D_MESSAGE"
+    <permission android:name="com.xiaohong.kulian.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <!-- Permission Group -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="com.mappn.gfan.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.hudee.pns.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="getui.permission.GetuiService.com.xiaohong.kulian" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" /> 
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <permission
+        android:name="getui.permission.GetuiService.com.xiaohong.kulian"
+        android:protectionLevel="normal" >
+    </permission>
+
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="com.xiaohong.kulian.permission.C2D_MESSAGE" />
+
     <supports-screens android:anyDensity="true" />
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="9" />
 </manifest> 

@@ -87,7 +87,7 @@
     <string name="sort_install_installed">已安装</string>
 
     <!-- 产品详细页 -->
-    <string name="gfan_comments">%1$s个评级</string>
+    <string name="kulian_comments">%1$s个评级</string>
     <string name="has_update">有新版本</string>
     <string name="has_installed">已安装</string>
     <string name="duihuanquan_unit">%d券</string>
@@ -273,7 +273,7 @@
     <string name="warning_card_psd_num_wrong">您输入的密码位数有误，%1$s的密码位数为%2$d</string>
     <string name="unknown_error">未知错误，充值失败</string>
     <string name="separator">已完成的交易</string>
-    <string name="gfan_money">%1$s机锋券</string>
+    <string name="kulian_money">%1$s金币</string>
     <string name="purchase_directions"> 用户可购买以下各种充值卡进行充值：\n
         中国移动充值卡：全国通用的神州行等移动品牌的话费充值卡（17位序列号），及广东、辽宁、江苏、浙江、福建充值卡。各地报刊亭及移动特约销售点有售。\n
         中国联通一卡充：全国通用的联通品牌话费充值卡，各地报刊亭及联通特约销售点有售。\n
@@ -396,10 +396,10 @@
 
     <!-- UpdateActivity -->
     <string name="find_new_version">发现新版本</string>
-    <string name="update_prompt">发现新版机锋市场，版本号 %s，是否立即安装？\n\n更新列表：\n\n</string>
+    <string name="update_prompt">发现新版WIFI酷连，版本号 %s，是否立即安装？\n\n更新列表：\n\n</string>
     <string name="btn_yes">立即更新</string>
     <string name="btn_next_time">下次再说</string>
-    <string name="update_prompt_stronger">发现新版机锋市场，版本号
+    <string name="update_prompt_stronger">发现新版WIFI酷连，版本号
         %s，是否立即安装？\n警告：此版本包含重要功能更新，若不更新将不能正常使用本软件！\n\n更新列表：\n\n</string>
     <string name="btn_exit">取消</string>
 
@@ -413,20 +413,20 @@
 
     <!-- About Activity -->
     <string name="feedback_hint">反馈邮箱 </string>
-    <string name="feedback_email">gfan.support@mappn.com</string>
+    <string name="feedback_email">support@exiaohong.com</string>
     <string name="tele_hint">客服电话</string>
-    <string name="tele_number">029-68806305</string>
+    <string name="tele_number">021-54478672</string>
     <string name="feedback_title">意见反馈 </string>
     <string name="feedback_submit">提交</string>
-    <string name="feedback_hint_message">反馈对机锋市场的意见和问题</string>
+    <string name="feedback_hint_message">反馈对小鸿WIFI的意见和问题</string>
 
     <string name="qq_group">QQ讨论群</string>
-    <string name="qq_group_id">1群:67361128 2群:135339188 3群:34186934 4群:102076930</string>
+    <string name="qq_group_id">QQ群1：227306629，QQ群2：516766607</string>
 
     <!-- Application Upgrade -->
-    <string name="notif_downloading">正在下载机锋市场</string>
-    <string name="warning_update_apk_downloaded">新版本的机锋市场下载完毕，点击\"是\"安装或者\"否\"取消</string>
-    <string name="warning_failed_to_download_update">下载机锋市场失败，点击\"是\"重试，或者\"否\"取消</string>
+    <string name="notif_downloading">正在下载WIFI酷连</string>
+    <string name="warning_update_apk_downloaded">新版本的WIFI酷连下载完毕，点击\"是\"安装或者\"否\"取消</string>
+    <string name="warning_failed_to_download_update">下载WIFI酷连失败，点击\"是\"重试，或者\"否\"取消</string>
 
 
 </resources>

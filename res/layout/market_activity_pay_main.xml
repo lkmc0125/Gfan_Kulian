@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:titleSpinner="http://schemas.android.com/apk/res/com.mappn.gfan"
+	xmlns:titleSpinner="http://schemas.android.com/apk/res/com.xiaohong.kulian"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<include layout="@layout/top_bar" />
@@ -36,11 +36,11 @@
 				android:orientation="vertical" android:layout_width="fill_parent"
 				android:paddingLeft="10dp" android:paddingRight="10dp"
 				android:paddingTop="10dp">
-				<com.mappn.gfan.common.widget.TitleSpinner 
+				<com.xiaohong.kulian.common.widget.TitleSpinner 
 					android:id="@+id/ts_cards" android:layout_marginTop="10dp"
 					android:text="@string/cards_title" titleSpinner:prompt="@string/cards_title"
 					android:layout_width="fill_parent" android:layout_height="wrap_content" />
-				<com.mappn.gfan.common.widget.TitleSpinner
+				<com.xiaohong.kulian.common.widget.TitleSpinner
 					android:id="@+id/ts_denomination" android:layout_marginTop="10dp"
 					android:text="@string/denomination_title" titleSpinner:prompt="@string/denomination_title"
 					android:layout_width="fill_parent" android:layout_height="wrap_content" />
