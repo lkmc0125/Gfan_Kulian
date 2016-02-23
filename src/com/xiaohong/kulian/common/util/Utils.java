@@ -1014,13 +1014,7 @@ public class Utils {
      * 统计工具方法
      */
     public static void trackEvent(Context context, String... paras) {
-        if (paras == null || paras.length != 2) {
-            return;
-        }
-        String content = String.format(Constants.STATISTICS_FORMAT,
-                paras[0], paras[1]);
-//        makeEventToast(context, content, false);
-        Session.get(context).getTracker().trackEvent(paras[0], content, "", 0);
+        return;
     }
     
     public static String submitLogs() {

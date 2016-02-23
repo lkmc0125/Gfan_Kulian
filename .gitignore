@@ -1,5 +1,5 @@
-bin/*.*
-
+/bin
+/gen
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
