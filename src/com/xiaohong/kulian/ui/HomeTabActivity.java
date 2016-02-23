@@ -65,6 +65,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
+import com.igexin.sdk.PushManager;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.common.HttpClientFactory;
@@ -208,15 +209,10 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         HashMap<String, Object> item = (HashMap<String, Object>) getIntent().getSerializableExtra(
                 Constants.EXTRA_HOME_DATA);
         initView(item);
-        
-        // send product update broadcast
-        //if (Utils.isNeedCheckUpgrade(getApplicationContext())) {
-            sendBroadcast(new Intent(Constants.BROADCAST_CHECK_UPGRADE));
-            mSession.setUpdataCheckTime(System.currentTimeMillis());
-            MarketAPI.checkUpgrade(getApplicationContext());
-            MarketAPI.submitAllInstalledApps(getApplicationContext());
-       // }
-        
+
+        // getui
+        PushManager.getInstance().initialize(this.getApplicationContext());
+
         // 网络正常，开始检查版本更新
         MarketAPI.checkUpdate(getApplicationContext(), this);
         checkNewSplash();

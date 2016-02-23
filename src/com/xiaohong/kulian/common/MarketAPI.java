@@ -895,26 +895,4 @@ public class MarketAPI {
 		new ApiAsyncTask(context, ACTION_QUERY_ALIPAY_RESULT, handler, params)
 				.execute();
 	}
-
-	/**
-	 * 提交所有应用 
-	 */
-    public static void submitAllInstalledApps(final Context context) {
-
-        PackageManager pm = context.getPackageManager();
-        List<PackageInfo> packages = pm.getInstalledPackages(0);
-        ArrayList<UpgradeInfo> appList = new ArrayList<UpgradeInfo>();
-        for (PackageInfo info : packages) {
-            UpgradeInfo app = new UpgradeInfo();
-            app.name = String.valueOf(info.applicationInfo.loadLabel(pm));
-            app.versionName = info.versionName;
-            app.versionCode = info.versionCode;
-            app.pkgName = info.packageName;
-            appList.add(app);
-        }
-        final HashMap<String, Object> params = new HashMap<String, Object>(1);
-        params.put("appList", appList);
-        new ApiAsyncTask(context, MarketAPI.ACTION_SYNC_APPS, null, params).execute();
-    }
-
 }
