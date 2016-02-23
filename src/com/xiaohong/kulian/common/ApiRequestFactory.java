@@ -83,7 +83,6 @@ public class ApiRequestFactory {
         S_XML_REQUESTS.add(MarketAPI.ACTION_SYNC_CARDINFO);
         S_XML_REQUESTS.add(MarketAPI.ACTION_QUERY_CHARGE_BY_ORDERID);
         S_XML_REQUESTS.add(MarketAPI.ACTION_SYNC_BUYLOG);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_SYNC_APPS);
         
         // JSON POST
         S_JSON_REQUESTS.add(MarketAPI.ACTION_BIND_ACCOUNT);

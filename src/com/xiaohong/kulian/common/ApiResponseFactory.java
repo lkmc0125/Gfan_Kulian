@@ -172,13 +172,6 @@ public class ApiResponseFactory {
                 result = parseSyncBuyLog(XmlElement.parseXml(in));
                 break;
 
-            case MarketAPI.ACTION_SYNC_APPS:
-                
-                // 提交安装应用信息
-                requestMethod = "ACTION_SYNC_APPS";
-                result = parseSyncApps(XmlElement.parseXml(in));
-                break;
-
             case MarketAPI.ACTION_CHECK_NEW_VERSION:
                 
                 // 检查应用版本
@@ -647,24 +640,15 @@ public class ApiResponseFactory {
                         item.put(Constants.KEY_PRODUCT_DOWNLOAD, Constants.STATUS_NORMAL);
                     }
 
-                    item.put(Constants.KEY_PRODUCT_NAME,
-                            obj.getString("AppName"));
-                    item.put(Constants.KEY_PRODUCT_AUTHOR,
-                            "author");
-                    item.put(
-                            Constants.KEY_PRODUCT_SUB_CATEGORY,
-                            "category");
+                    item.put(Constants.KEY_PRODUCT_NAME, obj.getString("AppName"));
+                    item.put(Constants.KEY_PRODUCT_AUTHOR, "author");
+                    item.put(Constants.KEY_PRODUCT_SUB_CATEGORY, "category");
                     // todo :: download url
-                    item.put(Constants.KEY_PRODUCT_PAY_TYPE,
-                            0);
-                    item.put(Constants.KEY_PRODUCT_RATING,
-                            100);
-                    item.put(Constants.KEY_PRODUCT_SIZE,
-                            obj.getString("AppSize"));
-                    item.put(Constants.KEY_PRODUCT_ICON_URL,
-                            obj.getString("AppLogo"));
-                    item.put(Constants.KEY_PRODUCT_SHORT_DESCRIPTION,
-                            obj.getString("BriefSummary"));
+                    item.put(Constants.KEY_PRODUCT_PAY_TYPE, 0);
+                    item.put(Constants.KEY_PRODUCT_RATING, 100);
+                    item.put(Constants.KEY_PRODUCT_SIZE, obj.getString("AppSize"));
+                    item.put(Constants.KEY_PRODUCT_ICON_URL, obj.getString("AppLogo"));
+                    item.put(Constants.KEY_PRODUCT_SHORT_DESCRIPTION, obj.getString("BriefSummary"));
                     productArray.add(item);
                 }
                 result.put(Constants.KEY_PRODUCT_LIST, productArray);
