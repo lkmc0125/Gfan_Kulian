@@ -377,7 +377,7 @@ public class MarketAPI {
      * 首页排行列表<br>
      */
     public static void getRankByCategory(Context context,
-            ApiRequestListener handler, int startPosition, int size, String category) {
+            ApiRequestListener handler, int page, String category) {
 
         Session session = Session.get(context);
 
@@ -388,7 +388,7 @@ public class MarketAPI {
         
         final HashMap<String, Object> params = new HashMap<String, Object>(3);
         params.put("apptype", categoryMap.get(category));
-        params.put("page", 1);
+        params.put("page", page);
         params.put("phone_number", "13800138000");
         
         new ApiAsyncTask(context,

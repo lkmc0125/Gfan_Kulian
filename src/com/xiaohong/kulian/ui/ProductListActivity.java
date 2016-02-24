@@ -38,6 +38,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
 	private int mSortType;
 	private String mCategoryId; 
 	private int mTotalSize;
+	private boolean mIsEnd;
 
     @Override
     public boolean doInitView(Bundle savedInstanceState) {
@@ -50,12 +51,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
                 mCategoryId = intent.getStringExtra(Constants.EXTRA_CATEGORY_ID);
             }
             setContentView(R.layout.common_list_view);
-            
-            int maxSize = intent.getIntExtra(Constants.EXTRA_MAX_ITEMS, 0);
-            if (maxSize > 0) {
-                mTotalSize = maxSize;
-            }
-            
+            mIsEnd = false;
             mList = (ListView) findViewById(android.R.id.list);
             mLoading = (FrameLayout) findViewById(R.id.loading);
             mProgress = (ProgressBar) mLoading.findViewById(R.id.progressbar);
@@ -75,7 +71,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
 
     @Override
     public void doLazyload() {
-        MarketAPI.getRankByCategory(getApplicationContext(), this, getStartIndex(), getItemsPerPage(), mCategory);
+        MarketAPI.getRankByCategory(getApplicationContext(), this, getStartPage(), mCategory);
     }
 
     @Override
@@ -106,21 +102,18 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     }
     
     @Override
-    protected int getItemCount() {
-        return mTotalSize;
+    public boolean isEnd() {
+        return mIsEnd;
     }
-
     @SuppressWarnings("unchecked")
     @Override
     public void onSuccess(int method, Object obj) {
         HashMap<String, Object> result = (HashMap<String, Object>) obj;
-        
-        if (mTotalSize <= 0) {
-            mTotalSize = (Integer) result.get(Constants.KEY_TOTAL_SIZE);
-        }
-        
-        mAdapter.addData((ArrayList<HashMap<String, Object>>) result
-                .get(Constants.KEY_PRODUCT_LIST));
+
+        ArrayList<HashMap<String, Object>> appList = (ArrayList<HashMap<String, Object>>) result
+        .get(Constants.KEY_PRODUCT_LIST);
+        mIsEnd = appList.size() < 10;
+        mAdapter.addData(appList);
         setLoadResult(true);
     }
 

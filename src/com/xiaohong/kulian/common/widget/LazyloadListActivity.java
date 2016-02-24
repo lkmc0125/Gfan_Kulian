@@ -41,11 +41,7 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
 
     // private final static String TAG = "LazyloadListActivity";
 
-    // 每页加载项目数
-    private final static int ITEMS_PER_PAGE = 20;
-
-    private int mStartIndex = 0;
-    private int mEndIndex = ITEMS_PER_PAGE - 1;
+    private int mStartPage = 1;
 
     // 异步任务处理结束，可以开始新的异步任务
     private boolean mIsLoadOver = true;
@@ -58,15 +54,11 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
     private ProgressBar mFooterLoading;
     private TextView mFooterNoData;
 
-    // item per page
-    private int mItemsPerPage;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (doInitView(savedInstanceState)) {
-            mItemsPerPage = this.getItemsPerPage();
             initListView();
         }
     }
@@ -95,13 +87,6 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
     }
 
     /**
-     * 返回每页加载项目数，默认值为每页10条，如果不满足需求需要重写这个方法
-     */
-    protected int getItemsPerPage() {
-        return ITEMS_PER_PAGE;
-    }
-
-    /**
      * 子类实现这个方法以通知总项目数
      */
     protected int getItemCount() {
@@ -110,7 +95,7 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
 
     @Override
     public boolean isEnd() {
-        return mStartIndex >= getItemCount();
+        return true;
     }
 
     @Override
@@ -136,8 +121,7 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
         mIsLoadOver = true;
         if (isLoadSuccess) {
             // 加载成功
-            mStartIndex = (mEndIndex + 1);
-            mEndIndex += mItemsPerPage;
+            mStartPage++;
             mFooterLoading.setVisibility(View.VISIBLE);
             mFooterNoData.setVisibility(View.GONE);
 
@@ -154,25 +138,17 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
     }
 
     /**
-     * 返回分页起始下标
+     * 返回起始分页
      */
-    public int getStartIndex() {
-        return mStartIndex;
+    public int getStartPage() {
+        return mStartPage;
     }
 
-    /**
-     * 返回分页终止下标
-     */
-    public int getEndIndex() {
-        return mEndIndex;
-    }
-    
     /**
      * 重置ListAdapter
      */
     public void reset() {
-        mStartIndex = 0;
-        mEndIndex = ITEMS_PER_PAGE - 1;
+        mStartPage = 1;
         AppListAdapter adapter = (AppListAdapter) ((HeaderViewListAdapter) mList.getAdapter())
                 .getWrappedAdapter();
         adapter.clearData();
