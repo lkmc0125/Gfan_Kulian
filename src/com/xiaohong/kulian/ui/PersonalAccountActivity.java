@@ -56,7 +56,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 		OnItemClickListener, ApiRequestListener {
 
 	private static final int ACCOUNT_REGIST = 0;
-	private static final int ACCOUNT_BIND = 4;
 	private static final int REQUEST_CODE = 20;
 	public static final int REGIST = 1;
 	public static final int CLOUD_BIND = 2;
@@ -166,14 +165,24 @@ public class PersonalAccountActivity extends BaseActivity implements
 	private ArrayList<HashMap<String, Object>> doInitFuncData() {
 		ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
 
-		int[] icons = new int[] { R.drawable.person_center_logo,
-				R.drawable.person_center_payment };
+		int[] icons = new int[] {
+		        R.drawable.person_center_logo,
+				R.drawable.person_center_payment,
+				R.drawable.person_center_logo,
+				R.drawable.person_center_logo
+				};
 		String[] titles = new String[] {
 				getString(R.string.account_logo_title),
-				getString(R.string.account_payment_title) };
+				getString(R.string.account_payment_title),
+				getString(R.string.account_feedback_title),
+                getString(R.string.account_about_title)
+				};
 
-		String[] descs = new String[] { getString(R.string.account_logo_desc),
-				getString(R.string.account_payment_desc) };
+		String[] descs = new String[] {
+		        getString(R.string.account_logo_desc),
+				getString(R.string.account_payment_desc),
+				"有问题就反馈",
+				""};
 
 		for (int i = 0; i < icons.length; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -191,8 +200,7 @@ public class PersonalAccountActivity extends BaseActivity implements
 	/*
 	 * 将对象PayAndChargeLogs转换成所需的数据格式
 	 */
-	private ArrayList<HashMap<String, Object>> transferDataType(
-			PayAndChargeLogs logs) {
+	private ArrayList<HashMap<String, Object>> transferDataType(PayAndChargeLogs logs) {
 
 		ArrayList<HashMap<String, Object>> data = null;
 		ArrayList<PayAndChargeLog> logList = logs.payAndChargeLogList;
@@ -306,6 +314,11 @@ public class PersonalAccountActivity extends BaseActivity implements
                 startActivity(intent);
             }
 			break;
+
+		case 2:
+		    Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), FeedBackActivity.class);
+            startActivity(intent);
 		default:
 			break;
 		}

@@ -87,6 +87,7 @@
     <string name="sort_install_installed">已安装</string>
 
     <!-- 产品详细页 -->
+    <string name="product_detail_top_title">软件详情</string>
     <string name="kulian_comments">%1$s个评级</string>
     <string name="has_update">有新版本</string>
     <string name="has_installed">已安装</string>
@@ -100,6 +101,8 @@
     <string name="person_account_title">个人中心</string>
     <string name="account_logined">已登录，点击注销</string>
     <string name="account_logo_title">登录</string>
+    <string name="account_feedback_title">反馈</string>
+    <string name="account_about_title">关于</string>
     <string name="account_clound_title">云推送</string>
     <string name="account_logo_desc">登陆后可开启以下功能与服务</string>
     <string name="account_clound_desc">从机锋市场推送APK到手机</string>

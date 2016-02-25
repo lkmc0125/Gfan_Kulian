@@ -279,30 +279,21 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
                 .setContent(new Intent(this, RankTabActivity.class));
         mTabHost.addTab(tab2);
 
-        // TabSpec tab3 = mTabHost
-        // .newTabSpec(TAB_RELAX)
-        // .setIndicator(
-        // createTabView(getApplicationContext(),
-        // getString(R.string.main_tab_relax),
-        // R.drawable.main_tab_relax_selector))
-        // .setContent(new Intent(this, SearchBbsActivity.class));
-        // mTabHost.addTab(tab3);
-
-        TabSpec tab4 = mTabHost
+        TabSpec tab3 = mTabHost
                 .newTabSpec(TAB_HUMOR)
                 .setIndicator(
                         createTabView(getApplicationContext(), getString(R.string.main_tab_humor),
                                 R.drawable.main_tab_humor_selector))
                 .setContent(new Intent(this, HumorActivity.class));
-        mTabHost.addTab(tab4);
+        mTabHost.addTab(tab3);
 
-        TabSpec tab5 = mTabHost
+        TabSpec tab4 = mTabHost
                 .newTabSpec(TAB_MINE)
                 .setIndicator(
                         createTabView(getApplicationContext(), getString(R.string.main_tab_mine), 
                                 R.drawable.main_tab_mine_selector))
                 .setContent(new Intent(this, PersonalAccountActivity.class));
-        mTabHost.addTab(tab5);
+        mTabHost.addTab(tab4);
 
         mTabHost.getViewTreeObserver().addOnPreDrawListener(new OnPreDrawListener() {
             @Override
@@ -451,26 +442,12 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent();
         switch (item.getItemId()) {
-        case R.id.menu_account:
-            Utils.trackEvent(getApplicationContext(), Constants.GROUP_8,
-                    Constants.MENU_CLICK_ACCOUNT);
-            intent.setClass(getApplicationContext(), 
-                    PersonalAccountActivity.class);
-            startActivity(intent);
-            break;
 
         case R.id.menu_setting:
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_8,
                     Constants.MENU_CLICK_SETTINGS);
             intent.setClass(getApplicationContext(),
                     ClientPreferenceActivity.class);
-            startActivity(intent);
-            break;
-            
-        case R.id.menu_feedback:
-            Utils.trackEvent(getApplicationContext(), Constants.GROUP_8,
-                    Constants.MENU_CLICK_FEEDBACK);
-            intent.setClass(getApplicationContext(), FeedBackActivity.class);
             startActivity(intent);
             break;
             

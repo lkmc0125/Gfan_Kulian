@@ -19,6 +19,7 @@ import android.app.ActivityGroup;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.common.ResponseCacheManager;
 
@@ -56,6 +57,7 @@ public class BaseActivity extends ActivityGroup {
         super.onResume();
         final Context context = getApplicationContext();
         mSession = Session.get(context);
+        MobclickAgent.onResume(this);
     }
 
     /* (non-Javadoc)
@@ -64,6 +66,7 @@ public class BaseActivity extends ActivityGroup {
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     /* (non-Javadoc)

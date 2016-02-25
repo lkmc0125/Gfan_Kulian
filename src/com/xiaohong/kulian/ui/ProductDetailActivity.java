@@ -49,6 +49,7 @@ import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.util.DBUtils;
 import com.xiaohong.kulian.common.util.DialogUtil;
 import com.xiaohong.kulian.common.util.ImageUtils;
+import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.BuyLog;
 import com.xiaohong.kulian.common.vo.DownloadInfo;
@@ -75,7 +76,6 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_product_detail);
-		
 		final Intent intent = getIntent();
 		mProduct = (ProductDetail) intent.getSerializableExtra(Constants.EXTRA_PRDUCT_DETAIL);
         initTopBar(mProduct);
@@ -106,12 +106,12 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
 	private void initTopBar(ProductDetail product) {
 		mDownloadButton = (ImageButton) findViewById(R.id.btn_download);
 		mDownloadButton.setOnClickListener(new OnClickListener() {
-			
+
 			public void onClick(View v) {
 				download();
 			}
 		});
-		
+
 		final ImageView ivIcon = (ImageView) findViewById(R.id.iv_icon);
         ImageUtils.download(getApplicationContext(), product.getIconUrl(), ivIcon);
 		final TextView tvAppName = (TextView) findViewById(R.id.tv_app_name);
@@ -121,7 +121,7 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
 		final TextView tvAppRatings = (TextView) findViewById(R.id.tv_app_rating_num);
 		tvAppRatings.setText(getString(R.string.kulian_comments,
 				product.getRatingCount()));
-		
+
 		// 评星
         final RatingBar rbAppRating = (RatingBar) findViewById(R.id.rb_app_rating);
         float ratingLevel = product.getRating() / (float) 10;
@@ -149,7 +149,7 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
             initAppInfo(mProduct);
         }
 	}
-	
+
 	/*
 	 * 初始化应用的状态信息（价格以及下载状态）
 	 */
@@ -217,11 +217,11 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
 //        }
         mTabHost.setCurrentTab(0);
 	}
-	
+
     /**
      * 更新评论数 
      */
-    /*package*/  void changeCommentCount(int num) {
+    void changeCommentCount(int num) {
         TextView indicator = (TextView) mTabHost.getTabWidget().getChildTabViewAt(1);
         indicator.setText(getString(R.string.comment_lab, num));
     }
