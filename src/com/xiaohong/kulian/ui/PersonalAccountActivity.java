@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -167,29 +168,36 @@ public class PersonalAccountActivity extends BaseActivity implements
 
 		int[] icons = new int[] {
 		        R.drawable.person_center_logo,
-				R.drawable.person_center_payment,
+//				R.drawable.person_center_payment,
 				R.drawable.person_center_logo,
 				R.drawable.person_center_logo
 				};
 		String[] titles = new String[] {
 				getString(R.string.account_logo_title),
-				getString(R.string.account_payment_title),
+//				getString(R.string.account_payment_title),
 				getString(R.string.account_feedback_title),
                 getString(R.string.account_about_title)
 				};
 
+		String pkName = this.getPackageName();
+		String versionName = "";
+		try {
+            versionName = this.getPackageManager().getPackageInfo(pkName, 0).versionName;
+        } catch (NameNotFoundException e) {
+        }
+		
 		String[] descs = new String[] {
 		        getString(R.string.account_logo_desc),
-				getString(R.string.account_payment_desc),
+//				getString(R.string.account_payment_desc),
 				"有问题就反馈",
-				""};
+				"WIFI酷连 v"+versionName};
 
 		for (int i = 0; i < icons.length; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put(Constants.ACCOUNT_ICON, icons[i]);
 			map.put(Constants.ACCOUNT_TITLE, titles[i]);
 			map.put(Constants.ACCOUNT_DESC, descs[i]);
-			map.put(Constants.ACCOUNT_DOWNLOAD,R.drawable.cloud_off);
+//			map.put(Constants.ACCOUNT_DOWNLOAD,R.drawable.cloud_off);
 			map.put(Constants.ACCOUNT_ARROW, R.drawable.more_indicator);
 			map.put(Constants.ACCOUNT_TYPE, Constants.FLAG_HEADER_ITEM);
 			data.add(map);
@@ -288,7 +296,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 		}
 	}
 
-	// Heade Item的点击事件
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
 		switch (position) {
@@ -302,23 +309,12 @@ public class PersonalAccountActivity extends BaseActivity implements
             break;
 
 		case 1:
-            String type = mSession.getDefaultChargeType();
-            if (type == null) {
-                Intent intent = new Intent(this, ChargeTypeListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(this, PayMainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("type", type);
-                startActivity(intent);
-            }
-			break;
-
-		case 2:
 		    Intent intent = new Intent();
             intent.setClass(getApplicationContext(), FeedBackActivity.class);
             startActivity(intent);
+            break;
+		case 2:
+		    break;
 		default:
 			break;
 		}

@@ -675,7 +675,6 @@ public class Session extends Observable {
         if (mInstalledApps == null) {
             Utils.getAllInstalledApps(mContext);
         }
-        // 2011/2/21 fix bug
         mInstalledApps.add(packageName);
         mHandler.sendEmptyMessage(CURSOR_UPDATE);
     }
@@ -684,7 +683,6 @@ public class Session extends Observable {
         if (mInstalledApps == null) {
             Utils.getAllInstalledApps(mContext);
         }
-        // 2011/2/21 fix bug
         mInstalledApps.remove(packageName);
         mHandler.sendEmptyMessage(CURSOR_UPDATE);
     }

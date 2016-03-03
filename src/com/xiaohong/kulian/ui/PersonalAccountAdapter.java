@@ -304,26 +304,26 @@ public class PersonalAccountAdapter extends BaseAdapter {
 		v.setTag(viewType);
 		return v;
 	}
-	
+
 	@Override
 	public boolean isEnabled(int position) {
-		int viewType = (Integer) mDataSource.get(position).get(
-				Constants.ACCOUNT_TYPE);
-		switch (viewType) {
-		case Constants.FLAG_GROUP_ITEM:
-			return false;
-		case Constants.FLAG_HEADER_ITEM:
-			if (mSession.isLogin()) {
-				return true;
-			}
-			if (!(mSession.isLogin()) && position == 0) {
-				return true;
-			}
-
-			return false;
-		default:
-			break;
-		}
+//		int viewType = (Integer) mDataSource.get(position).get(
+//				Constants.ACCOUNT_TYPE);
+//		switch (viewType) {
+//		case Constants.FLAG_GROUP_ITEM:
+//			return false;
+//		case Constants.FLAG_HEADER_ITEM:
+//			if (mSession.isLogin()) {
+//				return true;
+//			}
+//			if (!(mSession.isLogin()) && position == 0) {
+//				return true;
+//			}
+//
+//			return false;
+//		default:
+//			break;
+//		}
 		return true;
 	}
 

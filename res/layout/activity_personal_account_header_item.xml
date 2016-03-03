@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 产品列表项 -->
+<!-- 账号页列表项 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" android:layout_height="68dp"
     android:background="@drawable/list_item_bg_selector">
@@ -31,7 +31,7 @@
         android:layout_toLeftOf="@+id/iv_devider"
         android:textAppearance="@style/app_text_style3" />
 
-    <!-- 下载按钮 -->
+    <!-- 下载按钮 --> 
     <CheckBox android:id="@+id/cb_operation" 
         android:layout_width="32dp"
         android:layout_height="40dp" 

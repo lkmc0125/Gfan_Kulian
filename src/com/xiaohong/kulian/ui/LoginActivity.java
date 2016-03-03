@@ -99,7 +99,7 @@ public class LoginActivity extends BaseActivity
         etUsername.setText(userName);
 		etUsername.setOnFocusChangeListener(this);
 		etUsername.requestFocus();
-		etPassword = (EditText) findViewById(R.id.et_password);
+		etPassword = (EditText) findViewById(R.id.et_verify_code);
 		etPassword.setOnFocusChangeListener(this);
 		
         if (!TextUtils.isEmpty(userName)) {
@@ -108,12 +108,12 @@ public class LoginActivity extends BaseActivity
 		
         Button btnLogin = (Button) findViewById(R.id.btn_login);
 		btnLogin.setOnClickListener(this);
-		TextView btnRegister = (TextView) findViewById(R.id.btn_register);
-		CharSequence text = btnRegister.getText();
-		SpannableString spanable = new SpannableString(text);
-		spanable.setSpan(new UnderlineSpan(), text.length() - 4, text.length(), 0);
-		btnRegister.setText(spanable);
-		btnRegister.setOnClickListener(this);
+//		TextView btnRegister = (TextView) findViewById(R.id.btn_register);
+//		CharSequence text = btnRegister.getText();
+//		SpannableString spanable = new SpannableString(text);
+//		spanable.setSpan(new UnderlineSpan(), text.length() - 4, text.length(), 0);
+//		btnRegister.setText(spanable);
+//		btnRegister.setOnClickListener(this);
 	}
 
 	@Override
@@ -122,11 +122,9 @@ public class LoginActivity extends BaseActivity
 		case R.id.btn_login:
 			login();
 			break;
-			
-		case R.id.btn_register:
-			onClickRegister();
+		case R.id.btn_verify_code:
+			onClickVerifyCodeBtn();
 			break;
-			
 		}
 	}
 
@@ -154,13 +152,8 @@ public class LoginActivity extends BaseActivity
                 Constants.LOGIN);
 	}
 
-	/*
-	 * Goto the sign up page
-	 */
-	private void onClickRegister() {
-		Intent intent = new Intent(this, RegisterActivity.class);
-		finish();
-		startActivity(intent);
+	private void onClickVerifyCodeBtn() {
+
 	}
 
     @Override
@@ -272,7 +265,7 @@ public class LoginActivity extends BaseActivity
             }
             break;
 
-        case R.id.et_password:
+        case R.id.et_verify_code:
 
             if (!flag) {
                 checkPassword(etPassword);
