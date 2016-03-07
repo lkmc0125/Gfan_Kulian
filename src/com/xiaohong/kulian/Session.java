@@ -67,7 +67,6 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.download.DownloadManager.Impl;
@@ -227,9 +226,6 @@ public class Session extends Observable {
     
     /** 默认的支付方式 */
     private String mDefaultChargeType;
-    
-    /** Google Analytics */
-    private GoogleAnalyticsTracker tracker;
 
     /**
      * default constructor
@@ -669,7 +665,6 @@ public class Session extends Observable {
         mSessionManager.writePreferenceQuickly();
         mDownloadingCursor.unregisterContentObserver(mCursorObserver);
         mDownloadingCursor.close();
-        tracker.dispatch();
         mInstance = null;
     }
 
@@ -758,13 +753,6 @@ public class Session extends Observable {
 		super.setChanged();
         super.notifyObservers(new Pair<String, Object>(P_DEFAULT_CHARGE_TYPE, type));
 	}
-	
-    /**
-     * @return the tracker
-     */
-    public GoogleAnalyticsTracker getTracker() {
-        return tracker;
-    }
 	
 	/** 创建下载数据结果集*/
 	private static final int CURSOR_CREATED = 0;
