@@ -235,47 +235,11 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
 
 	public void onSuccess(int method, Object obj) {
 		switch (method) {
-		case MarketAPI.ACTION_GET_DOWNLOAD_URL:
-			DownloadItem info = (DownloadItem) obj;
-			startDownload(info);
-			mDownloadButton.setEnabled(true);
-			finish();
-			break;
-
-		case MarketAPI.ACTION_PURCHASE_PRODUCT:
-			// 购买成功，同步购买记录
-			BuyLog buyLog = new BuyLog();
-			buyLog.pId = mProduct.getPid();
-			buyLog.packageName = mProduct.getPackageName();
-			DBUtils.insertBuyLog(getApplicationContext(), buyLog);
-			MarketAPI.getDownloadUrl(this, this, mProduct.getPid(), mProduct.getSourceType());
-			break;
 		}
 	}
 	
 	public void onError(int method, int statusCode) {
 		switch (method) {
-		case MarketAPI.ACTION_GET_DOWNLOAD_URL:
-			mDownloadButton.setEnabled(true);
-            Utils.makeEventToast(getApplicationContext(),
-                    getString(R.string.alert_no_download_url), false);
-			break;
-		case MarketAPI.ACTION_PURCHASE_PRODUCT:
-			if (219 == statusCode) {
-				// NoEnoughCredit
-				if (!isFinishing()) {
-					showDialog(DIALOG_NO_BALANCE);
-				}
-            } else if (212 == statusCode) {
-			    // 密码错误
-			    Utils.makeEventToast(getApplicationContext(),
-                        getString(R.string.hint_purchase_password_error), false);
-			} else {
-				// other error
-				Utils.makeEventToast(getApplicationContext(),
-						getString(R.string.hint_purchase_failed), false);
-			}
-			break;
 		default:
 			break;
 		}
@@ -331,9 +295,9 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
                 return;
             } else {
                 // 开始下载
-                MarketAPI.getDownloadUrl(getApplicationContext(), ProductDetailActivity.this,
-                        mProduct.getPid(), mProduct.getSourceType());
-                mDownloadButton.setEnabled(false);
+//                MarketAPI.getDownloadUrl(getApplicationContext(), ProductDetailActivity.this,
+//                        mProduct.getPid(), mProduct.getSourceType());
+//                mDownloadButton.setEnabled(false);
             }
         } else {
             // 下载完成
@@ -359,27 +323,9 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
     }
 	
 	/**
-	 * 购买商品
-	 */
-	public void purchaseProduct(String password) {
-	    MarketAPI.purchaseProduct(this, this, mProduct.getPid(), password);
-	}
-	
-	/**
 	 * 前往充值页
 	 */
     public void gotoDepositPage() {
-        final String type = mSession.getDefaultChargeType();
-        if (type == null) {
-            final Intent intent = new Intent(getApplicationContext(), ChargeTypeListActivity.class);
-            intent.putExtra("payment", mProduct.getPrice());
-            startActivity(intent);
-        } else {
-            final Intent intent = new Intent(getApplicationContext(), PayMainActivity.class);
-            intent.putExtra("type", type);
-            intent.putExtra("payment", mProduct.getPrice());
-            startActivity(intent);
-        }
     }
 
     @SuppressWarnings("unchecked")

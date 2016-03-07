@@ -588,8 +588,8 @@ public class AppsManagerAdapter extends BaseAdapter implements Observer, ApiRequ
                     Utils.installApk(mContext, new File(item.mFilePath));
                 } else {
                     // 更新应用
-                    MarketAPI.getDownloadUrl(mContext, AppsManagerAdapter.this, item.mProductId,
-                            Constants.SOURCE_TYPE_KULIAN);
+//                    MarketAPI.getDownloadUrl(mContext, AppsManagerAdapter.this, item.mProductId,
+//                            Constants.SOURCE_TYPE_KULIAN);
                     
                     Utils.trackEvent(mContext, Constants.GROUP_7,
                             Constants.CLICK_UPDATE);
@@ -904,8 +904,8 @@ public class AppsManagerAdapter extends BaseAdapter implements Observer, ApiRequ
 
             // 更新应用
             AppItem item = mDataSource.getValue(key);
-            MarketAPI.getDownloadUrl(mContext, AppsManagerAdapter.this, item.mProductId,
-                    Constants.SOURCE_TYPE_KULIAN);
+//            MarketAPI.getDownloadUrl(mContext, AppsManagerAdapter.this, item.mProductId,
+//                    Constants.SOURCE_TYPE_KULIAN);
             // 开始更新单个项目
             item.mWeight = WEIGHT_NORMAL_INSTALLED;
             item.mViewType = VIEW_TYPE_INSTALLED;
@@ -917,17 +917,17 @@ public class AppsManagerAdapter extends BaseAdapter implements Observer, ApiRequ
 
     @Override
     public void onSuccess(int method, Object obj) {
-        if (method == MarketAPI.ACTION_GET_DOWNLOAD_URL) {
-            DownloadItem info = (DownloadItem) obj;
-            AppItem item = mDataSource.getValue(info.packageName);
-            Request request = new Request(Uri.parse(info.url));
-            request.setTitle(item.mAppName);
-            request.setPackageName(info.packageName);
-            request.setSourceType(com.xiaohong.kulian.common.download.Constants.DOWNLOAD_FROM_MARKET);
-            request.setMD5(info.fileMD5);
-            item.mId = mDownloadManager.enqueue(request);
-            mUpdateList.remove(info.packageName);
-        }
+//        if (method == MarketAPI.ACTION_GET_DOWNLOAD_URL) {
+//            DownloadItem info = (DownloadItem) obj;
+//            AppItem item = mDataSource.getValue(info.packageName);
+//            Request request = new Request(Uri.parse(info.url));
+//            request.setTitle(item.mAppName);
+//            request.setPackageName(info.packageName);
+//            request.setSourceType(com.xiaohong.kulian.common.download.Constants.DOWNLOAD_FROM_MARKET);
+//            request.setMD5(info.fileMD5);
+//            item.mId = mDownloadManager.enqueue(request);
+//            mUpdateList.remove(info.packageName);
+//        }
     }
     
     @Override

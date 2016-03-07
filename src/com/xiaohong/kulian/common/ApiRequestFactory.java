@@ -61,90 +61,27 @@ public class ApiRequestFactory {
     private static ArrayList<Integer> S_ENCODE_FORM_REQUESTS = new ArrayList<Integer>(); 
     static {
         // GET
-        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_RANK_BY_CATEGORY);
+        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_APP_LIST);
         S_GET_REQUESTS.add(MarketAPI.ACTION_GET_PRODUCT_DETAIL);
-        // XML POST
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_HOME_RECOMMEND);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_CATEGORY);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_CHECK_NEW_SPLASH);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_GROW_FAST);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_DETAIL);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_COMMENTS);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_MYRATING);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_ADD_COMMENT);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_ADD_RATING);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_PRODUCTS);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_TOPIC);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_REQUIRED);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_GET_DOWNLOAD_URL);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_CHECK_UPGRADE);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_CHECK_NEW_VERSION);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_PURCHASE_PRODUCT);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_SYNC_CARDINFO);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_QUERY_CHARGE_BY_ORDERID);
-        S_XML_REQUESTS.add(MarketAPI.ACTION_SYNC_BUYLOG);
-        
-        // JSON POST
-        S_JSON_REQUESTS.add(MarketAPI.ACTION_BIND_ACCOUNT);
-        S_JSON_REQUESTS.add(MarketAPI.ACTION_GET_ALIPAY_ORDER_INFO);
-        S_JSON_REQUESTS.add(MarketAPI.ACTION_QUERY_ALIPAY_RESULT);
-
-        // encrypt
-        S_ENCRYPT_REQUESTS.add(MarketAPI.ACTION_REGISTER);
-        S_ENCRYPT_REQUESTS.add(MarketAPI.ACTION_LOGIN);
-        S_ENCRYPT_REQUESTS.add(MarketAPI.ACTION_GET_PAY_LOG);
-        S_ENCRYPT_REQUESTS.add(MarketAPI.ACTION_CHARGE);
-        S_ENCRYPT_REQUESTS.add(MarketAPI.ACTION_GET_BALANCE);
-        
-        // pay
-        S_ENCODE_FORM_REQUESTS.add(MarketAPI.ACTION_GET_ALIPAY_ORDER_INFO);
-        S_ENCODE_FORM_REQUESTS.add(MarketAPI.ACTION_QUERY_ALIPAY_RESULT);
-        S_ENCODE_FORM_REQUESTS.add(MarketAPI.ACTION_BBS_SEARCH);
+        S_GET_REQUESTS.add(MarketAPI.ACTION_CHECK_NEW_SPLASH);
+        S_GET_REQUESTS.add(MarketAPI.ACTION_CHECK_NEW_VERSION);
+        S_GET_REQUESTS.add(MarketAPI.ACTION_REGISTER);
+        S_GET_REQUESTS.add(MarketAPI.ACTION_LOGIN);
     }
     
     // justify the G-Header
     private static ArrayList<Integer> UCENTER_API = new ArrayList<Integer>();
     static {
-        UCENTER_API.add(MarketAPI.ACTION_REGISTER);
-        UCENTER_API.add(MarketAPI.ACTION_LOGIN);
-        UCENTER_API.add(MarketAPI.ACTION_GET_BALANCE);
-        UCENTER_API.add(MarketAPI.ACTION_QUERY_CHARGE);
-        UCENTER_API.add(MarketAPI.ACTION_PURCHASE_PRODUCT);
-        UCENTER_API.add(MarketAPI.ACTION_GET_CONSUMESUM);
-        UCENTER_API.add(MarketAPI.ACTION_GET_CONSUME_DETAIL);
-        UCENTER_API.add(MarketAPI.ACTION_GET_PAY_LOG);
-        UCENTER_API.add(MarketAPI.ACTION_CHARGE);
-        UCENTER_API.add(MarketAPI.ACTION_SYNC_CARDINFO);
-        UCENTER_API.add(MarketAPI.ACTION_QUERY_CHARGE_BY_ORDERID);
+//        UCENTER_API.add(MarketAPI.ACTION_REGISTER);
+//        UCENTER_API.add(MarketAPI.ACTION_LOGIN);
     }
     
     // 不需要进行缓存的API
     public static ArrayList<Integer> API_NO_CACHE_MAP = new ArrayList<Integer>();
     static {
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_HOME_RECOMMEND);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_TOP_RECOMMEND);
         API_NO_CACHE_MAP.add(MarketAPI.ACTION_CHECK_NEW_SPLASH);
         API_NO_CACHE_MAP.add(MarketAPI.ACTION_REGISTER);
         API_NO_CACHE_MAP.add(MarketAPI.ACTION_LOGIN);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_BALANCE);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_QUERY_CHARGE);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_PURCHASE_PRODUCT);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_CONSUMESUM);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_CONSUME_DETAIL);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_PAY_LOG);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_CHARGE);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_SYNC_CARDINFO);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_QUERY_CHARGE_BY_ORDERID);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_BIND_ACCOUNT);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_UNBIND);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_ADD_COMMENT);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_ADD_RATING);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_COMMENTS);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_MYRATING);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_REQUIRED);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_ALIPAY_ORDER_INFO);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_QUERY_ALIPAY_RESULT);
-        API_NO_CACHE_MAP.add(MarketAPI.ACTION_GET_DOWNLOAD_URL);
     }
     
     /**
@@ -153,10 +90,7 @@ public class ApiRequestFactory {
     public static HttpUriRequest getRequest(String url, int action, HttpEntity entity,
             Session session) throws IOException {
 
-        if (MarketAPI.ACTION_UNBIND == action) {
-            HttpGet request = new HttpGet(url + session.getUid());
-            return request;
-        } else if (S_GET_REQUESTS.contains(action)) {
+        if (S_GET_REQUESTS.contains(action)) {
             String requestString = url+"?"+EntityUtils.toString(entity);
             HttpGet request = new HttpGet(requestString);
             return request;
@@ -247,13 +181,8 @@ public class ApiRequestFactory {
         Utils.D("generate request body before encryption  is : " + body);
 
         // 加密处理
-        if (action == MarketAPI.ACTION_CHARGE) {
-            final byte[] encyptedBody = SecurityUtil.encryptHttpChargeBody(body);
-            return new ByteArrayEntity(encyptedBody);
-        } else {
-            final byte[] encyptedBody = SecurityUtil.encryptHttpBody(body);
-            return new ByteArrayEntity(encyptedBody);
-        }
+        final byte[] encyptedBody = SecurityUtil.encryptHttpBody(body);
+        return new ByteArrayEntity(encyptedBody);
     }
     
     /**
@@ -264,31 +193,7 @@ public class ApiRequestFactory {
     @SuppressWarnings("unchecked")
     private static UrlEncodedFormEntity getFormRequest(int action, Object params)
             throws UnsupportedEncodingException {
-
-        if (action == MarketAPI.ACTION_GET_ALIPAY_ORDER_INFO
-                || action == MarketAPI.ACTION_QUERY_ALIPAY_RESULT) {
-            String body = generateJsonRequestBody(params);
-            Utils.D("generate JSON request body is : " + body);
-            final byte[] encyptedBody = SecurityUtil.encryptHttpChargePalipayBody(body);
-            String dataenc = new String(encyptedBody, HTTP.UTF_8);
-            String cno = "03";
-            String actionMethod = null;
-            if (MarketAPI.ACTION_GET_ALIPAY_ORDER_INFO == action) {
-                // 获取支付宝订单信息
-                actionMethod = "addAlipayOrder";
-            } else {
-                // 查询支付宝充值结果
-                actionMethod = "queryAlipayOrderIsSuccess";
-            }
-            final ArrayList<NameValuePair> postParams = new ArrayList<NameValuePair>(4);
-            postParams.add(new BasicNameValuePair("action", actionMethod));
-            postParams.add(new BasicNameValuePair("data", dataenc));
-            postParams.add(new BasicNameValuePair("cno", cno));
-            postParams.add(new BasicNameValuePair("sign", DigestUtils.md5Hex("action="
-                    + actionMethod + "&data=" + dataenc + "&cno=" + cno
-                    + SecurityUtil.KEY_HTTP_CHARGE_ALIPAY)));
-            return new UrlEncodedFormEntity(postParams, HTTP.UTF_8);
-        } else if (params instanceof ArrayList) {
+        if (params instanceof ArrayList) {
             return new UrlEncodedFormEntity((ArrayList<NameValuePair>) params, HTTP.UTF_8);
         }
         return null;

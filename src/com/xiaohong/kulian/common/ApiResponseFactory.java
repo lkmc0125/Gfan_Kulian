@@ -79,21 +79,9 @@ public class ApiResponseFactory {
     public static Object getResponse(Context context, int action, HttpResponse response) {
 
         InputStream in = null;
-        String inputBody = null;
-        if (MarketAPI.ACTION_GET_ALIPAY_ORDER_INFO == action
-                || MarketAPI.ACTION_QUERY_ALIPAY_RESULT == action
-                || MarketAPI.ACTION_GET_RANK_BY_CATEGORY == action
-                || MarketAPI.ACTION_GET_PRODUCT_DETAIL == action
-                ) {
-            inputBody = Utils.getStringResponse(response);
-            if (TextUtils.isEmpty(inputBody)) {
-                return null;
-            }
-        } else {
-            in = Utils.getInputStreamResponse(response);
-            if (in == null) {
-                return null;
-            }
+        String inputBody = Utils.getStringResponse(response);
+        if (TextUtils.isEmpty(inputBody)) {
+            return null;
         }
 
         String requestMethod = "";
@@ -105,43 +93,16 @@ public class ApiResponseFactory {
 
                 // 注册
                 requestMethod = "ACTION_REGISTER";
-                result = parseLoginOrRegisterResult(XmlElement.parseXml(in));
+                result = parseLoginOrRegisterResult(context, inputBody);
                 break;
 
             case MarketAPI.ACTION_LOGIN:
 
                 // 登录
                 requestMethod = "ACTION_LOGIN";
-                result = parseLoginOrRegisterResult(XmlElement.parseXml(in));
+                result = parseLoginOrRegisterResult(context, inputBody);
                 break;
                 
-            case MarketAPI.ACTION_GET_COMMENTS:
-                
-                // 获取评论列表
-                requestMethod = "ACTION_GET_COMMENTS";
-                result = parseComments(XmlElement.parseXml(in));
-                break;
-
-            case MarketAPI.ACTION_GET_MYRATING:
-                
-                // 获取我的评级
-                requestMethod = "ACTION_GET_MYRATING";
-                result = parseMyRating(XmlElement.parseXml(in));
-                break;
-
-            case MarketAPI.ACTION_ADD_RATING:
-                
-                // 添加评级
-                requestMethod = "ACTION_ADD_RATIONG";
-                result = true;
-                break;
-
-            case MarketAPI.ACTION_ADD_COMMENT:
-                
-                // 添加评论
-                requestMethod = "ACTION_ADD_COMMENT";
-                result = true;
-                break;
 
             case MarketAPI.ACTION_GET_PRODUCT_DETAIL:
                 
@@ -150,27 +111,13 @@ public class ApiResponseFactory {
                 result = parseProductDetail2(context, inputBody);
                 break;
 
-            case MarketAPI.ACTION_GET_RANK_BY_CATEGORY:
+            case MarketAPI.ACTION_GET_APP_LIST:
             {
-                // 获取排行列表
-                requestMethod = "ACTION_GET_RANK_BY_CATEGORY";
+                // 获取app列表
+                requestMethod = "ACTION_GET_APP_LIST";
                 result = parseProductList(context, inputBody);
                 break;
             }
-
-            case MarketAPI.ACTION_GET_DETAIL:
-
-                // 获取产品详细信息
-                requestMethod = "ACTION_GET_DETAIL";
-                result = parseProductDetail(XmlElement.parseXml(in));
-                break;
-
-            case MarketAPI.ACTION_SYNC_BUYLOG:
-
-                // 获取消费记录
-                requestMethod = "ACTION_SYNC_BUYLOG";
-                result = parseSyncBuyLog(XmlElement.parseXml(in));
-                break;
 
             case MarketAPI.ACTION_CHECK_NEW_VERSION:
                 
@@ -179,90 +126,12 @@ public class ApiResponseFactory {
                 result = parseCheckNewVersion(XmlElement.parseXml(in));
                 break;
 
-            case MarketAPI.ACTION_PURCHASE_PRODUCT:
-                
-                // 购买应用
-                requestMethod = "ACTION_PURCHASE_PRODUCT";
-                result = true;
-                break;
-                
-            case MarketAPI.ACTION_CHECK_UPGRADE:
-                
-                // 检查应用更新
-                requestMethod = "ACTION_CHECK_UPGRADE";
-                XmlElement r = null;
-                result = parseUpgrade(context, r = XmlElement.parseXml(in));
-                Log.i("test", "r:"+r);
-                break;
-                
             case MarketAPI.ACTION_CHECK_NEW_SPLASH:
                 
                 // 检查应用更新
                 requestMethod = "ACTION_CHECK_NEW_SPLASH";
                 result = parseNewSplash(XmlElement.parseXml(in));
                 break;
-                
-            case MarketAPI.ACTION_GET_PAY_LOG:
-
-                // 获取购买历史信息列表
-                requestMethod = "ACTION_GET_PAY_LOG";
-                result = parseGetPayLog(context, XmlElement.parseXml(in));
-                break;
-                
-            case MarketAPI.ACTION_BIND_ACCOUNT:
-
-                // 绑定用户手机
-                requestMethod = "ACTION_BIND_ACCOUNT";
-                result = true;
-                break;
-                
-            case MarketAPI.ACTION_SYNC_CARDINFO:
-
-                // 同步充值卡信息
-                requestMethod = "ACTION_SYNC_CARDINFO";
-                result = parseSyncCardinfo(context, XmlElement.parseXml(in));
-                break;
-           
-            case MarketAPI.ACTION_CHARGE:
-                
-                // 查询充值结果
-                requestMethod = "ACTION_CHARGE";
-                result = parseChargeResult(XmlElement.parseXml(in));
-                break;
-                
-            case MarketAPI.ACTION_QUERY_CHARGE_BY_ORDERID:
-                
-                // 查询充值结果
-                requestMethod = "ACTION_QUERY_CHARGE_BY_ORDERID";
-                result = parseQueryChargeResultByOderID(XmlElement.parseXml(in));
-                break;
-                
-            case MarketAPI.ACTION_GET_BALANCE:
-                
-                // 查询余额
-                requestMethod = "ACTION_GET_BALANCE";
-                result = parseGetBalance(XmlElement.parseXml(in));
-                break;
-                
-            case MarketAPI.ACTION_GET_ALIPAY_ORDER_INFO:
-                
-                // 解析支付宝订单结果
-                requestMethod = "ACTION_GET_ALIPAY_ORDER_INFO";
-                result = parseGetAlipayOrderInfo(inputBody);
-                break;
-                
-            case MarketAPI.ACTION_QUERY_ALIPAY_RESULT:
-                
-                // 解析支付宝结果
-                requestMethod = "ACTION_QUERY_ALIPAY_RESULT";
-                result = parseGetAlipayOrderInfo(inputBody);
-                break;
-            
-            case MarketAPI.ACTION_UNBIND:
-            	
-            	//解除绑定
-            	result = true;
-            	break;
                 
             default:
                 break;
@@ -272,8 +141,8 @@ public class ApiResponseFactory {
             Utils.D(requestMethod + " has XmlPullParserException", e);
         } catch (IOException e) {
             Utils.D(requestMethod + " has IOException", e);
-        } catch (JSONException e) {
-            Utils.D(requestMethod + " has JSONException", e);
+//        } catch (JSONException e) {
+//            Utils.D(requestMethod + " has JSONException", e);
         }
         if (result != null) {
             Utils.D(requestMethod + "'s Response is : " + result.toString());
@@ -585,19 +454,23 @@ public class ApiResponseFactory {
     /*
      * 解析注册或者登录结果
      */
-    private static HashMap<String, String> parseLoginOrRegisterResult(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
+    private static HashMap<String, Object> parseLoginOrRegisterResult(Context context, String body) {
+        if (body == null) {
             return null;
         }
+        HashMap<String, Object> result = null;
+        try {
+            JSONObject jsonObj = new JSONObject(body);
+            ArrayList<HashMap<String, Object>> productArray = null;
+            result = new HashMap<String, Object>();
+            result.put("ret_msg", jsonObj.getString("ret_msg"));
+            if (jsonObj.getInt("ret_code") == 0) {
+                result.put(Constants.KEY_COIN_NUM, jsonObj.getString("coin_num"));
+            }
+        } catch (JSONException e) {
+            Utils.D("have json exception when parse search result from bbs", e);
+        }
 
-        HashMap<String, String> result = new HashMap<String, String>();
-        result.put(Constants.KEY_USER_UID, xmlDocument.getChild(Constants.KEY_USER_UID, 0)
-                .getText());
-        result.put(Constants.KEY_USER_NAME, xmlDocument.getChild(Constants.KEY_USER_NAME, 0)
-                .getText());
-        result.put(Constants.KEY_USER_EMAIL, xmlDocument.getChild(Constants.KEY_USER_EMAIL, 0)
-                .getText());
         return result;
     }
 

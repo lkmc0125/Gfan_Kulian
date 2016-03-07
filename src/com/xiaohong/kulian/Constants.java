@@ -296,7 +296,7 @@ public interface Constants {
     static final String KEY_USER_NAME = "name";
 
     static final String KEY_USER_UID = "uid";
-
+    static final String KEY_COIN_NUM = "coin_num";
     static final String KEY_USER_EMAIL = "email";
 
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

@@ -61,16 +61,10 @@ public class PreloadActivity extends BaseActivity implements ApiRequestListener 
                 getApplicationContext()));
         mProgress.setVisibility(View.VISIBLE);
 
-        String packageName = intent.getStringExtra(Constants.EXTRA_PACKAGE_NAME);
-        if (TextUtils.isEmpty(packageName)) {
-            // 通过产品ID来获取内容			
-            String pId = intent.getStringExtra(Constants.EXTRA_PRODUCT_ID);
-            String category = intent.getStringExtra(Constants.EXTRA_CATEGORY);
-            MarketAPI.getProductDetailWithId(this, this, pId, category);
-        } else {
-            // 通过产品包名来获取内容
-            MarketAPI.getProductDetailWithPackageName(this, this, -1, packageName);
-        }
+        // 通过产品ID来获取内容			
+        String pId = intent.getStringExtra(Constants.EXTRA_PRODUCT_ID);
+        String category = intent.getStringExtra(Constants.EXTRA_CATEGORY);
+        MarketAPI.getProductDetailWithId(this, this, pId, category);
     }
 
     @Override

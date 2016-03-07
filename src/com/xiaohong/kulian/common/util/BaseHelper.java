@@ -19,7 +19,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
-import com.xiaohong.kulian.ui.PayMainActivity;
 
 public class BaseHelper {
 	public static String convertStreamToString(InputStream is) {
@@ -83,7 +82,7 @@ public class BaseHelper {
 		dialog.setIndeterminate(indeterminate);
 		dialog.setCancelable(false);
 		// dialog.setDefaultButton(false);
-		dialog.setOnCancelListener(new PayMainActivity.AlixOnCancelListener((Activity) context));
+//		dialog.setOnCancelListener(new PayMainActivity.AlixOnCancelListener((Activity) context));
 
 		dialog.show();
 		return dialog;

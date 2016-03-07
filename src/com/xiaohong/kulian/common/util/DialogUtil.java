@@ -137,7 +137,7 @@ public class DialogUtil {
                                     context.getString(R.string.error_password_empty), false);
                         } else {
                             context.removeDialog(id);
-                            context.purchaseProduct(value);
+//                            context.purchaseProduct(value);
                         }
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {

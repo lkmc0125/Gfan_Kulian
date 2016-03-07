@@ -71,7 +71,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
 
     @Override
     public void doLazyload() {
-        MarketAPI.getRankByCategory(getApplicationContext(), this, getStartPage(), mCategory);
+        MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
     }
 
     @Override

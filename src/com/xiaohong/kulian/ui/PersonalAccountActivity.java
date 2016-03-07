@@ -94,9 +94,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 	protected void onResume() {
 		if (mSession.isLogin() && isFirstAccess) {
 			mProgress.setVisibility(View.VISIBLE);
-			MarketAPI.getBalance(getApplicationContext(),
-					PersonalAccountActivity.this);
-			MarketAPI.getPayLog(getApplicationContext(), this, 0, 10);
 		}
 		super.onResume();
 	}
@@ -242,33 +239,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 	@Override
 	public void onSuccess(int method, Object obj) {
 		switch (method) {
-		// 获取支付信息
-		case MarketAPI.ACTION_GET_PAY_LOG:
-			PayAndChargeLogs logs = (PayAndChargeLogs) obj;
-			if (logs != null && logs.totalSize > 0) {
-				ArrayList<HashMap<String, Object>> data = transferDataType(logs);
-				mAdapter.addData(data);
-				mProgress.setVisibility(View.GONE);
-			} else {
-				mProgress.setVisibility(View.GONE);
-				HashMap<String, Object> map = new HashMap<String, Object>();
-				map.put(Constants.ACCOUNT_TYPE, Constants.FLAG_NO_PAY_LOG_ITEM);
-				map.put(Constants.ACCOUNT_TITLE,
-						getString(R.string.account_no_pay_log));
-				mAdapter.addData(map);
-			}
-			break;
-
-		// 获取帐号余额
-		case MarketAPI.ACTION_GET_BALANCE:
-			HashMap<String, Object> balanceMap = mAdapter.getDataSource()
-					.get(1);
-			balanceMap
-					.put(Constants.ACCOUNT_DESC,
-							getString(R.string.account_payment_balance,
-									obj.toString()));
-			mAdapter.notifyDataSetChanged();
-			break;
 			
 		default:
 			break;

@@ -190,16 +190,18 @@ public class LoginActivity extends BaseActivity
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
                     Constants.LOGIN_SUCCESS);
             HashMap<String, String> result = (HashMap<String, String>) obj;
-            mSession.setUid(result.get(Constants.KEY_USER_UID));
+//            mSession.setUid(result.get(Constants.KEY_USER_UID));
             mSession.setUserName(result.get(Constants.KEY_USER_NAME));
-            // 同步用户购买记录
-            MarketAPI.syncBuyLog(getApplicationContext(), this);
+            mSession.setCoinNum(result.get(Constants.KEY_COIN_NUM));
+            mSession.setLogin(true);
+            // 隐藏登录框
+            try{
+                dismissDialog(DIALOG_PROGRESS);
+            }catch (IllegalArgumentException e) {
+            }
+            finish();
             break;
             
-        case MarketAPI.ACTION_SYNC_BUYLOG:
-            
-            syncBuyLogOver(true);
-            break;
         default:
             break;
         }
@@ -228,12 +230,6 @@ public class LoginActivity extends BaseActivity
             Utils.makeEventToast(getApplicationContext(), msg, false);
             break;
             
-        case MarketAPI.ACTION_SYNC_BUYLOG:
-            
-            // 同步购买记录失败
-            syncBuyLogOver(false);
-            break;
-
         default:
             break;
         }

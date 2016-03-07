@@ -207,6 +207,9 @@ public class Session extends Observable {
     /** 上次更新splash的id */
     private long splashId;
 
+    /** 金币数 */
+    private String coinNum;
+    
     /** The application list which user has installed */
     private ArrayList<String> mInstalledApps;
     
@@ -462,6 +465,14 @@ public class Session extends Observable {
         super.notifyObservers(new Pair<String, Object>(P_ISLOGIN, isLogin));
     }
 
+    public void setCoinNum(String coinNum) {
+        this.coinNum = coinNum;
+    }
+    
+    public String getCoinNum() {
+        return coinNum;
+    }
+    
     public String getUserName() {
         return userName;
     }
