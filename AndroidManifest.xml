@@ -121,7 +121,6 @@
         <!-- upgrade uses -->
         <meta-data android:name="kulian_debug" android:value="1" />
 
-
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
         <meta-data
@@ -227,7 +226,7 @@
             android:process=":pushservice" />
         <!-- 个推SDK配置结束 -->   
 
-        <!-- 广点通SDK配置结束 -->
+        <!-- 广点通SDK配置 -->
         <service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>
         <activity android:name="com.qq.e.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
         </activity>
