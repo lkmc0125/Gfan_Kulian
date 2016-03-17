@@ -33,8 +33,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.pm.PackageInfo;
 import android.text.TextUtils;
@@ -56,7 +54,6 @@ public class ApiRequestFactory {
 
     private static ArrayList<Integer> S_GET_REQUESTS = new ArrayList<Integer>();
     private static ArrayList<Integer> S_XML_REQUESTS = new ArrayList<Integer>();
-    private static ArrayList<Integer> S_JSON_REQUESTS = new ArrayList<Integer>();
     private static ArrayList<Integer> S_ENCRYPT_REQUESTS = new ArrayList<Integer>();
     private static ArrayList<Integer> S_ENCODE_FORM_REQUESTS = new ArrayList<Integer>(); 
     static {
@@ -127,18 +124,6 @@ public class ApiRequestFactory {
             throws UnsupportedEncodingException {
         if (S_GET_REQUESTS.contains(action)) {
             return getGetRequest(params);
-        } else if (S_XML_REQUESTS.contains(action)) {
-            // 普通的XML请求内容
-            return getXmlRequest(params);
-        } else if (S_ENCODE_FORM_REQUESTS.contains(action)) {
-            // URL encode form 请求内容
-            return getFormRequest(action, params);
-        } else if (S_JSON_REQUESTS.contains(action)) {
-            // 普通的JSON请求内容
-            return getJsonRequest(action, params);
-        } else if (S_ENCRYPT_REQUESTS.contains(action)) {
-            // 加密的请求内容
-            return getEncryptRequest(action, params);
         } else {
             // 不需要请求内容
             return null;
@@ -148,122 +133,6 @@ public class ApiRequestFactory {
     private static StringEntity getGetRequest(Object params) throws UnsupportedEncodingException {
         String paraString = generateGetParameters(params);
         return new StringEntity(paraString, HTTP.UTF_8);
-    }
-    
-    /**
-     * 获取标准的XML请求内容，采用utf8编码方式
-     * @return XML请求内容
-     * @throws UnsupportedEncodingException 假如不支持UTF8编码方式会抛出此异常
-     */
-    private static StringEntity getXmlRequest(Object params) throws UnsupportedEncodingException {
-        String body = generateXmlRequestBody(params);
-        Utils.D("generate XML request body is : " + body);
-        return new StringEntity(body, HTTP.UTF_8);
-    }
-    
-    /**
-     * 获取标准的JSON请求内容，采用utf8编码方式
-     * @return JSON请求内容
-     * @throws UnsupportedEncodingException 假如不支持UTF8编码方式会抛出此异常
-     */
-    private static StringEntity getJsonRequest(int action, Object params) throws UnsupportedEncodingException {
-        String body = generateJsonRequestBody(params);
-        Utils.D("generate JSON request body is : " + body);
-        return new StringEntity(body, HTTP.UTF_8);
-    }
-    
-    /**
-     * 获取加密后的请求内容
-     * @return ByteArrayEntity请求内容 
-     */
-    private static ByteArrayEntity getEncryptRequest(int action, Object params) {
-        String body = generateXmlRequestBody(params);
-        Utils.D("generate request body before encryption  is : " + body);
-
-        // 加密处理
-        final byte[] encyptedBody = SecurityUtil.encryptHttpBody(body);
-        return new ByteArrayEntity(encyptedBody);
-    }
-    
-    /**
-     * 获取标准的表单请求内容，采用utf8编码方式
-     * @return UrlEncodedFormEntity请求内容
-     * @throws UnsupportedEncodingException 假如不支持UTF8编码方式会抛出此异常
-     */
-    @SuppressWarnings("unchecked")
-    private static UrlEncodedFormEntity getFormRequest(int action, Object params)
-            throws UnsupportedEncodingException {
-        if (params instanceof ArrayList) {
-            return new UrlEncodedFormEntity((ArrayList<NameValuePair>) params, HTTP.UTF_8);
-        }
-        return null;
-    }
-    
-    /**
-     * Generate the API XML request body
-     */
-    @SuppressWarnings("unchecked")
-    private static String generateXmlRequestBody(Object params) {
-
-        if (params == null) {
-            return "<request version=\"2\"></request>";
-        }
-
-        HashMap<String, Object> requestParams;
-        if (params instanceof HashMap) {
-            requestParams = (HashMap<String, Object>) params;
-        } else {
-            return "<request version=\"2\"></request>";
-        }
-
-        final StringBuilder buf = new StringBuilder();
-
-        // TODO: add local_version parameter if exist
-        // 2010/12/29 update version to 2 to get comments from bbs
-        buf.append("<request version=\"2\"");
-        if (requestParams.containsKey("local_version")) {
-            buf.append(" local_version=\"" + requestParams.get("local_version") + "\" ");
-            requestParams.remove("local_version");
-        }
-        buf.append(">");
-
-        // add parameter node
-        final Iterator<String> keySet = requestParams.keySet().iterator();
-        while (keySet.hasNext()) {
-            final String key = keySet.next();
-
-            if ("upgradeList".equals(key)) {
-                buf.append("<products>");
-                List<PackageInfo> productsList = (List<PackageInfo>) requestParams.get(key);
-                for (PackageInfo info : productsList) {
-                    buf.append("<product package_name=\"").append(info.packageName);
-                    buf.append("\" version_code=\"").append(info.versionCode).append("\"/>");
-                }
-                buf.append("</products>");
-                continue;
-            } else if ("appList".equals(key)) {
-                buf.append("<apps>");
-                List<UpgradeInfo> productsList = (List<UpgradeInfo>) requestParams.get(key);
-                for (UpgradeInfo info : productsList) {
-                    buf.append("<app package_name=\"").append(info.pkgName);
-                    buf.append("\" version_code=\"").append(info.versionCode);
-                    buf.append("\" version_name=\"").append(info.versionName);
-                    buf.append("\" app_name=\"").append(wrapText(info.name));
-//                    buf.append("\" md5=\"").append(info.md5);
-                    buf.append("\"/>");
-                }
-                buf.append("</apps>");
-                continue;
-            }
-
-            buf.append("<").append(key).append(">");
-            buf.append(requestParams.get(key));
-            buf.append("</").append(key).append(">");
-        }
-
-        // add the enclosing quote
-        buf.append("</request>");
-        return buf.toString();
     }
     
     @SuppressWarnings("unchecked")
@@ -290,37 +159,6 @@ public class ApiRequestFactory {
         }
 
         return parameters;
-    }
-    /**
-     * Generate the API JSON request body 
-     */
-    @SuppressWarnings("unchecked")
-    private static String generateJsonRequestBody(Object params) {
-
-        if (params == null) {
-            return "";
-        }
-
-        HashMap<String, Object> requestParams;
-        if (params instanceof HashMap) {
-            requestParams = (HashMap<String, Object>) params;
-        } else {
-            return "";
-        }
-
-        // add parameter node
-        final Iterator<String> keySet = requestParams.keySet().iterator();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            while (keySet.hasNext()) {
-                final String key = keySet.next();
-                jsonObject.put(key, requestParams.get(key));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return "";
-        }
-        return jsonObject.toString();
     }
     
     private static final String[] REPLACE = { "&", "&amp;", "\"", "&quot;", "'", "&apos;", "<",

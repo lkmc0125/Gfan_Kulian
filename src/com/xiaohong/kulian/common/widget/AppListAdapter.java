@@ -53,7 +53,7 @@ import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.DownloadInfo;
 import com.xiaohong.kulian.common.vo.DownloadItem;
 import com.xiaohong.kulian.common.vo.UpgradeInfo;
-import com.xiaohong.kulian.ui.LoginActivity;
+import com.xiaohong.kulian.ui.RegisterActivity;
 import com.xiaohong.kulian.ui.PreloadActivity;
 
 /**
@@ -576,7 +576,7 @@ public class AppListAdapter extends BaseAdapter implements Observer, ApiRequestL
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
                     } else {
-                        Intent loginIntent = new Intent(mContext, LoginActivity.class);
+                        Intent loginIntent = new Intent(mContext, RegisterActivity.class);
                         loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(loginIntent);
                     }

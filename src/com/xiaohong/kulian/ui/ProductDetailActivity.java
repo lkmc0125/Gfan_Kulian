@@ -280,7 +280,7 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
 			} else {
 				// 登录
 				Intent loginIntent = new Intent(getApplicationContext(),
-						LoginActivity.class);
+						RegisterActivity.class);
 				startActivity(loginIntent);
 				return;
 			}

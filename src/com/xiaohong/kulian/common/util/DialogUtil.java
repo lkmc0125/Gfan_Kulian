@@ -134,7 +134,7 @@ public class DialogUtil {
                         if (TextUtils.isEmpty(value)) {
                             // 密码不能为空
                             Utils.makeEventToast(context,
-                                    context.getString(R.string.error_password_empty), false);
+                                    context.getString(R.string.error_verifycode_empty), false);
                         } else {
                             context.removeDialog(id);
 //                            context.purchaseProduct(value);

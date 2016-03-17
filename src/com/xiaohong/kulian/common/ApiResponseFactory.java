@@ -460,6 +460,7 @@ public class ApiResponseFactory {
         }
         HashMap<String, Object> result = null;
         try {
+            //{"ret_msg":"success","invite_code":"523851","ret_code":0,"coin_num":5572,"token":"JNGdT3H0dB7iwfr64OVRMOw7+P+0MBOFFwPGYsUUVzzh+zHeywhpjFe6L2aX6izX"}
             JSONObject jsonObj = new JSONObject(body);
             ArrayList<HashMap<String, Object>> productArray = null;
             result = new HashMap<String, Object>();

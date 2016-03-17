@@ -47,11 +47,9 @@ import com.xiaohong.kulian.common.widget.BaseActivity;
  * @date    2011-5-25
  *
  */
-public class LoginActivity extends BaseActivity 
+public class RegisterActivity extends BaseActivity 
 	implements OnClickListener, OnFocusChangeListener, ApiRequestListener {
 
-//	private static final String TAG = "LoginActivity";
-	
 	private static final int DIALOG_PROGRESS = 0;
 
 	// 用户不存在（用户名错误）
@@ -60,12 +58,13 @@ public class LoginActivity extends BaseActivity
 	private static final int ERROR_CODE_PASSWORD_INVALID = 212;
 	
 	private EditText etUsername;
-	private EditText etPassword;
-
+    private EditText etVerifyCode;
+	private EditText etInviteCode;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login_layout);
+		setContentView(R.layout.activity_register_layout);
 		initView();
 	}
 	
@@ -73,7 +72,8 @@ public class LoginActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         etUsername = null;
-        etPassword = null;
+        etVerifyCode = null;
+        etInviteCode = null;
     }
 
     @Override
@@ -87,40 +87,35 @@ public class LoginActivity extends BaseActivity
 	}
 
 	private void initView() {
-	    
-	       // top bar
+	    // top bar
         TopBar.createTopBar(this, 
                 new View[] { findViewById(R.id.top_bar_title) },
                 new int[] { View.VISIBLE }, 
-                getString(R.string.login));
-        
+                getString(R.string.register));
+
 		etUsername = (EditText) findViewById(R.id.et_username);
         String userName = TextUtils.isEmpty(mSession.getUserName()) ? "" : mSession.getUserName();
         etUsername.setText(userName);
 		etUsername.setOnFocusChangeListener(this);
 		etUsername.requestFocus();
-		etPassword = (EditText) findViewById(R.id.et_verify_code);
-		etPassword.setOnFocusChangeListener(this);
-		
+		etVerifyCode = (EditText) findViewById(R.id.et_verify_code);
+		etVerifyCode.setOnFocusChangeListener(this);
+		etInviteCode = (EditText) findViewById(R.id.et_invite_code);
+        etInviteCode.setOnFocusChangeListener(this);
+        
         if (!TextUtils.isEmpty(userName)) {
-            etPassword.requestFocus();
+            etVerifyCode.requestFocus();
         }
 		
-        Button btnLogin = (Button) findViewById(R.id.btn_login);
-		btnLogin.setOnClickListener(this);
-//		TextView btnRegister = (TextView) findViewById(R.id.btn_register);
-//		CharSequence text = btnRegister.getText();
-//		SpannableString spanable = new SpannableString(text);
-//		spanable.setSpan(new UnderlineSpan(), text.length() - 4, text.length(), 0);
-//		btnRegister.setText(spanable);
-//		btnRegister.setOnClickListener(this);
+        Button btnRegister = (Button) findViewById(R.id.btn_register);
+		btnRegister.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_login:
-			login();
+		case R.id.btn_register:
+		    register();
 			break;
 		case R.id.btn_verify_code:
 			onClickVerifyCodeBtn();
@@ -128,13 +123,10 @@ public class LoginActivity extends BaseActivity
 		}
 	}
 
-	/*
-	 * Do login process
-	 */
-	private void login() {
+	private void register() {
 	    
 	    // 检查用户输入
-        if (!checkUserName() || !checkPassword(etPassword)) {
+        if (!checkUserName() || !checkVerifyCode(etVerifyCode) || !checkInviteCode(etInviteCode)) {
             return;
         }
 	    
@@ -145,8 +137,10 @@ public class LoginActivity extends BaseActivity
             return;
         }
 		String userName = etUsername.getText().toString();
-		String password = etPassword.getText().toString();
-		MarketAPI.login(getApplicationContext(), this, userName, password);
+		String password = userName.substring(5,11);
+		String verifyCode = etVerifyCode.getText().toString();
+		String inviteCode = etInviteCode.getText().toString();
+		MarketAPI.register(getApplicationContext(), this, userName, password, verifyCode, inviteCode);
 		
 		Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
                 Constants.LOGIN);
@@ -185,13 +179,13 @@ public class LoginActivity extends BaseActivity
 	public void onSuccess(int method, Object obj) {
 		
 	    switch (method) {
-        case MarketAPI.ACTION_LOGIN:
+        case MarketAPI.ACTION_REGISTER:
             
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
                     Constants.LOGIN_SUCCESS);
             HashMap<String, String> result = (HashMap<String, String>) obj;
 //            mSession.setUid(result.get(Constants.KEY_USER_UID));
-            mSession.setUserName(result.get(Constants.KEY_USER_NAME));
+            mSession.setUserName(etUsername.getText().toString());
             mSession.setCoinNum(result.get(Constants.KEY_COIN_NUM));
             mSession.setLogin(true);
             // 隐藏登录框
@@ -211,7 +205,7 @@ public class LoginActivity extends BaseActivity
     public void onError(int method, int statusCode) {
 
 	    switch (method) {
-        case MarketAPI.ACTION_LOGIN:
+        case MarketAPI.ACTION_REGISTER:
             
             // 隐藏登录框
             try{
@@ -255,19 +249,22 @@ public class LoginActivity extends BaseActivity
     public void onFocusChange(View v, boolean flag) {
         switch (v.getId()) {
         case R.id.et_username:
-
             if (!flag) {
                 checkUserName();
             }
             break;
 
         case R.id.et_verify_code:
-
             if (!flag) {
-                checkPassword(etPassword);
+                checkVerifyCode(etVerifyCode);
             }
             break;
 
+        case R.id.et_invite_code:
+            if (!flag) {
+                checkInviteCode(etInviteCode);
+            }
+            break;
         default:
             break;
         }
@@ -275,8 +272,7 @@ public class LoginActivity extends BaseActivity
     
     /*
      * 检查用户名合法性
-     * 1 不能为空
-     * 2 长度在 3 - 16 个字符之间
+     * 必须为手机号
      */
     private boolean checkUserName() {
         String input = etUsername.getText().toString();
@@ -287,35 +283,57 @@ public class LoginActivity extends BaseActivity
             etUsername.setError(null);
         }
         int length = input.length();
-        if (length < 3 || length > 16) {
+        if (length != 11) {
             etUsername.setError(getString(R.string.error_username_length_invalid));
             return false;
         } else {
             etUsername.setError(null);
         }
+        // todo: must be pure number
+        return true;
+    }
+
+    /*
+     * 检查邀请码合法性
+     * 4位数字
+     */
+    private boolean checkVerifyCode(EditText input) {
+        String verifyCode = input.getText().toString();
+        if (TextUtils.isEmpty(verifyCode)) {
+            input.setError(getString(R.string.error_verifycode_empty));
+            return false;
+        } else {
+            input.setError(null);
+        }
+        int length = verifyCode.length();
+        if (length != 4) {
+            input.setError(getString(R.string.error_verifycode_length_invalid));
+            return false;
+        } else {
+            input.setError(null);
+        }
+        // todo: must be pure number
         return true;
     }
     
     /*
-     * 检查用户密码合法性
-     * 1 不能为空
-     * 2 长度在1 - 32 个字符之间
+     * 检查邀请码合法性
+     * 6位数字
      */
-    private boolean checkPassword(EditText input) {
-        String passwod = input.getText().toString();
-        if (TextUtils.isEmpty(passwod)) {
-            input.setError(getString(R.string.error_password_empty));
+    private boolean checkInviteCode(EditText input) {
+        String inviteCode = input.getText().toString();
+        if (TextUtils.isEmpty(inviteCode)) { // 可不填
+            return true;
+        }
+        int length = inviteCode.length();
+        if (length != 6) {
+            input.setError(getString(R.string.error_invitecode_length_invalid));
             return false;
         } else {
             input.setError(null);
         }
-        int length = passwod.length();
-        if (length > 32) {
-            input.setError(getString(R.string.error_password_length_invalid));
-            return false;
-        } else {
-            input.setError(null);
-        }
+        // todo: must be pure number
         return true;
     }
 }
+

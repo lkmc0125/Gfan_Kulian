@@ -19,12 +19,13 @@
     <string name="hint_confirm_password">确认密码</string>
     <string name="hint_email">邮箱</string>
     <string name="error_username_empty">手机号不能为空</string>
-    <string name="error_username_length_invalid">用户名必须大于3个字符，小于16个字符</string>
+    <string name="error_username_length_invalid">用户名必须为手机号码</string>
     <string name="error_email_empty">邮箱不能为空</string>
     <string name="error_email_format_invalid">邮箱格式不正确</string>
     <string name="error_email_length_invalid">邮箱必须大于6个字符，小于40个字符</string>
-    <string name="error_password_empty">密码不能为空</string>
-    <string name="error_password_length_invalid">密码必须大于1个字符，小于32个字符</string>
+    <string name="error_verifycode_empty">请填写验证码</string>
+    <string name="error_verifycode_length_invalid">验证码为4位数字</string>
+    <string name="error_invitecode_length_invalid">邀请码为6位数字</string>
     <string name="error_password_not_same">密码不匹配</string>
     <string name="error_username_invalid">用户名不合法，请重新输入</string>
     <string name="error_username_exist">用户名已经被注册，请尝试其他的用户名。</string>

@@ -116,8 +116,9 @@ public class MarketAPI {
 
 		params.put("phone_number", username);
 		params.put("passwd", Utils.getMD5(password));
-		if (verifyCode != null && verifyCode.length() > 0) {
-		    params.put("verify_code", verifyCode);
+		params.put("verify_code", verifyCode);
+		if (inviteCode != null && inviteCode.length() > 0) {
+		    params.put("invite_code", inviteCode);
 		}
 //		if (isLeShi) {
 //	         params.put("leshi", 1);		    

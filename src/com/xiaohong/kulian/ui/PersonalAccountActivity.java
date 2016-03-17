@@ -73,13 +73,13 @@ public class PersonalAccountActivity extends BaseActivity implements
 	//是否已经登陆过
 	private boolean isFirstAccess = true;
 
-	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-		}
-	};
+//	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+//
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			String action = intent.getAction();
+//		}
+//	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +92,9 @@ public class PersonalAccountActivity extends BaseActivity implements
 	
 	@Override
 	protected void onResume() {
-		if (mSession.isLogin() && isFirstAccess) {
-			mProgress.setVisibility(View.VISIBLE);
-		}
+//		if (mSession.isLogin() && isFirstAccess) {
+//			mProgress.setVisibility(View.VISIBLE);
+//		}
 		super.onResume();
 	}
 	
@@ -108,7 +108,7 @@ public class PersonalAccountActivity extends BaseActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		unregisterReceiver(mReceiver);
+//		unregisterReceiver(mReceiver);
 	}
 
 	private void initTopBar() {
@@ -271,7 +271,7 @@ public class PersonalAccountActivity extends BaseActivity implements
 		switch (position) {
         case 0:
             if (!mSession.isLogin()) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
             } else if (mSession.isLogin()) {
                 showDialog(ACCOUNT_REGIST);
