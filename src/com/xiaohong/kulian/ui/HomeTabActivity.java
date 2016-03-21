@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 mAPPn.Inc
+ * Copyright (C) 2016
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,11 +80,7 @@ import com.xiaohong.kulian.common.vo.UpdateInfo;
 import com.xiaohong.kulian.common.widget.BaseTabActivity;
 
 /**
- * Home Tab Activity : 机锋市场的入口页面
- * 
- * @author Andrew
- * @date 2011-5-9
- * @since Version 0.7.0
+ * Home Tab Activity
  */
 public class HomeTabActivity extends BaseTabActivity implements ApiRequestListener,
         OnTabChangeListener, Observer {
@@ -98,7 +94,6 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
 
     // Tab id
     private static final String TAB_HOME = "home";
-    private static final String TAB_CATEGORY = "category";
     private static final String TAB_HUMOR = "humor";
     private static final String TAB_MINE = "mine";
     private static final String TAB_RANK = "rank";
@@ -160,15 +155,15 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         }
     };
     
-    // 检查机锋市场版本更新
+    // 检查版本更新
     private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(Constants.BROADCAST_FORCE_EXIT)) {
-                // 强制退出机锋市场
-//                exit();//jerry注释，取消强制退出
+                // 强制退出
+//                exit();
             } else if (action.equals(Constants.BROADCAST_REMIND_LATTER)) {
                 // do nothing
             } else if (action.equals(Constants.BROADCAST_DOWNLOAD_OPT)) {

@@ -482,12 +482,12 @@ public class AppListAdapter extends BaseAdapter implements Observer, ApiRequestL
 
 		} else if (text instanceof CharSequence) {
 
-            if (mIsRankList && v.getId() == R.id.tv_name) {
-                // 排行榜
-                v.setText((position + 1) + ". " + (CharSequence) text);
-            } else {
+//            if (mIsRankList && v.getId() == R.id.tv_name) {
+//                // 排行榜
+//                v.setText((position + 1) + ". " + (CharSequence) text);
+//            } else {
                 v.setText((CharSequence) text);
-            }
+//            }
 
 		} else if(text instanceof Integer) {
 		    
