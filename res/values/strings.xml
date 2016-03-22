@@ -99,6 +99,7 @@
     <string name="account_logined">已登录，点击注销</string>
     <string name="account_logo_title">登录</string>
     <string name="account_feedback_title">反馈</string>
+    <string name="account_pay_title">支付</string>
     <string name="account_about_title">关于</string>
     <string name="account_clound_title">云推送</string>
     <string name="account_logo_desc">登陆后可开启以下功能与服务</string>
@@ -315,7 +316,8 @@
     <string name="account_title">账户</string>
     <string name="balance_title">余额</string>
     <string name="no_log">暂无交易</string>
-    
+    <string name="pay_result_callback_msg" formatted="false">支付结果：%s</string>
+
     <!-- 文件管理页 -->
     <string name="manager_installed_title">已下载软件</string>
     <string name="apk_title_soft">软件合集</string>
@@ -333,7 +335,7 @@
     <string name="app_counter">%1$s个</string>
     <string name="download_error">下载失败，请重新下载</string>
     <string name="download_error_md5">网络原因文件下载不完整，请重新下载</string>
-    <string name="download_try">正在连接，请稍后...</string>
+    <string name="download_try">正在连接，请稍候...</string>
     <string name="all_apps">全部应用</string>
     <string name="all_downloads">全部下载</string>
     <string name="download_over">下载完成，点击安装，长按删除</string>

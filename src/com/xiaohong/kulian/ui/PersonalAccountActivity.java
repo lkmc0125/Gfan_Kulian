@@ -54,222 +54,225 @@ import com.xiaohong.kulian.common.widget.LoadingDrawable;
  * @date 2011-5-17
  */
 public class PersonalAccountActivity extends BaseActivity implements
-		OnItemClickListener, ApiRequestListener {
+        OnItemClickListener, ApiRequestListener {
 
-	private static final int ACCOUNT_REGIST = 0;
-	private static final int REQUEST_CODE = 20;
-	public static final int REGIST = 1;
-	public static final int CLOUD_BIND = 2;
-	public static final int CLOUD_UNBIND = 3;
+    private static final int ACCOUNT_REGIST = 0;
+    private static final int REQUEST_CODE = 20;
+    public static final int REGIST = 1;
+    public static final int CLOUD_BIND = 2;
+    public static final int CLOUD_UNBIND = 3;
 
-	// 购买信息列表
-	private ListView mList;
-	private FrameLayout mLoading;
+    // 购买信息列表
+    private ListView mList;
+    private FrameLayout mLoading;
 
-	private PersonalAccountAdapter mAdapter;
-	private ProgressBar mProgress;
-	//是否正在云绑定
-	private boolean isBinding;
-	//是否已经登陆过
-	private boolean isFirstAccess = true;
+    private PersonalAccountAdapter mAdapter;
+    private ProgressBar mProgress;
+    //是否正在云绑定
+    private boolean isBinding;
+    //是否已经登陆过
+    private boolean isFirstAccess = true;
 
-//	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+//    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
 //
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			String action = intent.getAction();
-//		}
-//	};
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//        }
+//    };
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_person_account_layout);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_person_account_layout);
 
-		initTopBar();
-		initView();
-	}
-	
-	@Override
-	protected void onResume() {
-//		if (mSession.isLogin() && isFirstAccess) {
-//			mProgress.setVisibility(View.VISIBLE);
-//		}
-		super.onResume();
-	}
-	
-	@Override
-	protected void onPause() {
-		if(mSession.isLogin())
-			isFirstAccess = false;
-		super.onPause();
-	}
+        initTopBar();
+        initView();
+    }
+    
+    @Override
+    protected void onResume() {
+//        if (mSession.isLogin() && isFirstAccess) {
+//            mProgress.setVisibility(View.VISIBLE);
+//        }
+        super.onResume();
+    }
+    
+    @Override
+    protected void onPause() {
+        if(mSession.isLogin())
+            isFirstAccess = false;
+        super.onPause();
+    }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-//		unregisterReceiver(mReceiver);
-	}
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        unregisterReceiver(mReceiver);
+    }
 
-	private void initTopBar() {
-		TopBar.createTopBar(getApplicationContext(),
-				new View[] { findViewById(R.id.top_bar_title) },
-				new int[] { View.VISIBLE },
-				getString(R.string.person_account_title));
-	}
+    private void initTopBar() {
+        TopBar.createTopBar(getApplicationContext(),
+                new View[] { findViewById(R.id.top_bar_title) },
+                new int[] { View.VISIBLE },
+                getString(R.string.person_account_title));
+    }
 
-	private void initView() {
+    private void initView() {
 
-		mList = (ListView) this.findViewById(android.R.id.list);
+        mList = (ListView) this.findViewById(android.R.id.list);
 
-		mLoading = (FrameLayout) findViewById(R.id.loading);
-		mProgress = (ProgressBar) mLoading.findViewById(R.id.progressbar);
-		mProgress.setIndeterminateDrawable(new LoadingDrawable(
-				getApplicationContext()));
-		
-		mAdapter = doInitPayAdapter();
-		mList.setAdapter(mAdapter);
-		mList.setItemsCanFocus(false);
-		mList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		
-		mList.setOnItemClickListener(this);
-	}
-	
-	public boolean getCurrentBindStatue(){
-		return isBinding;
-	}
-	
-	/*
-	 * 初始化支付信息列表
-	 */
-	private PersonalAccountAdapter doInitPayAdapter() {
+        mLoading = (FrameLayout) findViewById(R.id.loading);
+        mProgress = (ProgressBar) mLoading.findViewById(R.id.progressbar);
+        mProgress.setIndeterminateDrawable(new LoadingDrawable(
+                getApplicationContext()));
+        
+        mAdapter = doInitPayAdapter();
+        mList.setAdapter(mAdapter);
+        mList.setItemsCanFocus(false);
+        mList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        
+        mList.setOnItemClickListener(this);
+    }
+    
+    public boolean getCurrentBindStatue(){
+        return isBinding;
+    }
+    
+    /*
+     * 初始化支付信息列表
+     */
+    private PersonalAccountAdapter doInitPayAdapter() {
 
-		return new PersonalAccountAdapter(this,
-				doInitFuncData(),
-				R.layout.activity_personal_account_header_item, new String[] {
-						Constants.ACCOUNT_ICON, Constants.ACCOUNT_TITLE,
-						Constants.ACCOUNT_DESC, Constants.ACCOUNT_TIME,
-						Constants.ACCOUNT_DOWNLOAD, Constants.ACCOUNT_ARROW },
-				new int[] { R.id.iv_icon, R.id.tv_name, R.id.tv_description,
-						R.id.tv_time, R.id.cb_operation, R.id.iv_arrow },
-				mHandler);
-	}
+        return new PersonalAccountAdapter(this,
+                doInitFuncData(),
+                R.layout.activity_personal_account_header_item, new String[] {
+                        Constants.ACCOUNT_ICON, Constants.ACCOUNT_TITLE,
+                        Constants.ACCOUNT_DESC, Constants.ACCOUNT_TIME,
+                        Constants.ACCOUNT_DOWNLOAD, Constants.ACCOUNT_ARROW },
+                new int[] { R.id.iv_icon, R.id.tv_name, R.id.tv_description,
+                        R.id.tv_time, R.id.cb_operation, R.id.iv_arrow },
+                mHandler);
+    }
 
-	/*
-	 * 初始化功能菜单栏数据
-	 * 
-	 * @return
-	 */
-	private ArrayList<HashMap<String, Object>> doInitFuncData() {
-		ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
+    /*
+     * 初始化功能菜单栏数据
+     * 
+     * @return
+     */
+    private ArrayList<HashMap<String, Object>> doInitFuncData() {
+        ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
 
-		int[] icons = new int[] {
-		        R.drawable.person_center_logo,
-//				R.drawable.person_center_payment,
-				R.drawable.person_center_logo,
-				R.drawable.person_center_logo
-				};
-		String[] titles = new String[] {
-				getString(R.string.account_logo_title),
-//				getString(R.string.account_payment_title),
-				getString(R.string.account_feedback_title),
+        int[] icons = new int[] {
+                R.drawable.person_center_logo,
+//                R.drawable.person_center_payment,
+                R.drawable.person_center_logo,
+                R.drawable.person_center_logo,
+                R.drawable.person_center_logo
+                };
+        String[] titles = new String[] {
+                getString(R.string.account_logo_title),
+//                getString(R.string.account_payment_title),
+                getString(R.string.account_feedback_title),
+                getString(R.string.account_pay_title),
                 getString(R.string.account_about_title)
-				};
+                };
 
-		String pkName = this.getPackageName();
-		String versionName = "";
-		try {
+        String pkName = this.getPackageName();
+        String versionName = "";
+        try {
             versionName = this.getPackageManager().getPackageInfo(pkName, 0).versionName;
         } catch (NameNotFoundException e) {
         }
-		
-		String[] descs = new String[] {
-		        getString(R.string.account_logo_desc),
-//				getString(R.string.account_payment_desc),
-				"有问题就反馈",
-				"WIFI酷连 v"+versionName};
+        
+        String[] descs = new String[] {
+                getString(R.string.account_logo_desc),
+//                getString(R.string.account_payment_desc),
+                "有问题就反馈",
+                "买买买",
+                "WIFI酷连 v"+versionName};
 
-		for (int i = 0; i < icons.length; i++) {
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put(Constants.ACCOUNT_ICON, icons[i]);
-			map.put(Constants.ACCOUNT_TITLE, titles[i]);
-			map.put(Constants.ACCOUNT_DESC, descs[i]);
-//			map.put(Constants.ACCOUNT_DOWNLOAD,R.drawable.cloud_off);
-			map.put(Constants.ACCOUNT_ARROW, R.drawable.more_indicator);
-			map.put(Constants.ACCOUNT_TYPE, Constants.FLAG_HEADER_ITEM);
-			data.add(map);
-		}
-		return data;
-	}
+        for (int i = 0; i < icons.length; i++) {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put(Constants.ACCOUNT_ICON, icons[i]);
+            map.put(Constants.ACCOUNT_TITLE, titles[i]);
+            map.put(Constants.ACCOUNT_DESC, descs[i]);
+//            map.put(Constants.ACCOUNT_DOWNLOAD,R.drawable.cloud_off);
+            map.put(Constants.ACCOUNT_ARROW, R.drawable.more_indicator);
+            map.put(Constants.ACCOUNT_TYPE, Constants.FLAG_HEADER_ITEM);
+            data.add(map);
+        }
+        return data;
+    }
 
-	/*
-	 * 将对象PayAndChargeLogs转换成所需的数据格式
-	 */
-	private ArrayList<HashMap<String, Object>> transferDataType(PayAndChargeLogs logs) {
+    /*
+     * 将对象PayAndChargeLogs转换成所需的数据格式
+     */
+    private ArrayList<HashMap<String, Object>> transferDataType(PayAndChargeLogs logs) {
 
-		ArrayList<HashMap<String, Object>> data = null;
-		ArrayList<PayAndChargeLog> logList = logs.payAndChargeLogList;
-		if (logs != null && logList.size() > 0) {
-			data = new ArrayList<HashMap<String, Object>>(logs.totalSize + 1);
-			HashMap<String, Object> group = new HashMap<String, Object>();
-			group.put(Constants.ACCOUNT_TYPE, Constants.FLAG_GROUP_ITEM);
-			group.put(Constants.ACCOUNT_TIME, String.format(
-					this.getString(R.string.account_payed_count),
-					logs.totalSize));
-			group.put(Constants.ACCOUNT_TITLE,
-					this.getString(R.string.account_payed_history));
-			group.put(Constants.KEY_PLACEHOLDER, true);
-			data.add(group);
-			for (PayAndChargeLog log : logList) {
-				HashMap<String, Object> item = new HashMap<String, Object>();
-				String url = log.iconUrl;
-				item.put(Constants.ACCOUNT_ICON, url);
-				item.put(Constants.ACCOUNT_TITLE, log.name);
-				item.put(Constants.ACCOUNT_DESC, String.format(
-						getString(R.string.kulian_money), log.payment));
-				item.put(Constants.ACCOUNT_TIME, log.time + " "
-						+ getString(R.string.account_payed));
-				item.put(Constants.ACCOUNT_TYPE, log.type);
-				data.add(item);
-			}
-		}
-		return data;
-	}
+        ArrayList<HashMap<String, Object>> data = null;
+        ArrayList<PayAndChargeLog> logList = logs.payAndChargeLogList;
+        if (logs != null && logList.size() > 0) {
+            data = new ArrayList<HashMap<String, Object>>(logs.totalSize + 1);
+            HashMap<String, Object> group = new HashMap<String, Object>();
+            group.put(Constants.ACCOUNT_TYPE, Constants.FLAG_GROUP_ITEM);
+            group.put(Constants.ACCOUNT_TIME, String.format(
+                    this.getString(R.string.account_payed_count),
+                    logs.totalSize));
+            group.put(Constants.ACCOUNT_TITLE,
+                    this.getString(R.string.account_payed_history));
+            group.put(Constants.KEY_PLACEHOLDER, true);
+            data.add(group);
+            for (PayAndChargeLog log : logList) {
+                HashMap<String, Object> item = new HashMap<String, Object>();
+                String url = log.iconUrl;
+                item.put(Constants.ACCOUNT_ICON, url);
+                item.put(Constants.ACCOUNT_TITLE, log.name);
+                item.put(Constants.ACCOUNT_DESC, String.format(
+                        getString(R.string.kulian_money), log.payment));
+                item.put(Constants.ACCOUNT_TIME, log.time + " "
+                        + getString(R.string.account_payed));
+                item.put(Constants.ACCOUNT_TYPE, log.type);
+                data.add(item);
+            }
+        }
+        return data;
+    }
 
-	@Override
-	public void onSuccess(int method, Object obj) {
-		switch (method) {
-			
-		default:
-			break;
-		}
-	}
+    @Override
+    public void onSuccess(int method, Object obj) {
+        switch (method) {
+            
+        default:
+            break;
+        }
+    }
 
-	private Handler mHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-			// 注销
-			case REGIST:
-				ArrayList<HashMap<String, Object>> data = doInitFuncData();
-				mAdapter.changeDataSource(data);
-				break;
-			}
-		};
-	};
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+            // 注销
+            case REGIST:
+                ArrayList<HashMap<String, Object>> data = doInitFuncData();
+                mAdapter.changeDataSource(data);
+                break;
+            }
+        };
+    };
 
-	@Override
-	public void onError(int method, int statusCode) {
-		switch (method) {
+    @Override
+    public void onError(int method, int statusCode) {
+        switch (method) {
 
-		default:
-			break;
-		}
-	}
+        default:
+            break;
+        }
+    }
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
-		switch (position) {
-        case 0:
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,    long id) {
+        switch (position) {
+        case 0: {
             if (!mSession.isLogin()) {
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
@@ -277,51 +280,58 @@ public class PersonalAccountActivity extends BaseActivity implements
                 showDialog(ACCOUNT_REGIST);
             }
             break;
-
-		case 1:
-		    Intent intent = new Intent();
+        }
+        case 1: {
+            Intent intent = new Intent();
             intent.setClass(getApplicationContext(), FeedBackActivity.class);
             startActivity(intent);
             break;
-		case 2:
-		    break;
-		default:
-			break;
-		}
-	}
+        }
+        case 2: {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), PayMainActivity.class);
+            startActivity(intent);
+            break;
+        }
+        case 3:
+            break;
+        default:
+            break;
+        }
+    }
 
-	@Override
-	protected Dialog onCreateDialog(final int id) {
-		switch (id) {
-		// 注销帐号
-		case ACCOUNT_REGIST:
-			return new AlertDialog.Builder(this)
-					.setIcon(android.R.drawable.ic_dialog_info)
-					.setTitle(getString(R.string.sure_to_regist))
-					.setPositiveButton(R.string.yes,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									mSession.setLogin(false);
-									mSession.setUid(null);
-									isFirstAccess = true;
-									mHandler.sendEmptyMessage(REGIST);
-								}
-							})
-					.setNegativeButton(R.string.no,
-							new DialogInterface.OnClickListener() {
+    @Override
+    protected Dialog onCreateDialog(final int id) {
+        switch (id) {
+        // 注销帐号
+        case ACCOUNT_REGIST:
+            return new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setTitle(getString(R.string.sure_to_regist))
+                    .setPositiveButton(R.string.yes,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                        int which) {
+                                    mSession.setLogin(false);
+                                    mSession.setUid(null);
+                                    isFirstAccess = true;
+                                    mHandler.sendEmptyMessage(REGIST);
+                                }
+                            })
+                    .setNegativeButton(R.string.no,
+                            new DialogInterface.OnClickListener() {
 
-								public void onClick(DialogInterface dialog,
-										int which) {
-									PersonalAccountActivity.this
-											.dismissDialog(id);
-									mAdapter.notifyDataSetChanged();
-								}
-							}).create();
+                                public void onClick(DialogInterface dialog,
+                                        int which) {
+                                    PersonalAccountActivity.this
+                                            .dismissDialog(id);
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            }).create();
 
-		default:
-			break;
-		}
-		return super.onCreateDialog(id);
-	}
+        default:
+            break;
+        }
+        return super.onCreateDialog(id);
+    }
 }

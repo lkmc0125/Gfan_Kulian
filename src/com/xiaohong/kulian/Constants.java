@@ -506,5 +506,6 @@ public interface Constants {
     static final String OPEN_FILTER = "打开应用过滤";
     // 社区点击次数
     static final String MENU_CLICK_BBS = "打开社区";
-
+    // 微信支付appid(临时demo)
+    static final String APP_ID = "wxb4ba3c02aa476ea1";
 }
