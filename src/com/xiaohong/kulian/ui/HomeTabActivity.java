@@ -273,14 +273,17 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
                                 R.drawable.main_tab_earn_selector))
                 .setContent(new Intent(this, RankTabActivity.class));
         mTabHost.addTab(tab2);
+        
+        
 
-        TabSpec tab3 = mTabHost
+        //marked by free on 20160322 to math new spec
+       /* TabSpec tab3 = mTabHost
                 .newTabSpec(TAB_HUMOR)
                 .setIndicator(
                         createTabView(getApplicationContext(), getString(R.string.main_tab_humor),
                                 R.drawable.main_tab_humor_selector))
                 .setContent(new Intent(this, HumorActivity.class));
-        mTabHost.addTab(tab3);
+        mTabHost.addTab(tab3);*/
 
         TabSpec tab4 = mTabHost
                 .newTabSpec(TAB_MINE)
