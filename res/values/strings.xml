@@ -53,10 +53,10 @@
     <string name="warning_no_download">没有选择任何一款应用</string>
 
     <!-- 首页TAB -->
-    <string name="main_tab_wifi">连Wifi</string>
+    <string name="main_tab_wifi">连接</string>
     <string name="main_tab_earn">赚金币</string>
     <string name="main_tab_humor">搞笑</string>
-    <string name="main_tab_mine">我的</string>
+    <string name="main_tab_mine">个人中心</string>
 
     <!--排行页 -->
     <string name="rank_top_title">赚金币</string>
