@@ -302,6 +302,7 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
             }
         });
         mTabHost.setOnTabChangedListener(this);
+        updateTab(mTabHost);
     }
 
     @Override
@@ -318,6 +319,7 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         }
         mMover.startAnimation(animation);
         mStartX = endX;
+        updateTab(mTabHost);
     }
 
     /*
@@ -675,4 +677,27 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         mSession = null;
         finish();
     }
+    
+    /**
+     * 更新Tab标签的颜色，和字体的颜色
+     * @param tabHost
+     */
+    private void updateTab(final TabHost tabHost) {
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+            View view = tabHost.getTabWidget().getChildAt(i);
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            //tv.setTextSize(16);
+            //tv.setTypeface(Typeface.SERIF, 2); // 设置字体和风格
+            if (tabHost.getCurrentTab() == i) {//选中
+                view.setBackgroundColor(getResources().getColor(R.color.gray_1));//选中后的背景
+                /*tv.setTextColor(this.getResources().getColorStateList(
+                        android.R.color.black));*/
+            } else {//不选中
+                view.setBackgroundColor(getResources().getColor(R.color.banner_background));//非选择的背景
+                /*tv.setTextColor(this.getResources().getColorStateList(
+                        android.R.color.white));*/
+            }
+        }
+    }
+
 }

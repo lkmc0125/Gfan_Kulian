@@ -102,8 +102,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
         // debug
        
         // debug end
-        
-        api.handleIntent(getIntent(), this);
+        //marked by free on 20160323 to avoid NullPointerException
+        //api.handleIntent(getIntent(), this);
     }
 
 	@Override
@@ -111,7 +111,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 		super.onNewIntent(intent);
 		
 		setIntent(intent);
-        api.handleIntent(intent, this);
+		//marked by free on 20160323 to avoid NullPointerException
+        //api.handleIntent(intent, this);
 	}
 
 	@Override
