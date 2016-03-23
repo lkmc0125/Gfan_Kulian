@@ -37,7 +37,7 @@ public class WifiAuthentication {
             }
         }
     };
-    
+
     private void sendShenZhouAuthRequest() throws Exception {
         Log.d(TAG, "sendShenZhouAuthRequest");
         try {
