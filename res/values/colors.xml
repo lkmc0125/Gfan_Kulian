@@ -22,6 +22,7 @@
     <color name="hot2">#FF7800</color>
     <color name="hot3">#FF9600</color>
     <color name="hot4">#FFB400</color>
+    <color name="banner_background">#a2c4c9</color>
 
     <color name="divider_gray">#FFDFDFDF</color>
     <color name="vertical_splitter_color">#C8C8C8</color>

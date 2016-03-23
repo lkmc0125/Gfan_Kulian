@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout 
         android:id="@+id/tab_parent"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
@@ -16,7 +16,7 @@
 			android:layout_height="wrap_content" />
 
 		<!-- Tab contents -->
-		<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+		<FrameLayout 
 			android:id="@android:id/tabcontent"
 			android:layout_width="fill_parent" 
 			android:layout_height="fill_parent"
