@@ -67,7 +67,8 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 						Utils.createTabView(getApplicationContext(),
 								getString(R.string.rank_tab_rcmd)))
 				.setContent(appIntent);
-		mTabHost.addTab(tab1);
+		//do not show recommend tab
+		//mTabHost.addTab(tab1);
 		
         Intent gameIntent = new Intent(getApplicationContext(), ProductListActivity.class);
         gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_APP);
@@ -89,7 +90,8 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 						Utils.createTabView(getApplicationContext(),
 								getString(R.string.rank_tab_game)))
 				.setContent(bookIntent);
-		mTabHost.addTab(tab3);
+		//do not show game tab
+		//mTabHost.addTab(tab3);
 		
         Intent growIntent = new Intent(getApplicationContext(), ProductListActivity.class);
         growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);
