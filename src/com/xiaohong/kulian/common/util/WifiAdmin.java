@@ -112,7 +112,7 @@ public class WifiAdmin {
         return (mWifiInfo == null) ? "NULL" : mWifiInfo.getMacAddress();
     }
  
-    public String getBSSID() {
+    public String getBSSID() { // AP's mac-address
         return (mWifiInfo == null) ? "NULL" : mWifiInfo.getBSSID();
     }
  
