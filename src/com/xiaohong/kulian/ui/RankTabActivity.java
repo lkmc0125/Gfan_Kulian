@@ -110,9 +110,9 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 	 * 初始化Topbar
 	 */
 	private void initTopBar() {
-        TopBar.createTopBar(getApplicationContext(), 
+        /*TopBar.createTopBar(getApplicationContext(), 
                 new View[] { findViewById(R.id.top_bar_title) }, 
-                new int[] { View.VISIBLE }, getString(R.string.rank_top_title));
+                new int[] { View.VISIBLE }, getString(R.string.rank_top_title));*/
 	}
 	
     @Override
