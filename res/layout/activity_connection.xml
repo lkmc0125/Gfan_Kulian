@@ -33,8 +33,6 @@
 		    android:clickable="true"
 		    android:layout_gravity="center"
 		    android:layout_weight="1" />
-		    <!-- android:onClick="authentication"   -->
-		       
 
     </LinearLayout>
     

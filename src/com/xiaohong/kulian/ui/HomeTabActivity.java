@@ -51,6 +51,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -85,7 +86,7 @@ import com.xiaohong.kulian.common.widget.BaseTabActivity;
 public class HomeTabActivity extends BaseTabActivity implements ApiRequestListener,
         OnTabChangeListener, Observer {
 
-    // private static final String TAG = "HomeTabActivity";
+     private static final String TAG = "HomeTabActivity";
 
     // exit menu dialog
     private static final int DIALOG_EXIT = 1;
@@ -274,13 +275,13 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
                 .setContent(new Intent(this, RankTabActivity.class));
         mTabHost.addTab(tab2);
 
-        TabSpec tab3 = mTabHost
-                .newTabSpec(TAB_HUMOR)
-                .setIndicator(
-                        createTabView(getApplicationContext(), getString(R.string.main_tab_humor),
-                                R.drawable.main_tab_humor_selector))
-                .setContent(new Intent(this, HumorActivity.class));
-        mTabHost.addTab(tab3);
+//        TabSpec tab3 = mTabHost
+//                .newTabSpec(TAB_HUMOR)
+//                .setIndicator(
+//                        createTabView(getApplicationContext(), getString(R.string.main_tab_humor),
+//                                R.drawable.main_tab_humor_selector))
+//                .setContent(new Intent(this, HumorActivity.class));
+//        mTabHost.addTab(tab3);
 
         TabSpec tab4 = mTabHost
                 .newTabSpec(TAB_MINE)

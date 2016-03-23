@@ -482,12 +482,7 @@ public class AppListAdapter extends BaseAdapter implements Observer, ApiRequestL
 
 		} else if (text instanceof CharSequence) {
 
-//            if (mIsRankList && v.getId() == R.id.tv_name) {
-//                // 排行榜
-//                v.setText((position + 1) + ". " + (CharSequence) text);
-//            } else {
-                v.setText((CharSequence) text);
-//            }
+            v.setText((CharSequence) text);
 
 		} else if(text instanceof Integer) {
 		    
@@ -591,8 +586,6 @@ public class AppListAdapter extends BaseAdapter implements Observer, ApiRequestL
                     // 开始下载，避免用户多次点击
                     item.put(Constants.KEY_PRODUCT_DOWNLOAD, Constants.STATUS_PENDING);
                     mIconCache.put(pkgName, iconUrl);
-//                    MarketAPI.getDownloadUrl(mContext, AppListAdapter.this, pid,
-//                            Constants.SOURCE_TYPE_GFAN);
                     DownloadItem info = new DownloadItem();
                     info.packageName = pkgName;
                     info.pId = pid;
