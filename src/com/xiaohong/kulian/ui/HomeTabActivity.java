@@ -597,28 +597,29 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
     }
     
     /*
-     * 检查机锋市场的更新
+     * 检查更新
      */
     private void handleUpdate(UpdateInfo info) {
-        int updateLevel = info.getUpdageLevel();
-        if (Constants.NO_UPDATE == updateLevel) {
+        int updateVersionCode = info.getVersionCode();
+        int currentVersionCode = mSession.getVersionCode();
+        if (currentVersionCode >= updateVersionCode) {
             // no update here
             mSession.setUpdateAvailable(false);
             return;
         }
 
         // update the info to local memory
-        mSession.setUpdateInfo(info.getVersionName(), info.getVersionCode(), info.getDescription(),
-                info.getApkUrl(), updateLevel);
+        mSession.setUpdateInfo(info.getVersionCode(), info.getDescription(),
+                info.getApkUrl());
 
         // 有可用升级
-        if (Constants.FORCE_UPDATE == updateLevel) {
+        if (info.getForce()) {
             showDialog(DIALOG_FORCE_UPDATE);
-        } else if (Constants.SUGGEST_UPDATE == updateLevel) {
+        } else {
             showDialog(DIALOG_OPT_UPDATE);
         }
     }
-    
+
     private boolean checkDownload() {
         Cursor cursor = mSession.getDownloadManager().query(
                 new DownloadManager.Query().setFilterById(mSession.getUpdateId()));

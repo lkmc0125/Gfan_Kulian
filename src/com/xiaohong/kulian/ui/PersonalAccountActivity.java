@@ -59,8 +59,6 @@ public class PersonalAccountActivity extends BaseActivity implements
     private static final int ACCOUNT_REGIST = 0;
     private static final int REQUEST_CODE = 20;
     public static final int REGIST = 1;
-    public static final int CLOUD_BIND = 2;
-    public static final int CLOUD_UNBIND = 3;
 
     // 购买信息列表
     private ListView mList;

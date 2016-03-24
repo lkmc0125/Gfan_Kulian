@@ -3,6 +3,7 @@ package com.xiaohong.kulian.common.vo;
 public class UpdateInfo {
 	int updageLevel;
 	int versionCode;
+	boolean force;
 	String versionName;
 	String description;
 	String apkUrl;
@@ -29,6 +30,14 @@ public class UpdateInfo {
 
 	public void setVersionName(String versionName) {
 		this.versionName = versionName;
+	}
+
+	public void setForce(boolean force) {
+	    this.force = force;
+	}
+
+	public boolean getForce() {
+	    return force;
 	}
 
 	public String getDescription() {

@@ -1,6 +1,7 @@
 package com.xiaohong.kulian.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
@@ -22,7 +24,7 @@ public class ConnectionActivity extends BaseActivity {
     private static final String TAG = "ConnectionActivity"; 
     private Button mAuthBtn;
     private WifiAuthentication mAuth;
-
+    private Session mSession;
     private enum ConnectionStatus {
         DISCONNECTED,
         CONNECTED,
@@ -36,6 +38,7 @@ public class ConnectionActivity extends BaseActivity {
         setContentView(R.layout.activity_connection);
         initTopBar();
         mAuth = new WifiAuthentication();
+        mSession = Session.get(getApplicationContext());
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
 
         mAuthBtn = (Button) findViewById(R.id.authenticationBtn);
@@ -80,7 +83,13 @@ public class ConnectionActivity extends BaseActivity {
     }
 
     private boolean isHongWifi(String ssid) {
-        return true;
+        if (ssid == null) {
+            return false;
+        }
+        return ssid.toLowerCase().startsWith("hongwifi")
+                || ssid.toLowerCase().startsWith("ruijie")
+                || ssid.toLowerCase().endsWith("hongwifi")
+                || (ssid.indexOf("小鸿") != -1);
     }
 
     private void authentication () {
@@ -90,6 +99,11 @@ public class ConnectionActivity extends BaseActivity {
     }
 
     private boolean checkCoin() {
+        if (mSession.isLogin() == false) {
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            startActivity(intent);
+            return false;
+        }
         return true;
     }
 

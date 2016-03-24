@@ -143,13 +143,12 @@ public class MarketAPI {
     }
 
 	/**
-     * Get Rank By Category API<br>
-     * 首页排行列表<br>
+     * 获取软件列表
      */
     public static void getAppList(Context context,
             ApiRequestListener handler, int page, String category) {
 
-        Session session = Session.get(context);
+//        Session session = Session.get(context);
 
         HashMap<String, String> categoryMap = new HashMap<String, String>(3);
         categoryMap.put(Constants.CATEGORY_RCMD, "1");
@@ -192,10 +191,7 @@ public class MarketAPI {
 		Session mSession = Session.get(context);
 
 		final HashMap<String, Object> params = new HashMap<String, Object>(4);
-		params.put("package_name", mSession.getPackageName());
 		params.put("version_code", mSession.getVersionCode());
-		params.put("sdk_id", mSession.getCpid());
-		params.put("type", mSession.getDebugType());
 
 		new ApiAsyncTask(context, ACTION_CHECK_NEW_VERSION, handler, params)
 				.execute();

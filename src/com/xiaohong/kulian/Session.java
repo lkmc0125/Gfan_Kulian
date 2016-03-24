@@ -525,15 +525,12 @@ public class Session extends Observable {
         return updateLevel;
     }
 
-    public void setUpdateInfo(String versionName, int versionCode, String description, String url,
-            int level) {
+    public void setUpdateInfo(int versionCode, String description, String url) {
         
         this.isUpdateAvailable = true;
-        this.updateVersionName = versionName;
         this.updateVersionCode = versionCode;
         this.updateVersionDesc = description;
         this.updateUri = url;
-        this.updateLevel = level;
         super.setChanged();
         super.notifyObservers(new Pair<String, Object>(P_UPDATE_AVAILABIE, true));
         super.setChanged();
@@ -542,10 +539,6 @@ public class Session extends Observable {
         super.notifyObservers(new Pair<String, Object>(P_UPDATE_DESC, description));
         super.setChanged();
         super.notifyObservers(new Pair<String, Object>(P_UPDATE_URI, url));
-        super.setChanged();
-        super.notifyObservers(new Pair<String, Object>(P_UPDATE_VERSION_NAME, versionName));
-        super.setChanged();
-        super.notifyObservers(new Pair<String, Object>(P_UPDATE_LEVEL, level));
     }
 
     public long getUpdateId() {

@@ -78,7 +78,6 @@ public class ApiResponseFactory {
      */
     public static Object getResponse(Context context, int action, HttpResponse response) {
 
-        InputStream in = null;
         String inputBody = Utils.getStringResponse(response);
         if (TextUtils.isEmpty(inputBody)) {
             return null;
@@ -108,7 +107,7 @@ public class ApiResponseFactory {
                 
                 // 获取应用详细
                 requestMethod = "ACTION_GET_PRODUCT_DETAIL";
-                result = parseProductDetail2(context, inputBody);
+                result = parseProductDetail(context, inputBody);
                 break;
 
             case MarketAPI.ACTION_GET_APP_LIST:
@@ -123,26 +122,22 @@ public class ApiResponseFactory {
                 
                 // 检查应用版本
                 requestMethod = "ACTION_CHECK_NEW_VERSION";
-                result = parseCheckNewVersion(XmlElement.parseXml(in));
+                result = parseCheckNewVersion(context, inputBody);
                 break;
 
             case MarketAPI.ACTION_CHECK_NEW_SPLASH:
                 
                 // 检查应用更新
                 requestMethod = "ACTION_CHECK_NEW_SPLASH";
-                result = parseNewSplash(XmlElement.parseXml(in));
+//                result = parseNewSplash(XmlElement.parseXml(in));
                 break;
                 
             default:
                 break;
             }
 
-        } catch (XmlPullParserException e) {
-            Utils.D(requestMethod + " has XmlPullParserException", e);
-        } catch (IOException e) {
-            Utils.D(requestMethod + " has IOException", e);
-//        } catch (JSONException e) {
-//            Utils.D(requestMethod + " has JSONException", e);
+        } catch (Exception e) {
+            Utils.D(requestMethod + " has Exception", e);
         }
         if (result != null) {
             Utils.D(requestMethod + "'s Response is : " + result.toString());
@@ -152,106 +147,7 @@ public class ApiResponseFactory {
         return result;
     }
 
-	/*
-     * 获取所有分类列表
-     */
-    private static ArrayList<HashMap<String, Object>> parseAllCategory(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        List<XmlElement> categorys = xmlDocument.getChildren(Constants.KEY_CATEGORY);
-        ArrayList<HashMap<String, Object>> result = null;
-        if (categorys != null) {
-            result = new ArrayList<HashMap<String, Object>>();
-
-            for (int i = 1; i < categorys.size(); i++) {
-                XmlElement category = categorys.get(i);
-                HashMap<String, Object> item = new HashMap<String, Object>();
-                item.put(Constants.KEY_CATEGORY_NAME,
-                        category.getAttribute(Constants.KEY_CATEGORY_NAME));
-                item.put(Constants.KEY_APP_COUNT,
-                        category.getAttribute(Constants.KEY_APP_COUNT));
-                item.put(Constants.KEY_CATEGORY_ICON_URL,
-                        category.getAttribute(Constants.KEY_CATEGORY_ICON_URL));
-                
-                String subCategoryText = category.getChild(Constants.KEY_SUB_CATEGORY, 0).getAttribute(
-                        Constants.KEY_CATEGORY_NAME) + ", ";
-                XmlElement category2 = category.getChild(Constants.KEY_SUB_CATEGORY, 1);
-                if(category2 != null) {
-                    subCategoryText +=  (category2.getAttribute(
-                            Constants.KEY_CATEGORY_NAME) + ", ");
-                }
-                XmlElement category3 = category.getChild(Constants.KEY_SUB_CATEGORY, 2);
-                if(category3 != null) {
-                    subCategoryText += (category3.getAttribute(
-                            Constants.KEY_CATEGORY_NAME) + ", ");
-                }
-                if (subCategoryText.length() > 0) {
-                    subCategoryText = subCategoryText.substring(0, subCategoryText.length() - 2);
-                }
-                item.put(Constants.KEY_TOP_APP, subCategoryText);
-
-                List<XmlElement> subCategorys = category.getChildren(Constants.KEY_SUB_CATEGORY);
-                ArrayList<HashMap<String, Object>> subCategoryList = new ArrayList<HashMap<String, Object>>();
-                for (XmlElement element : subCategorys) {
-                    HashMap<String, Object> subCategory = new HashMap<String, Object>();
-                    subCategory.put(Constants.KEY_CATEGORY_ID,
-                            element.getAttribute(Constants.KEY_CATEGORY_ID));
-                    subCategory.put(Constants.KEY_CATEGORY_NAME,
-                            element.getAttribute(Constants.KEY_CATEGORY_NAME));
-                    subCategory.put(Constants.KEY_APP_COUNT,
-                            element.getAttribute(Constants.KEY_APP_COUNT));
-                    subCategory.put(Constants.KEY_CATEGORY_ICON_URL,
-                            element.getAttribute(Constants.KEY_CATEGORY_ICON_URL));
-                    String app1 = element.getAttribute(Constants.KEY_APP_1);
-                    String app2 = element.getAttribute(Constants.KEY_APP_2);
-                    String app3 = element.getAttribute(Constants.KEY_APP_3);
-                    String topApp = (TextUtils.isEmpty(app1) ? "" : app1 + ", ")
-                            + (TextUtils.isEmpty(app2) ? "" : app2 + ", ")
-                            + (TextUtils.isEmpty(app3) ? "" : app3 +  ", ");
-                    if (topApp.length() > 0) {
-                        topApp = topApp.substring(0, topApp.length() - 2);
-                    }
-                    subCategory.put(Constants.KEY_TOP_APP, topApp);
-                    subCategoryList.add(subCategory);
-                }
-                item.put(Constants.KEY_SUB_CATEGORY, subCategoryList);
-                result.add(item);
-            }
-            
-            // 展开第一个一级列表
-            XmlElement firstCategory = categorys.get(0);
-            List<XmlElement> firstSubCategorys = firstCategory
-                    .getChildren(Constants.KEY_SUB_CATEGORY);
-            for (XmlElement element : firstSubCategorys) {
-                HashMap<String, Object> item = new HashMap<String, Object>();
-                item.put(Constants.KEY_CATEGORY_ID,
-                            element.getAttribute(Constants.KEY_CATEGORY_ID));
-                item.put(Constants.KEY_CATEGORY_NAME,
-                        element.getAttribute(Constants.KEY_CATEGORY_NAME));
-                item.put(Constants.KEY_APP_COUNT,
-                        element.getAttribute(Constants.KEY_APP_COUNT));
-                item.put(Constants.KEY_CATEGORY_ICON_URL,
-                        element.getAttribute(Constants.KEY_CATEGORY_ICON_URL));
-                String app1 = element.getAttribute(Constants.KEY_APP_1);
-                String app2 = element.getAttribute(Constants.KEY_APP_2);
-                String app3 = element.getAttribute(Constants.KEY_APP_3);
-                String topApp = (TextUtils.isEmpty(app1) ? "" : app1 + ", ")
-                        + (TextUtils.isEmpty(app2) ? "" : app2 + ", ")
-                        + (TextUtils.isEmpty(app3) ? "" : app3 +  ", ");
-                if (topApp.length() > 0) {
-                    topApp = topApp.substring(0, topApp.length() - 2);
-                }
-                item.put(Constants.KEY_TOP_APP, topApp);
-                result.add(item);
-            }
-        }
-        return result;
-    }
-    
-    private static Object parseProductDetail2(Context context, String body) {
+    private static Object parseProductDetail(Context context, String body) {
         if (body == null) {
             return null;
         }
@@ -311,142 +207,6 @@ public class ApiResponseFactory {
             }
         } catch (JSONException e) {
           Utils.D("have json exception when parse search result from bbs", e);
-        }
-        return result;
-    }
-
-    /*
-     * 获取产品详细信息 
-     */
-    private static Object parseProductDetail(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        XmlElement product = xmlDocument.getChild(Constants.KEY_PRODUCT, 0);
-        ProductDetail result = null;
-
-        if (product != null) {
-            result = new ProductDetail();
-            result.setPid(product.getAttribute(Constants.KEY_PRODUCT_ID));
-            result.setProductType(product.getAttribute(Constants.KEY_PRODUCT_TYPE));
-            result.setName(product.getAttribute(Constants.KEY_PRODUCT_NAME));
-            result.setPrice(Utils.getInt(product.getAttribute(Constants.KEY_PRODUCT_PRICE)));
-            result.setPayCategory(Utils.getInt(product.getAttribute(Constants.KEY_PRODUCT_PAY_TYPE)));
-            result.setRating(Utils.getInt(product.getAttribute(Constants.KEY_PRODUCT_RATING)));
-            result.setIconUrl(product.getAttribute(Constants.KEY_PRODUCT_ICON_URL));
-            result.setIconUrlLdpi(product.getAttribute(Constants.KEY_PRODUCT_ICON_URL_LDPI));
-            result.setShotDes(product.getAttribute(Constants.KEY_PRODUCT_SHORT_DESCRIPTION));
-            result.setAppSize(Utils.getInt(product.getAttribute(Constants.KEY_PRODUCT_SIZE)));
-            result.setSourceType(product.getAttribute(Constants.KEY_PRODUCT_SOURCE_TYPE));
-            result.setPackageName(product.getAttribute(Constants.KEY_PRODUCT_PACKAGE_NAME));
-            result.setVersionName(product.getAttribute(Constants.KEY_PRODUCT_VERSION_NAME));
-            result.setVersionCode(Utils.getInt(product
-                    .getAttribute(Constants.KEY_PRODUCT_VERSION_CODE)));
-            result.setCommentsCount(Utils.getInt(product
-                    .getAttribute(Constants.KEY_PRODUCT_COMMENTS_COUNT)));
-            result.setRatingCount(Utils.getInt(product
-                    .getAttribute(Constants.KEY_PRODUCT_RATING_COUNT)));
-            result.setDownloadCount(Utils.getInt(product
-                    .getAttribute(Constants.KEY_PRODUCT_DOWNLOAD_COUNT)));
-            result.setLongDescription(product.getAttribute(Constants.KEY_PRODUCT_LONG_DESCRIPTION));
-            result.setAuthorName(product.getAttribute(Constants.KEY_PRODUCT_AUTHOR));
-            result.setPublishTime(Utils.getInt(product
-                    .getAttribute(Constants.KEY_PRODUCT_PUBLISH_TIME)));
-            final String[] screenShot = new String[5];
-            screenShot[0] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_1);
-            screenShot[1] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_2);
-            screenShot[2] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_3);
-            screenShot[3] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_4);
-            screenShot[4] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_5);
-            result.setScreenshot(screenShot);
-            final String[] screenShotLdpi = new String[5];
-            screenShotLdpi[0] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_LDPI_1);
-            screenShotLdpi[1] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_LDPI_2);
-            screenShotLdpi[2] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_LDPI_3);
-            screenShotLdpi[3] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_LDPI_4);
-            screenShotLdpi[4] = product.getAttribute(Constants.KEY_PRODUCT_SCREENSHOT_LDPI_5);
-            result.setScreenshotLdpi(screenShotLdpi);
-            result.setUpReason(product.getAttribute(Constants.KEY_PRODUCT_UP_REASON));
-            result.setUpTime(Utils.getLong(product.getAttribute(Constants.KEY_PRODUCT_UP_TIME)));
-            result.setPermission(product.getAttribute(Constants.KEY_PRODUCT_PERMISSIONS));
-        }
-        return result;
-    }
-    
-    /**
-     * 解析同步应用
-     */
-    private static Object parseSyncApps(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-        UpdateInfo updateInfo = new UpdateInfo();
-
-        updateInfo.setUpdageLevel(Integer.valueOf(xmlDocument.getChild(
-                Constants.EXTRA_UPDATE_LEVEL, 0).getText()));
-        updateInfo.setVersionCode(Integer.valueOf(xmlDocument.getChild(
-                Constants.EXTRA_VERSION_CODE, 0).getText()));
-        updateInfo.setVersionName(xmlDocument.getChild(
-                Constants.EXTRA_VERSION_NAME, 0).getText());
-        updateInfo.setDescription(xmlDocument.getChild(
-                Constants.EXTRA_DESCRIPTION, 0).getText());
-        updateInfo.setApkUrl(xmlDocument.getChild(Constants.EXTRA_URL, 0)
-                .getText());
-
-        return updateInfo;
-    }
-
-    /*
-     * 解析我的评星结果
-     */
-    private static Object parseMyRating(XmlElement xmlDocument) {
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        XmlElement element = xmlDocument.getChild(Constants.KEY_PRODUCT_RATING, 0);
-        if (element != null) {
-            return element.getAttribute(Constants.KEY_VALUE);
-        }
-        return null;
-    }
-
-    /*
-     * 解析评论列表
-     */
-    private static Object parseComments(XmlElement xmlDocument) {
-        if (xmlDocument == null) {
-            return null;
-        }
-        HashMap<String, Object> result = null;
-        XmlElement comments = xmlDocument.getChild(Constants.KEY_COMMENTS, 0);
-        if (comments != null) {
-            result = new HashMap<String, Object>();
-            
-            int totalSize = Utils.getInt(comments.getAttribute(Constants.KEY_TOTAL_SIZE));
-            result.put(Constants.KEY_TOTAL_SIZE, totalSize);
-            
-            if (totalSize > 0) {
-                ArrayList<HashMap<String, Object>> commentList = new ArrayList<HashMap<String, Object>>();
-                List<XmlElement> children = comments.getChildren(Constants.KEY_COMMENT);
-                for (XmlElement element : children) {
-                    HashMap<String, Object> commentEntity = new HashMap<String, Object>();
-
-                    commentEntity.put(Constants.KEY_COMMENT_ID,
-                            element.getAttribute(Constants.KEY_COMMENT_ID));
-                    commentEntity.put(Constants.KEY_COMMENT_AUTHOR,
-                            element.getAttribute(Constants.KEY_COMMENT_AUTHOR));
-                    commentEntity.put(Constants.KEY_COMMENT_BODY,
-                            element.getAttribute(Constants.KEY_COMMENT_BODY));
-                    long millis = Utils.getLong(element.getAttribute(Constants.KEY_COMMENT_DATE));
-                    commentEntity.put(Constants.KEY_COMMENT_DATE, Utils.formatTime(millis));
-                    commentList.add(commentEntity);
-                }
-                result.put(Constants.KEY_COMMENT_LIST, commentList);
-            }
         }
         return result;
     }
@@ -529,68 +289,7 @@ public class ApiResponseFactory {
             }
             
         } catch (JSONException e) {
-            Utils.D("have json exception when parse search result from bbs", e);
-        }
-        return result;
-    }
-    
-    /*
-     * 检查可更新产品列表
-     */
-    private static String parseUpgrade(Context context, XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return "";
-        }
-
-        XmlElement products = xmlDocument.getChild(Constants.KEY_PRODUCTS, 0);
-        String count = "";
-        if (products != null) {
-            List<XmlElement> productList = products.getChildren(Constants.KEY_PRODUCT);
-            if (productList == null) {
-                // 没有可更新的应用
-                return count;
-            }
-            ArrayList<UpgradeInfo> list = new ArrayList<UpgradeInfo>();
-            for (XmlElement element : productList) {
-                UpgradeInfo info = new UpgradeInfo();
-                info.pid = element.getAttribute(Constants.KEY_PRODUCT_ID);
-                info.pkgName = element.getAttribute(Constants.KEY_PRODUCT_PACKAGE_NAME);
-                info.versionName = element.getAttribute(Constants.KEY_PRODUCT_VERSION_NAME);
-                info.versionCode = Utils.getInt(element
-                        .getAttribute(Constants.KEY_PRODUCT_VERSION_CODE));
-                info.update = 0;
-                list.add(info);
-            }
-            count = String.valueOf(DBUtils.addUpdateProduct(context, list));
-        }
-        return count;
-    }
-
-    /**
-     * 获取同步购买列表
-     */
-    private static Object parseSyncBuyLog(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        XmlElement products = xmlDocument.getChild(Constants.KEY_PRODUCTS, 0);
-        if (products == null) {
-            return null;
-        }
-        List<XmlElement> productList = products.getChildren(Constants.KEY_PRODUCT);
-        if (productList == null) {
-            return null;
-        }
-        List<BuyLog> result = new ArrayList<BuyLog>();
-        for (int i = 0, length = productList.size(); i < length; i++) {
-            XmlElement product = products.getChild(Constants.KEY_PRODUCT, i);
-            BuyLog buyLog = new BuyLog();
-            buyLog.pId = product.getAttribute(Constants.KEY_PRODUCT_ID);
-            buyLog.packageName = product.getAttribute(Constants.PRODUCT_PACKAGENAME);
-            result.add(buyLog);
+            Utils.D("have json exception when parse app list", e);
         }
         return result;
     }
@@ -598,51 +297,24 @@ public class ApiResponseFactory {
     /**
      * 检查是否有新版本
      */
-    private static Object parseCheckNewVersion(XmlElement xmlDocument) {
-        if (xmlDocument == null) {
+    private static Object parseCheckNewVersion(Context context, String body) {
+        if (body == null) {
             return null;
         }
-
-        int level = Utils.getInt(xmlDocument.getChild(Constants.EXTRA_UPDATE_LEVEL, 0).getText());
-
-        if (level == 0) {
-            File root = new File(Environment.getExternalStorageDirectory(),
-                    Constants.IMAGE_CACHE_DIR);
-            root.mkdirs();
-            File output = new File(root, "aMarket.apk");
-            output.delete();
-            return null;
+        try {
+            JSONObject jsonObj = new JSONObject(body);
+            if (jsonObj.getInt("ret_code") == 0) {
+                UpdateInfo updateInfo = new UpdateInfo();
+                updateInfo.setForce(jsonObj.getBoolean("force"));
+                updateInfo.setVersionCode(jsonObj.getInt("versionCode"));
+                updateInfo.setDescription(jsonObj.getString("desc"));
+                updateInfo.setApkUrl(jsonObj.getString("url"));
+                return updateInfo;
+            }
+        } catch (JSONException e) {
+            Utils.D("have json exception when parse new version info", e);
         }
-        
-        UpdateInfo updateInfo = new UpdateInfo();
-        updateInfo.setUpdageLevel(level);
-        updateInfo.setVersionCode(Utils.getInt(xmlDocument
-                .getChild(Constants.EXTRA_VERSION_CODE, 0).getText()));
-        updateInfo.setVersionName(xmlDocument.getChild(Constants.EXTRA_VERSION_NAME, 0).getText());
-        updateInfo.setDescription(xmlDocument.getChild(Constants.EXTRA_DESCRIPTION, 0).getText());
-        updateInfo.setApkUrl(xmlDocument.getChild(Constants.EXTRA_URL, 0).getText());
-        return updateInfo;
-    }
-    
-    /*
-     * 获取产品下载信息 
-     */
-    private static DownloadItem parseDownloadInfo(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        DownloadItem item = null;
-        XmlElement downloadInfo = xmlDocument.getChild(Constants.KEY_DOWNLOAD_INFO, 0);
-        if (downloadInfo != null) {
-            item = new DownloadItem();
-            item.pId = downloadInfo.getAttribute(Constants.KEY_PRODUCT_ID);
-            item.packageName = downloadInfo.getAttribute(Constants.KEY_PRODUCT_PACKAGE_NAME);
-            item.url = downloadInfo.getAttribute(Constants.KEY_PRODUCT_DOWNLOAD_URI);
-            item.fileMD5 = downloadInfo.getAttribute(Constants.KEY_PRODUCT_MD5);
-        }
-        return item;
+        return null;
     }
 
     /*
@@ -665,139 +337,7 @@ public class ApiResponseFactory {
         }
         return info;
     }
-    
-    /*
-     * 解析支付历史
-     */
-    private static PayAndChargeLogs parseGetPayLog(Context context,
-            XmlElement xmlDocument) {
 
-        if (xmlDocument == null) {
-            return null;
-        }
-        PayAndChargeLogs result = null;
-        XmlElement logs = xmlDocument.getChild(Constants.KEY_PAY_LOGS, 0);
-        if (logs != null) {
-            result = new PayAndChargeLogs();
-            result.endPosition = Utils.getInt(logs.getAttribute(Constants.KEY_END_POSITION));
-            result.totalSize = Utils.getInt(logs.getAttribute(Constants.KEY_TOTAL_SIZE));
-
-            List<XmlElement> consumes = logs.getChildren(Constants.KEY_PAY_CONSUME);
-            getPayAndChargeLog(consumes, result, Constants.KEY_PAY_CONSUME);
-            List<XmlElement> charges = logs
-                    .getChildren(Constants.KEY_PAY_CHARGE);
-            getPayAndChargeLog(charges, result, Constants.KEY_PAY_CHARGE);
-
-            List<XmlElement> buyApps = logs
-                    .getChildren(Constants.KEY_PAY_BUY_APP);
-            getPayAndChargeLog(buyApps, result, Constants.KEY_PAY_BUY_APP);
-        }
-        return result;
-    }
-    
-    /*
-     * 读取consume,charge,buy_app标签
-     */
-    private static void getPayAndChargeLog(List<XmlElement> tags, PayAndChargeLogs result,
-            String flag) {
-        if (tags != null && tags.size() > 0) {
-            for (XmlElement tag : tags) {
-                PayAndChargeLog log = new PayAndChargeLog();
-                log.name = tag.getAttribute(Constants.KEY_PAY_FLAG);
-                log.id = Utils.getInt(tag.getAttribute(Constants.KEY_PAY_ORDER_ID));
-                log.desc = tag.getAttribute(Constants.KEY_PAY_DESCRIPTION);
-                log.time = Utils.formatDate(Utils.getLong(tag.getAttribute(Constants.KEY_PAY_TIME)));
-                log.payment = (int) Utils.getFloat(tag.getAttribute(Constants.KEY_PAY_MONEY));
-
-                if (Constants.KEY_PAY_CONSUME.equals(flag)) {
-                    log.type = PayAndChargeLog.TYPE_CONSUME;
-                } else if (Constants.KEY_PAY_CHARGE.equals(flag)) {
-                    log.type = PayAndChargeLog.TYPE_CHARGE;
-                } else if (Constants.KEY_PAY_BUY_APP.equals(flag)) {
-                    log.id = Utils.getInt(tag.getAttribute(Constants.KEY_PRODUCT_ID));
-                    log.name = tag.getAttribute(Constants.KEY_PRODUCT_NAME);
-                    log.iconUrl = tag.getAttribute(Constants.KEY_CATEGORY_ICON_URL);
-                    log.type = PayAndChargeLog.TYPE_MARKET;
-                    log.sourceType = Utils.getInt(tag
-                            .getAttribute(Constants.KEY_PRODUCT_SOURCE_TYPE));
-                }
-                result.payAndChargeLogList.add(log);
-            }
-        }
-    }
-    
-    /*
-     * 同步充值卡信息
-     */
-    private static CardsVerifications parseSyncCardinfo(Context context, XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-        CardsVerifications results = new CardsVerifications();
-        results.version = Utils.getInt(xmlDocument.getAttribute(Constants.REMOTE_VERSION));
-
-        List<XmlElement> cards = xmlDocument.getChildren(Constants.PAY_CARD);
-        for (XmlElement card : cards) {
-            CardsVerification subCard = new CardsVerification();
-            subCard.name = card.getAttribute(Constants.KEY_USER_NAME);
-            subCard.pay_type = card.getAttribute(Constants.PAY_TYPE);
-            subCard.accountNum = Utils.getInt(card.getAttribute(Constants.ACCOUNT_LEN));
-            subCard.passwordNum = Utils.getInt(card.getAttribute(Constants.PASSWORD_LEN));
-            subCard.credit = card.getAttribute(Constants.PAY_CREDIT);
-            results.cards.add(subCard);
-        }
-        return results;
-    }
-    
-    /*
-     * 解析充值结果
-     */
-    private static String parseChargeResult(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        XmlElement result = xmlDocument.getChild(Constants.PAY_RESULT, 0);
-        if (result != null) {
-            return result.getAttribute(Constants.KEY_PAY_ORDER_ID);
-        }
-        return null;
-    }
-    
-    /*
-     * 解析充值结果(按订单号)
-     */
-    private static int parseQueryChargeResultByOderID(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return 0;
-        }
-
-        XmlElement result = xmlDocument.getChild(Constants.PAY_RESULT, 0);
-        if (result != null) {
-            return Utils.getInt(result.getAttribute(Constants.KEY_PAY_STATUS));
-        }
-        return 0;
-    }
-    
-    /*
-     * 解析查询余额
-     */
-    private static String parseGetBalance(XmlElement xmlDocument) {
-
-        if (xmlDocument == null) {
-            return null;
-        }
-
-        XmlElement result = xmlDocument.getChild(Constants.RESULT, 0);
-        if (result != null) {
-            return result.getText();
-        }
-        return null;
-    }
-    
     /*
      * 解析支付宝订单结果
      */
