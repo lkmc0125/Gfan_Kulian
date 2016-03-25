@@ -18,6 +18,9 @@ package com.xiaohong.kulian.ui;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -50,27 +53,27 @@ import com.xiaohong.kulian.common.widget.BaseActivity;
  *
  */
 public class RegisterActivity extends BaseActivity 
-	implements OnClickListener, OnFocusChangeListener, ApiRequestListener {
+    implements OnClickListener, OnFocusChangeListener, ApiRequestListener {
 
-	private static final String TAG = "RegisterActivity";
-	private static final int DIALOG_PROGRESS = 0;
+    private static final String TAG = "RegisterActivity";
+    private static final int DIALOG_PROGRESS = 0;
 
-	// 用户不存在（用户名错误）
-	private static final int ERROR_CODE_USERNAME_NOT_EXIST = 211;
-	// 用户密码错误
-	private static final int ERROR_CODE_PASSWORD_INVALID = 212;
-	
-	private EditText etUsername;
+    // 用户不存在（用户名错误）
+    private static final int ERROR_CODE_USERNAME_NOT_EXIST = 211;
+    // 用户密码错误
+    private static final int ERROR_CODE_PASSWORD_INVALID = 212;
+    
+    private EditText etUsername;
     private EditText etVerifyCode;
-	private EditText etInviteCode;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register_layout);
-		initView();
-	}
-	
+    private EditText etInviteCode;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register_layout);
+        initView();
+    }
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -80,94 +83,108 @@ public class RegisterActivity extends BaseActivity
     }
 
     @Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			setResult(Activity.RESULT_CANCELED);
-			finish();
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
-	private void initView() {
-	    // top bar
+    private void initView() {
+        // top bar
         TopBar.createTopBar(this, 
                 new View[] { findViewById(R.id.top_bar_title) },
                 new int[] { View.VISIBLE }, 
                 getString(R.string.register));
 
-		etUsername = (EditText) findViewById(R.id.et_username);
+        etUsername = (EditText) findViewById(R.id.et_username);
         String userName = TextUtils.isEmpty(mSession.getUserName()) ? "" : mSession.getUserName();
         etUsername.setText(userName);
-		etUsername.setOnFocusChangeListener(this);
-		etUsername.requestFocus();
-		etVerifyCode = (EditText) findViewById(R.id.et_verify_code);
-		etVerifyCode.setOnFocusChangeListener(this);
-		etInviteCode = (EditText) findViewById(R.id.et_invite_code);
+        etUsername.setOnFocusChangeListener(this);
+        etUsername.requestFocus();
+        etVerifyCode = (EditText) findViewById(R.id.et_verify_code);
+        etVerifyCode.setOnFocusChangeListener(this);
+        etInviteCode = (EditText) findViewById(R.id.et_invite_code);
         etInviteCode.setOnFocusChangeListener(this);
         
         if (!TextUtils.isEmpty(userName)) {
             etVerifyCode.requestFocus();
         }
-		
+        
         Button btnRegister = (Button) findViewById(R.id.btn_register);
-		btnRegister.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
         Button btnVerifyCode = (Button) findViewById(R.id.btn_verify_code);
         btnVerifyCode.setOnClickListener(this);
-	}
+    }
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.btn_register:
-		    register();
-			break;
-		case R.id.btn_verify_code:
-			onClickVerifyCodeBtn();
-			break;
-		}
-	}
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.btn_register:
+            register();
+            break;
+        case R.id.btn_verify_code:
+            onClickVerifyCodeBtn();
+            break;
+        }
+    }
 
-	private void register() {
-	    
-	    // 检查用户输入
+    private void register() {
+        
+        // 检查用户输入
         if (!checkUserName() || !checkVerifyCode(etVerifyCode) || !checkInviteCode(etInviteCode)) {
             return;
         }
-	    
+        
         if (!isFinishing()) {
             showDialog(DIALOG_PROGRESS);
         } else {
             // 如果当前页面已经关闭，不进行登录操作
             return;
         }
-		String userName = etUsername.getText().toString();
-		String password = userName.substring(5,11);
-		String verifyCode = etVerifyCode.getText().toString();
-		String inviteCode = etInviteCode.getText().toString();
-		MarketAPI.register(getApplicationContext(), this, userName, password, verifyCode, inviteCode);
-		
-		Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
+        String userName = etUsername.getText().toString();
+        String password = userName.substring(5,11);
+        String verifyCode = etVerifyCode.getText().toString();
+        String inviteCode = etInviteCode.getText().toString();
+        MarketAPI.register(getApplicationContext(), this, userName, password, verifyCode, inviteCode);
+        
+        Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
                 Constants.LOGIN);
-	}
+    }
 
-	private void onClickVerifyCodeBtn() {
-		if (checkUserName()) {
-			String url = MarketAPI.API_BASE_URL+"appverifycode?phone_number="+etUsername.getText().toString();
-			if (Utils.isLeShiMobile()) {
-				url += "&leshi=1";
-			}
-			byte[] ret = Utils.httpGet(url);
-			if (ret != null) {
-				try {
-					String result = new String(ret, "UTF-8");
-					Log.d(TAG, result);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+    private void onClickVerifyCodeBtn() {
+        if (checkUserName()) {
+            String url = MarketAPI.API_BASE_URL+"appverifycode?phone_number="+etUsername.getText().toString();
+            if (Utils.isLeShiMobile()) {
+                url += "&leshi=1";
+            }
+            byte[] ret = Utils.httpGet(url);
+            if (ret != null) {
+                try {
+                    String result = new String(ret, "UTF-8");
+                    try {
+                        JSONObject obj = new JSONObject(result);
+                        if (obj.getInt("ret_code") == 0) {
+                            Utils.makeEventToast(getApplicationContext(), "验证码已通过短信发送", false);
+                        } else {
+                            Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
+                        }
+                        
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    
+                    
+                    Log.d(TAG, result);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
@@ -193,11 +210,11 @@ public class RegisterActivity extends BaseActivity
         }
     }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     @Override
-	public void onSuccess(int method, Object obj) {
-		
-	    switch (method) {
+    public void onSuccess(int method, Object obj) {
+        
+        switch (method) {
         case MarketAPI.ACTION_REGISTER:
             
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
@@ -218,12 +235,12 @@ public class RegisterActivity extends BaseActivity
         default:
             break;
         }
-	}
+    }
 
-	@Override
+    @Override
     public void onError(int method, int statusCode) {
 
-	    switch (method) {
+        switch (method) {
         case MarketAPI.ACTION_REGISTER:
             
             // 隐藏登录框
