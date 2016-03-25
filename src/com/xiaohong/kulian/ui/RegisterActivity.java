@@ -17,6 +17,8 @@ package com.xiaohong.kulian.ui;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,8 +26,14 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
@@ -66,12 +74,77 @@ public class RegisterActivity extends BaseActivity
     private EditText etUsername;
     private EditText etVerifyCode;
     private EditText etInviteCode;
+    private SmsObserver mSmsObserver;
     
+    class SmsObserver extends ContentObserver {
+
+        public SmsObserver(Context context, Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            // 每当有新短信到来时，使用我们获取短消息的方法
+            getSmsFromPhone();
+        }
+    }
+
+    public Handler smsHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            System.out.println("smsHandler 执行了.....");
+        };
+    };
+
+    private Uri SMS_INBOX = Uri.parse("content://sms/");
+
+    public void getSmsFromPhone() {
+        ContentResolver cr = getContentResolver();
+        String[] projection = new String[] { "body", "address", "person" };// "_id",
+                                                                            // "address",
+        // "person",, "date",
+        // "type
+        String where = " date >  " + (System.currentTimeMillis() - 10 * 60 * 1000);
+        Cursor cur = null;
+        try {  
+            cur = cr.query(SMS_INBOX, projection, where, null, "date desc"); 
+        } catch (Exception e) {
+            e.printStackTrace();  
+            return ;  
+        }
+
+        if (null == cur)
+            return;
+        if (cur.moveToNext()) {
+            String number = cur.getString(cur.getColumnIndex("address"));// 手机号
+            String name = cur.getString(cur.getColumnIndex("person"));// 联系人姓名列表
+            String body = cur.getString(cur.getColumnIndex("body"));
+
+            System.out.println(">>>>>>>>>>>>>>>>手机号：" + number);
+            System.out.println(">>>>>>>>>>>>>>>>联系人姓名列表：" + name);
+            System.out.println(">>>>>>>>>>>>>>>>短信的内容：" + body);
+
+            // 【小鸿网络】您的验证码是8992。如非本人操作，请忽略本短信
+            Pattern pattern = Pattern.compile("【小鸿网络】您的验证码是[0-9]{4}");
+            Matcher matcher = pattern.matcher(body);
+            if (matcher.find()) {
+                String match = matcher.group();
+                String res = match.substring(12, 16);// 获取短信中的验证码
+
+                System.out.println(res);
+                etVerifyCode.setText(res);
+                // stop observer
+                getContentResolver().unregisterContentObserver(mSmsObserver);
+            }
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_layout);
         initView();
+        mSmsObserver = new SmsObserver(this, smsHandler);
     }
     
     @Override
@@ -156,6 +229,9 @@ public class RegisterActivity extends BaseActivity
 
     private void onClickVerifyCodeBtn() {
         if (checkUserName()) {
+            // start observe sms
+            getContentResolver().registerContentObserver(SMS_INBOX, true, mSmsObserver);
+
             String url = MarketAPI.API_BASE_URL+"/appverifycode?phone_number="+etUsername.getText().toString();
             if (Utils.isLeShiMobile()) {
                 url += "&leshi=1";

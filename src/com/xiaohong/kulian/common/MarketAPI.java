@@ -62,7 +62,9 @@ public class MarketAPI {
         // ACTION_GET_PRODUCT_DETAIL
         API_BASE_URL + "/appdetail",
         // ACTION_CHECK_NEW_SPLASH
-        API_BASE_URL + "/checkNewSplash"
+        API_BASE_URL + "/checkNewSplash",
+        // ACTION_GET_SSID_LIST
+        API_BASE_URL + "/get_ssidlist"
         };
 
     /** 检查更新 */
@@ -77,7 +79,8 @@ public class MarketAPI {
     public static final int ACTION_GET_PRODUCT_DETAIL = 4;
     /** 检查SPLASH更新 */
     public static final int ACTION_CHECK_NEW_SPLASH = 5;
-
+    /** 获取SSID列表 */
+    public static final int ACTION_GET_SSID_LIST = 6;
 	/**
 	 * Register API<br>
 	 * Do the register process, UserName, Password, Email must be provided.<br>

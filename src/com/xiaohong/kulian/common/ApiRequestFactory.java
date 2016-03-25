@@ -64,6 +64,7 @@ public class ApiRequestFactory {
         S_GET_REQUESTS.add(MarketAPI.ACTION_CHECK_NEW_VERSION);
         S_GET_REQUESTS.add(MarketAPI.ACTION_REGISTER);
         S_GET_REQUESTS.add(MarketAPI.ACTION_LOGIN);
+        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_SSID_LIST);
     }
     
     // justify the G-Header

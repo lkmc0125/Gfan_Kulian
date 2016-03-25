@@ -223,6 +223,7 @@ public class Session extends Observable {
     /** 默认的支付方式 */
     private String mDefaultChargeType;
 
+    private ArrayList<String> mSSIDList; // xiaohong wifi name list
     /**
      * default constructor
      * @param context
@@ -257,7 +258,7 @@ public class Session extends Observable {
                 HashMap<String, Object> preference = mSessionManager.readPreference();
                 uid = (String) preference.get(P_UID);
                 screenSize = (String) preference.get(P_SCREEN_SIZE);
-                isLogin = (Boolean) preference.get(P_ISLOGIN);
+//                isLogin = (Boolean) preference.get(P_ISLOGIN);
                 isAutoClearCache = (Boolean) preference.get(P_CLEAR_CACHE);
                 userName = (String) preference.get(P_MARKET_USERNAME);
                 password = (String) preference.get(P_MARKET_PASSWORD);
@@ -816,7 +817,15 @@ public class Session extends Observable {
         mUpdateApps = list;
         mHandler.sendEmptyMessage(CURSOR_UPDATE);
     }
-	
+
+    public ArrayList<String> getSSIDList() {
+        return mSSIDList;
+    }
+
+    public void setSSIDList(ArrayList<String> ssidList) {
+        mSSIDList = ssidList;
+    }
+
     private ContentObserver mCursorObserver = new ContentObserver(mHandler) {
         @Override
         public void onChange(boolean selfChange) {

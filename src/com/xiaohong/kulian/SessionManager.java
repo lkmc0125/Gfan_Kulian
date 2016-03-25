@@ -288,7 +288,7 @@ public class SessionManager implements Observer {
 		data.put(P_UID, uid);
 		data.put(P_SCREEN_SIZE, mPreference.getString(P_SCREEN_SIZE, "320#480"));
 		data.put(P_OS_VERSION, mPreference.getInt(P_OS_VERSION, 0));
-		data.put(P_ISLOGIN, mPreference.getBoolean(P_ISLOGIN, false));
+//		data.put(P_ISLOGIN, mPreference.getBoolean(P_ISLOGIN, false));
 		String username = mPreference.getString(P_MARKET_USERNAME, "");
 		if (username == null) {
 			username = "";

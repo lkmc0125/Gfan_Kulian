@@ -126,12 +126,14 @@ public class ApiResponseFactory {
                 break;
 
             case MarketAPI.ACTION_CHECK_NEW_SPLASH:
-                
-                // 检查应用更新
+                // 检查splash更新
                 requestMethod = "ACTION_CHECK_NEW_SPLASH";
 //                result = parseNewSplash(XmlElement.parseXml(in));
                 break;
                 
+            case MarketAPI.ACTION_GET_SSID_LIST:
+                requestMethod = "ACTION_GET_SSID_LIST";
+                result = parseSSIDList(context, inputBody);
             default:
                 break;
             }
@@ -248,9 +250,8 @@ public class ApiResponseFactory {
             Session session = Session.get(context);
             ArrayList<String> installedApps = session.getInstalledApps();
             if (jsonObj.getInt("ret_code") == 0) {
-                JSONObject jsonBody = new JSONObject(body);
                 productArray = new ArrayList<HashMap<String, Object>>();
-                JSONArray array = jsonBody.getJSONArray("applist");
+                JSONArray array = jsonObj.getJSONArray("applist");
 
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject obj = array.getJSONObject(i);
@@ -277,7 +278,6 @@ public class ApiResponseFactory {
                     item.put(Constants.KEY_PRODUCT_NAME, obj.getString("AppName"));
                     item.put(Constants.KEY_PRODUCT_AUTHOR, "author");
                     item.put(Constants.KEY_PRODUCT_SUB_CATEGORY, "category");
-                    // todo :: download url
                     item.put(Constants.KEY_PRODUCT_PAY_TYPE, 0);
                     item.put(Constants.KEY_PRODUCT_RATING, 100);
                     item.put(Constants.KEY_PRODUCT_SIZE, obj.getString("AppSize"));
@@ -338,6 +338,27 @@ public class ApiResponseFactory {
         return info;
     }
 
+    private static ArrayList<String> parseSSIDList(Context context, String body) {
+        if (body == null) {
+            return null;
+        }
+        try {
+            JSONObject jsonObj = new JSONObject(body);
+            ArrayList<String> ssidArray = null;
+            if (jsonObj.getInt("ret_code") == 0) {
+                ssidArray = new ArrayList<String>();
+                JSONArray array = jsonObj.getJSONArray("ssidlist");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject obj = array.getJSONObject(i);
+                    ssidArray.add(obj.getString("ssid"));
+                }
+                return ssidArray;
+            }
+        } catch (JSONException e) {
+            Utils.D("have json exception when parse new version info", e);
+        }
+        return null;
+    }
     /*
      * 解析支付宝订单结果
      */

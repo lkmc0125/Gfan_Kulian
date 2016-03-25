@@ -3,8 +3,10 @@ package com.xiaohong.kulian.ui;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
@@ -19,16 +21,25 @@ import android.widget.Button;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.common.MarketAPI;
+import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
-public class ConnectionActivity extends BaseActivity {
+public class ConnectionActivity extends BaseActivity implements ApiRequestListener{
     private static final String TAG = "ConnectionActivity"; 
     private Button mAuthBtn;
     private WifiAuthentication mAuth;
     private Session mSession;
+    private MyBroadcastReceiver mConnectionReceiver;
+    private class MyBroadcastReceiver extends BroadcastReceiver {  
+        @Override  
+        public void onReceive(Context context, Intent intent) {  
+            Log.v(TAG, "onReceive");
+            checkWifiConnection();
+        }  
+    }
     private enum ConnectionStatus {
         DISCONNECTED,
         CONNECTED,
@@ -53,7 +64,7 @@ public class ConnectionActivity extends BaseActivity {
                 authentication();
             }
         });
-        
+        registerConnection();
         checkWifiConnection();
     }
 
@@ -80,19 +91,21 @@ public class ConnectionActivity extends BaseActivity {
             if (mConnectionStatus == ConnectionStatus.HONGWIFI) {
                 mConnectionStatus = ConnectionStatus.HONGWIFI_AUTHED;
                 // reportAuthenSuccess
-                url = MarketAPI.API_BASE_URL + "/dec_coin?phone_number="+mSession.getUserName();
-                String ret = Utils.httpGet(url);
-                if (ret != null) {
-                    try {
-                        JSONObject obj = new JSONObject(ret);
-                        if (obj.getInt("ret_code") == 0) {
-                            Utils.makeEventToast(getApplicationContext(), "扣了"+obj.getString("dec_coin_num")+"金币", false);
-                        } else if (obj.getInt("ret_code") == 3001) { // 3001 means already deduction coin today
-                            Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
+                if (mSession.isLogin()) {
+                    url = MarketAPI.API_BASE_URL + "/dec_coin?phone_number="+mSession.getUserName();
+                    String ret = Utils.httpGet(url);
+                    if (ret != null) {
+                        try {
+                            JSONObject obj = new JSONObject(ret);
+                            if (obj.getInt("ret_code") == 0) {
+                                Utils.makeEventToast(getApplicationContext(), "扣了"+obj.getString("dec_coin_num")+"金币", false);
+                            } else if (obj.getInt("ret_code") == 3001) { // 3001 means already deduction coin today
+                                Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }                
+                    }
                 }
             }
         }
@@ -141,11 +154,22 @@ public class ConnectionActivity extends BaseActivity {
         return false;
     }
 
+    private void registerConnection() {
+        if (mConnectionReceiver == null) {
+            mConnectionReceiver = new MyBroadcastReceiver();
+        }
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(mConnectionReceiver, intentFilter);
+    }
+
     private void checkWifiConnection() {
         ConnectivityManager nw = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netinfo = nw.getActiveNetworkInfo();
         if (netinfo != null && netinfo.isAvailable()) {
-//  checkLogin()
+            if (!mSession.isLogin() && mSession.getUserName().length() > 0 && mSession.getPassword().length() > 0) {
+                MarketAPI.login(getApplicationContext(), this, mSession.getUserName(), mSession.getPassword());
+            }
         }
 
         ConnectivityManager conMan = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -172,6 +196,25 @@ public class ConnectionActivity extends BaseActivity {
             checkNetwork();
         } else {
             mConnectionStatus = ConnectionStatus.DISCONNECTED;
+            mAuthBtn.setText("切换到小鸿Wifi");
+            mAuthBtn.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onSuccess(int method, Object obj) {
+        switch (method) {
+        case MarketAPI.ACTION_LOGIN:
+            Log.d(TAG, "login success");
+            mSession.setLogin(true);
+            break;
+        default:
+            break;
+        }
+    }
+
+    @Override
+    public void onError(int method, int statusCode) {
+        
     }
 }
