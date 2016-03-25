@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 mAPPn.Inc
+ * Copyright (C) 2016 Shanghai Xiaohong.Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1094,7 +1094,7 @@ public class Utils {
         }
     }
 
-    public static byte[] httpGet(final String url) {
+    public static String httpGet(final String url) {
         if (url == null || url.length() == 0) {
             Log.e(TAG, "httpGet, url is null");
             return null;
@@ -1110,7 +1110,7 @@ public class Utils {
                 return null;
             }
 
-            return EntityUtils.toByteArray(resp.getEntity());
+            return new String(EntityUtils.toByteArray(resp.getEntity()), "UTF-8");
 
         } catch (Exception e) {
             Log.e(TAG, "httpGet exception, e = " + e.getMessage());

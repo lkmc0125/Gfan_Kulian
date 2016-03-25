@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 mAPPn.Inc
+ * Copyright (C) 2016 Shanghai Xiaohong.Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,22 +47,22 @@ import com.xiaohong.kulian.common.vo.UpgradeInfo;
 public class MarketAPI {
 
     public static final String API_BASE_URL = 
-      "http://livew.mobdsp.com/cb/";
+      "http://livew.mobdsp.com/cb";
     
     // API URLS
     static final String[] API_URLS = {
         // ACTION_CHECK_NEW_VERSION
-        API_BASE_URL + "klappversion",
+        API_BASE_URL + "/klappversion",
         // ACTION_LOGIN
-        API_BASE_URL + "applogin",
+        API_BASE_URL + "/applogin",
         // ACTION_REGISTER
-        API_BASE_URL + "appregister",
+        API_BASE_URL + "/appregister",
         // ACTION_GET_APP_LIST
-        API_BASE_URL + "applist_page",
+        API_BASE_URL + "/applist_page",
         // ACTION_GET_PRODUCT_DETAIL
-        API_BASE_URL + "appdetail",
+        API_BASE_URL + "/appdetail",
         // ACTION_CHECK_NEW_SPLASH
-        API_BASE_URL + "checkNewSplash"
+        API_BASE_URL + "/checkNewSplash"
         };
 
     /** 检查更新 */

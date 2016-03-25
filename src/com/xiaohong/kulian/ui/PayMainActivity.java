@@ -43,11 +43,10 @@ public class PayMainActivity extends BaseActivity {
                 payBtn.setEnabled(false);
                 Toast.makeText(PayMainActivity.this, "请稍候...", Toast.LENGTH_SHORT).show();
                 try {
-                    byte[] buf = Utils.httpGet(url);
-                    if (buf != null && buf.length > 0) {
-                        String content = new String(buf);
-                        Log.e("get server pay params:",content);
-                        JSONObject json = new JSONObject(content); 
+                    String ret = Utils.httpGet(url);
+                    if (ret != null) {
+                        Log.e("get server pay params:", ret);
+                        JSONObject json = new JSONObject(ret); 
                         if (null != json && !json.has("retcode") ){
                             PayReq req = new PayReq();
                             req.appId           = json.getString("appid");

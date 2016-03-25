@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 mAPPn.Inc
+ * Copyright (C) 2016 Shanghai Xiaohong.Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,12 +79,8 @@ import com.xiaohong.kulian.common.vo.UpgradeInfo;
 
 /**
  * 
- * The Client Seesion Object for GfanMobile, contains some necessary
+ * The Client Session Object, contains some necessary
  * information.
- * 
- * @author andrew
- * @date 2010-12-22
- * @since Version 0.5.1
  * 
  */
 public class Session extends Observable {

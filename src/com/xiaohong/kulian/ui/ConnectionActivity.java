@@ -1,5 +1,8 @@
 package com.xiaohong.kulian.ui;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -15,6 +18,7 @@ import android.widget.Button;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
@@ -61,24 +65,36 @@ public class ConnectionActivity extends BaseActivity {
     }
 
     private void checkNetwork() {
-
-        String url = "http://115.159.3.16/cb/app_test"; // todo : add mobile para
+        String url = "http://115.159.3.16/cb/app_test";
         if (null == Utils.httpGet(url)) { // 网络不通
             Log.d(TAG, "network not availabel");
             mAuthBtn.setVisibility(View.VISIBLE);
-            if (mConnectionStatus == ConnectionStatus.HONGWIFI) {
-                mConnectionStatus = ConnectionStatus.HONGWIFI_AUTHED;
-//                reportAuthenSuccess
-            }
             new Handler().postDelayed(new Runnable() {  
-                public void run() {  
+                public void run() {
                     checkNetwork();
                 }
             }, 5 * 1000);
         } else {
             Log.d(TAG, "network OK！");
             mAuthBtn.setVisibility(View.INVISIBLE);
-//            todo: autoLogin();
+            if (mConnectionStatus == ConnectionStatus.HONGWIFI) {
+                mConnectionStatus = ConnectionStatus.HONGWIFI_AUTHED;
+                // reportAuthenSuccess
+                url = MarketAPI.API_BASE_URL + "/dec_coin?phone_number="+mSession.getUserName();
+                String ret = Utils.httpGet(url);
+                if (ret != null) {
+                    try {
+                        JSONObject obj = new JSONObject(ret);
+                        if (obj.getInt("ret_code") == 0) {
+                            Utils.makeEventToast(getApplicationContext(), "扣了"+obj.getString("dec_coin_num")+"金币", false);
+                        } else if (obj.getInt("ret_code") == 3001) { // 3001 means already deduction coin today
+                            Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }                
+                }
+            }
         }
     }
 
@@ -104,7 +120,25 @@ public class ConnectionActivity extends BaseActivity {
             startActivity(intent);
             return false;
         }
-        return true;
+        String url = MarketAPI.API_BASE_URL + "/query_coin?phone_number="+mSession.getUserName();
+        String ret = Utils.httpGet(url);
+        if (ret != null) {
+            try {
+                JSONObject obj = new JSONObject(ret);
+                // // 3001 means already deduction coin today
+                if (obj.getInt("ret_code") == 0 || obj.getInt("ret_code") == 3001) {
+                    return true;
+                } else {
+                    Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
+                    return false;
+                }
+                
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }                
+        }
+        return false;
     }
 
     private void checkWifiConnection() {

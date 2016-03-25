@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 mAPPn.Inc
+ * Copyright (C) 2016 Shanghai Xiaohong.Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,32 +156,24 @@ public class RegisterActivity extends BaseActivity
 
     private void onClickVerifyCodeBtn() {
         if (checkUserName()) {
-            String url = MarketAPI.API_BASE_URL+"appverifycode?phone_number="+etUsername.getText().toString();
+            String url = MarketAPI.API_BASE_URL+"/appverifycode?phone_number="+etUsername.getText().toString();
             if (Utils.isLeShiMobile()) {
                 url += "&leshi=1";
             }
-            byte[] ret = Utils.httpGet(url);
+            String ret = Utils.httpGet(url);
             if (ret != null) {
                 try {
-                    String result = new String(ret, "UTF-8");
-                    try {
-                        JSONObject obj = new JSONObject(result);
-                        if (obj.getInt("ret_code") == 0) {
-                            Utils.makeEventToast(getApplicationContext(), "验证码已通过短信发送", false);
-                        } else {
-                            Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
-                        }
-                        
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    
-                    
-                    Log.d(TAG, result);
-                } catch (UnsupportedEncodingException e) {
+                    JSONObject obj = new JSONObject(ret);
+                    if (obj.getInt("ret_code") == 0) {
+                        Utils.makeEventToast(getApplicationContext(), "验证码已通过短信发送", false);
+                    } else {
+                        Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
+                    }   
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
                     e.printStackTrace();
-                }
+                }                    
+                Log.d(TAG, ret);
             }
         }
     }
