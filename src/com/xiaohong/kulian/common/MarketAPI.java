@@ -46,36 +46,10 @@ import com.xiaohong.kulian.common.vo.UpgradeInfo;
  */
 public class MarketAPI {
 
-    /** 机锋市场API host地址 */
     public static final String API_BASE_URL = 
-        // real host
       "http://livew.mobdsp.com/cb/";
-        // test host
-//        "http://117.79.80.22/";
     
-    /** 机锋市场API地址 */
-    public static final String API_HOST_JAVA = 
-        API_BASE_URL + "market/api/";
-//      "http://10.16.8.142:8080/market.kulian.com/api/";
-    
-    /** 用户中心API地址*/
-    public static final String API_UCENTER_HOST = 
-            API_BASE_URL
-        // real host
-      + "uc1/common/";
-        // test host
-//        + "uc/common/";
-        // TEST 
-//            "http://117.79.80.12/uc1/common/";
-    
-    public static final String BBS_SEARCH_API =
-            "http://search.kulian.com/search/search/luntanAttJk";
-//    "http://10.16.8.232:8080/search/search/luntanAttJk";
-    
-    // User Center URL HOST
-    public static final String API_HOST_CLOUD = "http://passport.kulian.com/kulian_center/";
-    
-    // 机锋市场 API URLS
+    // API URLS
     static final String[] API_URLS = {
         // ACTION_CHECK_NEW_VERSION
         API_BASE_URL + "klappversion",
@@ -91,7 +65,7 @@ public class MarketAPI {
         API_BASE_URL + "checkNewSplash"
         };
 
-    /** 检查（机锋市场）更新 */
+    /** 检查更新 */
     public static final int ACTION_CHECK_NEW_VERSION = 0;
     /** 登录 */
     public static final int ACTION_LOGIN = 1;
@@ -103,8 +77,7 @@ public class MarketAPI {
     public static final int ACTION_GET_PRODUCT_DETAIL = 4;
     /** 检查SPLASH更新 */
     public static final int ACTION_CHECK_NEW_SPLASH = 5;
-    
-   
+
 	/**
 	 * Register API<br>
 	 * Do the register process, UserName, Password, Email must be provided.<br>
@@ -120,9 +93,9 @@ public class MarketAPI {
 		if (inviteCode != null && inviteCode.length() > 0) {
 		    params.put("invite_code", inviteCode);
 		}
-//		if (isLeShi) {
-//	         params.put("leshi", 1);		    
-//		}
+		if (Utils.isLeShiMobile()) {
+	         params.put("leshi", 1);		    
+		}
 
 		new ApiAsyncTask(context, ACTION_REGISTER, handler, params).execute();
 	}

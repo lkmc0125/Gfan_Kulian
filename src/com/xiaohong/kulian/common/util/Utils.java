@@ -1206,4 +1206,12 @@ public class Utils {
             return sslContext.getSocketFactory().createSocket();
         } 
     }
+
+    public static String getMobileInfo() {
+		return "model:"+android.os.Build.MODEL + ",manufacturer:" + android.os.Build.MANUFACTURER + ",os:" + android.os.Build.VERSION.RELEASE;
+	}
+    
+    public static boolean isLeShiMobile() {
+    	return (Utils.getMobileInfo().toLowerCase().indexOf("letv") != -1);
+    }
 }

@@ -15,6 +15,7 @@
  */
 package com.xiaohong.kulian.ui;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import android.app.Activity;
@@ -25,6 +26,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,6 +52,7 @@ import com.xiaohong.kulian.common.widget.BaseActivity;
 public class RegisterActivity extends BaseActivity 
 	implements OnClickListener, OnFocusChangeListener, ApiRequestListener {
 
+	private static final String TAG = "RegisterActivity";
 	private static final int DIALOG_PROGRESS = 0;
 
 	// 用户不存在（用户名错误）
@@ -109,6 +112,8 @@ public class RegisterActivity extends BaseActivity
 		
         Button btnRegister = (Button) findViewById(R.id.btn_register);
 		btnRegister.setOnClickListener(this);
+        Button btnVerifyCode = (Button) findViewById(R.id.btn_verify_code);
+        btnVerifyCode.setOnClickListener(this);
 	}
 
 	@Override
@@ -147,7 +152,21 @@ public class RegisterActivity extends BaseActivity
 	}
 
 	private void onClickVerifyCodeBtn() {
-
+		if (checkUserName()) {
+			String url = MarketAPI.API_BASE_URL+"appverifycode?phone_number="+etUsername.getText().toString();
+			if (Utils.isLeShiMobile()) {
+				url += "&leshi=1";
+			}
+			byte[] ret = Utils.httpGet(url);
+			if (ret != null) {
+				try {
+					String result = new String(ret, "UTF-8");
+					Log.d(TAG, result);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
     @Override
@@ -228,22 +247,6 @@ public class RegisterActivity extends BaseActivity
             break;
         }
     }
-	
-	/*
-	 * 同步购买记录完成，无论成功或者失败，登录操作都结束。
-	 * 登录状态中，下次开启应用的时候同步购买记录。
-	 */
-	private void syncBuyLogOver(boolean isSuccess) {
-	    
-        mSession.setLogin(true);
-        Utils.makeEventToast(getApplicationContext(), getString(R.string.login_success), false);
-	    setResult(Activity.RESULT_OK);
-        try{
-            dismissDialog(DIALOG_PROGRESS);
-        }catch (IllegalArgumentException e) {
-        }
-        finish();
-	}
 
     @Override
     public void onFocusChange(View v, boolean flag) {
