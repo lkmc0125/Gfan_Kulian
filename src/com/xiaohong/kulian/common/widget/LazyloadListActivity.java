@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.adapter.CommonAdapter;
 import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
 
 /**
@@ -78,7 +79,7 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
      * 子类必须实现这个方法以初始化ListAdapter<br>
      * 1 初始化数据集 2 初始化HeaderView或者FooterView
      */
-    public abstract AppListAdapter doInitListAdapter();
+    public abstract CommonAdapter doInitListAdapter();
 
     /**
      * 子类如果需要添加HeaderView或者FooterView需要重写这个方法
@@ -155,7 +156,7 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
     }
 
     private void initListView() {
-        AppListAdapter adapter = doInitListAdapter();
+        CommonAdapter adapter = doInitListAdapter();
         adapter.setLazyloadListener(this);
         doInitHeaderViewOrFooterView();
         // add Loading FooterView if this lazy load activity

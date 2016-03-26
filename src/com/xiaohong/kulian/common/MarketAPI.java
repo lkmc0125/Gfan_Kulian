@@ -64,7 +64,11 @@ public class MarketAPI {
         // ACTION_CHECK_NEW_SPLASH
         API_BASE_URL + "/checkNewSplash",
         // ACTION_GET_SSID_LIST
-        API_BASE_URL + "/get_ssidlist"
+        API_BASE_URL + "/get_ssidlist",
+        // ACTION_GET_TASK_LIST
+        API_BASE_URL + "/get_tasklist",
+        // ACTION_GET_GZH_TASKLIST
+        API_BASE_URL + "/get_gzhtasklist"
         };
 
     /** 检查更新 */
@@ -81,6 +85,15 @@ public class MarketAPI {
     public static final int ACTION_CHECK_NEW_SPLASH = 5;
     /** 获取SSID列表 */
     public static final int ACTION_GET_SSID_LIST = 6;
+    /**
+     * 获取任务列表
+     */
+    public static final int ACTION_GET_TASK_LIST = 7;
+    /**
+     * 获取公众号任务列表
+     */
+    public static final int ACTION_GET_GZH_TASK_LIST = 8;
+    
 	/**
 	 * Register API<br>
 	 * Do the register process, UserName, Password, Email must be provided.<br>
@@ -191,4 +204,37 @@ public class MarketAPI {
 				.execute();
 	}
 
+    /**
+     * 获取任务列表
+     * @param context
+     * @param handler
+     * @param page
+     * @param category
+     */
+    public static void getTaskList(Context context, 
+            ApiRequestListener handler ) {
+
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("phone_number", "13800138000");
+
+        new ApiAsyncTask(context, ACTION_GET_TASK_LIST, handler, params)
+                .execute();
+    }
+    
+    /**
+     * 获取公众号任务列表
+     * @param context
+     * @param handler
+     * @param page
+     * @param category
+     */
+    public static void getGzhTaskList(Context context,
+            ApiRequestListener handler) {
+
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("phone_number", "13800138000");
+
+        new ApiAsyncTask(context, ACTION_GET_GZH_TASK_LIST, handler, params)
+                .execute();
+    }
 }

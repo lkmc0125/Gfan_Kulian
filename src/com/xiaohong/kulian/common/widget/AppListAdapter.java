@@ -44,6 +44,7 @@ import android.widget.TextView;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.adapter.CommonAdapter;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.download.DownloadManager;
@@ -63,7 +64,7 @@ import com.xiaohong.kulian.ui.PreloadActivity;
  * @author andrew.wang
  * 
  */
-public class AppListAdapter extends BaseAdapter implements Observer, ApiRequestListener {
+public class AppListAdapter extends CommonAdapter implements Observer, ApiRequestListener {
 
 	private ArrayList<HashMap<String, Object>> mDataSource;
 	private LazyloadListener mLazyloadListener;

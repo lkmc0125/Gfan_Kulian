@@ -65,6 +65,9 @@ public class ApiRequestFactory {
         S_GET_REQUESTS.add(MarketAPI.ACTION_REGISTER);
         S_GET_REQUESTS.add(MarketAPI.ACTION_LOGIN);
         S_GET_REQUESTS.add(MarketAPI.ACTION_GET_SSID_LIST);
+        //add to support get task
+        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_GZH_TASK_LIST);
+        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_TASK_LIST);
     }
     
     // justify the G-Header
