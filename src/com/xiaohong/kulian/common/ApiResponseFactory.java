@@ -35,9 +35,11 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.codec.binary.Base64;
 import com.xiaohong.kulian.common.util.Crypter;
 import com.xiaohong.kulian.common.util.DBUtils;
@@ -134,6 +136,13 @@ public class ApiResponseFactory {
             case MarketAPI.ACTION_GET_SSID_LIST:
                 requestMethod = "ACTION_GET_SSID_LIST";
                 result = parseSSIDList(context, inputBody);
+                break;
+            case MarketAPI.ACTION_GET_TASK_LIST:
+            case MarketAPI.ACTION_GET_GZH_TASK_LIST:
+                Log.d("free", "res:" + inputBody);
+                Gson gson = new Gson();
+                result = gson.fromJson(inputBody, TaskListBean.class);
+                break;
             default:
                 break;
             }

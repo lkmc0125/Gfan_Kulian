@@ -112,7 +112,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 		//do not show game tab
 		//mTabHost.addTab(tab3);
 		
-        Intent growIntent = new Intent(getApplicationContext(), ProductListActivity.class);
+        Intent growIntent = new Intent(getApplicationContext(), TaskListActivity.class);
         growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);
         growIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
 		TabSpec tab4 = mTabHost
