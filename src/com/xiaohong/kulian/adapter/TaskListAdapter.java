@@ -32,15 +32,15 @@ public class TaskListAdapter extends CommonAdapter {
     @Override
     public int getCount() {
         if(mData == null) {
-            Log.d(TAG, "getCount:" + 0);
+            //Log.d(TAG, "getCount:" + 0);
             return 0;
         }
         ArrayList list = mData.getTasklist();
         if(list == null) {
-            Log.d(TAG, "getCount:" + 0);
+            //Log.d(TAG, "getCount:" + 0);
             return 0;
         }else {
-            Log.d(TAG, "getCount:" + list.size());
+            //Log.d(TAG, "getCount:" + list.size());
             return list.size();
         }
     }
@@ -58,7 +58,7 @@ public class TaskListAdapter extends CommonAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        Log.d(TAG, "getView pos = " + position);
+        //Log.d(TAG, "getView pos = " + position);
         if(convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(R.layout.common_product_list_item, null);

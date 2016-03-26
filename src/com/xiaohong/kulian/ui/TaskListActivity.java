@@ -105,11 +105,12 @@ public class TaskListActivity extends LazyloadListActivity implements
             Log.d(TAG, "size = " + result.getTasklist().size());
             mAdapter.setData(result);
             mAdapter.notifyDataSetChanged();
-            setLoadResult(true);
-            mProgress.setVisibility(View.GONE);
         }else {
             Log.d(TAG, "no data from server");
         }
+        mIsEnd = true;
+        setLoadResult(true);
+       
         
     }
 

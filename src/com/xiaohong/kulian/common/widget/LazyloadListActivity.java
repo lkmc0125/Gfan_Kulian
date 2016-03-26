@@ -17,6 +17,7 @@ package com.xiaohong.kulian.common.widget;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -129,6 +130,7 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
             // 2011/2/16 fix bug : can't touch main UI in background thread when load request error
             // 没有更多数据时，移除FooterView
             if (isEnd()) {
+                Log.d("free", "remove footer");
                 mList.removeFooterView(mFooterView);
             }
 
