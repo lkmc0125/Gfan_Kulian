@@ -23,6 +23,7 @@ import java.util.Observer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -43,6 +44,9 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
@@ -87,6 +91,11 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
     private HashMap<String, HashMap<String, Object>> mCheckedList;
     private HashMap<String, UpgradeInfo> mUpdateList;
     private String mPageType = Constants.GROUP_14;
+    
+    /**
+     * A ImageLoader instance to load image from cache or network
+     */
+    private ImageLoader mImageLoader = ImageLoader.getInstance();  
 
     /**
      * Application list adapter<br>
@@ -344,6 +353,7 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
         viewHolder.mAppSizeView.setTextColor(Color.BLACK);
         viewHolder.mAppDescView.setText(data.getBriefSummary());
         viewHolder.mAppSizeView.setText(data.getAppSize());
+        mImageLoader.displayImage(data.getAppLogo(), viewHolder.mAppIconView);
     }
 
     /*protected void setViewResource(View v, int position, int[] bitmaps) {
