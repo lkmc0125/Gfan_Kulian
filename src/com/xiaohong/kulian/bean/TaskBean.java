@@ -5,6 +5,17 @@ package com.xiaohong.kulian.bean;
  */
 public class TaskBean {
     /**
+     * 标记当前对象表示一个title
+     */
+    public static int ITEM_TYPE_TITLE = 1;
+    /**
+     * 标记当前对象表示一个task
+     */
+    public static int ITEM_TYPE_TASK = 2;
+    
+    private int type = ITEM_TYPE_TASK;
+    
+    /**
      * 可领取
      */
     public static int STATUS_AVAILABLE = 1;
@@ -80,6 +91,12 @@ public class TaskBean {
     }
     public String getWeixin_id() {
         return weixin_id;
+    }
+    public int getType() {
+        return type;
+    }
+    public void setType(int type) {
+        this.type = type;
     }
     
     

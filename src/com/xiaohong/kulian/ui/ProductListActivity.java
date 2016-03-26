@@ -1,7 +1,5 @@
 package com.xiaohong.kulian.ui;
 
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

@@ -16,30 +16,6 @@
         android:src="@drawable/loading_icon"
         android:scaleType="fitCenter"/>
 
-    <!-- 应用的名称 -->
-    <TextView android:id="@+id/tv_name"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/iv_logo"
-        android:layout_alignParentTop="true"
-        android:singleLine="true"
-        android:layout_marginTop="12dp"
-        android:layout_marginRight="2dp"
-        android:textAppearance="@style/app_text_style1"
-        android:text="taobao"/>
-
-    <!--   如果任务已完成则显示此控件 -->
-    <TextView android:id="@+id/tv_status"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/tv_name"
-        android:layout_toLeftOf="@+id/iv_devider" 
-        android:layout_alignParentTop="true"
-        android:singleLine="true"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="2dp"
-        android:drawableStart="@drawable/status_done"/>
-
     <!-- 应用的描述 -->
     <TextView android:id="@+id/tv_description"
         android:layout_width="wrap_content" 
@@ -48,6 +24,7 @@
         android:layout_toRightOf="@id/iv_logo"
         android:layout_toLeftOf="@+id/layout_status"
         android:layout_marginRight="20dp"
+        android:layout_centerVertical="true"
         android:singleLine="true"
         android:textAppearance="@style/app_text_style2"
         android:text="gouwu"/>
@@ -55,23 +32,11 @@
     <!-- 金币和查看/打开 -->
     <LinearLayout
         android:id="@+id/layout_status"
-        android:layout_width="60dp"
+        android:layout_width="80dp"
         android:layout_height="60dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/tv_gold"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/gold"
-            android:textColor="@color/orange"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:text="+500">
-        </TextView>
 
         <TextView
             android:id="@+id/tv_action"
@@ -82,8 +47,20 @@
             android:textAppearance="@style/app_text_style3"
             android:gravity="center"
             android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_gold"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/gold"
+            android:textColor="@color/orange"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="+500金币">
+        </TextView>
     </LinearLayout>
-    
+
     <!-- 分隔符 -->
     <ImageView android:id="@+id/iv_devider" 
         android:layout_width="0.8dp"
@@ -91,15 +68,5 @@
         android:layout_toLeftOf="@id/layout_status"
         android:layout_centerVertical="true"
         android:src="@color/gray_2"  />
-    
-    <!-- 应用大小 -->
-    <TextView android:id="@+id/tv_size" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_below="@id/tv_description"
-        android:layout_toRightOf="@id/iv_logo"
-        android:textAppearance="@style/app_text_style2"
-        android:layout_gravity="left" 
-        android:text="1MB" />
 
 </RelativeLayout>

@@ -2,8 +2,9 @@ package com.xiaohong.kulian.adapter;
 
 import java.util.ArrayList;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.R;
-import com.xiaohong.kulian.bean.TaskListBean;
+import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
 
 import android.content.Context;
@@ -16,17 +17,28 @@ import android.widget.TextView;
 
 public class TaskListAdapter extends CommonAdapter {
     private static final String TAG = "TaskListAdapter";
+    public static final int TYPE_NORMAL_TASK = 1;
+    public static final int TYPE_GZH_TAK = 2;
+    
     private Context mContext;
-    private TaskListBean mData;
+    private ArrayList<TaskBean> mData;
+    /**
+     * A ImageLoader instance to load image from cache or network
+     */
+    private ImageLoader mImageLoader = ImageLoader.getInstance();  
 
     public TaskListAdapter(Context context) {
         mContext = context;
-        mData = new TaskListBean();
+        mData = new ArrayList<TaskBean>();
     }
     
-    public void setData(TaskListBean data) {
+    public synchronized void setData(int type, ArrayList<TaskBean> data) {
         Log.d(TAG, "setData:" + data);
-        mData = data;
+        if(type == TYPE_NORMAL_TASK) {
+            mData.addAll(0, data);
+        }else {
+            mData.addAll(data);
+        }
     }
 
     @Override
@@ -35,19 +47,12 @@ public class TaskListAdapter extends CommonAdapter {
             //Log.d(TAG, "getCount:" + 0);
             return 0;
         }
-        ArrayList list = mData.getTasklist();
-        if(list == null) {
-            //Log.d(TAG, "getCount:" + 0);
-            return 0;
-        }else {
-            //Log.d(TAG, "getCount:" + list.size());
-            return list.size();
-        }
+        return mData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return  mData.getTasklist().get(position);
+        return  mData.get(position);
     }
 
     @Override
@@ -59,18 +64,14 @@ public class TaskListAdapter extends CommonAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         //Log.d(TAG, "getView pos = " + position);
-        if(convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.common_product_list_item, null);
+        if(convertView == null || 
+                mData.get(position).getType() != ((ViewHolder) convertView.getTag()).type) {
             holder = new ViewHolder();
-            holder.mAppIconView = (ImageView) convertView.findViewById(R.id.iv_logo);
-            holder.mAppDesc = (TextView) convertView.findViewById(R.id.tv_name);
-            convertView.setTag(holder);
+            convertView = newView(holder, mData.get(position).getType());
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.mAppDesc.setText(mData.getTasklist().get(position).getName());
-        holder.mAppDesc.setVisibility(View.VISIBLE);
+        bindView(position, holder);
         return convertView;
     }
 
@@ -82,9 +83,65 @@ public class TaskListAdapter extends CommonAdapter {
     
     private class ViewHolder {
         private ImageView mAppIconView;
-        private TextView mAppDesc;
+        private TextView mAppDescView; //任务描述
+        private TextView mGoldView;
+        private TextView mActionView;
+        /**
+         * 用于判断item是title还是一个task
+         */
+        private int type;
+    }
+    
+    private void showAllViews(ViewHolder viewHolder) {
+        /*viewHolder.mAppIconView.setVisibility(View.VISIBLE);
+        viewHolder.mAppDescView.setVisibility(View.VISIBLE);
+        viewHolder.mGoldView.setVisibility(View.VISIBLE);
+        viewHolder.mActionView.setVisibility(View.VISIBLE); */
+    }
+    
+    /**
+     * Init viewholder
+     * @param viewHolder A holder to save the view from layout
+     * @return
+     */
+    private View newView(ViewHolder viewHolder, int type) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        if(type == TaskBean.ITEM_TYPE_TASK) {
+            View view = inflater.inflate(R.layout.task_list_item, null);
+            viewHolder.mAppIconView = (ImageView) view.findViewById(R.id.iv_logo);
+            viewHolder.mAppDescView = (TextView) view.findViewById(R.id.tv_description);
+            viewHolder.mGoldView = (TextView) view.findViewById(R.id.tv_gold);
+            viewHolder.mActionView = (TextView) view.findViewById(R.id.tv_action);
+            viewHolder.type = TaskBean.ITEM_TYPE_TASK;
+            view.setTag(viewHolder);
+            return view;
+        }else{
+            View view = inflater.inflate(R.layout.task_list_item_title, null);
+            viewHolder.mAppDescView = (TextView) view.findViewById(R.id.title);
+            viewHolder.type = TaskBean.ITEM_TYPE_TITLE;
+            view.setTag(viewHolder);
+            return view;
+        }
         
+    }
+    
+    private void bindView(int position, ViewHolder holder){
+        int type = holder.type;
+        TaskBean item = mData.get(position);
+        if(type == TaskBean.ITEM_TYPE_TASK) {
+            holder.mAppDescView.setText(item.getName());
+            if(item.getLogo_url() != null) {
+                mImageLoader.displayImage(item.getLogo_url(), holder.mAppIconView);
+            }else {
+                mImageLoader.displayImage("drawable://" + R.drawable.app_icon, 
+                        holder.mAppIconView);
+            }
+            holder.mGoldView.setText(item.getCoin_num() + "金币");
+        }else {
+            holder.mAppDescView.setText("做任务赚金币");
+        }
         
+        showAllViews(holder);
     }
 
 }

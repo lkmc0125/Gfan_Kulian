@@ -1,7 +1,5 @@
 package com.xiaohong.kulian.ui;
 
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +19,7 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.adapter.CommonAdapter;
 import com.xiaohong.kulian.adapter.TaskListAdapter;
+import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask;
 import com.xiaohong.kulian.common.MarketAPI;
@@ -64,6 +63,8 @@ public class TaskListActivity extends LazyloadListActivity implements
             mNoData.setOnClickListener(this);
             mList.setEmptyView(mLoading);
             mList.setOnItemClickListener(this);
+            mList.setDividerHeight(5);
+            mList.setDivider(getResources().getDrawable(R.drawable.divider_line));
 
             lazyload();
             return true;
@@ -80,6 +81,8 @@ public class TaskListActivity extends LazyloadListActivity implements
                     mCategory);
         } else if (Constants.CATEGORY_TASK.equals(mCategory)) {
             MarketAPI.getTaskList(getApplicationContext(), this);
+            MarketAPI.getGzhTaskList(getApplicationContext(), 
+                    new GzhTaskListApiRequestListener());
         }
 
     }
@@ -103,15 +106,16 @@ public class TaskListActivity extends LazyloadListActivity implements
         TaskListBean result = (TaskListBean) obj;
         if(result.getTasklist() != null) {
             Log.d(TAG, "size = " + result.getTasklist().size());
-            mAdapter.setData(result);
+            TaskBean bean = new TaskBean();
+            bean.setType(TaskBean.ITEM_TYPE_TITLE);
+            result.getTasklist().add(0, bean);
+            mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK,result.getTasklist());
             mAdapter.notifyDataSetChanged();
         }else {
             Log.d(TAG, "no data from server");
         }
         mIsEnd = true;
         setLoadResult(true);
-       
-        
     }
 
     @Override
@@ -157,5 +161,33 @@ public class TaskListActivity extends LazyloadListActivity implements
         mProgress.setVisibility(View.VISIBLE);
         mNoData.setVisibility(View.GONE);
         lazyload();
+    }
+    
+    private class GzhTaskListApiRequestListener 
+        implements ApiRequestListener {
+
+        @Override
+        public void onSuccess(int method, Object obj) {
+            Log.d(TAG, obj.toString());
+            TaskListBean result = (TaskListBean) obj;
+            if(result.getTasklist() != null) {
+                Log.d(TAG, "size = " + result.getTasklist().size());
+                mAdapter.setData(TaskListAdapter.TYPE_GZH_TAK, 
+                        result.getTasklist());
+                mAdapter.notifyDataSetChanged();
+            }else {
+                Log.d(TAG, "no data from server");
+            }
+            mIsEnd = true;
+            setLoadResult(true);
+            
+        }
+
+        @Override
+        public void onError(int method, int statusCode) {
+            // TODO Auto-generated method stub
+            
+        }
+        
     }
 }

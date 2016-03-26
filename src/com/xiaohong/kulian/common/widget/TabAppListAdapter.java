@@ -589,7 +589,7 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
         viewHolder.mGoldView = (TextView) view.findViewById(R.id.tv_gold);
         viewHolder.mActionView = (TextView) view.findViewById(R.id.tv_action);
         viewHolder.mStatusView = (TextView) view.findViewById(R.id.tv_status);
-        view.setTag(view);
+        view.setTag(viewHolder);
         return view;
     }
 
