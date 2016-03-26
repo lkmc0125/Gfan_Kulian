@@ -12,29 +12,48 @@
 
 
     <!-- Banner -->
+
     <android.support.v4.view.ViewPager
         android:id="@+id/adv_pager"
         android:layout_width="match_parent"
         android:layout_height="165dp"
         android:background="@color/banner_background" >
     </android.support.v4.view.ViewPager>
-    
+
     <LinearLayout
-
         android:id="@+id/viewGroup"
-
         android:layout_width="fill_parent"
-
         android:layout_height="10dp"
-
         android:layout_marginTop="-10dp"
-
         android:gravity="center"
-
-        android:orientation="horizontal">
-
+        android:orientation="horizontal" >
     </LinearLayout>
 
-    <include layout="@layout/common_tab_host" />
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            android:id="@+id/tab_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <!-- Tab labels -->
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="64dp" />
+
+            <!-- Tab contents -->
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@android:id/tabs" />
+        </RelativeLayout>
+    </TabHost>
 
 </LinearLayout>

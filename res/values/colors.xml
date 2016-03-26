@@ -31,4 +31,6 @@
 
     <!-- 评论时间字体颜色 -->
     <color name="comment_time_font_color">#FF646464</color>
+    
+    <color name="make_money_tab_select_color">#0001FF</color>
 </resources>

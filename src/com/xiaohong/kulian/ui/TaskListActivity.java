@@ -140,7 +140,7 @@ public class TaskListActivity extends LazyloadListActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
 
-        // 去产品详细页
+        /*// 去产品详细页
         HashMap<String, Object> item = (HashMap<String, Object>) mAdapter
                 .getItem(position);
         String pid = (String) item.get(Constants.KEY_PRODUCT_ID);
@@ -148,7 +148,7 @@ public class TaskListActivity extends LazyloadListActivity implements
                 PreloadActivity.class);
         detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
         detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
-        startActivity(detailIntent);
+        startActivity(detailIntent);*/
     }
 
     @Override

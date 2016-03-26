@@ -38,6 +38,8 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
+import android.widget.TabWidget;
+import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
@@ -57,83 +59,88 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
     private static final String TAG = "RankTabActivity";
 
-    /**排行榜100*/
+    /** 排行榜100 */
     private static final int MAX_ITEMS = 100;
-	private TabHost mTabHost;
+    private TabHost mTabHost;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_rank);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_rank);
 
-		initTopBar();
-		initView();
-                initAdPager();
-	}
+        initView();
+        initAdPager();
+    }
 
-	private void initView() {
+    private void initView() {
 
-		mTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
-		mTabHost.setup();
-		mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
+        mTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
+        mTabHost.setup();
+        //mTabHost.getTabWidget().setDividerDrawable(null);
 
-        Intent appIntent = new Intent(getApplicationContext(), ProductListActivity.class);
+        // do not show recommend tab
+        /*Intent appIntent = new Intent(getApplicationContext(),
+                ProductListActivity.class);
         appIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
         appIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
-		TabSpec tab1 = mTabHost
-				.newTabSpec(Constants.CATEGORY_RCMD)
-				.setIndicator(
-						Utils.createTabView(getApplicationContext(),
-								getString(R.string.rank_tab_rcmd)))
-				.setContent(appIntent);
-		//do not show recommend tab
-		//mTabHost.addTab(tab1);
-		
-        Intent gameIntent = new Intent(getApplicationContext(), ProductListActivity.class);
+        TabSpec tab1 = mTabHost
+                .newTabSpec(Constants.CATEGORY_RCMD)
+                .setIndicator(
+                        Utils.createTabView(getApplicationContext(),
+                                getString(R.string.rank_tab_rcmd)))
+                .setContent(appIntent);
+        mTabHost.addTab(tab1);*/
+
+        Intent gameIntent = new Intent(getApplicationContext(),
+                ProductListActivity.class);
         gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_APP);
         gameIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
-		TabSpec tab2 = mTabHost
-				.newTabSpec(Constants.CATEGORY_APP)
-				.setIndicator(
-						Utils.createTabView(getApplicationContext(),
-								getString(R.string.rank_tab_app)))
-				.setContent(gameIntent);
-		mTabHost.addTab(tab2);
-		
-        Intent bookIntent = new Intent(getApplicationContext(), ProductListActivity.class);
+        TabSpec tab2 = mTabHost
+                .newTabSpec(Constants.CATEGORY_APP)
+                .setIndicator(
+                        Utils.createMakeMoneyPageTabView(getApplicationContext(),
+                                getString(R.string.rank_tab_app)))
+                .setContent(gameIntent);
+        mTabHost.addTab(tab2);
+
+        // do not show game tab
+        /*Intent bookIntent = new Intent(getApplicationContext(),
+                ProductListActivity.class);
         bookIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_GAME);
         bookIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
-		TabSpec tab3 = mTabHost
-				.newTabSpec(Constants.CATEGORY_GAME)
-				.setIndicator(
-						Utils.createTabView(getApplicationContext(),
-								getString(R.string.rank_tab_game)))
-				.setContent(bookIntent);
-		//do not show game tab
-		//mTabHost.addTab(tab3);
-		
-        Intent growIntent = new Intent(getApplicationContext(), TaskListActivity.class);
+        TabSpec tab3 = mTabHost
+                .newTabSpec(Constants.CATEGORY_GAME)
+                .setIndicator(
+                        Utils.createTabView(getApplicationContext(),
+                                getString(R.string.rank_tab_game)))
+                .setContent(bookIntent);
+        mTabHost.addTab(tab3);*/
+
+        Intent growIntent = new Intent(getApplicationContext(),
+                TaskListActivity.class);
         growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);
         growIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
-		TabSpec tab4 = mTabHost
-				.newTabSpec(Constants.CATEGORY_TASK)
-				.setIndicator(
-						Utils.createTabView(getApplicationContext(),
-								getString(R.string.rank_tab_task)))
-				.setContent(growIntent);
-		mTabHost.addTab(tab4);
-		mTabHost.setOnTabChangedListener(this);
-	}
-	
-	/**
-	 * 初始化Topbar
-	 */
-	private void initTopBar() {
-        /*TopBar.createTopBar(getApplicationContext(), 
-                new View[] { findViewById(R.id.top_bar_title) }, 
-                new int[] { View.VISIBLE }, getString(R.string.rank_top_title));*/
-	}
-	
+        TabSpec tab4 = mTabHost
+                .newTabSpec(Constants.CATEGORY_TASK)
+                .setIndicator(
+                        Utils.createMakeMoneyPageTabView(getApplicationContext(),
+                                getString(R.string.rank_tab_task)))
+                .setContent(growIntent);
+        mTabHost.addTab(tab4);
+        mTabHost.setOnTabChangedListener(this);
+        changeTabStyle();
+    }
+
+    private void changeTabStyle() {
+        TabWidget tabWidget = mTabHost.getTabWidget();
+        for (int i = 0; i < tabWidget.getChildCount(); i++) {
+            View view = tabWidget.getChildAt(i);
+            //view.getLayoutParams().height = 130;
+            //view.getLayoutParams().width = 65;
+            
+        }
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return getParent().onKeyDown(keyCode, event);
@@ -201,8 +208,6 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
         img3.setTag("http://www.qq.com") ;
 
-       
-
         // img1 img2 img3 循环滑动
 
         // img0 img1img2 img3 img4
@@ -212,45 +217,31 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
         ImageView img4 = new ImageView(this) ;
 
         advPics.add(img0) ;
-
         advPics.add(img1) ;
-
         advPics.add(img2) ;
-
         advPics.add(img3) ;
-
         advPics.add(img4) ;
 
-       
-
         // 对imageviews进行填充
-
         mAdIndicatorImageViews = new ImageView[advPics.size() - 2] ;
 
         // 小图标
-
         for (int i = 0; i < advPics.size() -2; i++) {
-
             ImageView imageView = new ImageView(this) ;
-
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(20,20);
 
-            lp.setMargins(0,0, 20, 0);//modify 20 to a suitable value
+            lp.setMargins(0,0, 40, 0);//modify 40 to a suitable value
 
             imageView.setLayoutParams(lp) ;
-
             mAdIndicatorImageViews[i] = imageView ;
-
             if (i == 0) {
 
                 mAdIndicatorImageViews[i]
-
                        .setBackgroundResource(R.drawable.banner_ad_selected) ;
 
             } else {
 
                 mAdIndicatorImageViews[i]
-
                        .setBackgroundResource(R.drawable.banner_ad_selected) ;
 
             }

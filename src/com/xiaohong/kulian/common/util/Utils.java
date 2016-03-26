@@ -604,6 +604,17 @@ public class Utils {
     }
     
     /**
+     * 创建Tab中的只包含TextView的View
+     */
+    public static View createMakeMoneyPageTabView(Context context, String text) {
+        View view =  LayoutInflater.from(context).inflate(R.layout.make_money_tab_view,
+                null);
+        TextView title = (TextView) view.findViewById(R.id.title);
+        title.setText(text);
+        return view;
+    }
+    
+    /**
      * 创建Search Tab中的只包含TextView的View
      */
     public static View createSearchTabView(Context context, String text) {
