@@ -115,9 +115,7 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Object> {
         HttpUriRequest request = null;
         try {
             request = ApiRequestFactory.getRequest(requestUrl, mReuqestAction, requestEntity, mSession); 
-            Log.d("free", "url:" + request.getURI());
-            Log.d("free", "method:" + request.getMethod());
-            Log.d("free", "params:" + request.getParams());
+            
             response = mClient.execute(request);
             
             final int statusCode = response.getStatusLine().getStatusCode();

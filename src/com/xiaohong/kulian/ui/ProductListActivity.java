@@ -1,13 +1,11 @@
 package com.xiaohong.kulian.ui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,12 +19,14 @@ import android.widget.TextView;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.adapter.CommonAdapter;
+import com.xiaohong.kulian.bean.AppBean;
+import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
-import com.xiaohong.kulian.common.widget.AppListAdapter;
 import com.xiaohong.kulian.common.widget.LazyloadListActivity;
 import com.xiaohong.kulian.common.widget.LoadingDrawable;
+import com.xiaohong.kulian.common.widget.TabAppListAdapter;
 
 public class ProductListActivity extends LazyloadListActivity implements ApiRequestListener,
         OnItemClickListener, OnClickListener {
@@ -35,7 +35,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     private FrameLayout mLoading;
     private ProgressBar mProgress;
     private TextView mNoData;
-	private AppListAdapter mAdapter;
+	private TabAppListAdapter mAdapter;
 	private String mCategory;
 	private boolean mIsEnd;
 
@@ -80,23 +80,9 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
 
     @Override
     public CommonAdapter doInitListAdapter() {
-        mAdapter = new AppListAdapter(getApplicationContext(),
+        mAdapter = new TabAppListAdapter(getApplicationContext(),
                 null,
-                R.layout.common_product_list_item, 
-                new String[] { 
-                    Constants.KEY_PRODUCT_ICON_URL,
-                    Constants.KEY_PRODUCT_NAME, 
-                    Constants.KEY_PRODUCT_SHORT_DESCRIPTION,
-                    Constants.KEY_PRODUCT_IS_STAR, 
-//                    Constants.KEY_PRODUCT_RATING,
-                    Constants.KEY_PRODUCT_DOWNLOAD }, 
-                new int[] { 
-                    R.id.iv_logo, 
-                    R.id.tv_name,
-                    R.id.tv_description, 
-                    R.id.iv_star,
-//                    R.id.rb_app_rating,
-                    R.id.tv_download });
+                R.layout.common_product_list_item);
         mAdapter.setProductList();
         if (!TextUtils.isEmpty(mCategory)) {
             // 排行榜列表
@@ -112,13 +98,12 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     @SuppressWarnings("unchecked")
     @Override
     public void onSuccess(int method, Object obj) {
-        
-        HashMap<String, Object> result = (HashMap<String, Object>) obj;
+ 
+        //HashMap<String, Object> result = (HashMap<String, Object>) obj;
 
-        ArrayList<HashMap<String, Object>> appList = (ArrayList<HashMap<String, Object>>) result
-        .get(Constants.KEY_PRODUCT_LIST);
-        mIsEnd = appList.size() < 10;
-        mAdapter.addData(appList);
+        AppListBean appList = (AppListBean) obj;
+        mIsEnd = appList.getApplist().size() < 10;
+        mAdapter.addData(appList.getApplist());
         setLoadResult(true);
     }
 
@@ -148,8 +133,8 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         // 去产品详细页
-        HashMap<String, Object> item = (HashMap<String, Object>) mAdapter.getItem(position);
-        String pid = (String) item.get(Constants.KEY_PRODUCT_ID);
+        AppBean item = (AppBean) mAdapter.getItem(position);
+        String pid = item.getAppId() + "";
         Intent detailIntent = new Intent(getApplicationContext(), PreloadActivity.class);
         detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
         detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
