@@ -13,7 +13,13 @@ public class TaskBean {
      */
     public static int ITEM_TYPE_TASK = 2;
     
-    private int type = ITEM_TYPE_TASK;
+    private int mType = ITEM_TYPE_TASK;
+    /**
+     * title有两个可选的字符串
+     * 做任务赚金币
+     * 已结束任务
+     */
+    private String mTitle = "";
     
     /**
      * 可领取
@@ -92,11 +98,17 @@ public class TaskBean {
     public String getWeixin_id() {
         return weixin_id;
     }
+    public String getTitle() {
+        return mTitle;
+    }
+    public void setTitle(String title) {
+        mTitle = title;
+    }
     public int getType() {
-        return type;
+        return mType;
     }
     public void setType(int type) {
-        this.type = type;
+        this.mType = type;
     }
     
     

@@ -430,5 +430,7 @@
     <string name="warning_update_apk_downloaded">新版本的WIFI酷连下载完毕，点击\"是\"安装或者\"否\"取消</string>
     <string name="warning_failed_to_download_update">下载WIFI酷连失败，点击\"是\"重试，或者\"否\"取消</string>
 
+    <string name="title_task_todo">做任务赚金币</string>
+    <string name="title_task_done">已结束任务</string>
 
 </resources>

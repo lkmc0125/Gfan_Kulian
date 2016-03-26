@@ -1,5 +1,7 @@
 package com.xiaohong.kulian.ui;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -108,6 +110,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             Log.d(TAG, "size = " + result.getTasklist().size());
             TaskBean bean = new TaskBean();
             bean.setType(TaskBean.ITEM_TYPE_TITLE);
+            bean.setTitle(getResources().getString(R.string.title_task_todo));
             result.getTasklist().add(0, bean);
             mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK,result.getTasklist());
             mAdapter.notifyDataSetChanged();
@@ -170,10 +173,20 @@ public class TaskListActivity extends LazyloadListActivity implements
         public void onSuccess(int method, Object obj) {
             Log.d(TAG, obj.toString());
             TaskListBean result = (TaskListBean) obj;
-            if(result.getTasklist() != null) {
-                Log.d(TAG, "size = " + result.getTasklist().size());
+            ArrayList<TaskBean> list = result.getTasklist();
+            if(list != null) {
+                Log.d(TAG, "size = " + list.size());
+                for(int i = 0; i< list.size(); i++) {
+                    if(list.get(i).getRemain_tasknum() == 0) {
+                        TaskBean bean = new TaskBean();
+                        bean.setType(TaskBean.ITEM_TYPE_TITLE);
+                        bean.setTitle(getResources().getString(R.string.title_task_done));
+                        list.add(i, bean);
+                        break;
+                    }
+                }
                 mAdapter.setData(TaskListAdapter.TYPE_GZH_TAK, 
-                        result.getTasklist());
+                        list);
                 mAdapter.notifyDataSetChanged();
             }else {
                 Log.d(TAG, "no data from server");

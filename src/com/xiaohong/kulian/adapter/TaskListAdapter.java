@@ -138,7 +138,7 @@ public class TaskListAdapter extends CommonAdapter {
             }
             holder.mGoldView.setText(item.getCoin_num() + "金币");
         }else {
-            holder.mAppDescView.setText("做任务赚金币");
+            holder.mAppDescView.setText(item.getTitle());
         }
         
         showAllViews(holder);
