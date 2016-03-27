@@ -111,6 +111,10 @@ public class TaskListActivity extends LazyloadListActivity implements
             TaskBean bean = new TaskBean();
             bean.setType(TaskBean.ITEM_TYPE_TITLE);
             bean.setTitle(getResources().getString(R.string.title_task_todo));
+            for(TaskBean item : result.getTasklist()) {
+                //set remain num to 1 for normal task
+                item.setRemain_tasknum(1);
+            }
             result.getTasklist().add(0, bean);
             mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK,result.getTasklist());
             mAdapter.notifyDataSetChanged();

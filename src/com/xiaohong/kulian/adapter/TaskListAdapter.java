@@ -86,17 +86,35 @@ public class TaskListAdapter extends CommonAdapter {
         private TextView mAppDescView; //任务描述
         private TextView mGoldView;
         private TextView mActionView;
+        private TextView mStatusView;
         /**
          * 用于判断item是title还是一个task
          */
         private int type;
     }
     
-    private void showAllViews(ViewHolder viewHolder) {
-        /*viewHolder.mAppIconView.setVisibility(View.VISIBLE);
-        viewHolder.mAppDescView.setVisibility(View.VISIBLE);
+    /**
+     * 显示务已结束textview
+     * @param viewHolder
+     */
+    private void showStatusViews(ViewHolder viewHolder) {
+        //viewHolder.mAppIconView.setVisibility(View.VISIBLE);
+        //viewHolder.mAppDescView.setVisibility(View.VISIBLE);
+        viewHolder.mGoldView.setVisibility(View.GONE);
+        viewHolder.mActionView.setVisibility(View.GONE); 
+        viewHolder.mStatusView.setVisibility(View.VISIBLE);
+    }
+    
+    /**
+     * 隐藏务已结束textview
+     * @param viewHolder
+     */
+    private void hideStatusViews(ViewHolder viewHolder) {
+        //viewHolder.mAppIconView.setVisibility(View.VISIBLE);
+        //viewHolder.mAppDescView.setVisibility(View.VISIBLE);
         viewHolder.mGoldView.setVisibility(View.VISIBLE);
-        viewHolder.mActionView.setVisibility(View.VISIBLE); */
+        viewHolder.mActionView.setVisibility(View.VISIBLE); 
+        viewHolder.mStatusView.setVisibility(View.GONE);
     }
     
     /**
@@ -112,6 +130,7 @@ public class TaskListAdapter extends CommonAdapter {
             viewHolder.mAppDescView = (TextView) view.findViewById(R.id.tv_description);
             viewHolder.mGoldView = (TextView) view.findViewById(R.id.tv_gold);
             viewHolder.mActionView = (TextView) view.findViewById(R.id.tv_action);
+            viewHolder.mStatusView = (TextView) view.findViewById(R.id.tv_status);
             viewHolder.type = TaskBean.ITEM_TYPE_TASK;
             view.setTag(viewHolder);
             return view;
@@ -137,11 +156,15 @@ public class TaskListAdapter extends CommonAdapter {
                         holder.mAppIconView);
             }
             holder.mGoldView.setText(item.getCoin_num() + "金币");
+            if(item.getRemain_tasknum() > 0) {
+                hideStatusViews(holder);
+            }else {
+                showStatusViews(holder);
+            }
+            
         }else {
             holder.mAppDescView.setText(item.getTitle());
         }
-        
-        showAllViews(holder);
     }
 
 }

@@ -55,6 +55,9 @@ public class TaskBean {
     private int id;//: 1,
     private String qr_code_url;//: "http://www.dspmind.com/upload/images/20160120/kuliancode.png ",
     private int remain_tasknum;// 694,
+    public void setRemain_tasknum(int remain_tasknum) {
+        this.remain_tasknum = remain_tasknum;
+    }
     private int remain_time;// 0,
     /**
      * 1 可领取    2 已领取    3 已完成   4 超时（领取但未完成）   5任务已结束（未领取）
