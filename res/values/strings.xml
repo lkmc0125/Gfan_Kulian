@@ -96,6 +96,18 @@
 
     <!-- 个人中心页 -->
     <string name="person_account_title">个人中心</string>
+    <!-- start added by albert liu 2016-03-28 -->
+    <string name="person_account_hint_name">Albert</string>
+    <string name="person_account_sign_in_hint">每日签到</string>
+    <string name="person_account_gold_coins_hint">750</string>
+    <string name="person_account_pay_gold_coins_hint">购买金币</string>
+    <string name="person_account_sign_in_value">本月已签到$d天</string>
+    <string name="person_account_my_task_value">我的任务</string>
+    <string name="person_account_message_center_value">消息中心</string>
+    <string name="person_account_normol_question_value">常见问题</string>
+    <string name="person_account_feedback_value">意见反馈</string>
+    <string name="person_account_logout_value">账号退出</string>
+    <!-- end added by albert liu 2016-03-28 -->
     <string name="account_logined">已登录，点击注销</string>
     <string name="account_logo_title">登录</string>
     <string name="account_feedback_title">反馈</string>
