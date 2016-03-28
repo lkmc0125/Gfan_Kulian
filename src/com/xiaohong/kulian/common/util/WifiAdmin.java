@@ -1,5 +1,6 @@
 package com.xiaohong.kulian.common.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.net.DhcpInfo;
@@ -93,11 +94,24 @@ public class WifiAdmin {
         }
  
     }
- 
+
     public List<ScanResult> getWifiList() {
         return mWifiList;
     }
  
+    public String wifiEncryptType(String capabilities) {
+        ArrayList<String> encTypes = new ArrayList<String>();
+        encTypes.add("WEP");
+        encTypes.add("WPA");
+        encTypes.add("WAPI");
+        for (String type : encTypes) {
+            if (capabilities.indexOf(type) != -1) {
+                return type;
+            }
+        }
+        return "";
+    }
+    
     public StringBuilder lookUpScan() {   
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < mWifiList.size(); i++) {
@@ -123,23 +137,42 @@ public class WifiAdmin {
     public int getIPAddress() {
         return (mWifiInfo == null) ? 0 : mWifiInfo.getIpAddress();
     }
- 
+
     public int getNetworkId() {
         return (mWifiInfo == null) ? 0 : mWifiInfo.getNetworkId();
     }
- 
+
     public WifiInfo getWifiInfo() {
         mWifiInfo = mWifiManager.getConnectionInfo();
         return mWifiInfo;
     }
- 
+
     public void addNetwork(WifiConfiguration wcg) {
         int wcgID = mWifiManager.addNetwork(wcg);
         boolean b = mWifiManager.enableNetwork(wcgID, true);
         System.out.println("addNetwork--" + wcgID);
         System.out.println("enableNetwork--" + b);
     }
- 
+
+    public void connectWifi(String ssid, String passwd, String encType) {
+        Log.d(TAG, "Try to connect wifi");
+
+        mWifiManager.setWifiEnabled(true);
+
+        // 1.WIFICIPHER_NOPASS
+        // 2.WIFICIPHER_WEP
+        // 3.WIFICIPHER_WPA
+        int type = 1;
+        if (passwd.equals("")) {
+            type = 1;
+        } else if (encType.equals("WEP")) {
+            type = 2;
+        } else if (encType.equals("WPA")) {
+            type = 3;
+        }
+
+        addNetwork(CreateWifiInfo(ssid, passwd, type));
+    }
     public void disconnectWifi(int netId) {
         mWifiManager.disableNetwork(netId);
         mWifiManager.disconnect();

@@ -1,5 +1,6 @@
 package com.xiaohong.kulian.ui;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,16 +8,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
@@ -24,13 +30,18 @@ import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
+import com.xiaohong.kulian.common.util.WifiAdmin;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
-public class ConnectionActivity extends BaseActivity implements ApiRequestListener{
+public class ConnectionActivity extends BaseActivity implements ApiRequestListener, OnClickListener {
     private static final String TAG = "ConnectionActivity"; 
     private Button mAuthBtn;
     private WifiAuthentication mAuth;
+    private WifiAdmin mWifiAdmin;
+    private TextView mWifiStatusDesc;
+    private ImageView mWifiStatusIcon;
+    private String mCurrentSSID;
     private Session mSession;
     private MyBroadcastReceiver mConnectionReceiver;
     private class MyBroadcastReceiver extends BroadcastReceiver {  
@@ -55,17 +66,22 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         mAuth = new WifiAuthentication();
         mSession = Session.get(getApplicationContext());
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
-
+        mWifiStatusDesc = (TextView)findViewById(R.id.wifi_status_desc);
+        mWifiStatusIcon = (ImageView)findViewById(R.id.wifi_status_icon);
         mAuthBtn = (Button) findViewById(R.id.authenticationBtn);
         mAuthBtn.setVisibility(View.INVISIBLE);
-        mAuthBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                authentication();
-            }
-        });
+        mAuthBtn.setOnClickListener(this);
         registerConnection();
-        checkWifiConnection();
+        
+        new Handler().postDelayed(new Runnable() {  
+            public void run() {
+                mWifiAdmin = new WifiAdmin(getApplicationContext());
+                boolean open = mWifiAdmin.openWifi();
+                Log.i(TAG, "wifi open:" + open);
+                mWifiAdmin.startScan();
+                checkWifiConnection();
+            }
+        }, 500);
     }
 
     private void initTopBar() {
@@ -124,6 +140,53 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     private void authentication () {
         if (checkCoin()) {
             mAuth.appAuth();
+        }
+    }
+
+    private void updateWifiStatusUI(ConnectionStatus status) {
+        switch (status) {
+        case DISCONNECTED:
+        {
+            mWifiStatusDesc.setText("未连接到WIFI");
+            mAuthBtn.setText("搜索小鸿Wifi");
+            mAuthBtn.setVisibility(View.VISIBLE);
+            Drawable img = getApplicationContext().getResources()
+            .getDrawable(R.drawable.wifi_state_off);
+            mWifiStatusIcon.setImageDrawable(img);
+            break;
+        }
+        case CONNECTED:
+        {
+            mWifiStatusDesc.setText("已连接到Wifi:"+mCurrentSSID);
+            mAuthBtn.setText("切换到小鸿Wifi");
+            mAuthBtn.setVisibility(View.VISIBLE);
+            Drawable img = getApplicationContext().getResources()
+            .getDrawable(R.drawable.wifi_state_on);
+            mWifiStatusIcon.setImageDrawable(img);
+            break;
+        }
+        case HONGWIFI:
+        {
+            mWifiStatusDesc.setText("已连接到小鸿免费Wifi:"+mCurrentSSID);
+            mAuthBtn.setText("认证上网");
+            mAuthBtn.setVisibility(View.VISIBLE);
+            Drawable img = getApplicationContext().getResources()
+            .getDrawable(R.drawable.wifi_state_on);
+            mWifiStatusIcon.setImageDrawable(img);
+            break;
+        }
+        case HONGWIFI_AUTHED:
+        {
+            mWifiStatusDesc.setText("已连接到小鸿免费Wifi"+mCurrentSSID);
+            mAuthBtn.setVisibility(View.INVISIBLE);
+            Drawable img = getApplicationContext().getResources()
+            .getDrawable(R.drawable.wifi_state_on);
+            mWifiStatusIcon.setImageDrawable(img);
+            break;
+        }
+        default:
+            mWifiStatusDesc.setText("正在搜索WIFI...");
+            break;
         }
     }
 
@@ -187,6 +250,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     }
     
     private void wifiStatusChanged(String ssid) {
+        mCurrentSSID = ssid;
         if (ssid != null) {
             if (isHongWifi(ssid)) {
                 mConnectionStatus = ConnectionStatus.HONGWIFI;
@@ -196,9 +260,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             checkNetwork();
         } else {
             mConnectionStatus = ConnectionStatus.DISCONNECTED;
-            mAuthBtn.setText("切换到小鸿Wifi");
-            mAuthBtn.setVisibility(View.VISIBLE);
         }
+        updateWifiStatusUI(mConnectionStatus);
     }
 
     @Override
@@ -216,5 +279,36 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     @Override
     public void onError(int method, int statusCode) {
         
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.authenticationBtn:
+        {
+            switch (mConnectionStatus) {
+            case DISCONNECTED:
+            case CONNECTED:
+            {
+                for (ScanResult scanResult : mWifiAdmin.getWifiList()) {
+                    if (isHongWifi(scanResult.SSID)) {
+                        mWifiAdmin.connectWifi(scanResult.SSID, "", mWifiAdmin.wifiEncryptType(scanResult.capabilities));
+                    }
+                }
+                break;
+            }
+            case HONGWIFI:
+                authentication();
+                break;
+            case HONGWIFI_AUTHED:
+                break;
+            default:
+                break;
+            }
+            break;
+        }
+        default:
+            break;
+        }
     }
 }
