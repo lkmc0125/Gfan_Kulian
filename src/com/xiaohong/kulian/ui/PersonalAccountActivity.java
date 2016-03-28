@@ -35,6 +35,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
@@ -54,14 +56,14 @@ import com.xiaohong.kulian.common.widget.LoadingDrawable;
  * @date 2011-5-17
  */
 public class PersonalAccountActivity extends BaseActivity implements
-        OnItemClickListener, ApiRequestListener {
+        android.view.View.OnClickListener, ApiRequestListener {
 
     private static final int ACCOUNT_REGIST = 0;
     private static final int REQUEST_CODE = 20;
     public static final int REGIST = 1;
 
     // 购买信息列表
-    private ListView mList;
+//    private ListView mList;
     private FrameLayout mLoading;
 
     private PersonalAccountAdapter mAdapter;
@@ -70,6 +72,10 @@ public class PersonalAccountActivity extends BaseActivity implements
     private boolean isBinding;
     //是否已经登陆过
     private boolean isFirstAccess = true;
+    //个人中心功能界面
+    private RelativeLayout layout_task,layout_message,layout_question,layout_feedback,layout_account;
+    private Intent intent_next;
+    private TextView textView_login,textView_username;
 
 //    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
 //
@@ -82,9 +88,9 @@ public class PersonalAccountActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_person_account_layout);
+        setContentView(R.layout.activity_person_account_fragment_layout);
 
-        initTopBar();
+//        initTopBar();
         initView();
     }
     
@@ -93,6 +99,14 @@ public class PersonalAccountActivity extends BaseActivity implements
 //        if (mSession.isLogin() && isFirstAccess) {
 //            mProgress.setVisibility(View.VISIBLE);
 //        }
+//    	System.out.println("mSession"+mSession.getSim());
+//    	System.out.println("mSession"+mSession.getUserName());
+    	if (!mSession.isLogin()) {
+    		textView_login.setText("登录");
+        } else if (mSession.isLogin()) {
+        	textView_login.setText("账号退出");
+        	textView_username.setText(mSession.getUserName());
+        }
         super.onResume();
     }
     
@@ -109,28 +123,45 @@ public class PersonalAccountActivity extends BaseActivity implements
 //        unregisterReceiver(mReceiver);
     }
 
-    private void initTopBar() {
+/*    private void initTopBar() {
         TopBar.createTopBar(getApplicationContext(),
                 new View[] { findViewById(R.id.top_bar_title) },
                 new int[] { View.VISIBLE },
                 getString(R.string.person_account_title));
-    }
+    }*/
 
     private void initView() {
 
-        mList = (ListView) this.findViewById(android.R.id.list);
+//        mList = (ListView) this.findViewById(android.R.id.list);
+    	layout_task=(RelativeLayout)this.findViewById(R.id.person_account_my_task_value_layout);
+    	layout_message=(RelativeLayout)this.findViewById(R.id.person_account_message_center_value_layout);
+    	layout_question=(RelativeLayout)this.findViewById(R.id.person_account_normol_question_layout);
+    	layout_feedback=(RelativeLayout)this.findViewById(R.id.person_account_feedback_value_layout);
+    	layout_account=(RelativeLayout)this.findViewById(R.id.person_account_logout_value_layout);
+    	layout_task.setOnClickListener(this);
+    	layout_message.setOnClickListener(this);
+    	layout_question.setOnClickListener(this);
+    	layout_feedback.setOnClickListener(this);
+    	layout_account.setOnClickListener(this);
+    	textView_login=(TextView)this.findViewById(R.id.person_account_logout_value_text);
+    	textView_username=(TextView)this.findViewById(R.id.person_account_hint_name_text);
+    	if (!mSession.isLogin()) {
+    		textView_login.setText("登录");
+        } else if (mSession.isLogin()) {
+        	textView_login.setText("账号退出");
+        }
 
-        mLoading = (FrameLayout) findViewById(R.id.loading);
+        /*mLoading = (FrameLayout) findViewById(R.id.loading);
         mProgress = (ProgressBar) mLoading.findViewById(R.id.progressbar);
         mProgress.setIndeterminateDrawable(new LoadingDrawable(
-                getApplicationContext()));
+                getApplicationContext()));*/
         
         mAdapter = doInitPayAdapter();
-        mList.setAdapter(mAdapter);
-        mList.setItemsCanFocus(false);
-        mList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        
-        mList.setOnItemClickListener(this);
+//        mList.setAdapter(mAdapter);
+//        mList.setItemsCanFocus(false);
+//        mList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+//        
+//        mList.setOnItemClickListener(this);
     }
     
     public boolean getCurrentBindStatue(){
@@ -251,8 +282,10 @@ public class PersonalAccountActivity extends BaseActivity implements
             switch (msg.what) {
             // 注销
             case REGIST:
-                ArrayList<HashMap<String, Object>> data = doInitFuncData();
-                mAdapter.changeDataSource(data);
+//                ArrayList<HashMap<String, Object>> data = doInitFuncData();
+//                mAdapter.changeDataSource(data);
+            	textView_login.setText("登录");
+            	textView_username.setText("未登录");
                 break;
             }
         };
@@ -267,7 +300,7 @@ public class PersonalAccountActivity extends BaseActivity implements
         }
     }
 
-    @Override
+    /*@Override
     public void onItemClick(AdapterView<?> parent, View view, int position,    long id) {
         switch (position) {
         case 0: {
@@ -297,7 +330,7 @@ public class PersonalAccountActivity extends BaseActivity implements
             break;
         }
     }
-
+*/
     @Override
     protected Dialog onCreateDialog(final int id) {
         switch (id) {
@@ -332,4 +365,41 @@ public class PersonalAccountActivity extends BaseActivity implements
         }
         return super.onCreateDialog(id);
     }
+
+	@Override
+	/**
+	 * 个人中心点击事件按钮
+	 * author albert liu 2016-3-28
+	 * @param v
+	 */
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.person_account_my_task_value_layout:
+			
+			break;
+		case R.id.person_account_message_center_value_layout:
+			
+			break;
+		case R.id.person_account_normol_question_layout:
+			
+			break;
+		case R.id.person_account_feedback_value_layout:
+			intent_next= new Intent();
+			intent_next.setClass(getApplicationContext(), FeedBackActivity.class);
+            startActivity(intent_next);
+			break;
+		case R.id.person_account_logout_value_layout:			
+			if (!mSession.isLogin()) {
+				intent_next = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivityForResult(intent_next, REQUEST_CODE);
+            } else if (mSession.isLogin()) {
+                showDialog(ACCOUNT_REGIST);
+            }
+            break;
+
+		default:
+			break;
+		}
+		
+	}
 }
