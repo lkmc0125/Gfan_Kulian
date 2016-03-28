@@ -12,4 +12,18 @@
     <declare-styleable name="TitleSpinner">
         <attr name="prompt" format="reference" />
     </declare-styleable>
+    <!-- start added by albert liu 2016-3-27 -->
+    <attr name="borderRadius" format="dimension" />
+    <attr name="type">
+        <enum name="circle" value="0" />
+        <enum name="round" value="1" />
+        <enum name="halfround" value="2" />
+        <enum name="nullround" value="3" />
+        <enum name="leftround" value="4" />
+    </attr>
+    <declare-styleable name="RoundImageView">
+        <attr name="borderRadius" />
+        <attr name="type" />
+    </declare-styleable>
+    <!-- end added by albert liu 2016-3-27 -->
 </resources>
