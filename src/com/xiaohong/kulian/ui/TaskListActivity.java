@@ -169,7 +169,14 @@ public class TaskListActivity extends LazyloadListActivity implements
         mNoData.setVisibility(View.GONE);
         lazyload();
     }
-    
+
+    private void openWebView(String url, String title) {
+        Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
+        detailIntent.putExtra("extra.url", url);
+        detailIntent.putExtra("extra.title", title);
+        startActivity(detailIntent);
+    }
+
     private class GzhTaskListApiRequestListener 
         implements ApiRequestListener {
 

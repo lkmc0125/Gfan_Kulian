@@ -381,7 +381,10 @@ public class PersonalAccountActivity extends BaseActivity implements
 			
 			break;
 		case R.id.person_account_normol_question_layout:
-			
+	        Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
+	        detailIntent.putExtra("extra.url", "file:///android_asset/FAQ.html");
+	        detailIntent.putExtra("extra.title", "常见问题");
+	        startActivity(detailIntent);
 			break;
 		case R.id.person_account_feedback_value_layout:
 			intent_next= new Intent();

@@ -53,8 +53,10 @@
 
         <!-- 产品详细页 -->
         <activity android:name=".ui.ProductDetailActivity"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation" />
         <activity android:name=".ui.PreloadActivity"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -77,6 +79,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.Light" />
         <activity android:name=".ui.FeedBackActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:configChanges="keyboardHidden|orientation" />
             
@@ -89,12 +92,20 @@
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop" />
         <activity android:name=".ui.PayMainActivity"
+            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation" />
         
         <!-- 注册页 -->
-        <activity android:name=".ui.RegisterActivity" 
+        <activity android:name=".ui.RegisterActivity"
+            android:screenOrientation="portrait" 
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="adjustResize"/>
+
+        <!-- webView -->
+        <activity
+            android:name=".ui.WebviewActivity"
+            android:screenOrientation="portrait" />
+        
         <!-- 微信  -->
         <activity
             android:name=".wxapi.WXEntryActivity"
