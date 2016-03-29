@@ -1,5 +1,7 @@
 package com.xiaohong.kulian.ui;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.common.MarketAPI;
@@ -72,14 +75,14 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         mAuthBtn.setVisibility(View.INVISIBLE);
         mAuthBtn.setOnClickListener(this);
         registerConnection();
-        
+
         new Handler().postDelayed(new Runnable() {  
             public void run() {
                 mWifiAdmin = new WifiAdmin(getApplicationContext());
                 boolean open = mWifiAdmin.openWifi();
                 Log.i(TAG, "wifi open:" + open);
                 mWifiAdmin.startScan();
-                checkWifiConnection();
+//                checkWifiConnection();
             }
         }, 500);
     }
@@ -131,10 +134,13 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         if (ssid == null) {
             return false;
         }
-        return ssid.toLowerCase().startsWith("hongwifi")
-                || ssid.toLowerCase().startsWith("ruijie")
-                || ssid.toLowerCase().endsWith("hongwifi")
-                || (ssid.indexOf("小鸿") != -1);
+        String name = ssid.toLowerCase().replace("\"", "");
+        if (name.startsWith("hongwifi") || name.startsWith("ruijie") || name.endsWith("hongwifi")
+                || (ssid.indexOf("小鸿") != -1)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void authentication () {
@@ -269,6 +275,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         switch (method) {
         case MarketAPI.ACTION_LOGIN:
             Log.d(TAG, "login success");
+            HashMap<String, String> result = (HashMap<String, String>) obj;
+            mSession.setCoinNum(result.get(Constants.KEY_COIN_NUM));
             mSession.setLogin(true);
             break;
         default:
@@ -293,6 +301,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 for (ScanResult scanResult : mWifiAdmin.getWifiList()) {
                     if (isHongWifi(scanResult.SSID)) {
                         mWifiAdmin.connectWifi(scanResult.SSID, "", mWifiAdmin.wifiEncryptType(scanResult.capabilities));
+                        break;
                     }
                 }
                 break;

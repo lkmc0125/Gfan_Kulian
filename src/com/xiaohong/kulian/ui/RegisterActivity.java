@@ -42,6 +42,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -159,6 +160,7 @@ public class RegisterActivity extends BaseActivity
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             setResult(Activity.RESULT_CANCELED);
+            hideKeyBoard();
             finish();
             return true;
         }
@@ -288,8 +290,10 @@ public class RegisterActivity extends BaseActivity
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
                     Constants.LOGIN_SUCCESS);
             HashMap<String, String> result = (HashMap<String, String>) obj;
-//            mSession.setUid(result.get(Constants.KEY_USER_UID));
-            mSession.setUserName(etUsername.getText().toString());
+            String userName = etUsername.getText().toString();
+            String password = etUsername.getText().toString().substring(5,11);
+            mSession.setUserName(userName);
+            mSession.setPassword(password);
             mSession.setCoinNum(result.get(Constants.KEY_COIN_NUM));
             mSession.setLogin(true);
             // 隐藏登录框
@@ -297,6 +301,7 @@ public class RegisterActivity extends BaseActivity
                 dismissDialog(DIALOG_PROGRESS);
             }catch (IllegalArgumentException e) {
             }
+            hideKeyBoard();
             finish();
             break;
             
@@ -423,5 +428,15 @@ public class RegisterActivity extends BaseActivity
         // todo: must be pure number
         return true;
     }
+
+    private void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);            
+        if (imm.isActive()&&getCurrentFocus()!=null) {
+            if (getCurrentFocus().getWindowToken()!=null) {
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
+
 }
 
