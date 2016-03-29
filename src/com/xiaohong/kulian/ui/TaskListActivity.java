@@ -150,7 +150,21 @@ public class TaskListActivity extends LazyloadListActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
-
+        
+        ArrayList<TaskBean> list = mAdapter.getData();
+        if(list != null) {
+            TaskBean item = list.get(position);
+            String clickUrl = item.getClick_url();
+            if(clickUrl != null && !clickUrl.equals("")) {
+                openWebView(clickUrl, item.getTitle());
+            }else {
+                Log.w(TAG, "no click url");
+            }
+            
+        }else {
+            Log.w(TAG, "list is null");
+        }
+        
         /*// 去产品详细页
         HashMap<String, Object> item = (HashMap<String, Object>) mAdapter
                 .getItem(position);

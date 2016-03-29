@@ -166,5 +166,9 @@ public class TaskListAdapter extends CommonAdapter {
             holder.mAppDescView.setText(item.getTitle());
         }
     }
+    
+    public ArrayList<TaskBean> getData() {
+        return mData;
+    }
 
 }

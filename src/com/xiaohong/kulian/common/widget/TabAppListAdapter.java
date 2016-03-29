@@ -610,7 +610,7 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
        viewHolder.mAppSizeView.setVisibility(View.VISIBLE);
        viewHolder.mGoldView.setVisibility(View.VISIBLE);
        viewHolder.mActionView.setVisibility(View.VISIBLE); 
-       viewHolder.mStatusView.setVisibility(View.VISIBLE); 
+       viewHolder.mStatusView.setVisibility(View.GONE); 
    }
 
 
