@@ -55,21 +55,6 @@ public class TopBar {
 
                 ((TextView) v).setText(title);
                 break;
-
-            case R.id.top_bar_files:
-
-                // go to local file manager activity
-                v.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View arg0) {
-                        Utils.trackEvent(context, Constants.GROUP_7,
-                                Constants.CLICK_FILE_MANAGER);
-                        Intent intent = new Intent(context, FileManagerActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                    }
-                });
-                break;
             }
         }
     }

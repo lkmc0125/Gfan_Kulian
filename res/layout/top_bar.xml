@@ -6,32 +6,15 @@
     android:background="@drawable/title_bar_bg"
     android:focusableInTouchMode="true" 
     android:gravity="center_vertical">
-
-    <!-- 个人帐号图片 -->
-    <ImageButton android:id="@+id/top_bar_account"
+    
+    <ImageButton android:id="@+id/back_btn"
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/topbar_btn_account_bg"
-        android:src="@drawable/topbar_account" 
-        android:visibility="gone" />
-        
-    <!-- 本地文件管理 -->
-    <ImageButton android:id="@+id/top_bar_files"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/topbar_btn_account_bg"
-        android:src="@drawable/local_apps" 
-        android:visibility="gone" />
-
-    <!-- logo图片 -->
-    <ImageView android:id="@+id/logo" 
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true" 
-        android:layout_marginLeft="13dp"
-        android:src="@drawable/logo" 
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dip"
+        android:layout_alignParentLeft="true"
+        android:background="#00000000"
+        android:src="@drawable/back_light" 
         android:visibility="gone" />
 
     <!-- Title -->

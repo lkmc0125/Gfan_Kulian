@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
@@ -20,10 +21,6 @@ import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
-/**
- * @author rachel
- * 
- */
 public class FeedBackActivity extends BaseActivity {
 
 	@Override
@@ -35,9 +32,18 @@ public class FeedBackActivity extends BaseActivity {
 	}
 
     private void initTopBar() {
-        TopBar.createTopBar(getApplicationContext(),
-                new View[] { findViewById(R.id.top_bar_title) }, new int[] { View.VISIBLE },
+
+        TopBar.createTopBar(this, 
+                new View[] { findViewById(R.id.back_btn), findViewById(R.id.top_bar_title) },
+                new int[] { View.VISIBLE, View.VISIBLE}, 
                 getString(R.string.feedback_title));
+        ImageButton back = (ImageButton)findViewById(R.id.back_btn);
+        back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                finish();
+            }
+        });
     }
 
     private void initViews() {
@@ -64,7 +70,7 @@ public class FeedBackActivity extends BaseActivity {
                         Constants.SEND_FEEDBACK);
                 
                 if (mSession.isLogin()) {
-                    content = "User[" + mSession.getUid() + "] send feedback : " + content;
+                    content = "User[" + mSession.getUserName() + "] send feedback : " + content;
                 }
             }
         });

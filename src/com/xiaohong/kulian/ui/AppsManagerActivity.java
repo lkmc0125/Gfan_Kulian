@@ -106,11 +106,9 @@ public class AppsManagerActivity extends BaseActivity implements OnItemClickList
 
         TopBar.createTopBar(getApplicationContext(), 
                 new View[] { 
-                    findViewById(R.id.top_bar_title),
-                    findViewById(R.id.top_bar_files)
+                    findViewById(R.id.top_bar_title)
                 }, 
                 new int[] { 
-                    View.VISIBLE, 
                     View.VISIBLE 
                 },
                 getString(R.string.app_manager_title));
