@@ -41,6 +41,7 @@ public class FeedBackActivity extends BaseActivity {
         back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                hideKeyBoard();
                 finish();
             }
         });
@@ -74,5 +75,14 @@ public class FeedBackActivity extends BaseActivity {
                 }
             }
         });
+    }
+    
+    private void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);            
+        if (imm.isActive()&&getCurrentFocus()!=null) {
+            if (getCurrentFocus().getWindowToken()!=null) {
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 }
