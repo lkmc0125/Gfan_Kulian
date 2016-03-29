@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_selected="true" android:color="@color/make_money_tab_select_color"/>
-    <item android:state_checked="true" android:color="@color/make_money_tab_select_color"/>
+    <item android:state_selected="true" android:color="@color/app_task_select_color"/>
+    <item android:state_checked="true" android:color="@color/app_task_select_color"/>
     <item android:color="@color/black"/>
 
 </selector>

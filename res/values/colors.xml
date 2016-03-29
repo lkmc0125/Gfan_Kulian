@@ -33,4 +33,8 @@
     <color name="comment_time_font_color">#FF646464</color>
     
     <color name="make_money_tab_select_color">#0001FF</color>
+    
+    <!-- 应用和任务界面被选中的字体和下划线颜色 -->
+    <color name="app_task_select_color">#2c78D4</color>
+    <color name="app_task_not_select_color">#FFFFFF</color>
 </resources>

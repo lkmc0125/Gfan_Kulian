@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="app_name_white_font">
         <item name="android:textStyle">normal</item>
@@ -138,8 +138,9 @@
 
     <!-- rank_tab_text -->
     <style name="app_text_style4">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@drawable/tab_text_selector</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@drawable/make_money_tab_text_selector</item>
     </style>
     
     <style name="search_tab_text">
