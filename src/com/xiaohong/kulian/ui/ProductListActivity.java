@@ -1,9 +1,15 @@
 package com.xiaohong.kulian.ui;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
@@ -29,7 +36,7 @@ import com.xiaohong.kulian.common.widget.TabAppListAdapter;
 public class ProductListActivity extends LazyloadListActivity implements ApiRequestListener,
         OnItemClickListener, OnClickListener {
 
-    // Loading
+    private static final String TAG = "ProductListActivity"; 
     private FrameLayout mLoading;
     private ProgressBar mProgress;
     private TextView mNoData;
@@ -37,11 +44,79 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
 	private String mCategory;
 	private boolean mIsEnd;
 
+    private BroadcastReceiver mAppInstallReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String packageName = null;
+            if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)
+                    || intent.getAction().equals(Intent.ACTION_PACKAGE_REPLACED)) {
+                packageName = intent.getData().getSchemeSpecificPart();
+                ApplicationInfo applicationInfo = null;
+                PackageManager packageManager = null;
+                try {
+                    packageManager = context.getPackageManager();
+                    applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+                    String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
+                    Log.d(TAG, "installed [" + applicationName + "] pkg-name: " + applicationInfo.packageName);
+//                    String appId = mDownloadAppInfoHashMap.get(applicationInfo.packageName);
+//                    if (appId != null) {
+                        Toast.makeText(context, "安装成功: " + applicationName, Toast.LENGTH_LONG).show();
+//                        webView.loadUrl("javascript: appInstallFinished(" + appId + ")");
+//                        mDownloadAppInfoHashMap.remove(applicationName);
+//                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+	    
+    private BroadcastReceiver mAppLanchReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String packageName = null;
+            if (intent.getAction().equals(Intent.ACTION_PACKAGE_FIRST_LAUNCH)) {
+                packageName = intent.getData().getSchemeSpecificPart();
+
+                ApplicationInfo applicationInfo = null;
+                PackageManager packageManager = null;
+                try {
+                    packageManager = context.getPackageManager();
+                    applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+                    String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
+                    Log.d(TAG, "Lanched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
+                    Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
+//                    webView.loadUrl("javascript: appLanched('" + applicationInfo.packageName + "')");
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+	
+    private void registerAppInstall() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+        filter.addDataScheme("package");
+        registerReceiver(mAppInstallReceiver, filter);
+    }
+
+    private void registerAppLanch() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_PACKAGE_FIRST_LAUNCH);
+        filter.addDataScheme("package");
+        registerReceiver(mAppLanchReceiver, filter);
+    }
+
     @Override
     public boolean doInitView(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        if(intent != null) {
-            
+        if (intent != null) {
+            registerAppInstall();
+            registerAppLanch();
             mCategory = intent.getStringExtra(Constants.EXTRA_CATEGORY);
             if (TextUtils.isEmpty(mCategory)) {
                 intent.getIntExtra(Constants.EXTRA_SORT_TYPE, 1);
