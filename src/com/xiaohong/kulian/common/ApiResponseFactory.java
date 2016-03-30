@@ -140,15 +140,23 @@ public class ApiResponseFactory {
                 requestMethod = "ACTION_GET_SSID_LIST";
                 result = parseSSIDList(context, inputBody);
                 break;
+
             case MarketAPI.ACTION_GET_TASK_LIST:
             case MarketAPI.ACTION_GET_GZH_TASK_LIST:
                 Gson gson = new Gson();
                 result = gson.fromJson(inputBody, TaskListBean.class);
                 break;
+
             case MarketAPI.ACTION_GET_MESSAGES:
                 requestMethod = "ACTION_GET_MESSAGES";
                 result = parseMessages(context, inputBody);
                 break;
+
+            case MarketAPI.ACTION_SIGN_IN:
+                requestMethod = "ACTION_SIGN_IN";
+                result = parseSignIn(context, inputBody);
+                break;
+
             default:
                 break;
             }
@@ -239,17 +247,15 @@ public class ApiResponseFactory {
         try {
             //{"ret_msg":"success","invite_code":"523851","ret_code":0,"coin_num":5572,"token":"JNGdT3H0dB7iwfr64OVRMOw7+P+0MBOFFwPGYsUUVzzh+zHeywhpjFe6L2aX6izX"}
             JSONObject jsonObj = new JSONObject(body);
-            ArrayList<HashMap<String, Object>> productArray = null;
             result = new HashMap<String, Object>();
             result.put("ret_msg", jsonObj.getString("ret_msg"));
             if (jsonObj.getInt("ret_code") == 0) {
-                result.put(Constants.KEY_COIN_NUM, jsonObj.getString("coin_num"));
+                result.put(Constants.KEY_COIN_NUM, Integer.valueOf(jsonObj.getString("coin_num")));
                 try {
                     result.put(Constants.KEY_SIGN_IN_TODAY, jsonObj.getString("is_sign"));                    
                 } catch (JSONException e) {
                     Utils.D("have json exception when parse search result from bbs", e);
                 }
-
             }
         } catch (JSONException e) {
             Utils.D("have json exception when parse search result from bbs", e);
@@ -412,6 +418,32 @@ public class ApiResponseFactory {
 
         return result;
     }
+
+    /*
+     * 解析签到
+     */
+    private static HashMap<String, Object> parseSignIn(Context context, String body) {
+        if (body == null) {
+            return null;
+        }
+        HashMap<String, Object> result = null;
+        try {
+            // { "add_coin_num" : 20, "coin_num" : 60, "ret_code" : 0, "ret_msg" : "success" } 
+            JSONObject jsonObj = new JSONObject(body);
+            result = new HashMap<String, Object>();
+            result.put("ret_msg", jsonObj.getString("ret_msg"));
+            result.put("ret_code", Integer.valueOf(jsonObj.getInt("ret_code")));
+            if (jsonObj.getInt("ret_code") == 0) {
+                result.put(Constants.KEY_ADD_COIN_NUM, Integer.valueOf(jsonObj.getString("add_coin_num")));
+                result.put(Constants.KEY_COIN_NUM, Integer.valueOf(jsonObj.getString("coin_num")));
+            }
+        } catch (JSONException e) {
+            Utils.D("have json exception when parse search result from bbs", e);
+        }
+
+        return result;
+    }
+
     /*
      * 解析支付宝订单结果
      */

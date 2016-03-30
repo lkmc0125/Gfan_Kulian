@@ -70,7 +70,9 @@ public class MarketAPI {
         // ACTION_GET_GZH_TASKLIST
         API_BASE_URL + "/get_gzhtasklist",
         // ACTION_GET_MESSAGES
-        API_BASE_URL + "/app_broadcast"
+        API_BASE_URL + "/app_broadcast",
+        // ACTION_SIGN_IN
+        API_BASE_URL + "/user_sign",
         };
 
     /** 检查更新 */
@@ -93,7 +95,10 @@ public class MarketAPI {
     public static final int ACTION_GET_GZH_TASK_LIST = 8;
     /** 获取广播和个人消息 */
     public static final int ACTION_GET_MESSAGES = 9;
-	/**
+    /** 签到 */
+    public static final int ACTION_SIGN_IN = 10;
+
+    /**
 	 * Register API<br>
 	 * Do the register process, UserName, Password, Email must be provided.<br>
 	 */
@@ -248,5 +253,15 @@ public class MarketAPI {
 
         new ApiAsyncTask(context, ACTION_GET_MESSAGES, handler, params).execute();
     }
-    
+
+    /**
+     * 签到
+     */
+    public static void signIn(Context context, ApiRequestListener handler) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("phone_number", session.getUserName());
+
+        new ApiAsyncTask(context, ACTION_SIGN_IN, handler, params).execute();
+    }
 }

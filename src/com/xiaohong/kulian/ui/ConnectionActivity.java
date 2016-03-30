@@ -278,13 +278,18 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         case MarketAPI.ACTION_LOGIN:
         {
             Log.d(TAG, "login success");
-            HashMap<String, String> result = (HashMap<String, String>) obj;
-            mSession.setCoinNum(result.get(Constants.KEY_COIN_NUM));
+            HashMap<String, Object> result = (HashMap<String, Object>) obj;
+            mSession.setCoinNum((Integer)result.get(Constants.KEY_COIN_NUM));
             mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true")); 
-
             mSession.setLogin(true);
+
             if (mSession.getMessages() == null) {
                 MarketAPI.getMessages(getApplicationContext(), this);
+            }
+
+            // 签到
+            if (!mSession.getSignInToday()) {
+                MarketAPI.signIn(getApplicationContext(), this);
             }
             break;
         }
@@ -293,6 +298,18 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             ArrayList<HashMap<String, String>> messages = (ArrayList<HashMap<String, String>>)obj;
             if (messages.size() > 0) {
                 mSession.setMessages(messages);    
+            }
+            break;
+        }
+        case MarketAPI.ACTION_SIGN_IN:
+        {
+            HashMap<String, Object> result = (HashMap<String, Object>) obj;
+            Integer ret_code = (Integer)result.get("ret_code");
+            if (ret_code == 0) {
+                mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
+                mSession.setSignInToday(true);
+            } else if (ret_code == 3002) { // 今天已经签到领取过了
+                Log.d(TAG, "Already sign in today, ret_code 3002");
             }
             break;
         }

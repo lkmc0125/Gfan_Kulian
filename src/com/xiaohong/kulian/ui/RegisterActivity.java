@@ -294,7 +294,7 @@ public class RegisterActivity extends BaseActivity
             String password = etUsername.getText().toString().substring(5,11);
             mSession.setUserName(userName);
             mSession.setPassword(password);
-            mSession.setCoinNum(result.get(Constants.KEY_COIN_NUM));
+            mSession.setCoinNum(Integer.valueOf(result.get(Constants.KEY_COIN_NUM)));
             mSession.setLogin(true);
             // 隐藏登录框
             try{

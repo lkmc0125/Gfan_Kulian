@@ -203,7 +203,7 @@ public class Session extends Observable {
     private long splashId;
 
     /** 金币数 */
-    private String coinNum;
+    private Integer coinNum;
     
     /** The application list which user has installed */
     private ArrayList<String> mInstalledApps;
@@ -474,11 +474,11 @@ public class Session extends Observable {
         super.notifyObservers(new Pair<String, Object>(P_ISLOGIN, isLogin));
     }
 
-    public void setCoinNum(String coinNum) {
+    public void setCoinNum(Integer coinNum) {
         this.coinNum = coinNum;
     }
     
-    public String getCoinNum() {
+    public Integer getCoinNum() {
         return coinNum;
     }
     
