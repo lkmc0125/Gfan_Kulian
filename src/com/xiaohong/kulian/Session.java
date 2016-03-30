@@ -223,10 +223,16 @@ public class Session extends Observable {
     /** 默认的支付方式 */
     private String mDefaultChargeType;
 
-    private ArrayList<String> ssidList; // xiaohong wifi name list
-    /** 广播和私人消息 */
-    private ArrayList<HashMap<String, String>> messages;
+    /** xiaohong wifi name list */
+    private ArrayList<String> ssidList;
     
+    /** 广播和私人消息
+     * 每个条目有text字段，可能有url字段
+     *  */
+    private ArrayList<HashMap<String, String>> messages;
+
+    /** 今天是否已经签到过 */
+    private boolean signInToday;
     /**
      * default constructor
      * @param context
@@ -474,6 +480,14 @@ public class Session extends Observable {
     
     public String getCoinNum() {
         return coinNum;
+    }
+    
+    public void setSignInToday(boolean signIn) {
+        this.signInToday = signIn;
+    }
+
+    public boolean getSignInToday() {
+        return signInToday;
     }
     
     public String getUserName() {

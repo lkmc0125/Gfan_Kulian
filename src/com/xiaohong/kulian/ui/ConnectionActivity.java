@@ -280,6 +280,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             Log.d(TAG, "login success");
             HashMap<String, String> result = (HashMap<String, String>) obj;
             mSession.setCoinNum(result.get(Constants.KEY_COIN_NUM));
+            mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true")); 
+
             mSession.setLogin(true);
             if (mSession.getMessages() == null) {
                 MarketAPI.getMessages(getApplicationContext(), this);
@@ -301,7 +303,10 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
 
     @Override
     public void onError(int method, int statusCode) {
-        
+        switch (method) {
+        default:
+            break;
+        }
     }
 
     @Override
