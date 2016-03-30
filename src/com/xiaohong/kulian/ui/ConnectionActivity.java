@@ -270,6 +270,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         updateWifiStatusUI(mConnectionStatus);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onSuccess(int method, Object obj) {
         switch (method) {
@@ -300,7 +301,12 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             {
                 for (ScanResult scanResult : mWifiAdmin.getWifiList()) {
                     if (isHongWifi(scanResult.SSID)) {
-                        mWifiAdmin.connectWifi(scanResult.SSID, "", mWifiAdmin.wifiEncryptType(scanResult.capabilities));
+                        String encryptType = mWifiAdmin.wifiEncryptType(scanResult.capabilities); 
+                        if (encryptType.length() > 0) { // only connect to no password wifi
+                            continue;
+                        }
+                        mWifiAdmin.connectWifi(scanResult.SSID, "", encryptType);
+                        Log.d(TAG, "Trying to connect "+scanResult.SSID);
                         break;
                     }
                 }
