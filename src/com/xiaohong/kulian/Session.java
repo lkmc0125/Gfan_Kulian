@@ -223,7 +223,10 @@ public class Session extends Observable {
     /** 默认的支付方式 */
     private String mDefaultChargeType;
 
-    private ArrayList<String> mSSIDList; // xiaohong wifi name list
+    private ArrayList<String> ssidList; // xiaohong wifi name list
+    /** 广播和私人消息 */
+    private ArrayList<HashMap<String, String>> messages;
+    
     /**
      * default constructor
      * @param context
@@ -306,10 +309,17 @@ public class Session extends Observable {
     }
 
     public void setUid(String uid) {
-
         this.uid = uid;
         super.setChanged();
         super.notifyObservers(new Pair<String, Object>(P_UID, uid));
+    }
+
+    public ArrayList<HashMap<String, String>> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(ArrayList<HashMap<String, String>> messages) {
+        this.messages = messages;
     }
 
     public String getScreenSize() {
@@ -819,11 +829,11 @@ public class Session extends Observable {
     }
 
     public ArrayList<String> getSSIDList() {
-        return mSSIDList;
+        return ssidList;
     }
 
     public void setSSIDList(ArrayList<String> ssidList) {
-        mSSIDList = ssidList;
+        this.ssidList = ssidList;
     }
 
     private ContentObserver mCursorObserver = new ContentObserver(mHandler) {

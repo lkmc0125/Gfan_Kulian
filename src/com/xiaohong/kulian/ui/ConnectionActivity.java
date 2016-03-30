@@ -1,5 +1,6 @@
 package com.xiaohong.kulian.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -275,11 +276,24 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     public void onSuccess(int method, Object obj) {
         switch (method) {
         case MarketAPI.ACTION_LOGIN:
+        {
             Log.d(TAG, "login success");
             HashMap<String, String> result = (HashMap<String, String>) obj;
             mSession.setCoinNum(result.get(Constants.KEY_COIN_NUM));
             mSession.setLogin(true);
+            if (mSession.getMessages() == null) {
+                MarketAPI.getMessages(getApplicationContext(), this);
+            }
             break;
+        }
+        case MarketAPI.ACTION_GET_MESSAGES:
+        {
+            ArrayList<HashMap<String, String>> messages = (ArrayList<HashMap<String, String>>)obj;
+            if (messages.size() > 0) {
+                mSession.setMessages(messages);    
+            }
+            break;
+        }
         default:
             break;
         }

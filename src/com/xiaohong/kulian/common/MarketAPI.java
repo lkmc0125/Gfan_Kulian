@@ -68,7 +68,9 @@ public class MarketAPI {
         // ACTION_GET_TASK_LIST
         API_BASE_URL + "/get_tasklist",
         // ACTION_GET_GZH_TASKLIST
-        API_BASE_URL + "/get_gzhtasklist"
+        API_BASE_URL + "/get_gzhtasklist",
+        // ACTION_GET_MESSAGES
+        API_BASE_URL + "/app_broadcast"
         };
 
     /** 检查更新 */
@@ -85,15 +87,12 @@ public class MarketAPI {
     public static final int ACTION_CHECK_NEW_SPLASH = 5;
     /** 获取SSID列表 */
     public static final int ACTION_GET_SSID_LIST = 6;
-    /**
-     * 获取任务列表
-     */
+    /** 获取任务列表 */
     public static final int ACTION_GET_TASK_LIST = 7;
-    /**
-     * 获取公众号任务列表
-     */
+    /** 获取公众号任务列表 */
     public static final int ACTION_GET_GZH_TASK_LIST = 8;
-    
+    /** 获取广播和个人消息 */
+    public static final int ACTION_GET_MESSAGES = 9;
 	/**
 	 * Register API<br>
 	 * Do the register process, UserName, Password, Email must be provided.<br>
@@ -149,8 +148,7 @@ public class MarketAPI {
         params.put("page", page);
         params.put("phone_number", "13800138000");
         
-        new ApiAsyncTask(context,
-                ACTION_GET_APP_LIST, handler, params).execute();
+        new ApiAsyncTask(context, ACTION_GET_APP_LIST, handler, params).execute();
     }
     
 	/**
@@ -168,12 +166,11 @@ public class MarketAPI {
 		params.put("appid", pId);
 		params.put("apptype", categoryMap.get(category));
         params.put("phone_number", "13800138000");
-		new ApiAsyncTask(context, ACTION_GET_PRODUCT_DETAIL, handler, params)
-				.execute();
+		new ApiAsyncTask(context, ACTION_GET_PRODUCT_DETAIL, handler, params).execute();
 	}
 
 	/**
-	 * 检查更新（机锋市场）
+	 * 检查更新
 	 */
 	public static void checkUpdate(Context context, ApiRequestListener handler) {
 
@@ -204,6 +201,16 @@ public class MarketAPI {
 				.execute();
 	}
 
+	/**
+     * 获取wifi列表
+     */
+	public static void getSSIDList(Context context, ApiRequestListener handler) {
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+//        params.put("phone_number", "13800138000");
+
+        new ApiAsyncTask(context, ACTION_GET_SSID_LIST, handler, params).execute();
+	}
+	
     /**
      * 获取任务列表
      * @param context
@@ -211,14 +218,12 @@ public class MarketAPI {
      * @param page
      * @param category
      */
-    public static void getTaskList(Context context, 
-            ApiRequestListener handler ) {
-
+    public static void getTaskList(Context context, ApiRequestListener handler ) {
+        Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
-        params.put("phone_number", "13800138000");
+        params.put("phone_number", session.getUserName());
 
-        new ApiAsyncTask(context, ACTION_GET_TASK_LIST, handler, params)
-                .execute();
+        new ApiAsyncTask(context, ACTION_GET_TASK_LIST, handler, params).execute();
     }
     
     /**
@@ -228,13 +233,20 @@ public class MarketAPI {
      * @param page
      * @param category
      */
-    public static void getGzhTaskList(Context context,
-            ApiRequestListener handler) {
-
+    public static void getGzhTaskList(Context context, ApiRequestListener handler) {
+        Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
-        params.put("phone_number", "13800138000");
+        params.put("phone_number", session.getUserName());
 
-        new ApiAsyncTask(context, ACTION_GET_GZH_TASK_LIST, handler, params)
-                .execute();
+        new ApiAsyncTask(context, ACTION_GET_GZH_TASK_LIST, handler, params).execute();
     }
+    
+    public static void getMessages(Context context, ApiRequestListener handler) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("phone_number", session.getUserName());
+
+        new ApiAsyncTask(context, ACTION_GET_MESSAGES, handler, params).execute();
+    }
+    
 }

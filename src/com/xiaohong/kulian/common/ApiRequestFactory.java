@@ -51,31 +51,6 @@ import com.xiaohong.kulian.common.vo.UpgradeInfo;
  *
  */
 public class ApiRequestFactory {
-
-    private static ArrayList<Integer> S_GET_REQUESTS = new ArrayList<Integer>();
-    private static ArrayList<Integer> S_XML_REQUESTS = new ArrayList<Integer>();
-    private static ArrayList<Integer> S_ENCRYPT_REQUESTS = new ArrayList<Integer>();
-    private static ArrayList<Integer> S_ENCODE_FORM_REQUESTS = new ArrayList<Integer>(); 
-    static {
-        // GET
-        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_APP_LIST);
-        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_PRODUCT_DETAIL);
-        S_GET_REQUESTS.add(MarketAPI.ACTION_CHECK_NEW_SPLASH);
-        S_GET_REQUESTS.add(MarketAPI.ACTION_CHECK_NEW_VERSION);
-        S_GET_REQUESTS.add(MarketAPI.ACTION_REGISTER);
-        S_GET_REQUESTS.add(MarketAPI.ACTION_LOGIN);
-        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_SSID_LIST);
-        //add to support get task
-        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_GZH_TASK_LIST);
-        S_GET_REQUESTS.add(MarketAPI.ACTION_GET_TASK_LIST);
-    }
-    
-    // justify the G-Header
-    private static ArrayList<Integer> UCENTER_API = new ArrayList<Integer>();
-    static {
-//        UCENTER_API.add(MarketAPI.ACTION_REGISTER);
-//        UCENTER_API.add(MarketAPI.ACTION_LOGIN);
-    }
     
     // 不需要进行缓存的API
     public static ArrayList<Integer> API_NO_CACHE_MAP = new ArrayList<Integer>();
@@ -91,29 +66,9 @@ public class ApiRequestFactory {
     public static HttpUriRequest getRequest(String url, int action, HttpEntity entity,
             Session session) throws IOException {
 
-        if (S_GET_REQUESTS.contains(action)) {
-            String requestString = url+"?"+EntityUtils.toString(entity);
-            HttpGet request = new HttpGet(requestString);
-            return request;
-        } else if (UCENTER_API.contains(action)) {
-            HttpPost request = new HttpPost(url);
-            // update the User-Agent
-            request.setHeader("User-Agent", session.getUCenterApiUserAgent());
-            request.setEntity(entity);
-            return request;
-        } else if (S_XML_REQUESTS.contains(action)) {
-            HttpPost request = new HttpPost(url);
-            // update the g-header
-            request.setHeader("G-Header", session.getJavaApiUserAgent());
-            request.addHeader("Accept-Encoding", "gzip");
-            request.setEntity(AndroidHttpClient.getCompressedEntity(entity.getContent()));
-            return request;
-        } else {
-            // for BBS search API
-            HttpPost request = new HttpPost(url);
-            request.setEntity(entity);
-            return request;
-        }
+        String requestString = url+"?"+EntityUtils.toString(entity);
+        HttpGet request = new HttpGet(requestString);
+        return request;
     }
     
     /**
@@ -126,12 +81,7 @@ public class ApiRequestFactory {
      */
     public static HttpEntity getRequestEntity(int action, Object params)
             throws UnsupportedEncodingException {
-        if (S_GET_REQUESTS.contains(action)) {
-            return getGetRequest(params);
-        } else {
-            // 不需要请求内容
-            return null;
-        }
+        return getGetRequest(params);
     }
     
     private static StringEntity getGetRequest(Object params) throws UnsupportedEncodingException {

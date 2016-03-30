@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -206,12 +207,13 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
                 Constants.EXTRA_HOME_DATA);
         initView(item);
 
-        // getui
+        // GETUI
         PushManager.getInstance().initialize(this.getApplicationContext());
 
         // 网络正常，开始检查版本更新
         MarketAPI.checkUpdate(getApplicationContext(), this);
-        checkNewSplash();
+        MarketAPI.getSSIDList(getApplicationContext(), this);
+//        checkNewSplash();
     }
     
     @Override
@@ -504,11 +506,9 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
                     .setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             if (checkDownload()) {
-                                sendBroadcast(new Intent(
-                                        Constants.BROADCAST_FORCE_EXIT));
+                                sendBroadcast(new Intent(Constants.BROADCAST_FORCE_EXIT));
                             } else {
-                                sendBroadcast(new Intent(
-                                        Constants.BROADCAST_DOWNLOAD_OPT));
+                                sendBroadcast(new Intent(Constants.BROADCAST_DOWNLOAD_OPT));
                             }
                             removeDialog(id);
                         }
@@ -533,8 +533,7 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
                     .setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             if (checkDownload()) {
-                                sendBroadcast(new Intent(
-                                        Constants.BROADCAST_FORCE_EXIT));
+                                sendBroadcast(new Intent(Constants.BROADCAST_FORCE_EXIT));
                             } else {
                                 sendBroadcast(new Intent(Constants.BROADCAST_DOWNLOAD));
                             }
@@ -581,11 +580,15 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
     private void checkNewSplash() {
         sendBroadcast(new Intent(Constants.BROADCAST_SPLASH_CHECK_UPGRADE));
     }
-    
+
+    @SuppressWarnings("unchecked")
     @Override
     public void onSuccess(int method, Object obj) {
         if (method == MarketAPI.ACTION_CHECK_NEW_VERSION) {
             handleUpdate((UpdateInfo) obj);
+        } else if (method == MarketAPI.ACTION_GET_SSID_LIST) {
+            ArrayList<String> ssidList = (ArrayList<String>)obj;
+            mSession.setSSIDList(ssidList);
         }
     }
 
@@ -609,8 +612,7 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         }
 
         // update the info to local memory
-        mSession.setUpdateInfo(info.getVersionCode(), info.getDescription(),
-                info.getApkUrl());
+        mSession.setUpdateInfo(info.getVersionCode(), info.getDescription(), info.getApkUrl());
 
         // 有可用升级
         if (info.getForce()) {
@@ -657,10 +659,6 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         return false;
     }
     
-    /**
-     * 退出机锋市场<br>
-     * 进行必要的资源回收工作
-     */
     private void exit() {
         // 清除所有API缓存
         ResponseCacheManager.getInstance().clear();
