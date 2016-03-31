@@ -200,7 +200,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             TaskListBean result = (TaskListBean) obj;
             ArrayList<TaskBean> list = result.getTasklist();
             if(list != null) {
-                Log.d(TAG, "size = " + list.size());
+                Log.d(TAG, "ApiRequestListener size = " + list.size());
                 for(int i = 0; i< list.size(); i++) {
                     if(list.get(i).getRemain_tasknum() == 0) {
                         TaskBean bean = new TaskBean();
@@ -223,7 +223,7 @@ public class TaskListActivity extends LazyloadListActivity implements
 
         @Override
         public void onError(int method, int statusCode) {
-            // TODO Auto-generated method stub
+            Log.d(TAG, "GzhTaskListApiRequestListener onError" + statusCode);
             
         }
         

@@ -26,6 +26,7 @@ import android.R.integer;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
@@ -226,6 +227,10 @@ public class MarketAPI {
     public static void getTaskList(Context context, ApiRequestListener handler ) {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        String phoneNumber = session.getUserName();
+        if(phoneNumber == null || phoneNumber.equals("")) {
+            phoneNumber = "18980928189";
+        }
         params.put("phone_number", session.getUserName());
 
         new ApiAsyncTask(context, ACTION_GET_TASK_LIST, handler, params).execute();
@@ -241,8 +246,12 @@ public class MarketAPI {
     public static void getGzhTaskList(Context context, ApiRequestListener handler) {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
-        params.put("phone_number", session.getUserName());
-
+        String phoneNumber = session.getUserName();
+        if(phoneNumber == null || phoneNumber.equals("")) {
+            phoneNumber = "18980928189";
+        }
+        params.put("phone_number", phoneNumber);
+        Log.d("free", "getGzhTaskList");
         new ApiAsyncTask(context, ACTION_GET_GZH_TASK_LIST, handler, params).execute();
     }
     
