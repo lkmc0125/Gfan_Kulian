@@ -1245,4 +1245,22 @@ public class Utils {
         }
         return false;
     }
+
+    /**
+     * 
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static boolean openApkByPackageName(Context context, 
+            String packageName) {
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent=new Intent();
+        intent =packageManager.getLaunchIntentForPackage(packageName);
+        if(intent==null){
+            return false;
+        }
+        context.startActivity(intent);
+        return true;
+    }
 }

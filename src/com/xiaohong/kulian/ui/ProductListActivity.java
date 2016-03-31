@@ -218,13 +218,20 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        // 去产品详细页
         AppBean item = (AppBean) mAdapter.getItem(position);
-        String pid = item.getAppId() + "";
-        Intent detailIntent = new Intent(getApplicationContext(), PreloadActivity.class);
-        detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
-        detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
-        startActivity(detailIntent);
+        if (item.isIsInstalled()) {
+            //打开已安装应用
+            Utils.openApkByPackageName(getApplicationContext(),
+                    item.getPackageName());
+        } else {
+            // 去产品详细页
+            String pid = item.getAppId() + "";
+            Intent detailIntent = new Intent(getApplicationContext(),
+                    PreloadActivity.class);
+            detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
+            detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
+            startActivity(detailIntent);
+        }
     }
 
     @Override
