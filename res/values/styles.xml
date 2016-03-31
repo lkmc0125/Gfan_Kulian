@@ -142,7 +142,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@drawable/make_money_tab_text_selector</item>
     </style>
-    
+
     <style name="search_tab_text">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@drawable/search_tab_text_selector</item>
@@ -186,6 +186,12 @@
         <item name="android:textColor">@color/gray_1</item>
     </style>
 
+    <!-- app list and task list action -->
+    <style name="app_text_style12">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#2c78d4</item>
+    </style>
+    
     <style name="comment_author_font">
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">@dimen/font_size_s</item>

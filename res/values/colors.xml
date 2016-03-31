@@ -14,7 +14,7 @@
     <color name="tab_text_color">#9A9A9A</color>
     <color name="tab_text_selected">#FFFFFF</color>
     <color name="tab_bg_color">#333333</color>
-    <color name="tab_bg_selected">#0000FF</color>
+    <color name="tab_bg_selected">#2c78d4</color> <!-- todo tmp -->
 
     <color name="tab_app_num">#FFB400</color>
 

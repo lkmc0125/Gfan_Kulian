@@ -684,18 +684,15 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
     private void updateTab(final TabHost tabHost) {
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
             View view = tabHost.getTabWidget().getChildAt(i);
-            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(R.id.tab_widget_content);
             //tv.setTextSize(16);
             //tv.setTypeface(Typeface.SERIF, 2); // 设置字体和风格
             if (tabHost.getCurrentTab() == i) {//选中
                 view.setBackgroundColor(getResources().getColor(R.color.tab_bg_selected));//选中后的背景
-//                tv.setTextColor(this.getResources().getColorStateList(android.R.color.black));
-//                tv.setTextColor(getResources().getColor(R.color.tab_text_selected));
+                tv.setTextColor(getResources().getColor(R.color.tab_text_selected));
             } else {//不选中
                 view.setBackgroundColor(getResources().getColor(R.color.tab_bg_color));//非选择的背景
-                /*tv.setTextColor(this.getResources().getColorStateList(
-                        android.R.color.white));*/
-//                tv.setTextColor(getResources().getColor(R.color.tab_text_color));
+                tv.setTextColor(getResources().getColor(R.color.tab_text_color));
             }
         }
     }
