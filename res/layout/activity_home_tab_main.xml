@@ -15,7 +15,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true" 
-            android:background="@drawable/home_tab_bg"
+            android:background="#333333"
             android:clickable="true" >
             
             <!-- Tab切换动画 -->
@@ -28,7 +28,7 @@
             <!-- Tab labels -->
             <TabWidget android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
-                android:layout_height="64dp" />
+                android:layout_height="56dp" />
         </FrameLayout>
 
         <!-- Tab contents -->

@@ -353,7 +353,7 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
             if (mSession.getUpgradeNumber() > 0) {
                 drawUpdateCount(this, getResources(), bg, true);
             } else {
-                bg.setImageResource(R.drawable.main_tab_app_manager_selector);
+//                bg.setImageResource(R.drawable.main_tab_app_manager_selector);
             }
         } else {
             bg = (ImageView) view.findViewById(R.id.tab_widget_icon);
@@ -372,26 +372,26 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
         DisplayMetrics dm = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(dm);
         Bitmap cornerRes = BitmapFactory.decodeResource(res, R.drawable.notify_update);
-        Bitmap appBitmapNormal = 
-                BitmapFactory.decodeResource(res, R.drawable.main_tab_app_unselect);
-        Bitmap appBitmapPressed = BitmapFactory.decodeResource(res, R.drawable.main_tab_app_select);
+//        Bitmap appBitmapNormal = 
+//                BitmapFactory.decodeResource(res, R.drawable.main_tab_app_unselect);
+//        Bitmap appBitmapPressed = BitmapFactory.decodeResource(res, R.drawable.main_tab_app_select);
 
         StateListDrawable stateDrawable = new StateListDrawable();
         int stateSelected = android.R.attr.state_selected;
         if (flag) {
             Bitmap cornerBitmap = drawText(dm, res, cornerRes, mSession.getUpgradeNumber());
-            Bitmap newBitmapNormal = drawBitmap(dm, appBitmapNormal, cornerBitmap);
-            Bitmap newBitmapPressed = drawBitmap(dm, appBitmapPressed, cornerBitmap);
+//            Bitmap newBitmapNormal = drawBitmap(dm, appBitmapNormal, cornerBitmap);
+//            Bitmap newBitmapPressed = drawBitmap(dm, appBitmapPressed, cornerBitmap);
             
-            stateDrawable.addState(new int[] { -stateSelected }, new BitmapDrawable(res,
-                    newBitmapNormal));
-            stateDrawable.addState(new int[] { stateSelected }, new BitmapDrawable(res,
-                    newBitmapPressed));
+//            stateDrawable.addState(new int[] { -stateSelected }, new BitmapDrawable(res,
+//                    newBitmapNormal));
+//            stateDrawable.addState(new int[] { stateSelected }, new BitmapDrawable(res,
+//                    newBitmapPressed));
             
             view.setImageDrawable(stateDrawable);
         } else {
             
-            view.setImageResource(R.drawable.main_tab_app_manager_selector);
+//            view.setImageResource(R.drawable.main_tab_app_manager_selector);
         }
     }
 
@@ -567,8 +567,8 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
                             (ImageView) (v.findViewById(R.id.tab_widget_icon)), true);
                 } else if (counter == 0) {
                     View v = getTabHost().getTabWidget().getChildTabViewAt(3);
-                    ((ImageView) v.findViewById(R.id.tab_widget_icon))
-                            .setImageResource(R.drawable.main_tab_app_manager_selector);
+//                    ((ImageView) v.findViewById(R.id.tab_widget_icon))
+//                            .setImageResource(R.drawable.main_tab_app_manager_selector);
                 }
             }
         }
@@ -688,13 +688,14 @@ public class HomeTabActivity extends BaseTabActivity implements ApiRequestListen
             //tv.setTextSize(16);
             //tv.setTypeface(Typeface.SERIF, 2); // 设置字体和风格
             if (tabHost.getCurrentTab() == i) {//选中
-                view.setBackgroundColor(getResources().getColor(R.color.gray_1));//选中后的背景
-                /*tv.setTextColor(this.getResources().getColorStateList(
-                        android.R.color.black));*/
+                view.setBackgroundColor(getResources().getColor(R.color.tab_bg_selected));//选中后的背景
+//                tv.setTextColor(this.getResources().getColorStateList(android.R.color.black));
+//                tv.setTextColor(getResources().getColor(R.color.tab_text_selected));
             } else {//不选中
-                view.setBackgroundColor(getResources().getColor(R.color.banner_background));//非选择的背景
+                view.setBackgroundColor(getResources().getColor(R.color.tab_bg_color));//非选择的背景
                 /*tv.setTextColor(this.getResources().getColorStateList(
                         android.R.color.white));*/
+//                tv.setTextColor(getResources().getColor(R.color.tab_text_color));
             }
         }
     }

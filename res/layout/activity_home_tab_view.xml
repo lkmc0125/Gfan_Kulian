@@ -2,13 +2,13 @@
 <!-- TabWidget Spec -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
-    android:layout_height="64dp" 
+    android:layout_height="56dp" 
     android:background="@drawable/main_tab_bg_selector">
 
     <!-- icon -->
     <ImageView android:id="@+id/tab_widget_icon"
-        android:layout_width="32dp" 
-        android:layout_height="32dp"
+        android:layout_width="20dp" 
+        android:layout_height="20dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true" 
         android:layout_marginTop="5dp" />
