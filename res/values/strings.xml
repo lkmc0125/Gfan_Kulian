@@ -446,5 +446,8 @@
     <string name="title_task_todo">做任务赚金币</string>
     <string name="title_task_done">已结束任务</string>
     <string name="task_status_done">已结束</string>
+    
+    <string name="app_item_action_view">查看</string>
+    <string name="app_item_action_open">打开</string>
 
 </resources>

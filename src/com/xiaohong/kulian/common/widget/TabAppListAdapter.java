@@ -342,15 +342,13 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
         if (data == null) {
             return;
         }
-        Log.d("free", "**************");
-        Log.d("free", "bindView:" + data.getAppName());
-        Log.d("free", "bindView:" + data.getBriefSummary());
-        Log.d("free", "bindView:" + data.getAppSize());
-        Log.d("free", "**************");
         viewHolder.mAppNameView.setText(data.getAppName());
         viewHolder.mAppDescView.setText(data.getBriefSummary());
         viewHolder.mAppSizeView.setText(data.getAppSize());
         mImageLoader.displayImage(data.getAppLogo(), viewHolder.mAppIconView);
+        if(data.isIsInstalled()) {
+            viewHolder.mActionView.setText(R.string.app_item_action_open);
+        }
     }
 
     /*protected void setViewResource(View v, int position, int[] bitmaps) {

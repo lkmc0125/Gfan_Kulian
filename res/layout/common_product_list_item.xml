@@ -80,7 +80,7 @@
             android:layout_width="50dip"
             android:layout_height="20dip"
             android:background="@drawable/task_action_view_border"
-            android:text="查看"
+            android:text="@string/app_item_action_view"
             android:textAppearance="@style/app_text_style12"
             android:gravity="center"
             android:layout_gravity="center"/>
