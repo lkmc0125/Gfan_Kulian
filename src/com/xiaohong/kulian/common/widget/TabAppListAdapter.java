@@ -348,9 +348,6 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
         Log.d("free", "bindView:" + data.getAppSize());
         Log.d("free", "**************");
         viewHolder.mAppNameView.setText(data.getAppName());
-        viewHolder.mAppNameView.setTextColor(Color.BLACK);
-        viewHolder.mAppDescView.setTextColor(Color.BLACK);
-        viewHolder.mAppSizeView.setTextColor(Color.BLACK);
         viewHolder.mAppDescView.setText(data.getBriefSummary());
         viewHolder.mAppSizeView.setText(data.getAppSize());
         mImageLoader.displayImage(data.getAppLogo(), viewHolder.mAppIconView);
