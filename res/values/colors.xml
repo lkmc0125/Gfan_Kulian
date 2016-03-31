@@ -37,4 +37,7 @@
     <!-- 应用和任务界面被选中的字体和下划线颜色 -->
     <color name="app_task_select_color">#2c78D4</color>
     <color name="app_task_not_select_color">#FFFFFF</color>
+    <!-- 应用和任务tab颜色  白色-->
+    <color name="app_task_tab_color">#FFFFFF</color>
+    <color name="app_task_background_color">#DBDBDB</color>
 </resources>
