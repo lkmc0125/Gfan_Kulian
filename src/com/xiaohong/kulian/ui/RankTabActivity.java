@@ -67,7 +67,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
-
+        getWindow().setBackgroundDrawableResource(android.R.color.darker_gray);
         initView();
         initAdPager();
     }

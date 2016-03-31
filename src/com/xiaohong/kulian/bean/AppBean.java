@@ -21,6 +21,23 @@ public class AppBean {
      */
     private HashMap<String, Object> mStatusMap = new HashMap<String, Object>();
 
+    /**
+     * 标记用户是否已安装app,默认值为false
+     */
+    private boolean mIsInstalled = false;
+    
+    /**
+     * @return the isInstalled
+     */
+    public boolean isIsInstalled() {
+        return mIsInstalled;
+    }
+    /**
+     * @param isInstalled the isInstalled to set
+     */
+    public void setIsInstalled(boolean isInstalled) {
+        mIsInstalled = isInstalled;
+    }
     public HashMap<String, Object> getStatusMap() {
         return mStatusMap;
     }

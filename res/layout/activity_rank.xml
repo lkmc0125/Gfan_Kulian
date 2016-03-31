@@ -2,8 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:background="@color/app_task_background_color"
+    android:orientation="vertical">
 
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="@drawable/headernavi_bg">
+        
+    </LinearLayout>
     <!-- Top bar -->
     <!--
          <include android:id="@+id/top_bar" 
@@ -35,6 +42,8 @@
     </FrameLayout>
 
     <TabHost
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@android:id/tabhost"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >

@@ -1,5 +1,7 @@
 package com.xiaohong.kulian.ui;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,12 +25,14 @@ import android.widget.Toast;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
+import com.xiaohong.kulian.SessionManager;
 import com.xiaohong.kulian.adapter.CommonAdapter;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.LazyloadListActivity;
 import com.xiaohong.kulian.common.widget.LoadingDrawable;
 import com.xiaohong.kulian.common.widget.TabAppListAdapter;
@@ -40,9 +44,9 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     private FrameLayout mLoading;
     private ProgressBar mProgress;
     private TextView mNoData;
-	private TabAppListAdapter mAdapter;
-	private String mCategory;
-	private boolean mIsEnd;
+    private TabAppListAdapter mAdapter;
+    private String mCategory;
+    private boolean mIsEnd;
 
     private BroadcastReceiver mAppInstallReceiver = new BroadcastReceiver() {
         @Override
@@ -177,8 +181,15 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
         //HashMap<String, Object> result = (HashMap<String, Object>) obj;
 
         AppListBean appList = (AppListBean) obj;
-        mIsEnd = appList.getApplist().size() < 10;
-        mAdapter.addData(appList.getApplist());
+        ArrayList<AppBean> list = appList.getApplist();
+        mIsEnd = list.size() < 10;
+        for(AppBean bean : list) {
+            if(Utils.isApkInstalled(getApplicationContext(),
+                    bean.getPackageName()) ==  true) {
+                bean.setIsInstalled(true);
+            }
+        }
+        mAdapter.addData(list);
         setLoadResult(true);
     }
 

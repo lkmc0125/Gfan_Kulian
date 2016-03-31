@@ -1219,10 +1219,30 @@ public class Utils {
     }
 
     public static String getMobileInfo() {
-		return "model:"+android.os.Build.MODEL + ",manufacturer:" + android.os.Build.MANUFACTURER + ",os:" + android.os.Build.VERSION.RELEASE;
-	}
-    
+        return "model:" + android.os.Build.MODEL + ",manufacturer:"
+                + android.os.Build.MANUFACTURER + ",os:"
+                + android.os.Build.VERSION.RELEASE;
+    }
+
     public static boolean isLeShiMobile() {
-    	return (Utils.getMobileInfo().toLowerCase().indexOf("letv") != -1);
+        return (Utils.getMobileInfo().toLowerCase().indexOf("letv") != -1);
+    }
+
+    /**
+     * Check if the apk is installed on the device
+     * @param context A context
+     * @param packageName The app's package name
+     * @return return true if the app is installed
+     *          otherwise return false
+     */
+    public static boolean isApkInstalled(Context context, 
+            String packageName) {
+        List<PackageInfo> list = getInstalledApps(context);
+        for(PackageInfo p : list) {
+            if(packageName != null && packageName.equals(p.packageName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
