@@ -68,28 +68,5 @@
     android:layout_marginRight="13dp"
     android:gravity="center_horizontal"
     style="@style/app_description_font" />
-    
-  <!-- 评级数 -->     
-  <TextView android:id="@+id/tv_app_rating_num" 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_toRightOf="@id/iv_icon"
-    android:layout_toLeftOf="@id/tv_status"
-    android:layout_below="@id/tv_app_name"
-    android:layout_marginLeft="5dp"
-    android:layout_marginTop="3dp"
-    android:layout_marginBottom="12dp"
-    style="@style/app_description_font" />
-  
-  <!-- 评级 -->
-  <RatingBar android:id="@+id/rb_app_rating"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" 
-    style="@style/RatingBar"
-    android:isIndicator="true" 
-    android:layout_below="@id/iv_icon"
-    android:layout_toLeftOf="@id/tv_app_rating_num"
-    android:layout_marginRight="2dp"
-    android:layout_marginTop="7dp" />
   
 </RelativeLayout>

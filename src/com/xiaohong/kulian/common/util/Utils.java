@@ -615,18 +615,6 @@ public class Utils {
     }
     
     /**
-     * 创建Search Tab中的只包含TextView的View
-     */
-    public static View createSearchTabView(Context context, String text) {
-        TextView view = (TextView) LayoutInflater.from(context).inflate(R.layout.common_tab_view,
-                null);
-        view.setBackgroundResource(R.drawable.search_tab_selector);
-        view.setTextAppearance(context, R.style.search_tab_text);
-        view.setText(text);
-        return view;
-    }
-
-    /**
      * 获取用户安装的应用列表
      */
     public static List<PackageInfo> getInstalledApps(Context context) {

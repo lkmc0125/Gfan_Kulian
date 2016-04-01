@@ -39,5 +39,5 @@
     <color name="app_task_not_select_color">#FFFFFF</color>
     <!-- 应用和任务tab颜色  白色-->
     <color name="app_task_tab_color">#FFFFFF</color>
-    <color name="app_task_background_color">#DBDBDB</color>
+    <color name="app_task_background_color">#F3F3F3</color>
 </resources>

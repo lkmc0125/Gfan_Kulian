@@ -118,14 +118,6 @@ public class ProductDetailActivity extends BaseTabActivity implements ApiRequest
 		tvAppName.setText(product.getName());
 		final TextView tvAppAuthor = (TextView) findViewById(R.id.tv_app_author);
 		tvAppAuthor.setText(product.getAuthorName());
-		final TextView tvAppRatings = (TextView) findViewById(R.id.tv_app_rating_num);
-		tvAppRatings.setText(getString(R.string.kulian_comments,
-				product.getRatingCount()));
-
-		// 评星
-        final RatingBar rbAppRating = (RatingBar) findViewById(R.id.rb_app_rating);
-        float ratingLevel = product.getRating() / (float) 10;
-        rbAppRating.setRating(ratingLevel);
 		
         final TextView rbAppStatus = (TextView) findViewById(R.id.tv_status);
         HashMap<String, DownloadInfo> list = mSession.getDownloadingList();

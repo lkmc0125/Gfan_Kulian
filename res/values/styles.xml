@@ -33,14 +33,6 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <!-- RatingBar -->
-    <style name="RatingBar" parent="@android:style/Widget.RatingBar">
-        <item name="android:progressDrawable">@drawable/rating_star</item>
-        <item name="android:numStars">5</item>
-        <item name="android:minHeight">9dip</item>
-        <item name="android:maxHeight">9dip</item>
-    </style>
-
     <!-- Toast Text Style -->
     <style name="toast_text">
         <item name="android:textStyle">normal</item>
@@ -143,11 +135,6 @@
         <item name="android:textColor">@drawable/make_money_tab_text_selector</item>
     </style>
 
-    <style name="search_tab_text">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@drawable/search_tab_text_selector</item>
-    </style>
-
     <!-- app_tab_text -->
     <style name="app_text_style5">
         <item name="android:textSize">12sp</item>
@@ -208,14 +195,6 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">@dimen/font_size_m</item>
         <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="RatingBarLarge" parent="@android:style/Widget.RatingBar">
-        <item name="android:progressDrawable">@drawable/rating_star_large</item>
-        <item name="android:minHeight">27dip</item>
-        <item name="android:maxHeight">27dip</item>
-        <item name="android:maxWidth">140dip</item>
-        <item name="android:minWidth">140dip</item>
     </style>
 
     <!-- 个人中心 -->

@@ -913,16 +913,8 @@ public class Session extends Observable {
             
             int source = cursor.getInt(cursor
                     .getColumnIndex(DownloadManager.Impl.COLUMN_SOURCE));
-            if(source == com.xiaohong.kulian.common.download.Constants.DOWNLOAD_FROM_BBS) {
-                infoItem.mIconUrl = mContext.getResources().getDrawable(
-                        R.drawable.manager_installed_bbs_icon);
-            } else if(source == com.xiaohong.kulian.common.download.Constants.DOWNLOAD_FROM_CLOUD) {
-                infoItem.mIconUrl = mContext.getResources().getDrawable(
-                        R.drawable.manager_installed_soft_icon);
-            } else {
-                infoItem.mIconUrl = cursor.getString(cursor
+            infoItem.mIconUrl = cursor.getString(cursor
                         .getColumnIndex(DownloadManager.Impl.COLUMN_NOTIFICATION_EXTRAS));
-            }
 
             infoItem.mStatus = cursor.getInt(cursor
                     .getColumnIndex(DownloadManager.Impl.COLUMN_STATUS));
