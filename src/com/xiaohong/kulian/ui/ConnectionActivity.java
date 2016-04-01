@@ -3,7 +3,6 @@ package com.xiaohong.kulian.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
