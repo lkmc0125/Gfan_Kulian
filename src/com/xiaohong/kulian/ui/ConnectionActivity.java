@@ -239,6 +239,10 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         if (netinfo != null && netinfo.isAvailable()) {
             if (!mSession.isLogin() && mSession.getUserName().length() > 0 && mSession.getPassword().length() > 0) {
                 MarketAPI.login(getApplicationContext(), this, mSession.getUserName(), mSession.getPassword());
+            } else if (mSession.isLogin() == false) {
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
+                return;
             }
         }
 
