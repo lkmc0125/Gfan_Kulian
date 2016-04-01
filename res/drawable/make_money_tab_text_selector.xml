@@ -3,6 +3,6 @@
 
     <item android:state_selected="true" android:color="@color/app_task_select_color"/>
     <item android:state_checked="true" android:color="@color/app_task_select_color"/>
-    <item android:color="@color/black"/>
+    <item android:color="#595959"/>
 
 </selector>
