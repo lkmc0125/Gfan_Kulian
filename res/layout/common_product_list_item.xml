@@ -2,106 +2,112 @@
 <!-- 产品列表项 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
-    android:layout_height="100dp"
-    android:layout_margin="5dip"
-    android:background="@color/white">
+    android:layout_height="100dip"
+    android:background="@color/app_task_background_color">
 
-    <!-- 应用icon -->
-    <ImageView android:id="@+id/iv_logo" 
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        style="@style/personal_account_icon"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/loading_icon"
-        android:scaleType="fitCenter"/>
+    <RelativeLayout
+        android:background="@color/app_task_tab_color"
+        android:layout_width="fill_parent" 
+        android:layout_height="90dip"
+        android:layout_marginTop="10dip"
+        >
+	    <!-- 应用icon -->
+	    <ImageView android:id="@+id/iv_logo" 
+	        android:layout_width="60dp"
+	        android:layout_height="60dp"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="5dp"
+	        style="@style/personal_account_icon"
+	        android:layout_alignParentLeft="true"
+	        android:src="@drawable/loading_icon"
+	        android:scaleType="fitCenter"/>
+	
+	    <!-- 应用的名称 -->
+	    <TextView android:id="@+id/tv_name"
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/iv_logo"
+	        android:layout_alignParentTop="true"
+	        android:singleLine="true"
+	        android:layout_marginTop="12dp"
+	        android:layout_marginRight="2dp"
+	        android:textAppearance="@style/app_text_style1"
+	        android:text="taobao"/>
+	
+	    <!--   如果任务已完成则显示此控件 -->
+	    <TextView android:id="@+id/tv_status"
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/tv_name"
+	        android:layout_alignParentTop="true"
+	        android:singleLine="true"
+	        android:layout_marginTop="12dp"
+	        android:layout_marginLeft="2dp"
+	        android:drawableStart="@drawable/status_done"/>
+	
+	    <!-- 应用的描述 -->
+	    <TextView android:id="@+id/tv_description"
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/tv_name" 
+	        android:layout_toRightOf="@id/iv_logo"
+	        android:layout_toLeftOf="@+id/layout_status"
+	        android:layout_marginRight="20dp"
+	        android:singleLine="true"
+	        android:textAppearance="@style/app_text_style2"
+	        android:text="gouwu"/>
+	 
+	    <!-- 金币和查看/打开 -->
+	    <LinearLayout
+	        android:id="@+id/layout_status"
+	        android:layout_width="60dp"
+	        android:layout_height="60dp"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentRight="true"
+	        android:orientation="vertical" >
+	
+	        <TextView
+	            android:id="@+id/tv_gold"
+	            android:layout_marginTop="8dp"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:drawableEnd="@drawable/gold"
+	            android:textSize="16sp"
+	            android:textColor="#ff4c00"
+	            android:gravity="center"
+	            android:layout_gravity="center"
+	            android:text="+500">
+	        </TextView>
+	
+	        <TextView
+	            android:id="@+id/tv_action"
+	            android:layout_marginTop="8dp"
+	            android:layout_width="50dip"
+	            android:layout_height="20dip"
+	            android:background="@drawable/task_action_view_border"
+	            android:text="@string/app_item_action_view"
+	            android:textAppearance="@style/app_text_style12"
+	            android:gravity="center"
+	            android:layout_gravity="center"/>
+	    </LinearLayout>
+	    
+	    <!-- 分隔符 
+	    <ImageView android:id="@+id/iv_devider" 
+	        android:layout_width="0.8dp"
+	        android:layout_height="56dp"
+	        android:layout_toLeftOf="@id/layout_status"
+	        android:layout_centerVertical="true"
+	        android:src="@color/gray_2"  />
+	    -->
+	    <!-- 应用大小 -->
+	    <TextView android:id="@+id/tv_size" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:layout_below="@id/tv_description"
+	        android:layout_toRightOf="@id/iv_logo"
+	        android:textAppearance="@style/app_text_style2"
+	        android:layout_gravity="left" 
+	        android:text="1MB" />
 
-    <!-- 应用的名称 -->
-    <TextView android:id="@+id/tv_name"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/iv_logo"
-        android:layout_alignParentTop="true"
-        android:singleLine="true"
-        android:layout_marginTop="12dp"
-        android:layout_marginRight="2dp"
-        android:textAppearance="@style/app_text_style1"
-        android:text="taobao"/>
-
-    <!--   如果任务已完成则显示此控件 -->
-    <TextView android:id="@+id/tv_status"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/tv_name"
-        android:layout_alignParentTop="true"
-        android:singleLine="true"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="2dp"
-        android:drawableStart="@drawable/status_done"/>
-
-    <!-- 应用的描述 -->
-    <TextView android:id="@+id/tv_description"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_name" 
-        android:layout_toRightOf="@id/iv_logo"
-        android:layout_toLeftOf="@+id/layout_status"
-        android:layout_marginRight="20dp"
-        android:singleLine="true"
-        android:textAppearance="@style/app_text_style2"
-        android:text="gouwu"/>
- 
-    <!-- 金币和查看/打开 -->
-    <LinearLayout
-        android:id="@+id/layout_status"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/tv_gold"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/gold"
-            android:textSize="16sp"
-            android:textColor="#ff4c00"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:text="+500">
-        </TextView>
-
-        <TextView
-            android:id="@+id/tv_action"
-            android:layout_marginTop="8dp"
-            android:layout_width="50dip"
-            android:layout_height="20dip"
-            android:background="@drawable/task_action_view_border"
-            android:text="@string/app_item_action_view"
-            android:textAppearance="@style/app_text_style12"
-            android:gravity="center"
-            android:layout_gravity="center"/>
-    </LinearLayout>
-    
-    <!-- 分隔符 
-    <ImageView android:id="@+id/iv_devider" 
-        android:layout_width="0.8dp"
-        android:layout_height="56dp"
-        android:layout_toLeftOf="@id/layout_status"
-        android:layout_centerVertical="true"
-        android:src="@color/gray_2"  />
-    -->
-    <!-- 应用大小 -->
-    <TextView android:id="@+id/tv_size" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_below="@id/tv_description"
-        android:layout_toRightOf="@id/iv_logo"
-        android:textAppearance="@style/app_text_style2"
-        android:layout_gravity="left" 
-        android:text="1MB" />
-
+    </RelativeLayout>
 </RelativeLayout>

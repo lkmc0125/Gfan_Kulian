@@ -12,8 +12,8 @@
         android:background="@color/background_color"
         android:fadingEdge="none"
         android:divider="@null"
-        android:scrollbarThumbVertical="@drawable/scrollbar" />
-        
+        android:scrollbars="none"
+         />
     <!-- Loading -->
     <include android:layout_width="fill_parent"
         android:layout_height="fill_parent" 

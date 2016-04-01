@@ -44,6 +44,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     private WifiAdmin mWifiAdmin;
     private TextView mWifiStatusDesc;
     private ImageView mWifiStatusIcon;
+    private Integer mLoginRetryCount;
     private String mCurrentSSID;
     private Session mSession;
     private MyBroadcastReceiver mConnectionReceiver;
@@ -66,6 +67,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
         initTopBar();
+        mLoginRetryCount = 0;
         mAuth = new WifiAuthentication();
         mSession = Session.get(getApplicationContext());
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
@@ -214,11 +216,10 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                     Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
                     return false;
                 }
-                
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }                
+            }
         }
         return false;
     }
@@ -232,16 +233,21 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         registerReceiver(mConnectionReceiver, intentFilter);
     }
 
+    private void checkLogin() {
+        if (mSession.getUserName().length() > 0 && mSession.getPassword().length() > 0) {
+            MarketAPI.login(getApplicationContext(), this, mSession.getUserName(), mSession.getPassword());
+        } else if (mSession.isLogin() == false) {
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            startActivity(intent);
+        }
+    }
+
     private void checkWifiConnection() {
         ConnectivityManager nw = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netinfo = nw.getActiveNetworkInfo();
         if (netinfo != null && netinfo.isAvailable()) {
-            if (!mSession.isLogin() && mSession.getUserName().length() > 0 && mSession.getPassword().length() > 0) {
-                MarketAPI.login(getApplicationContext(), this, mSession.getUserName(), mSession.getPassword());
-            } else if (mSession.isLogin() == false) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(intent);
-                return;
+            if (!mSession.isLogin()) {
+                checkLogin();
             }
         }
 
@@ -324,6 +330,19 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     @Override
     public void onError(int method, int statusCode) {
         switch (method) {
+        case MarketAPI.ACTION_LOGIN:
+        {
+            if (mLoginRetryCount++ < 5) {
+                new Handler().postDelayed(new Runnable() {   
+                    public void run() {
+                        checkLogin();
+                    }
+                 }, 5*1000);
+            } else {
+                mLoginRetryCount = 0;
+            }
+            break;
+        }
         default:
             break;
         }
