@@ -289,12 +289,15 @@ public class RegisterActivity extends BaseActivity
             
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
                     Constants.LOGIN_SUCCESS);
-            HashMap<String, String> result = (HashMap<String, String>) obj;
+            //fix classcastexception 
+            HashMap<String, Object> result = (HashMap<String, Object>) obj;
             String userName = etUsername.getText().toString();
             String password = etUsername.getText().toString().substring(5,11);
             mSession.setUserName(userName);
             mSession.setPassword(password);
-            mSession.setCoinNum(Integer.valueOf(result.get(Constants.KEY_COIN_NUM)));
+            //Log.d("free",result.get(Constants.KEY_COIN_NUM).toString());
+            //fix classcastexception 
+            mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
             mSession.setLogin(true);
             // 隐藏登录框
             try{
