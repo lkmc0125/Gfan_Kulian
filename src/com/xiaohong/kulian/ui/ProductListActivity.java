@@ -137,8 +137,8 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
             mNoData.setOnClickListener(this);
             mList.setEmptyView(mLoading);
             mList.setOnItemClickListener(this);
-            mList.setDividerHeight(5);
-            mList.setDivider(getResources().getDrawable(R.drawable.divider_line));
+//            mList.setDividerHeight(5);
+//            mList.setDivider(getResources().getDrawable(R.drawable.divider_line));
             
             lazyload();
             return true;

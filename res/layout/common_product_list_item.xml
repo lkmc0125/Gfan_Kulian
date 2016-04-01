@@ -5,7 +5,6 @@
     android:layout_height="100dip"
     android:background="@color/app_task_background_color">
 
-    <!-- android:background="@color/app_task_tab_color" -->
     <RelativeLayout
         android:background="@drawable/app_task_item_bg_with_shadow"
         android:layout_width="fill_parent" 
