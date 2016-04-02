@@ -55,7 +55,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             }
             setContentView(R.layout.common_list_view);
             mIsEnd = false;
-            mList = (ListView) findViewById(android.R.id.list);
+            mList = (ListView) findViewById(R.id.list);
             mLoading = (FrameLayout) findViewById(R.id.loading);
             mProgress = (ProgressBar) mLoading.findViewById(R.id.progressbar);
             mProgress.setIndeterminateDrawable(new LoadingDrawable(
