@@ -5,7 +5,9 @@ import org.json.JSONObject;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -13,6 +15,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
@@ -23,6 +26,7 @@ public class PayMainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_main);
+        initTopBar();
         initData();
     }
 
@@ -74,7 +78,20 @@ public class PayMainActivity extends BaseActivity {
                 payBtn.setEnabled(true);
             }
         });
-    
+    }
+
+    void initTopBar() {
+        TopBar.createTopBar(this, 
+                new View[] { findViewById(R.id.back_btn), findViewById(R.id.top_bar_title) },
+                new int[] { View.VISIBLE, View.VISIBLE}, 
+                getString(R.string.feedback_title));
+        ImageButton back = (ImageButton)findViewById(R.id.back_btn);
+        back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                finish();
+            }
+        });
     }
 
 }

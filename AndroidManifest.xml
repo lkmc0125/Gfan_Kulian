@@ -98,7 +98,9 @@
         <activity android:name=".ui.PayMainActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation" />
-        
+        <activity android:name=".ui.MessagesActivity"
+            android:screenOrientation="portrait" 
+            android:configChanges="keyboardHidden|orientation" />
         <!-- 注册页 -->
         <activity android:name=".ui.RegisterActivity"
             android:screenOrientation="portrait" 

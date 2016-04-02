@@ -73,7 +73,7 @@ public class PersonalAccountActivity extends BaseActivity implements
     //是否已经登陆过
     private boolean isFirstAccess = true;
     //个人中心功能界面
-    private RelativeLayout layout_task,layout_message,layout_question,layout_feedback,layout_account;
+    private RelativeLayout layout_task,layout_message,layout_question,layout_feedback,layout_account,layout_buy;
     private Intent intent_next;
     private TextView textView_login,textView_username;
 
@@ -90,7 +90,6 @@ public class PersonalAccountActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_account_fragment_layout);
 
-//        initTopBar();
         initView();
     }
     
@@ -123,13 +122,6 @@ public class PersonalAccountActivity extends BaseActivity implements
 //        unregisterReceiver(mReceiver);
     }
 
-/*    private void initTopBar() {
-        TopBar.createTopBar(getApplicationContext(),
-                new View[] { findViewById(R.id.top_bar_title) },
-                new int[] { View.VISIBLE },
-                getString(R.string.person_account_title));
-    }*/
-
     private void initView() {
 
 //        mList = (ListView) this.findViewById(android.R.id.list);
@@ -138,11 +130,13 @@ public class PersonalAccountActivity extends BaseActivity implements
     	layout_question=(RelativeLayout)this.findViewById(R.id.person_account_normol_question_layout);
     	layout_feedback=(RelativeLayout)this.findViewById(R.id.person_account_feedback_value_layout);
     	layout_account=(RelativeLayout)this.findViewById(R.id.person_account_logout_value_layout);
+    	layout_buy=(RelativeLayout)this.findViewById(R.id.buy_layout);
     	layout_task.setOnClickListener(this);
     	layout_message.setOnClickListener(this);
     	layout_question.setOnClickListener(this);
     	layout_feedback.setOnClickListener(this);
     	layout_account.setOnClickListener(this);
+    	layout_buy.setOnClickListener(this);
     	textView_login=(TextView)this.findViewById(R.id.person_account_logout_value_text);
     	textView_username=(TextView)this.findViewById(R.id.user_name_text);
     	if (!mSession.isLogin()) {
@@ -372,37 +366,45 @@ public class PersonalAccountActivity extends BaseActivity implements
 	 * author albert liu 2016-3-28
 	 * @param v
 	 */
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.person_account_my_task_value_layout:
-			
-			break;
-		case R.id.person_account_message_center_value_layout:
-			
-			break;
-		case R.id.person_account_normol_question_layout:
-	        Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
-	        detailIntent.putExtra("extra.url", "file:///android_asset/FAQ.html");
-	        detailIntent.putExtra("extra.title", "常见问题");
-	        startActivity(detailIntent);
-			break;
-		case R.id.person_account_feedback_value_layout:
-			intent_next= new Intent();
-			intent_next.setClass(getApplicationContext(), FeedBackActivity.class);
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.person_account_my_task_value_layout:
+
+            break;
+        case R.id.person_account_message_center_value_layout:
+            Intent MessagesIntent = new Intent(getApplicationContext(), MessagesActivity.class);
+            startActivity(MessagesIntent);
+            break;
+        case R.id.person_account_normol_question_layout:
+            Intent detailIntent = new Intent(getApplicationContext(),
+                    WebviewActivity.class);
+            detailIntent
+                    .putExtra("extra.url", "file:///android_asset/FAQ.html");
+            detailIntent.putExtra("extra.title", "常见问题");
+            startActivity(detailIntent);
+            break;
+        case R.id.person_account_feedback_value_layout:
+            intent_next = new Intent();
+            intent_next.setClass(getApplicationContext(),
+                    FeedBackActivity.class);
             startActivity(intent_next);
-			break;
-		case R.id.person_account_logout_value_layout:			
-			if (!mSession.isLogin()) {
-				intent_next = new Intent(getApplicationContext(), RegisterActivity.class);
+            break;
+        case R.id.person_account_logout_value_layout:
+            if (!mSession.isLogin()) {
+                intent_next = new Intent(getApplicationContext(),
+                        RegisterActivity.class);
                 startActivityForResult(intent_next, REQUEST_CODE);
             } else if (mSession.isLogin()) {
                 showDialog(ACCOUNT_REGIST);
             }
             break;
+        case R.id.buy_layout:
+            Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
+            startActivity(PayIntent);
+            break;
+        default:
+            break;
+        }
 
-		default:
-			break;
-		}
-		
-	}
+    }
 }

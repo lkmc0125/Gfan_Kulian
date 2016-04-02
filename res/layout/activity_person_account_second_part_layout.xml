@@ -107,6 +107,7 @@
         android:layout_weight="1.3"
         android:background="@null"
         android:gravity="center_vertical"
+        android:clickable="true"
         android:orientation="vertical" >
 
         <RelativeLayout
