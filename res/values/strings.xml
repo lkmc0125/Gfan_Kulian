@@ -45,6 +45,16 @@
 
     <!-- 连接页 -->
     <string name="connection_title">连接</string>
+    <string name="connection_recommend_app">推荐应用</string>
+    <string name="connection_recommend_app_name_hint">百度糯米</string>
+    <string name="connection_recommend_app_coin_hint">+550</string>
+    <string name="connection_recommend_all_app">全部</string>
+    <string name="connection_recommend_task">推荐任务</string>
+    <string name="connection_recommend_all_task">全部</string>
+    <string name="connection_recommend_task_name">关注wifi酷连</string>
+    <string name="connection_recommend_task_coin">+800</string>
+    <string name="connection_recommend_task_describtion">wifi酷连微信工作号将竭诚为您服务</string>
+    <string name="connection_recommend_task_view">查看</string>
 
     <!-- 幽默页 -->
     <string name="humor_title">幽默搞笑</string>

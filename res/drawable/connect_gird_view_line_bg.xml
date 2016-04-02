@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- added by albert 2016/04/03 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:top="-2dip"
+        android:bottom="-2dip"
+        android:left="-2dip"
+        >
+        <shape>
+            <solid android:color="@android:color/transparent"/>
+            <stroke
+                android:width="1dip"
+                android:color="@color/connect_recommand_app_line_color"/>
+        </shape>
+    </item>
+ 
+</layer-list>

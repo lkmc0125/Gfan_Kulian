@@ -2,34 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/connect_gird_view_line_bg"
+    xmlns:app="http://schemas.android.com/apk/res/com.xiaohong.kulian">
     <RelativeLayout 
-        android:layout_width="80dip"
-    	android:layout_height="80dip"
+        android:id="@+id/connection_recommend_app_item_layout"
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
     	android:background="@null"
         >
-	<ImageView
-	    android:id="@+id/main_push_image"
-	    android:layout_width="30dip"
-	    android:layout_height="30dip"
-	    android:contentDescription="@null"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginTop="15dip"
-	    android:background="@null"
-	    />
+        <com.xiaohong.kulian.common.widget.RoundImageView 
+            android:id="@+id/connection_recommend_app_image"
+            android:layout_width="120dip"
+            android:layout_height="120dip"
+            app:borderRadius="5dip"
+            app:type="round"
+            android:contentDescription="@null"
+            android:background="@null"
+            />
+	
 	<TextView 
-	    android:id="@+id/main_push_text"
-	    android:layout_below="@+id/main_push_image"
+	    android:id="@+id/connection_recommend_app_name_hint_text"
+	    android:layout_below="@+id/connection_recommend_app_image"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:gravity="center"
-	    android:layout_marginTop="0dip"
+	    android:layout_marginTop="15dip"
 	    android:layout_centerHorizontal="true"
-	    android:textSize="12sp"
-	    android:text="akghg"
-	    android:textColor="#000000"
+	    android:textSize="30sp"
+	    android:text="@string/connection_recommend_app_name_hint"
+	    android:textColor="#343434"
 	    />
 
+		<RelativeLayout 
+	        android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	android:background="@null"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_below="@+id/connection_recommend_app_name_hint_text"
+	        >
+
+			<TextView 
+			    android:id="@+id/connection_recommend_app_coin_text"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:gravity="center"
+			    android:layout_marginTop="18dip"
+			    android:layout_centerHorizontal="true"
+			    android:textSize="32sp"
+			    android:layout_marginRight="10dip"
+			    android:text="@string/connection_recommend_app_coin_hint"
+			    android:textColor="#ff4c00"
+			    />
+			<ImageView
+	            android:id="@+id/connection_recommend_app_coin_img"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_toRightOf="@+id/connection_recommend_app_coin_text"
+	            android:layout_centerInParent="true"
+	            android:background="@drawable/goldcoin_small"
+	            android:contentDescription="@null"
+	            />
+	
+		</RelativeLayout>
 	</RelativeLayout>
 
 </LinearLayout>

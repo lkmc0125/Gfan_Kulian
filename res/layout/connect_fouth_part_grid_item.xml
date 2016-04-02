@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="100dip"
+    android:background="@color/app_task_background_color">
+
+    <RelativeLayout
+        android:background="@drawable/app_task_item_bg_with_shadow"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        >
+	    <!-- 应用icon -->
+	    <ImageView android:id="@+id/iconnection_recommend_task_logo" 
+	        android:layout_width="120dp"
+	        android:layout_height="120dp"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginLeft="15dp"
+	        style="@style/personal_account_icon"
+	        android:layout_alignParentLeft="true"
+	        android:src="@drawable/loading_icon"
+	        android:scaleType="fitCenter"/>
+	
+	    <!-- 任务的名称 -->
+	    <TextView android:id="@+id/connection_recommend_task_name_text"
+	        android:layout_width="wrap_content" 
+	        android:layout_height="20dip"
+	        android:layout_toRightOf="@id/iconnection_recommend_task_logo"
+	        android:layout_alignParentTop="true"
+	        android:singleLine="true"
+	        android:layout_marginTop="15dp"
+	        android:layout_marginLeft="2dp"
+	        android:textAppearance="@style/app_text_style1"
+	        android:text="@string/connection_recommend_task_name"/>
+	
+
+	
+	    <!-- 任务的描述 -->
+	    <TextView android:id="@+id/tv_description"
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/connection_recommend_task_name_text" 
+	        android:layout_toRightOf="@id/iconnection_recommend_task_logo"
+	        android:layout_toLeftOf="@+id/layout_status"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginTop="2dp"
+	        android:maxLines="2"
+	        android:ellipsize="end"
+	        android:textAppearance="@style/app_text_style2"
+	        android:text="@string/connection_recommend_task_describtion"/>
+	 
+	    <!-- 金币和查看/打开 -->
+	    <LinearLayout
+	        android:id="@+id/layout_status"
+	        android:layout_width="60dp"
+	        android:layout_height="60dp"
+	        android:layout_marginRight="15dp"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentRight="true"
+	        android:orientation="vertical" >
+	
+	        <TextView
+	            android:id="@+id/connection_recommend_task_coin_text"
+	            android:layout_marginTop="8dp"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:drawableEnd="@drawable/gold"
+	            android:textSize="16sp"
+	            android:textColor="#ff4c00"
+	            android:gravity="center"
+	            android:layout_gravity="center"
+	            android:text="@string/connection_recommend_task_coin">
+	        </TextView>
+	
+	        <TextView
+	            android:id="@+id/tv_action"
+	            android:layout_marginTop="8dp"
+	            android:layout_width="50dip"
+	            android:layout_height="20dip"
+	            android:background="@drawable/task_action_view_border"
+	            android:text="@string/app_item_action_view"
+	            android:textAppearance="@style/app_text_style12"
+	            android:gravity="center"
+	            android:layout_gravity="center"/>
+	    </LinearLayout>
+	    
+
+
+    </RelativeLayout>
+</RelativeLayout>
