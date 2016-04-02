@@ -114,6 +114,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             for(TaskBean item : result.getTasklist()) {
                 //set remain num to 1 for normal task
                 item.setRemain_tasknum(1);
+                item.setTaskType(TaskListAdapter.TYPE_NORMAL_TASK);
             }
             result.getTasklist().add(0, bean);
             mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK,result.getTasklist());
@@ -199,17 +200,26 @@ public class TaskListActivity extends LazyloadListActivity implements
             Log.d(TAG, obj.toString());
             TaskListBean result = (TaskListBean) obj;
             ArrayList<TaskBean> list = result.getTasklist();
+            int titlePos = 0;
             if(list != null) {
                 Log.d(TAG, "ApiRequestListener size = " + list.size());
                 for(int i = 0; i< list.size(); i++) {
-                    if(list.get(i).getRemain_tasknum() == 0) {
+                    if(list.get(i).getRemain_tasknum() == 0 && titlePos == 0) {
                         TaskBean bean = new TaskBean();
                         bean.setType(TaskBean.ITEM_TYPE_TITLE);
+                        bean.setTaskType(TaskListAdapter.TYPE_GZH_TAK);
                         bean.setTitle(getResources().getString(R.string.title_task_done));
                         list.add(i, bean);
-                        break;
+                        titlePos = i;
+                        //break;
+                    }else if(list.get(i).getRemain_tasknum() > 0){
+                        if(titlePos > 0) {
+                            TaskBean bean = list.remove(i);
+                            list.add(titlePos, bean);
+                        }
                     }
                 }
+                Log.d(TAG, "onSuccess done");
                 mAdapter.setData(TaskListAdapter.TYPE_GZH_TAK, 
                         list);
                 mAdapter.notifyDataSetChanged();
