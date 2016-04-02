@@ -144,7 +144,7 @@ public class PersonalAccountActivity extends BaseActivity implements
     	layout_feedback.setOnClickListener(this);
     	layout_account.setOnClickListener(this);
     	textView_login=(TextView)this.findViewById(R.id.person_account_logout_value_text);
-    	textView_username=(TextView)this.findViewById(R.id.person_account_hint_name_text);
+    	textView_username=(TextView)this.findViewById(R.id.user_name_text);
     	if (!mSession.isLogin()) {
     		textView_login.setText("登录");
         } else if (mSession.isLogin()) {
