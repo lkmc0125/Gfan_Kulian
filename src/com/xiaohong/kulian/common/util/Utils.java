@@ -43,9 +43,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -68,6 +70,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -97,6 +100,9 @@ import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
@@ -1289,4 +1295,14 @@ public class Utils {
         rs.destroy();
         return outBitmap;
     }
+    
+    public static final  DisplayImageOptions sDisplayImageOptions = new DisplayImageOptions.Builder()
+    // .showImageOnLoading(R.drawable.ic_stub) //加载图片时的图片
+    // .showImageForEmptyUri(R.drawable.ic_e ynmnmpty) //没有图片资源时的默认图片
+    // .showImageOnFail(R.drawable.ic_error) //加载失败时的图片
+            .cacheInMemory(true) // 启用内存缓存
+            .cacheOnDisk(true) // 启用外存缓存
+            .considerExifParams(true) // 启用EXIF和JPEG图像格式
+            .displayer(new RoundedBitmapDisplayer(20)) // 设置显示风格这里是圆角矩形
+            .build();
 }

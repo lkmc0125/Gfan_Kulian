@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.TaskBean;
+import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
 
 import android.content.Context;
@@ -150,10 +151,10 @@ public class TaskListAdapter extends CommonAdapter {
         if(type == TaskBean.ITEM_TYPE_TASK) {
             holder.mAppDescView.setText(item.getName());
             if(item.getLogo_url() != null) {
-                mImageLoader.displayImage(item.getLogo_url(), holder.mAppIconView);
+                mImageLoader.displayImage(item.getLogo_url(), holder.mAppIconView, Utils.sDisplayImageOptions);
             }else {
                 mImageLoader.displayImage("drawable://" + R.drawable.app_icon, 
-                        holder.mAppIconView);
+                        holder.mAppIconView, Utils.sDisplayImageOptions);
             }
             holder.mGoldView.setText(item.getCoin_num() + "金币");
             if(item.getRemain_tasknum() > 0) {

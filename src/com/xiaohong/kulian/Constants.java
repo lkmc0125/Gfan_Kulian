@@ -36,6 +36,8 @@ public interface Constants {
 
     /** 机锋市场缓存目录 */
     static final String IMAGE_CACHE_DIR = ROOT_DIR + "/.cache";
+    static final String IMAGE_LOADER_CACHE_DIR = ROOT_DIR + "/img";
+
 
     /** 截屏图片缓存目录 */
     static final String IMAGE_SNAPSHOT_DIR = ROOT_DIR + "/.snapshot";
