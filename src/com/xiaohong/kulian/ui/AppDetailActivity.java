@@ -1,5 +1,8 @@
 package com.xiaohong.kulian.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -37,6 +40,9 @@ public class AppDetailActivity extends Activity implements OnClickListener {
     private TextView mAppNameTv;
     private TextView mAppVersionTv;
     private TextView mAppCoinNumTv;
+    private TextView mAppDescView;
+    
+    ArrayList<ImageView> mAppPicViews = new ArrayList<ImageView>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,12 @@ public class AppDetailActivity extends Activity implements OnClickListener {
         mAppNameTv = (TextView) findViewById(R.id.app_name_tv);
         mAppVersionTv = (TextView) findViewById(R.id.app_version_tv);
         mAppCoinNumTv = (TextView) findViewById(R.id.app_coin_num_tv);
+        mAppDescView = (TextView) findViewById(R.id.app_desc_tv);
+        mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic1));
+        mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic2));
+        mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic3));
+        mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic4));
+        mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic5));
         mBackImageView.setOnClickListener(this);
     }
 
@@ -101,6 +113,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
             //TODO
             mAppVersionTv.setText("版本：v" + detailInfo.getAppversion());
             mAppCoinNumTv.setText("+" + mCoinNum);
+            mAppDescView.setText(detailInfo.getAppsummary());
             
             /*Log.d(TAG, "appDetail = " + appDetail);
             Log.d(TAG,
@@ -136,6 +149,15 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 
                         }
                     });
+            List<String> pics = detailInfo.getImagesrclist();
+            int size = pics.size();
+            //最多显示5张
+            if(size > 5) {
+                size = 5;
+            }
+            for(int i = 0; i < size; i++) {
+                mImageLoader.displayImage(pics.get(i), mAppPicViews.get(i));
+            }
         }
 
         @Override
