@@ -2,13 +2,12 @@
 package com.xiaohong.kulian.adapter;
 
 import java.util.ArrayList;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -85,11 +84,12 @@ public class TaskListAdapter extends CommonAdapter {
     }
 
     private class ViewHolder {
-        private ImageView mAppIconView;
+        private ImageView mAppIconView;//app 图标
         private TextView mAppDescView; // 任务描述
-        private TextView mGoldView;
-        private TextView mActionView;
+        private TextView mGoldView; //显示金币的view
+        private TextView mActionView; //显示打开查看的view
         private TextView mStatusView;
+        private TextView mAppTitleView;
         /**
          * 用于判断item是title还是一个task
          */
@@ -104,22 +104,24 @@ public class TaskListAdapter extends CommonAdapter {
     private void showStatusViews(ViewHolder viewHolder) {
         // viewHolder.mAppIconView.setVisibility(View.VISIBLE);
         // viewHolder.mAppDescView.setVisibility(View.VISIBLE);
-        viewHolder.mGoldView.setVisibility(View.GONE);
-        viewHolder.mActionView.setVisibility(View.GONE);
         viewHolder.mStatusView.setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("NewApi")
+    private void hideActionViews(ViewHolder viewHolder) {
+        viewHolder.mGoldView.setVisibility(View.GONE);
+        viewHolder.mActionView.setBackground(null);
+        viewHolder.mActionView.setText("已结束");
+    }
+    
     /**
      * 隐藏务已结束textview
      * 
      * @param viewHolder
      */
     private void hideStatusViews(ViewHolder viewHolder) {
-        // viewHolder.mAppIconView.setVisibility(View.VISIBLE);
-        // viewHolder.mAppDescView.setVisibility(View.VISIBLE);
-        viewHolder.mGoldView.setVisibility(View.VISIBLE);
-        viewHolder.mActionView.setVisibility(View.VISIBLE);
         viewHolder.mStatusView.setVisibility(View.GONE);
+        viewHolder.mAppTitleView.setVisibility(View.GONE);
     }
 
     /**
@@ -142,6 +144,7 @@ public class TaskListAdapter extends CommonAdapter {
                     .findViewById(R.id.tv_action);
             viewHolder.mStatusView = (TextView) view
                     .findViewById(R.id.tv_status);
+            viewHolder.mAppTitleView = (TextView) view.findViewById(R.id.tv_name);
             viewHolder.type = TaskBean.ITEM_TYPE_TASK;
             view.setTag(viewHolder);
             return view;
@@ -152,9 +155,14 @@ public class TaskListAdapter extends CommonAdapter {
             view.setTag(viewHolder);
             return view;
         }
-
     }
 
+    /**
+     * 任务列表和app list共有一个layout
+     * 任务列表没有title只有desc 也没有 statusview，所以要隐藏一部分view
+     * @param position
+     * @param holder
+     */
     private void bindView(int position, ViewHolder holder) {
         int type = holder.type;
         TaskBean item = mData.get(position);
@@ -168,14 +176,14 @@ public class TaskListAdapter extends CommonAdapter {
                         holder.mAppIconView, Utils.sDisplayImageOptions);
             }
             holder.mGoldView.setText("+" + item.getCoin_num());
-            if (item.getRemain_tasknum() > 0) {
-                hideStatusViews(holder);
-            } else {
-                showStatusViews(holder);
+            hideStatusViews(holder);
+            if(item.getRemain_tasknum() == 0) {
+                hideActionViews(holder);
             }
 
         } else {
             holder.mAppDescView.setText(item.getTitle());
+            
         }
     }
 

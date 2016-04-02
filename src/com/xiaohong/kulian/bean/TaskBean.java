@@ -22,6 +22,17 @@ public class TaskBean {
     private String mTitle = "";
     
     /**
+     * 用于区分是公众号任务还是普通任务
+     */
+    private int mTaskType = 1;
+    
+    public int getTaskType() {
+        return mTaskType;
+    }
+    public void setTaskType(int mTaskType) {
+        this.mTaskType = mTaskType;
+    }
+    /**
      * 可领取
      */
     public static int STATUS_AVAILABLE = 1;
@@ -48,7 +59,7 @@ public class TaskBean {
     private String logo_url;// "http://www.dspmind.com/upload/images/20160221/1456053750421216.png",
     private String name;//: "注册唯享客狂赚金币",
     private int task_id;//140
-    
+
     /**
      * 公众号任务特有的属性
      */
