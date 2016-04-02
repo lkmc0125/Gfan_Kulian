@@ -72,8 +72,12 @@
             android:screenOrientation="portrait" 
             android:configChanges="keyboardHidden|orientation" 
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
-        <!--        应用哦详情 -->
+        <!--        应用详情 -->
         <activity android:name=".ui.AppDetailActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation" />
+        <!--        公众号任务详情 -->
+        <activity android:name=".ui.GzhTaskDetailActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation" />
 

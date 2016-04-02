@@ -160,6 +160,8 @@ public class TaskListActivity extends LazyloadListActivity implements
                 openWebView(clickUrl, item.getTitle());
             }else {
                 Log.w(TAG, "no click url");
+                Intent intent = new Intent(TaskListActivity.this, GzhTaskDetailActivity.class);
+                startActivity(intent);
             }
             
         }else {
