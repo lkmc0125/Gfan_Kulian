@@ -114,6 +114,9 @@ public interface Constants {
     static final String EXTRA_HOME_DATA_BOTTOM = "extra.home.data.bottom";
     /** 加载最大值 */
     static final String EXTRA_MAX_ITEMS = "extra.max.items";
+    
+    /** app奖励的金币数目 */
+    static final String EXTRA_COIN_NUM = "extra.coin.num";
 
     static final int INFO_UPDATE = 0;
     static final int INFO_REFRESH = 1;

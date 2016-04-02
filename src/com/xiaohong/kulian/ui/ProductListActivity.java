@@ -232,6 +232,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
                     AppDetailActivity.class);
             detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
             detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
+            detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
             startActivity(detailIntent);
         }
     }

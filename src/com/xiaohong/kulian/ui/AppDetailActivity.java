@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -19,17 +20,23 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.AppDetailBean;
+import com.xiaohong.kulian.bean.DetailInfo;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.Utils;
 
 public class AppDetailActivity extends Activity implements OnClickListener {
     private static final String TAG = "AppDetailActivity";
+    private int mCoinNum = 0;
 
     private ImageView mAppIconView;
     private RelativeLayout mHeaderViewLayout;
     private ImageLoader mImageLoader;
     private LinearLayout mBackImageView;
+    
+    private TextView mAppNameTv;
+    private TextView mAppVersionTv;
+    private TextView mAppCoinNumTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
             finish();
             return;
         }
+        mCoinNum = getIntent().getIntExtra(Constants.EXTRA_COIN_NUM, 0);
         mImageLoader = ImageLoader.getInstance();
         MarketAPI.getProductDetailWithId(getApplicationContext(),
                 new AppDetailApiRequestListener(), appId, category);
@@ -54,7 +62,9 @@ public class AppDetailActivity extends Activity implements OnClickListener {
         mAppIconView.setBackground(null);
         mHeaderViewLayout = (RelativeLayout) findViewById(R.id.app_deail_header_layout);
         mBackImageView = (LinearLayout) findViewById(R.id.back_layout);
-        
+        mAppNameTv = (TextView) findViewById(R.id.app_name_tv);
+        mAppVersionTv = (TextView) findViewById(R.id.app_version_tv);
+        mAppCoinNumTv = (TextView) findViewById(R.id.app_coin_num_tv);
         mBackImageView.setOnClickListener(this);
     }
 
@@ -86,11 +96,17 @@ public class AppDetailActivity extends Activity implements OnClickListener {
         @Override
         public void onSuccess(int method, Object obj) {
             AppDetailBean appDetail = (AppDetailBean) obj;
+            DetailInfo detailInfo = appDetail.getDetailInfo();
+            mAppNameTv.setText(detailInfo.getAppname());
+            //TODO
+            mAppVersionTv.setText("版本：v" + detailInfo.getAppversion());
+            mAppCoinNumTv.setText("+" + mCoinNum);
+            
             /*Log.d(TAG, "appDetail = " + appDetail);
             Log.d(TAG,
                     "appDetail.getDetailInfo() = " + appDetail.getDetailInfo());
             Log.d(TAG, "mImageLoader = " + mImageLoader);*/
-            mImageLoader.displayImage(appDetail.getDetailInfo().getApplogo(),
+            mImageLoader.displayImage(detailInfo.getApplogo(),
                     mAppIconView, new ImageLoadingListener() {
 
                         @Override

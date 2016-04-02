@@ -40,4 +40,5 @@
     <!-- 应用和任务tab颜色  白色-->
     <color name="app_task_tab_color">#FFFFFF</color>
     <color name="app_task_background_color">#F3F3F3</color>
+    <color name="app_coin_num_color">#FF0000</color>
 </resources>
