@@ -9,12 +9,11 @@ import java.util.Observer;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,10 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
@@ -35,7 +32,7 @@ import com.xiaohong.kulian.bean.AppDetailBean;
 import com.xiaohong.kulian.bean.DetailInfo;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
-import com.xiaohong.kulian.common.util.DBUtils;
+import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.DownloadInfo;
 
@@ -57,6 +54,10 @@ public class AppDetailActivity extends Activity implements OnClickListener , Obs
     private ArrayList<ImageView> mAppPicViews = new ArrayList<ImageView>();
     
     private TextView mAppActionView;
+    
+    private  DetailInfo mDetailInfo = null;
+    private long mDownloadId = -1;
+    private boolean mIsDownloading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,8 @@ public class AppDetailActivity extends Activity implements OnClickListener , Obs
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic4));
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic5));
         mAppActionView = (TextView) findViewById(R.id.app_action_tv);
+        
+        mAppActionView.setOnClickListener(null);
         mBackImageView.setOnClickListener(this);
     }
     
@@ -131,31 +134,67 @@ public class AppDetailActivity extends Activity implements OnClickListener , Obs
         @Override
         public void onSuccess(int method, Object obj) {
             AppDetailBean appDetail = (AppDetailBean) obj;
-            final DetailInfo detailInfo = appDetail.getDetailInfo();
-            mAppNameTv.setText(detailInfo.getAppname());
+            mDetailInfo = appDetail.getDetailInfo();
+            mAppNameTv.setText(mDetailInfo.getAppname());
             //TODO
-            mAppVersionTv.setText("版本：v" + detailInfo.getAppversion());
+            mAppVersionTv.setText("版本：v" + mDetailInfo.getAppversion());
             mAppCoinNumTv.setText("+" + mCoinNum);
-            mAppDescView.setText(detailInfo.getAppsummary());
+            mAppDescView.setText(mDetailInfo.getAppsummary());
             
            
-            if(Utils.isApkInstalled(getApplicationContext(), detailInfo.getPackagename())) {
+            HashMap<String, DownloadInfo> downloadingMap = mSession.getDownloadingList();
+            Log.d(TAG, "downloadingMap size = " + downloadingMap.size());
+            for(String pkg : downloadingMap.keySet()) {
+                Log.d(TAG, "pkg = " + pkg);
+            }
+            if(Utils.isApkInstalled(getApplicationContext(), mDetailInfo.getPackagename())) {
                 //已安装 显示打开
                 mAppActionView.setText("打开");
                 mAppActionView.setBackgroundColor(
                         getResources().getColor(R.color.open_button_background_color));
-                mAppActionView.setOnClickListener(new OnClickListener() {
+               
+            }else if(new File(com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR
+                    + "/" + mDetailInfo.getAppname() + ".apk").exists()){
+                mAppActionView.setText("安装");
+                mAppActionView.setBackgroundColor(
+                        getResources().getColor(R.color.install_button_background_color));
+                
+            }else if(mSession.getDownloadingList().get(mDetailInfo.getPackagename()) != null){
+                //key is packageName
+                //downloading
+                DownloadInfo downloadInfo = mSession.getDownloadingList().get(mDetailInfo.getPackagename());
+                Log.d(TAG, "progress:" + downloadInfo.mProgress);
+                Log.d(TAG, "path:" + downloadInfo.mFilePath);
+                //mSession.getDownloadManager().
+                mDownloadId = downloadInfo.id;
+                Log.d(TAG, "mDownloadId" + mDownloadId);
+                if(downloadInfo.mFilePath != null && !downloadInfo.mFilePath.equals("")) {
+                    mAppActionView.setText("安装");
+                    mAppActionView.setBackgroundColor(
+                            getResources().getColor(R.color.install_button_background_color));
+                }else if(mIsDownloading == true) {
+                    mAppActionView.setText("暂停");
+                    mAppActionView.setBackgroundColor(
+                            getResources().getColor(R.color.pause_button_background_color));
+                }else {
+                    mAppActionView.setText("继续");
+                    mAppActionView.setBackgroundColor(
+                            getResources().getColor(R.color.redownload_button_background_color));
+                }
+            } else {
+                //do download
+                mAppActionView.setText("下载安装赚金币(" + mDetailInfo.getAppsize() + ")");
+               /* mAppActionView.setOnClickListener(new OnClickListener() {
                     
                     @Override
                     public void onClick(View v) {
-                        Utils.openApkByPackageName(getApplicationContext(),
-                                detailInfo.getPackagename());
+                        startDownload(mDetailInfo);
                     }
-                });
-            }else {
+                });*/
                 
             }
-            mImageLoader.displayImage(detailInfo.getApplogo(),
+            mAppActionView.setOnClickListener(AppDetailActivity.this);
+            mImageLoader.displayImage(mDetailInfo.getApplogo(),
                     mAppIconView, Utils.sDisplayImageOptions, new ImageLoadingListener() {
 
                         @Override
@@ -185,7 +224,7 @@ public class AppDetailActivity extends Activity implements OnClickListener , Obs
 
                         }
                     });
-            List<String> pics = detailInfo.getImagesrclist();
+            List<String> pics = mDetailInfo.getImagesrclist();
             int size = pics.size();
             //最多显示5张
             if(size > 5) {
@@ -211,6 +250,10 @@ public class AppDetailActivity extends Activity implements OnClickListener , Obs
             case R.id.back_layout :
                 finish();
                 break;
+            case R.id.app_action_tv:
+                handleActionTvClicked();
+                break;
+            
             default :
                 break;
         }
@@ -219,53 +262,89 @@ public class AppDetailActivity extends Activity implements OnClickListener , Obs
 
     @Override
     public void update(Observable observable, Object data) {
-        // TODO Auto-generated method stub
+        if (data instanceof HashMap) {
+            HashMap<String, DownloadInfo> mDownloadingTask = (HashMap<String, DownloadInfo>) data;
+            DownloadInfo info = mDownloadingTask.get(mDetailInfo.getPackagename());
+            if (info != null) {
+                if (info.mStatus == DownloadManager.Impl.STATUS_SUCCESS) {
+                    // 已经下载成功
+                    mAppActionView.setText("安装");
+                    mAppActionView.setBackgroundColor(
+                            getResources().getColor(R.color.install_button_background_color));
+                    //mProduct.setFilePath(info.mFilePath);
+                } else if(DownloadManager.Impl.isStatusError(info.mStatus)) {
+                    // 下载失败
+                    
+                }
+            } else {
+                
+            }
+        }
         
+    }
+    
+    private void handleActionTvClicked() {
+        if(Utils.isApkInstalled(getApplicationContext(), mDetailInfo.getPackagename())) {
+            //已安装 显示打开
+            mAppActionView.setText("打开");
+            mAppActionView.setBackgroundColor(
+                    getResources().getColor(R.color.open_button_background_color));
+            Utils.openApkByPackageName(getApplicationContext(),
+                    mDetailInfo.getPackagename());
+        }else if(new File(com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR
+                + "/" + mDetailInfo.getAppname() + ".apk").exists()){
+            Utils.installApk(getApplicationContext(), new File(com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR
+                + "/" + mDetailInfo.getAppname() + ".apk"));
+            
+        }else if(mSession.getDownloadingList().get(mDetailInfo.getPackagename()) != null){
+            //key is packageName
+            //downloading
+            DownloadInfo downloadInfo = mSession.getDownloadingList().get(mDetailInfo.getPackagename());
+            Log.d(TAG, "progress:" + downloadInfo.mProgress);
+            Log.d(TAG, "path:" + downloadInfo.mFilePath);
+            //mSession.getDownloadManager().
+            mDownloadId = downloadInfo.id;
+            Log.d(TAG, "mDownloadId:" + mDownloadId);
+            if(downloadInfo.mFilePath != null && !downloadInfo.mFilePath.equals("")) {
+                mAppActionView.setText("安装");
+                mAppActionView.setBackgroundColor(
+                        getResources().getColor(R.color.install_button_background_color));
+                Utils.installApk(getApplicationContext(), new File(downloadInfo.mFilePath));
+            }else if(mIsDownloading == true) {
+                mIsDownloading = false;
+                mSession.getDownloadManager().pauseDownload(mDownloadId);
+                mAppActionView.setText("继续");
+                mAppActionView.setBackgroundColor(
+                        getResources().getColor(R.color.redownload_button_background_color));
+            }else {
+                mIsDownloading = true;
+                mSession.getDownloadManager().resumeDownload(mDownloadId);
+                mAppActionView.setText("暂停");
+                mAppActionView.setBackgroundColor(
+                        getResources().getColor(R.color.pause_button_background_color));
+            }
+        } else {
+            //do download
+            mDownloadId = startDownload(mDetailInfo);
+            mIsDownloading = true;
+            
+        }
     }
     
     /**
      * 开始下载任务
      */
-    public void download(DetailInfo detailInfo) {
-        
-        Utils.trackEvent(getApplicationContext(), Constants.GROUP_12,
-                Constants.DETAIL_DOWNLOAD);
-
-        /*if(Constants.PAY_TYPE_PAID == mProduct.getPayCategory()) {
-            // 收费应用
-            if (mSession.isLogin()) {
-                if (!DBUtils.isBought(getApplicationContext(), detailInfo.getAppid() + "")) {
-                    if (!isFinishing()) {
-                        //showDialog(DIALOG_PURCHASE);
-                        return;
-                    }
-                }
-            } else {
-                // 登录
-                Intent loginIntent = new Intent(getApplicationContext(),
-                        RegisterActivity.class);
-                startActivity(loginIntent);
-                return;
-            }
-        }*/
-
-       /* if (TextUtils.isEmpty(mProduct.getFilePath())) {
-            HashMap<String, DownloadInfo> list = mSession.getDownloadingList();
-            if (list.containsKey(mProduct.getPackageName())) {
-                // 下载中
-                Utils.makeEventToast(getApplicationContext(),
-                        getString(R.string.warning_comment_later), false);
-                return;
-            } else {
-                // 开始下载
-                MarketAPI.getDownloadUrl(getApplicationContext(), ProductDetailActivity.this,
-                        mProduct.getPid(), mProduct.getSourceType());
-                //mDownloadButton.setEnabled(false);
-            }
-        } else {
-            // 下载完成
-            //Utils.installApk(getApplicationContext(), new File(mProduct.getFilePath()));
-        }*/
+    private long startDownload(DetailInfo detailInfo) {
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(detailInfo.getAppsource()));
+        request.setPackageName(detailInfo.getPackagename());
+        request.setTitle(detailInfo.getAppname());
+        request.setIconUrl(detailInfo.getApplogo());
+        //request.setMD5(info.fileMD5);
+        request.setSourceType(com.xiaohong.kulian.common.download.Constants.DOWNLOAD_FROM_MARKET);
+        long id = mSession.getDownloadManager().enqueue(request);
+        Utils.makeEventToast(getApplicationContext(), getString(R.string.alert_start_download),
+                false);
+        return id;
     }
 
 }
