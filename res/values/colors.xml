@@ -42,4 +42,5 @@
     <color name="app_task_background_color">#F3F3F3</color>
     <color name="app_coin_num_color">#FF0000</color>
     <color name="download_button_background_color">#2c78d4</color>
+    <color name="open_button_background_color">#60AF0A</color>
 </resources>

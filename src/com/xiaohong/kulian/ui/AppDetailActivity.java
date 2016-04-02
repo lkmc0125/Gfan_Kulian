@@ -42,7 +42,9 @@ public class AppDetailActivity extends Activity implements OnClickListener {
     private TextView mAppCoinNumTv;
     private TextView mAppDescView;
     
-    ArrayList<ImageView> mAppPicViews = new ArrayList<ImageView>();
+    private ArrayList<ImageView> mAppPicViews = new ArrayList<ImageView>();
+    
+    private TextView mAppActionView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic3));
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic4));
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic5));
+        mAppActionView = (TextView) findViewById(R.id.app_action_tv);
         mBackImageView.setOnClickListener(this);
     }
 
@@ -108,17 +111,30 @@ public class AppDetailActivity extends Activity implements OnClickListener {
         @Override
         public void onSuccess(int method, Object obj) {
             AppDetailBean appDetail = (AppDetailBean) obj;
-            DetailInfo detailInfo = appDetail.getDetailInfo();
+            final DetailInfo detailInfo = appDetail.getDetailInfo();
             mAppNameTv.setText(detailInfo.getAppname());
             //TODO
             mAppVersionTv.setText("版本：v" + detailInfo.getAppversion());
             mAppCoinNumTv.setText("+" + mCoinNum);
             mAppDescView.setText(detailInfo.getAppsummary());
             
-            /*Log.d(TAG, "appDetail = " + appDetail);
-            Log.d(TAG,
-                    "appDetail.getDetailInfo() = " + appDetail.getDetailInfo());
-            Log.d(TAG, "mImageLoader = " + mImageLoader);*/
+           
+            if(Utils.isApkInstalled(getApplicationContext(), detailInfo.getPackagename())) {
+                //已安装 显示打开
+                mAppActionView.setText("打开");
+                mAppActionView.setBackgroundColor(
+                        getResources().getColor(R.color.open_button_background_color));
+                mAppActionView.setOnClickListener(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        Utils.openApkByPackageName(getApplicationContext(),
+                                detailInfo.getPackagename());
+                    }
+                });
+            }else {
+                
+            }
             mImageLoader.displayImage(detailInfo.getApplogo(),
                     mAppIconView, new ImageLoadingListener() {
 
