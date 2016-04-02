@@ -39,6 +39,7 @@ import com.google.gson.Gson;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.bean.AppDetailBean;
 import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.codec.binary.Base64;
@@ -88,6 +89,7 @@ public class ApiResponseFactory {
 
         String requestMethod = "";
         Object result = null;
+        Gson gson = new Gson();
         try {
             switch (action) {
             
@@ -110,7 +112,9 @@ public class ApiResponseFactory {
                 
                 // 获取应用详细
                 requestMethod = "ACTION_GET_PRODUCT_DETAIL";
-                result = parseProductDetail(context, inputBody);
+                //result = parseProductDetail(context, inputBody);
+                //Log.d("free", "inputBody = " + inputBody);
+                result = gson.fromJson(inputBody, AppDetailBean.class);
                 break;
 
             case MarketAPI.ACTION_GET_APP_LIST:
@@ -118,7 +122,6 @@ public class ApiResponseFactory {
                 // 获取app列表
                 requestMethod = "ACTION_GET_APP_LIST";
                 //result = parseProductList(context, inputBody);
-                Gson gson = new Gson();
                 result = gson.fromJson(inputBody, AppListBean.class);
                 break;
             }
@@ -143,7 +146,6 @@ public class ApiResponseFactory {
 
             case MarketAPI.ACTION_GET_TASK_LIST:
             case MarketAPI.ACTION_GET_GZH_TASK_LIST:
-                Gson gson = new Gson();
                 result = gson.fromJson(inputBody, TaskListBean.class);
                 break;
 

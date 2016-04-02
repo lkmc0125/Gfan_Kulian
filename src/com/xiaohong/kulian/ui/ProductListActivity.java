@@ -226,8 +226,10 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
         } else {
             // 去产品详细页
             String pid = item.getAppId() + "";
+            /*Intent detailIntent = new Intent(getApplicationContext(),
+                    PreloadActivity.class);*/
             Intent detailIntent = new Intent(getApplicationContext(),
-                    PreloadActivity.class);
+                    AppDetailActivity.class);
             detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
             detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
             startActivity(detailIntent);
