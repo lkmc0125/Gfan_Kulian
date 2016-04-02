@@ -213,6 +213,7 @@ public class AppDetailActivity extends Activity implements OnClickListener , Obs
                         @Override
                         public void onLoadingComplete(String arg0, View arg1,
                                 Bitmap arg2) {
+                            mAppIconView.setImageBitmap(arg2);
                             new GaussBlurTask(arg2, mHeaderViewLayout)
                                     .execute();
 
