@@ -2,13 +2,18 @@
 package com.xiaohong.kulian.adapter;
 
 import java.util.ArrayList;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +119,16 @@ public class TaskListAdapter extends CommonAdapter {
         viewHolder.mActionView.setText("已结束");
     }
     
+    @SuppressLint("NewApi")
+    private void showActioViews(ViewHolder viewHolder) {
+        viewHolder.mGoldView.setVisibility(View.VISIBLE);
+        Bitmap background = BitmapFactory.decodeResource(mContext.getResources(), 
+                R.drawable.task_action_view_border);
+        BitmapDrawable drawable = new BitmapDrawable(background);
+        viewHolder.mActionView.setBackground(drawable);
+        viewHolder.mActionView.setText(R.string.app_item_action_view);
+    }
+    
     /**
      * 隐藏务已结束textview
      * 
@@ -179,6 +194,8 @@ public class TaskListAdapter extends CommonAdapter {
             hideStatusViews(holder);
             if(item.getRemain_tasknum() == 0) {
                 hideActionViews(holder);
+            }else {
+                showActioViews(holder);
             }
 
         } else {
