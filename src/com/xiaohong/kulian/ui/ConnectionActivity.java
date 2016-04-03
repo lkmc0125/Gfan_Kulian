@@ -65,28 +65,29 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connection);
-        initTopBar();
-        mLoginRetryCount = 0;
-        mAuth = new WifiAuthentication();
-        mSession = Session.get(getApplicationContext());
-        mConnectionStatus = ConnectionStatus.DISCONNECTED;
-        mWifiStatusDesc = (TextView)findViewById(R.id.wifi_status_desc);
-        mWifiStatusIcon = (ImageView)findViewById(R.id.wifi_status_icon);
-        mAuthBtn = (Button) findViewById(R.id.authenticationBtn);
-        mAuthBtn.setVisibility(View.INVISIBLE);
-        mAuthBtn.setOnClickListener(this);
-        registerConnection();
-
-        new Handler().postDelayed(new Runnable() {  
-            public void run() {
-                mWifiAdmin = new WifiAdmin(getApplicationContext());
-                boolean open = mWifiAdmin.openWifi();
-                Log.i(TAG, "wifi open:" + open);
-                mWifiAdmin.startScan();
-//                checkWifiConnection();
-            }
-        }, 500);
+        setContentView(R.layout.activity_connect_main_layout);
+//        setContentView(R.layout.activity_connection);
+//        initTopBar();
+//        mLoginRetryCount = 0;
+//        mAuth = new WifiAuthentication();
+//        mSession = Session.get(getApplicationContext());
+//        mConnectionStatus = ConnectionStatus.DISCONNECTED;
+//        mWifiStatusDesc = (TextView)findViewById(R.id.wifi_status_desc);
+//        mWifiStatusIcon = (ImageView)findViewById(R.id.wifi_status_icon);
+//        mAuthBtn = (Button) findViewById(R.id.authenticationBtn);
+//        mAuthBtn.setVisibility(View.INVISIBLE);
+//        mAuthBtn.setOnClickListener(this);
+//        registerConnection();
+//
+//        new Handler().postDelayed(new Runnable() {  
+//            public void run() {
+//                mWifiAdmin = new WifiAdmin(getApplicationContext());
+//                boolean open = mWifiAdmin.openWifi();
+//                Log.i(TAG, "wifi open:" + open);
+//                mWifiAdmin.startScan();
+////                checkWifiConnection();
+//            }
+//        }, 500);
     }
 
     private void initTopBar() {
