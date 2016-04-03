@@ -43,12 +43,12 @@
 
         <ImageView
             android:id="@+id/app_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="bottom|left"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/app_icon" >
+            android:background="@drawable/wechat" >
         </ImageView>
 
         <TextView
@@ -82,6 +82,7 @@
                 android:layout_marginLeft="70dp"
                 android:layout_gravity="top"
                 android:gravity="top"
+                android:textColor="@color/gray_3"
                 android:text="讲述老板姓自己的故事" />
         </LinearLayout>
 
