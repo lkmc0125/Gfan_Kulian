@@ -157,15 +157,30 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp" />
 
-    <TextView
-        android:id="@+id/app_action_tv"
+    <FrameLayout 
+        android:id="@+id/app_action_layout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+        <ImageView 
+            android:id="@+id/app_action_iv"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/download_button_background_color"/>
+        <TextView
+        android:id="@+id/app_action_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@color/download_button_background_color"
+        android:background="@null"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="下载安装赚金币(50MB)"
         android:textColor="#ffffff" />
+        
+    </FrameLayout>
+    
 
 </LinearLayout>
