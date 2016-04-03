@@ -19,7 +19,7 @@
             android:layout_marginLeft="40dip"
             android:layout_marginTop="25dip"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/link_success"
+            android:background="@drawable/link_succ"
             android:contentDescription="@null"
             />
         <ImageView

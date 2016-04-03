@@ -187,7 +187,7 @@ public class TaskListAdapter extends CommonAdapter {
                 mImageLoader.displayImage(item.getLogo_url(),
                         holder.mAppIconView, Utils.sDisplayImageOptions);
             } else {
-                mImageLoader.displayImage("drawable://" + R.drawable.app_icon,
+                mImageLoader.displayImage("drawable://" + R.drawable.wechat,
                         holder.mAppIconView, Utils.sDisplayImageOptions);
             }
             holder.mGoldView.setText("+" + item.getCoin_num());

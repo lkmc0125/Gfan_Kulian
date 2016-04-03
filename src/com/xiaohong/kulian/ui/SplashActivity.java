@@ -37,6 +37,7 @@ import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
+import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.common.HttpClientFactory;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
@@ -62,11 +63,21 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener, 
     private SplashAD splashAD;
     private ViewGroup container;
     public boolean canJump = false;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_layout);
+
+        // 从H5版本启动native版本时，可以带上登录信息
+        Intent intent = getIntent();
+        String userName = intent.getStringExtra("user");
+        String password = intent.getStringExtra("pass");
+        if (userName != null && userName.length() > 0 && password != null && password.length() > 0) {
+            Session session = Session.get(getApplicationContext());
+            session.setUserName(userName);
+            session.setPassword(password);
+        }
 
         // 初始化加载页
 //        initSplashBg();
