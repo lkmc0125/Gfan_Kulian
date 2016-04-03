@@ -338,7 +338,7 @@ public class AppDetailActivity extends Activity
                 } else if (DownloadManager.Impl.isStatusError(info.mStatus)) {
                     // 下载失败
 
-                } else {
+                } else if(info.mProgress != null){
                     // 下载中
                     showDowloadingView(info);
                 }
@@ -371,6 +371,7 @@ public class AppDetailActivity extends Activity
             
         }else if(mStatus == STATUS_DOWNLOADING) {
             //暂停
+            Log.d(TAG, "goto pause status");
             mIsDownloading = false;
             mStatus = STATUS_PAUSE;
             showContinueView(downloadInfo);
@@ -378,6 +379,7 @@ public class AppDetailActivity extends Activity
             
         }else {
             //点击后开始下载
+            Log.d(TAG, "begin download");
             mIsDownloading = true;
             mStatus = STATUS_DOWNLOADING;
             showDowloadingView(downloadInfo);
@@ -496,16 +498,20 @@ public class AppDetailActivity extends Activity
      * 正在下载，会不断更新进度条
      */
     private void showDowloadingView(DownloadInfo downloadInfo) {
-        if(downloadInfo == null) {
-            Log.w(TAG, "showDowloadingView downloadInfo is null");
-            return;
+        String progress = "0%";
+        if(downloadInfo != null) {
+            progress = downloadInfo.mProgress == null ? "0%" : downloadInfo.mProgress;
         }
-        String progress = downloadInfo.mProgress == null ? "0%" : downloadInfo.mProgress;
         mAppActionView.setText("正在下载（" + progress + "）");
         mAppActionView.setTextColor(Color.BLUE);
         mAppActionIv.setBackgroundColor(getResources().getColor(
                 R.color.pause_button_background_color));
-        changeAppActionIvWidth(progressStr2Int(downloadInfo.mProgress));
+        if(downloadInfo != null) {
+            changeAppActionIvWidth(progressStr2Int(downloadInfo.mProgress));
+        }else {
+            changeAppActionIvWidth(0);
+        }
+        
     }
 
     /**
@@ -522,12 +528,13 @@ public class AppDetailActivity extends Activity
      * 下载被暂停，显示继续
      */
     private void showContinueView(DownloadInfo downloadInfo) {
-        if(downloadInfo == null) {
+       /* if(downloadInfo == null) {
             Log.w(TAG, "showContinueView downloadInfo is null");
             return;
-        }
+        }*/
+        Log.d(TAG, "showContinueView");
         mAppActionView.setText(TEXT_CONTINUE);
-        if(progressStr2Int(downloadInfo.mProgress) < 50) {
+        if(downloadInfo == null || progressStr2Int(downloadInfo.mProgress) < 50) {
             mAppActionView.setTextColor(getResources().
                     getColor(R.color.redownload_button_background_color));
         }else {
@@ -536,7 +543,12 @@ public class AppDetailActivity extends Activity
         
         mAppActionIv.setBackgroundColor(getResources().getColor(
                 R.color.redownload_button_background_color));
-        changeAppActionIvWidth(progressStr2Int(downloadInfo.mProgress));
+        if(downloadInfo == null) {
+            changeAppActionIvWidth(0);
+        }else {
+            changeAppActionIvWidth(progressStr2Int(downloadInfo.mProgress));
+        }
+        
     }
 
     /**
