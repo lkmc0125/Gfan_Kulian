@@ -119,6 +119,8 @@ public interface Constants {
     
     /** app奖励的金币数目 */
     static final String EXTRA_COIN_NUM = "extra.coin.num";
+    
+    static final String EXTRA_TASK_BEAN = "extra.task.bean";
 
     static final int INFO_UPDATE = 0;
     static final int INFO_REFRESH = 1;

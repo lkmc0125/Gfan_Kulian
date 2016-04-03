@@ -161,6 +161,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             }else {
                 Log.w(TAG, "no click url");
                 Intent intent = new Intent(TaskListActivity.this, GzhTaskDetailActivity.class);
+                intent.putExtra(Constants.EXTRA_TASK_BEAN, item);
                 startActivity(intent);
             }
             

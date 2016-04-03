@@ -459,5 +459,8 @@
     
     <string name="app_item_action_view">查看</string>
     <string name="app_item_action_open">打开</string>
+    
+    <string name="task_guide_1"><Data><![CDATA[1.向公众号发送\"<font color="#0000ff">小鸿</font>\"]]></Data></string>
+    <string name="task_guide_2"><Data><![CDATA[2.点击公众号回复的连接，在打开的页面输入<font color="#0000ff">WIFI酷连账号（手机号）</font>，获得任务通过密码]]></Data></string>
 
 </resources>
