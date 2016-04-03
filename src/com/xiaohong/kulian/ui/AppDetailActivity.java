@@ -319,6 +319,10 @@ public class AppDetailActivity extends Activity
     @Override
     public void update(Observable observable, Object data) {
 
+        if(mDetailInfo == null) {
+            Log.w(TAG, "update mDetailInfo is null");
+            return;
+        }
         if (data instanceof HashMap) {
             HashMap<String, DownloadInfo> mDownloadingTask = (HashMap<String, DownloadInfo>) data;
             DownloadInfo info = mDownloadingTask.get(mDetailInfo
