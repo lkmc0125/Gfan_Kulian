@@ -1,8 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="155dip"
+    android:orientation="vertical" 
+    android:background="@drawable/main_tab_bg"
+    >
+    <!--连接成功时的界面 -->
+    <RelativeLayout
+        android:id="@+id/connect_success_status_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="155dip"
+        android:background="@null"
+        android:orientation="vertical" >
+        <ImageView
+            android:id="@+id/wifi_icon_success_status"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_marginLeft="40dip"
+            android:layout_marginTop="25dip"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/link_success"
+            android:contentDescription="@null"
+            />
+        <ImageView
+            android:id="@+id/change_wifi_icon_success_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="35dip"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/change_wifi_icon"
+            android:contentDescription="@null"
+            />
+
+        <TextView
+            android:id="@+id/connection_link_status_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_toRightOf="@+id/wifi_icon_success_status"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="45dip"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/connection_link_status_value"
+            android:textColor="@color/white"
+            android:textSize="20sp" 
+            />
+        <TextView
+            android:id="@+id/connection_current_link_wifi_name_hint_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_toRightOf="@+id/wifi_icon_success_status"
+           	android:layout_below="@+id/connection_link_status_value_text"
+            android:layout_marginLeft="15dip"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/connection_current_link_wifi_name_hint"
+            android:textColor="@color/current_link_wifi_hint_text_color"
+            android:textSize="15sp" 
+            />
+        <TextView
+            android:id="@+id/connection_current_link_wifi_name_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_toRightOf="@+id/connection_current_link_wifi_name_hint_text"
+           	android:layout_below="@+id/connection_link_status_value_text"
+            android:layout_marginLeft="5dip"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/connection_current_link_wifi_name_value"
+            android:textColor="@color/white"
+            android:textSize="15sp" 
+            />
+
+        <RelativeLayout
+            android:id="@+id/notice_layout_success_status"
+            android:layout_width="wrap_content"
+            android:layout_height="24dip"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/notice_icon_success_status_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:layout_marginTop="6dip"
+                android:layout_marginBottom="6dip"
+                android:layout_marginRight="6dip"
+                android:background="@drawable/notice_icon"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/connection_current_activity_info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:layout_toRightOf="@id/notice_icon_success_status_img"
+                android:layout_centerInParent="true"
+                android:singleLine="true"
+                android:text="@string/connection_current_activity_info"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </RelativeLayout>
+        <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#4dffffff"
+        android:layout_above="@+id/notice_layout_success_status"
+        />
+    </RelativeLayout>
     
 
 </LinearLayout>

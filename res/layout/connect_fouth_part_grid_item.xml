@@ -4,13 +4,13 @@
     android:background="@color/app_task_background_color">
 
     <RelativeLayout
-        android:background="@drawable/app_task_item_bg_with_shadow"
+        android:background="@null"
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
         >
 	    <!-- 应用icon -->
 	    <ImageView android:id="@+id/iconnection_recommend_task_logo" 
+	        android:contentDescription="@null"
 	        android:layout_width="120dp"
 	        android:layout_height="120dp"
 	        android:layout_centerVertical="true"

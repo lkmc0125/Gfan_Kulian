@@ -8,21 +8,34 @@
      <include 
          android:id="@+id/activity_connect_first_part_layout" 
          layout="@layout/activity_connect_first_part_layout" 
-         android:visibility="gone"
+         
          />
      <include 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="15dip"
          android:id="@+id/activity_connect_second_part_layout" 
          layout="@layout/activity_connect_second_part_layout" 
-         android:visibility="gone"
+         
          />
      <include 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="15dip"
+         android:layout_marginLeft="10dip"
+         android:layout_marginRight="10dip"
          android:id="@+id/activity_connect_third_part_layout" 
          layout="@layout/activity_connect_third_part_layout" 
          />
      <include 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="15dip"
+         android:layout_marginLeft="10dip"
+         android:layout_marginRight="10dip"
          android:id="@+id/activity_connect_fouth_part_layout" 
          layout="@layout/activity_connect_fouth_part_layout" 
-         android:visibility="gone"
+         
          />
      
 

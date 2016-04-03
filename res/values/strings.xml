@@ -55,6 +55,11 @@
     <string name="connection_recommend_task_coin">+800</string>
     <string name="connection_recommend_task_describtion">wifi酷连微信工作号将竭诚为您服务</string>
     <string name="connection_recommend_task_view">查看</string>
+    <string name="connection_link_status_value">连接成功</string>
+    <string name="connection_current_link_wifi_name_hint">当前连接:</string>
+    <string name="connection_current_link_wifi_name_value">小鸿WiFi</string>
+    <string name="connection_current_activity_info">wifi重置时间为每日00:00，活动期间你只需要</string>
+    <string name="connection_refresh_button_hint">刷新</string>
 
     <!-- 幽默页 -->
     <string name="humor_title">幽默搞笑</string>

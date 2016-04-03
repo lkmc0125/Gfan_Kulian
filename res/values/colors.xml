@@ -50,4 +50,6 @@
     <color name="pause_button_background_color">#2F83E9</color>
     <!--     处于暂停状态中 -->
     <color name="redownload_button_background_color">#F5A623</color>
+    <!-- 连接页面颜色 -->
+    <color name="current_link_wifi_hint_text_color">#174E9D</color>
 </resources>
