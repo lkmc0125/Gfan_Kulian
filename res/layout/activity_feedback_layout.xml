@@ -62,6 +62,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="#2C78D4"
+        android:textSize="14sp"
         android:text="@string/feedback_submit"
         android:textColor="#FFFFFF" />
 

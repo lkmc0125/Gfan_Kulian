@@ -606,7 +606,7 @@ public class HomeTabActivity extends BaseTabActivity implements
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setTitle("卸载旧的安装包")
                     .setMessage("旧的安装包已不再使用，是否删除？")
-                    .setPositiveButton("是",
+                    .setPositiveButton(R.string.yes,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
                                         int whichButton) {
@@ -614,7 +614,7 @@ public class HomeTabActivity extends BaseTabActivity implements
                                     removeDialog(id);
                                 }
                             })
-                    .setNegativeButton("否",
+                    .setNegativeButton(R.string.no,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
                                         int whichButton) {
