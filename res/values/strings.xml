@@ -443,7 +443,7 @@
     <string name="tele_number">021-54478672</string>
     <string name="feedback_title">意见反馈 </string>
     <string name="feedback_submit">提交</string>
-    <string name="feedback_hint_message">反馈对小鸿WIFI的意见和问题</string>
+    <string name="feedback_hint_message">请输入您的问题、意见或建议</string>
 
     <string name="qq_group">QQ讨论群</string>
     <string name="qq_group_id">QQ群1：227306629，QQ群2：516766607</string>
