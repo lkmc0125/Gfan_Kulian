@@ -44,6 +44,11 @@ public class AppDetailActivity extends Activity
             OnClickListener,
             Observer {
     private static final String TAG = "AppDetailActivity";
+    
+    private static final String TEXT_CONTINUE = "继续";
+    private static final String TEXT_OPEN = "打开";
+    private static final String TEXT_INSTALL = "安装";
+    
     private int mCoinNum = 0;
     private Session mSession;
 
@@ -59,6 +64,7 @@ public class AppDetailActivity extends Activity
 
     private FrameLayout mAppActionLayout;
     private ImageView mAppActionIv;
+    private LinearLayout mRootLayout;
 
     private ArrayList<ImageView> mAppPicViews = new ArrayList<ImageView>();
 
@@ -107,6 +113,9 @@ public class AppDetailActivity extends Activity
 
         mAppActionLayout = (FrameLayout) findViewById(R.id.app_action_layout);
         mAppActionIv = (ImageView) findViewById(R.id.app_action_iv);
+        
+        mRootLayout = (LinearLayout) findViewById(R.id.app_detail_root_layout);
+        mRootLayout.setVisibility(View.INVISIBLE);
 
         mAppActionView.setOnClickListener(null);
         mBackImageView.setOnClickListener(this);
@@ -151,7 +160,11 @@ public class AppDetailActivity extends Activity
             // TODO
             mAppVersionTv.setText("版本：v" + mDetailInfo.getAppversion());
             mAppCoinNumTv.setText("+" + mCoinNum);
-            mAppDescView.setText(mDetailInfo.getAppsummary());
+            Log.d(TAG, "app summary = " + mDetailInfo.getAppsummary());
+            //mAppDescView.setText(mDetailInfo.getAppsummary());
+            String desc =  mDetailInfo.getAppsummary();
+            Log.d(TAG, "app desc = " + desc);
+            mAppDescView.setText(desc);
 
             HashMap<String, DownloadInfo> downloadingMap = mSession
                     .getDownloadingList();
@@ -235,6 +248,7 @@ public class AppDetailActivity extends Activity
                 mImageLoader.displayImage(pics.get(i), mAppPicViews.get(i),
                         Utils.sDisplayImageOptions);
             }
+            mRootLayout.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -292,7 +306,37 @@ public class AppDetailActivity extends Activity
     }
 
     private void handleActionTvClicked() {
-        if (Utils.isApkInstalled(getApplicationContext(),
+        String tvStr = (String) mAppActionView.getText();
+        DownloadInfo downloadInfo = mSession.getDownloadingList().get(
+                mDetailInfo.getPackagename());
+        if(TEXT_INSTALL.equals(tvStr)) {
+            //安装
+        }else if(TEXT_OPEN.equals(tvStr)) {
+            //打开
+            Utils.openApkByPackageName(getApplicationContext(),
+                    mDetailInfo.getPackagename());
+        }else if(TEXT_CONTINUE.equals(tvStr)) {
+            //继续
+            Log.d(TAG, "continue downloading");
+            mIsDownloading = true;
+            showDowloadingView(downloadInfo);
+            mSession.getDownloadManager().resumeDownload(mDownloadId);
+            
+        }else if(tvStr != null&& tvStr.contains("正在下载")) {
+            //暂停
+            mIsDownloading = false;
+            showContinueView(downloadInfo);
+            mSession.getDownloadManager().pauseDownload(mDownloadId);
+            
+        }else {
+            //点击后开始下载
+            mIsDownloading = true;
+            showDowloadingView(downloadInfo);
+            mDownloadId = startDownload(mDetailInfo);
+            
+        }
+        
+        /*if (Utils.isApkInstalled(getApplicationContext(),
                 mDetailInfo.getPackagename())) {
             // 已安装 显示打开
             mAppActionView.setText("打开");
@@ -344,7 +388,7 @@ public class AppDetailActivity extends Activity
             mDownloadId = startDownload(mDetailInfo);
             mIsDownloading = true;
 
-        }
+        }*/
     }
 
     /**
@@ -415,7 +459,7 @@ public class AppDetailActivity extends Activity
      * 已安装，显示打开
      */
     private void showOpenView() {
-        mAppActionView.setText("打开");
+        mAppActionView.setText(TEXT_OPEN);
         mAppActionIv.setBackgroundColor(getResources().getColor(
                 R.color.open_button_background_color));
         changeAppActionIvWidth(100);
@@ -425,7 +469,7 @@ public class AppDetailActivity extends Activity
      * 下载被暂停，显示继续
      */
     private void showContinueView(DownloadInfo downloadInfo) {
-        mAppActionView.setText("继续");
+        mAppActionView.setText(TEXT_CONTINUE);
         if(progressStr2Int(downloadInfo.mProgress) < 50) {
             mAppActionView.setTextColor(getResources().
                     getColor(R.color.redownload_button_background_color));
@@ -442,7 +486,7 @@ public class AppDetailActivity extends Activity
      * 下载已完成等待安装
      */
     private void showInstallView() {
-        mAppActionView.setText("安装");
+        mAppActionView.setText(TEXT_INSTALL);
         mAppActionIv.setBackgroundColor(getResources().getColor(
                 R.color.install_button_background_color));
         changeAppActionIvWidth(100);
