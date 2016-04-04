@@ -18,7 +18,6 @@ package com.xiaohong.kulian.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -42,6 +41,7 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.util.CustomDialog;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.PayAndChargeLog;
@@ -291,7 +291,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         switch (id) {
         // 注销帐号
         case ACCOUNT_REGIST:
-            return new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info)
+            return new CustomDialog.Builder(this)
                     .setTitle(getString(R.string.sure_to_regist))
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

@@ -7,7 +7,6 @@ import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
