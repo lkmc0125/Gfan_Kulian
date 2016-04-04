@@ -28,14 +28,12 @@ import java.util.Observer;
 import org.apache.http.HttpHost;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -46,7 +44,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -77,6 +74,7 @@ import com.xiaohong.kulian.common.ResponseCacheManager;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.util.CacheManager;
+import com.xiaohong.kulian.common.util.CustomDialog;
 import com.xiaohong.kulian.common.util.DBUtils;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.UpdateInfo;
@@ -511,8 +509,7 @@ public class HomeTabActivity extends BaseTabActivity implements
     protected Dialog onCreateDialog(final int id) {
         switch (id) {
         case DIALOG_EXIT:
-            return new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_info)
+            return new CustomDialog.Builder(this)
                     .setTitle(getString(R.string.exit_wifikulian))
                     .setPositiveButton(R.string.yes,
                             new DialogInterface.OnClickListener() {
@@ -536,8 +533,7 @@ public class HomeTabActivity extends BaseTabActivity implements
 
             String optVersionName = mSession.getUpdateVersionName();
             String optUpdateDesc = mSession.getUpdateVersionDesc();
-            return new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_info)
+            return new CustomDialog.Builder(this)
                     .setTitle(R.string.find_new_version)
                     .setMessage(
                             getString(R.string.update_prompt, optVersionName)
@@ -570,8 +566,7 @@ public class HomeTabActivity extends BaseTabActivity implements
 
             String forceVersionName = mSession.getUpdateVersionName();
             String forceUpdateDesc = mSession.getUpdateVersionDesc();
-            return new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_info)
+            return new CustomDialog.Builder(this)
                     .setTitle(R.string.find_new_version)
                     .setMessage(
                             getString(R.string.update_prompt_stronger,
@@ -602,21 +597,9 @@ public class HomeTabActivity extends BaseTabActivity implements
 
         case DIALOG_DELETE_OLD_APK: // 删除旧的H5版安装包
 
-            return new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_info)
+            return new CustomDialog.Builder(this)
                     .setTitle("卸载旧的安装包")
                     .setMessage("旧的安装包已不再使用，是否删除？")
-/*<<<<<<< HEAD
-                    .setPositiveButton("是",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                        int whichButton) {
-                                    deleteOldApk();
-                                    removeDialog(id);
-                                }
-                            })
-                    .setNegativeButton("否",
-=======*/
                     .setPositiveButton(R.string.yes,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
@@ -626,7 +609,6 @@ public class HomeTabActivity extends BaseTabActivity implements
                                 }
                             })
                     .setNegativeButton(R.string.no,
-//>>>>>>> branch 'master' of https://github.com/491055741/Gfan_Kulian.git
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
                                         int whichButton) {

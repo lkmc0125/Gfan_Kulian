@@ -129,8 +129,9 @@ public class CustomDialog extends Dialog {
             if (title == null || title.length() == 0) {
                 ((TextView) layout.findViewById(R.id.title)).setVisibility(View.GONE);
             } else {
-                ((TextView) layout.findViewById(R.id.title)).setText(title);
+                ((TextView) layout.findViewById(R.id.title)).setVisibility(View.VISIBLE);
             }
+            ((TextView) layout.findViewById(R.id.title)).setText(title);
             // set the confirm button  
             if (positiveButtonText != null) {  
                 ((Button) layout.findViewById(R.id.positiveButton))  
