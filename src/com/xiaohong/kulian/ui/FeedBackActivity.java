@@ -58,12 +58,12 @@ public class FeedBackActivity extends BaseActivity {
                 final Context context = getApplicationContext();
                 String content = feedbackContent.getText().toString();
                 if (TextUtils.isEmpty(content)) {
-                    Utils.makeEventToast(context, getString(R.string.content_no_empty), false);
+                    showAlertMsg(getString(R.string.content_no_empty));
                     return;
                 }
 
                 if (!Utils.isNetworkAvailable(context)) {
-                    Utils.makeEventToast(context, getString(R.string.no_valid_network), false);
+                    showAlertMsg(getString(R.string.no_valid_network));
                     return;
                 }
 
@@ -108,7 +108,7 @@ public class FeedBackActivity extends BaseActivity {
                     .setPositiveButton(R.string.ok,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    // do nothing
+                                    dialog.dismiss();
                                 }
                             }).create();
                     dialog.show();
@@ -118,6 +118,18 @@ public class FeedBackActivity extends BaseActivity {
             }
             Log.d(TAG, ret);
         }
+    }
+
+    private void showAlertMsg(String msg) {
+        CustomDialog dialog = new CustomDialog.Builder(this)
+        .setMessage(msg)
+        .setPositiveButton(R.string.ok,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        dialog.show();
     }
 
     private void hideKeyBoard() {
