@@ -55,12 +55,6 @@ import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
-/**
- * 登录页
- * @author Andrew
- * @date    2011-5-25
- *
- */
 public class RegisterActivity extends BaseActivity 
     implements OnClickListener, OnFocusChangeListener, ApiRequestListener {
 
@@ -289,14 +283,12 @@ public class RegisterActivity extends BaseActivity
             
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
                     Constants.LOGIN_SUCCESS);
-            //fix classcastexception 
+
             HashMap<String, Object> result = (HashMap<String, Object>) obj;
             String userName = etUsername.getText().toString();
             String password = etUsername.getText().toString().substring(5,11);
             mSession.setUserName(userName);
             mSession.setPassword(password);
-            //Log.d("free",result.get(Constants.KEY_COIN_NUM).toString());
-            //fix classcastexception 
             mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
             mSession.setLogin(true);
             // 隐藏登录框

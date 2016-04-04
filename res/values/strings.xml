@@ -145,6 +145,8 @@
     <string name="account_start">开启</string>
     <string name="account_starting">开启中</string>
     <string name="account_close">关闭</string>
+    <string name="sign_in_success">签到成功</string>
+    <string name="sign_in_fail">签到失败</string>
     <string name="sure_to_regist">确定要注销吗?</string>
     <string name="sure_to_bind">云推送服务将使用更多流量，建议WIFI环境下开启</string>
     <string name="account_bind_error">云推送绑定失败，请稍后再试</string>
