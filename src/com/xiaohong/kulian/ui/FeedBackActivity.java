@@ -7,7 +7,9 @@ import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -88,11 +90,41 @@ public class FeedBackActivity extends BaseActivity {
         if (ret != null) {
             try {
                 JSONObject obj = new JSONObject(ret);
+/*<<<<<<< HEAD
                 if (obj.getInt("ret_code") == 0) {
                     Utils.makeEventToast(getApplicationContext(), "反馈提交成功", false);
                 } else {
                     Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
                 }
+=======*/
+
+                if (obj.getInt("ret_code") == 0) {
+                    AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setTitle("提交成功，谢谢您的反馈")
+                    .setPositiveButton(R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    hideKeyBoard();
+                                    finish();
+                                }
+                            }).create();
+                    dialog.show();
+                } else {
+                    AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setTitle(obj.getString("ret_msg"))
+                    .setPositiveButton(R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    // do nothing
+                                }
+                            }).create();
+                    dialog.show();
+                }
+
+
+//>>>>>>> branch 'master' of https://github.com/491055741/Gfan_Kulian.git
             } catch (JSONException e) {
                 e.printStackTrace();
             }
