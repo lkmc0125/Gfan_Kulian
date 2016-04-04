@@ -22,9 +22,7 @@ import android.widget.ImageButton;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
-import com.xiaohong.kulian.Session;
-import com.xiaohong.kulian.common.MarketAPI;
-import com.xiaohong.kulian.common.util.TopBar;
+import com.xiaohong.kulian.common.util.CustomDialog;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
@@ -90,18 +88,11 @@ public class FeedBackActivity extends BaseActivity {
         if (ret != null) {
             try {
                 JSONObject obj = new JSONObject(ret);
-/*<<<<<<< HEAD
-                if (obj.getInt("ret_code") == 0) {
-                    Utils.makeEventToast(getApplicationContext(), "反馈提交成功", false);
-                } else {
-                    Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
-                }
-=======*/
 
                 if (obj.getInt("ret_code") == 0) {
-                    AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_info)
-                    .setTitle("提交成功，谢谢您的反馈")
+                    CustomDialog dialog = new CustomDialog.Builder(this)
+                    .setTitle("提交成功")
+                    .setMessage("谢谢您的反馈!")
                     .setPositiveButton(R.string.ok,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -111,9 +102,9 @@ public class FeedBackActivity extends BaseActivity {
                             }).create();
                     dialog.show();
                 } else {
-                    AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_info)
-                    .setTitle(obj.getString("ret_msg"))
+                    CustomDialog dialog = new CustomDialog.Builder(this)
+                    .setTitle("提交失败")
+                    .setMessage(obj.getString("ret_msg"))
                     .setPositiveButton(R.string.ok,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -122,9 +113,6 @@ public class FeedBackActivity extends BaseActivity {
                             }).create();
                     dialog.show();
                 }
-
-
-//>>>>>>> branch 'master' of https://github.com/491055741/Gfan_Kulian.git
             } catch (JSONException e) {
                 e.printStackTrace();
             }
