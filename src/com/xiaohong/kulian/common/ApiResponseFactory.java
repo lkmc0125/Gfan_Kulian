@@ -174,70 +174,6 @@ public class ApiResponseFactory {
         return result;
     }
 
-    private static Object parseProductDetail(Context context, String body) {
-        if (body == null) {
-            return null;
-        }
-
-        ProductDetail result = null;
-        try {
-            JSONObject jsonObj = new JSONObject(body);
-            if (jsonObj.getInt("ret_code") == 0) {
-                JSONObject product = jsonObj.getJSONObject("detail_info");
-
-                if (product != null) {
-                    result = new ProductDetail();
-                    result.setPid(product.getString("AppId"));
-//                    result.setProductType(product.getString(Constants.KEY_PRODUCT_TYPE));
-                    result.setName(product.getString("AppName"));
-//                    result.setPrice(Utils.getInt(product.getString(Constants.KEY_PRODUCT_PRICE)));
-//                    result.setPayCategory(Utils.getInt(product.getString(Constants.KEY_PRODUCT_PAY_TYPE)));
-//                    result.setRating(Utils.getInt(product.getString(Constants.KEY_PRODUCT_RATING)));
-                    result.setIconUrl(product.getString("AppLogo"));
-//                    result.setIconUrlLdpi(product.getString(Constants.KEY_PRODUCT_ICON_URL_LDPI));
-                    result.setShotDes(product.getString("BriefSummary"));
-                    result.setAppSize(Utils.getInt(product.getString("AppSize")));
-//                    result.setSourceType(product.getString(Constants.KEY_PRODUCT_SOURCE_TYPE));
-                    result.setPackageName(product.getString("PackageName"));
-                    result.setVersionName(product.getString("AppVersion"));
-                    result.setApkUrl(product.getString("AppSource"));
-//                    result.setVersionCode(Utils.getInt(product
-//                            .getString(Constants.KEY_PRODUCT_VERSION_CODE)));
-//                    result.setCommentsCount(Utils.getInt(product
-//                            .getString(Constants.KEY_PRODUCT_COMMENTS_COUNT)));
-//                    result.setRatingCount(Utils.getInt(product
-//                            .getString(Constants.KEY_PRODUCT_RATING_COUNT)));
-//                    result.setDownloadCount(Utils.getInt(product
-//                            .getString(Constants.KEY_PRODUCT_DOWNLOAD_COUNT)));
-                    result.setLongDescription(product.getString("AppSummary"));
-//                    result.setAuthorName(product.getString(Constants.KEY_PRODUCT_AUTHOR));
-//                    result.setPublishTime(Utils.getInt(product
-//                            .getString(Constants.KEY_PRODUCT_PUBLISH_TIME)));
-//                    final String[] screenShot = new String[5];
-//                    screenShot[0] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_1);
-//                    screenShot[1] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_2);
-//                    screenShot[2] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_3);
-//                    screenShot[3] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_4);
-//                    screenShot[4] = product.getString(Constants.KEY_PRODUCT_SCREENSHOT_5);
-
-                    final ArrayList<String> screenShotList = new ArrayList<String>();
-                    JSONArray array = product.getJSONArray("ImageSrcList");
-                    for (int i = 0; i < array.length(); i++) {
-                        screenShotList.add(array.getString(i));
-                    }
-                    if (screenShotList.size() > 0) {
-                        String screenShotArray[] = (String[])screenShotList.toArray(new String[screenShotList.size()]);
-                        result.setScreenshot(screenShotArray);
-                    }
-//                    result.setUpTime(Utils.getLong(product.getString(Constants.KEY_PRODUCT_UP_TIME)));
-                }
-            }
-        } catch (JSONException e) {
-          Utils.D("have json exception when parse search result from bbs", e);
-        }
-        return result;
-    }
-
     /*
      * 解析注册或者登录结果
      */
@@ -250,13 +186,12 @@ public class ApiResponseFactory {
             //{"ret_msg":"success","invite_code":"523851","ret_code":0,"coin_num":5572,"token":"JNGdT3H0dB7iwfr64OVRMOw7+P+0MBOFFwPGYsUUVzzh+zHeywhpjFe6L2aX6izX"}
             JSONObject jsonObj = new JSONObject(body);
             result = new HashMap<String, Object>();
+            result.put("ret_code", Integer.valueOf(jsonObj.getString("ret_code")));
             result.put("ret_msg", jsonObj.getString("ret_msg"));
             if (jsonObj.getInt("ret_code") == 0) {
                 result.put(Constants.KEY_COIN_NUM, Integer.valueOf(jsonObj.getString("coin_num")));
-                try {
+                if (jsonObj.has("is_sign")) {
                     result.put(Constants.KEY_SIGN_IN_TODAY, jsonObj.getString("is_sign"));                    
-                } catch (JSONException e) {
-                    Utils.D("have json exception when parse search result from bbs", e);
                 }
             }
         } catch (JSONException e) {

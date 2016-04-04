@@ -290,6 +290,11 @@ public class RegisterActivity extends BaseActivity
             mSession.setUserName(userName);
             mSession.setPassword(password);
             mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
+            if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
+                mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).toString().equals("true"));    
+            } else {
+                mSession.setSignInToday(false);
+            }
             mSession.setLogin(true);
             // 隐藏登录框
             try{

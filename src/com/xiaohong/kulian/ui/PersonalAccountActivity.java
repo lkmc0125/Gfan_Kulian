@@ -46,9 +46,10 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     private static final int ACCOUNT_REGIST = 0;
     private static final int REQUEST_CODE = 20;
     public static final int REGIST = 1;
-    
+
     // 个人中心功能界面
-    private RelativeLayout layout_task, layout_message, layout_question, layout_feedback, layout_account, layout_buy, layout_sign_in;
+    private RelativeLayout layout_task, layout_message, layout_question, layout_feedback, layout_account, layout_buy,
+            layout_sign_in;
     private Intent intent_next;
     private TextView textView_login, textView_username, textView_signIn_status, textView_coin_num;
 
@@ -65,13 +66,14 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
 
         if (!mSession.isLogin()) {
             textView_login.setText("登录");
+            textView_username.setText("未登录");
             textView_signIn_status.setText(R.string.person_account_sign_in_value);
         } else if (mSession.isLogin()) {
             textView_login.setText("账号退出");
             textView_username.setText(mSession.getUserName());
             textView_coin_num.setText(mSession.getCoinNum().toString());
             if (mSession.getSignInToday()) {
-                textView_signIn_status.setText("今天已经签到");                
+                textView_signIn_status.setText("今天已经签到");
             } else {
                 textView_signIn_status.setText(R.string.person_account_sign_in_value);
             }
@@ -109,6 +111,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         textView_username = (TextView) this.findViewById(R.id.user_name_text);
         textView_signIn_status = (TextView) this.findViewById(R.id.sign_in_value_text);
         textView_coin_num = (TextView) this.findViewById(R.id.coin_text);
+        textView_coin_num.setText("0");
         if (!mSession.isLogin()) {
             textView_login.setText("登录");
         } else if (mSession.isLogin()) {
@@ -119,35 +122,67 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     @Override
     public void onSuccess(int method, Object obj) {
         switch (method) {
-        case MarketAPI.ACTION_SIGN_IN:
+        case MarketAPI.ACTION_SIGN_IN: {
             HashMap<String, Object> result = (HashMap<String, Object>) obj;
-            if ((Integer)result.get("ret_code") == 0) {
+            if ((Integer) result.get("ret_code") == 0) {
                 mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
                 mSession.setSignInToday(true);
                 textView_coin_num.setText(mSession.getCoinNum().toString());
-                textView_signIn_status.setText("今天已经签到");
+                textView_signIn_status.setText("今天已签到");
 
-                CustomDialog dialog = new CustomDialog.Builder(this)
-                .setTitle(getString(R.string.sign_in_success))
-                .setMessage("本次签到获得了"+result.get(Constants.KEY_ADD_COIN_NUM)+"个金币")
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
+                CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_success))
+                        .setMessage("本次签到获得了" + result.get(Constants.KEY_ADD_COIN_NUM) + "个金币")
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
                 dialog.show();
-            } else {
-                CustomDialog dialog = new CustomDialog.Builder(this)
-                .setTitle(getString(R.string.sign_in_fail))
-                .setMessage(result.get("ret_msg").toString())
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
+            } else if ((Integer) result.get("ret_code") == 3002) { // 今天已经签过到了
+
+                mSession.setSignInToday(true);
+                textView_signIn_status.setText("今天已签到");
+
+                CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_success))
+                        .setMessage("今天已经领取过金币了，明天再来哦")
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+                dialog.show();
+
+            } else { // 签到失败
+                CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_fail))
+                        .setMessage(result.get("ret_msg").toString())
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
                 dialog.show();
             }
             break;
+        }
+        case MarketAPI.ACTION_LOGIN: {
+            HashMap<String, Object> result = (HashMap<String, Object>) obj;
+            if ((Integer) result.get("ret_code") == 0) {
+                textView_login.setText("账号退出");
+                textView_username.setText(mSession.getUserName());
+                mSession.setLogin(true);
+                mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
+                textView_coin_num.setText(mSession.getCoinNum().toString());
+                if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
+                    mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
+                }
+                if (mSession.getSignInToday()) {
+                    textView_signIn_status.setText("今天已签到");
+                } else {
+                    MarketAPI.signIn(getApplicationContext(), this);
+                }
+            }
+            break;
+        }
         default:
             break;
         }
@@ -171,14 +206,13 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     public void onError(int method, int statusCode) {
         switch (method) {
         case MarketAPI.ACTION_SIGN_IN:
-            CustomDialog dialog = new CustomDialog.Builder(this)
-            .setTitle(getString(R.string.sign_in_fail))
-            .setMessage("错误码: "+statusCode)
-            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            }).create();
+            CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_fail))
+                    .setMessage("错误码: " + statusCode)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create();
             dialog.show();
             break;
         default:
@@ -191,18 +225,17 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         switch (id) {
         // 注销帐号
         case ACCOUNT_REGIST:
-            return new CustomDialog.Builder(this)
-                    .setTitle(getString(R.string.sure_to_regist))
+            return new CustomDialog.Builder(this).setMessage(getString(R.string.sure_to_regist))
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             mSession.setLogin(false);
                             mSession.setUid(null);
                             mHandler.sendEmptyMessage(REGIST);
+                            dialog.dismiss();
                         }
                     }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-
                         public void onClick(DialogInterface dialog, int which) {
-                            PersonalAccountActivity.this.dismissDialog(id);
+                            dialog.dismiss();
                         }
                     }).create();
 
@@ -210,6 +243,16 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             break;
         }
         return super.onCreateDialog(id);
+    }
+
+    private boolean autoLogin() {
+        if (mSession.getUserName() != null && mSession.getUserName().length() > 0 && mSession.getPassword() != null
+                && mSession.getPassword().length() > 0) {
+            MarketAPI.login(getApplicationContext(), this, mSession.getUserName(), mSession.getPassword());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -221,11 +264,13 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.sign_in_layout:
-            if (mSession.isLogin() && !mSession.getSignInToday()) {
-                MarketAPI.signIn(getApplicationContext(), this);
+            if (!mSession.isLogin()) {
+                if (!autoLogin()) {
+                    intent_next = new Intent(getApplicationContext(), RegisterActivity.class);
+                    startActivityForResult(intent_next, REQUEST_CODE);
+                }
             } else {
-                intent_next = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivityForResult(intent_next, REQUEST_CODE);
+                MarketAPI.signIn(getApplicationContext(), this);
             }
             break;
         case R.id.person_account_my_task_value_layout:
