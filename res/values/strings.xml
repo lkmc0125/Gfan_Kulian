@@ -60,6 +60,10 @@
     <string name="connection_current_link_wifi_name_value">小鸿WiFi</string>
     <string name="connection_current_activity_info">wifi重置时间为每日00:00，活动期间你只需要</string>
     <string name="connection_refresh_button_hint">刷新</string>
+    <string name="connection_nearby_dialog_title_hint">已为您找到附近可用的小鸿WIFI</string>
+    <string name="connection_nearby_dialog_content_hint">消耗700金币，畅享今日免费上网时间，确定要兑换吗？</string>
+    <string name="connection_nearby_dialog_positive_hint">兑换</string>
+    <string name="connection_nearby_dialog_negative_hint">不兑换</string>
 
     <!-- 幽默页 -->
     <string name="humor_title">幽默搞笑</string>

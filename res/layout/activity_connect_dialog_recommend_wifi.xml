@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="true"
+    android:orientation="vertical"
+     >
+
+    <LinearLayout
+        android:layout_width="300dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/connect_recommend_app_nomol_bg"
+        android:orientation="vertical" >
+		<RelativeLayout
+            android:id="@+id/connect_dialog_title_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="35dip"
+            android:background="@color/connect_dialog_title_color"
+            android:gravity="center" >
+            <ImageView	    
+                android:id="@+id/connect_dialog_title_img"        
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="15dip"
+	            android:layout_marginTop="12dip"
+	            android:layout_marginBottom="12dip"
+	            android:layout_marginRight="10dip"
+	            android:layout_alignParentLeft="true"
+	            android:background="@drawable/popupwifiicon"
+	            android:contentDescription="@null"
+	            />
+	        <TextView
+	            android:id="@+id/title"
+	            style="@style/connect_dialog_title_ffffff"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:gravity="center|left"
+	            android:text="@string/connection_nearby_dialog_title_hint"
+	            android:layout_toRightOf="@+id/connect_dialog_title_img"
+	            android:visibility="visible" />
+		</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/message"
+                style="@style/connect_dialog_content_595959"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:lineSpacingMultiplier="1.7"
+                android:minHeight="80dip"
+                android:paddingBottom="15dip"
+                android:text="@string/connection_nearby_dialog_content_hint"
+                android:paddingTop="15dip" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/connect_dialog_border" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="44dip"
+            android:layout_gravity="bottom"
+            android:background="@null"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+
+
+            <TextView
+                android:id="@+id/negativeButton"
+                style="@style/connect_dialog_negative_a5a5a5"
+                android:layout_width="150dip"
+                android:layout_height="44dip"
+                android:layout_marginLeft="20.0dip"
+                android:gravity="center"
+                android:text="@string/connection_nearby_dialog_negative_hint" />
+            <View 
+                android:layout_width="1dip"
+                android:layout_height="44dip"
+                android:background="@color/connect_dialog_border"
+                />
+            <TextView
+                android:id="@+id/positiveButton"
+                style="@style/connect_dialog_positive_595959"
+                android:layout_width="150dip"
+                android:layout_height="44dip"
+                android:gravity="center"
+                android:text="@string/connection_nearby_dialog_positive_hint" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

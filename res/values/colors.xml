@@ -52,4 +52,6 @@
     <color name="redownload_button_background_color">#F5A623</color>
     <!-- 连接页面颜色 -->
     <color name="current_link_wifi_hint_text_color">#174E9D</color>
+    <color name="connect_dialog_border">#99BCBCBC</color>
+    <color name="connect_dialog_title_color">#2C78D4</color>
 </resources>
