@@ -1,96 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" 
-	android:layout_height="fill_parent"
-	android:gravity="center_horizontal" >
-	
-	<include android:id="@+id/top_bar" 
-        layout="@layout/top_bar" 
-        />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/app_task_background_color"
+    android:gravity="center_horizontal" >
 
-	<TextView android:id="@+id/account_title"
-       android:layout_width="150dip" 
-       android:layout_height="wrap_content"
-       android:text="手机号"
-       android:layout_marginLeft="8dip"
-       android:layout_marginTop="70dp"
-       android:layout_alignParentLeft="true"
-       android:gravity="left" />
+    <TextView
+        android:id="@+id/account_title"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dip"
+        android:layout_marginTop="50dp"
+        android:gravity="left"
+        android:text="手机号"
+        android:textColor="#333333"
+        android:textSize="14sp" />
 
-	<EditText android:id="@+id/et_username" 
-	   android:layout_width="fill_parent"
-	   android:layout_height="wrap_content" 
-	   android:hint="请填写您的手机号"
-	   android:singleLine="true" 
-       android:maxLength="16"
-       android:inputType="number"
-	   android:layout_margin="8dip"
-       android:layout_below="@id/account_title" />
+    <EditText
+        android:id="@+id/et_username"
+        style="@style/edit_text_style"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/account_title"
+        android:layout_margin="8dip"
+        android:hint="请填写您的手机号"
+        android:inputType="number"
+        android:maxLength="16" />
 
-	<TextView android:id="@+id/verify_code_title"
-       android:layout_width="150dip" 
-       android:layout_height="wrap_content"
-       android:text="验证码"
-       android:layout_alignParentLeft="true"
-       android:layout_margin="8dip"
-       android:gravity="left"
-       android:layout_below="@id/et_username" />
+    <TextView
+        android:id="@+id/verify_code_title"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/et_username"
+        android:layout_marginLeft="8dip"
+        android:gravity="left"
+        android:text="验证码"
+        android:textColor="#333333"
+        android:textSize="14sp" />
 
-	<EditText android:id="@+id/et_verify_code" 
-	   android:layout_width="150dip"
-	   android:layout_height="wrap_content" 
-	   android:hint="4位数字"
-	   android:singleLine="true"
-       android:maxLength="4"
-       android:inputType="number"
-	   android:layout_margin="8dip" 
-	   android:layout_below="@id/verify_code_title" />
+    <EditText
+        android:id="@+id/et_verify_code"
+        style="@style/edit_text_style"
+        android:layout_width="150dip"
+        android:layout_below="@id/verify_code_title"
+        android:layout_margin="8dip"
+        android:hint="4位数字"
+        android:inputType="number"
+        android:maxLength="4" />
 
-	<Button android:id="@+id/btn_verify_code"
-       android:layout_width="fill_parent" 
-       android:layout_height="wrap_content"
-       android:text="获取验证码" 
-       android:layout_toRightOf="@id/et_verify_code"
-       android:layout_below="@id/verify_code_title"
-       android:layout_margin="8dip" />
-	
-	<TextView android:id="@+id/invite_code_title"
-       android:layout_width="150dip" 
-       android:layout_height="wrap_content"
-       android:text="邀请码"
-       android:layout_alignParentLeft="true"
-       android:layout_margin="8dip"
-       android:gravity="left"
-       android:layout_below="@id/et_verify_code" />
+    <Button
+        android:id="@+id/btn_verify_code"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_below="@id/verify_code_title"
+        android:layout_margin="8dip"
+        android:layout_toRightOf="@id/et_verify_code"
+        android:background="#F5A623"
+        android:text="获取验证码"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
 
-    <EditText android:id="@+id/et_invite_code" 
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content" 
-       android:hint="可不填"
-       android:singleLine="true"
-       android:maxLength="6"
-       android:inputType="number"
-       android:layout_margin="8dip" 
-       android:layout_below="@id/invite_code_title" />
+    <TextView
+        android:id="@+id/invite_code_title"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/et_verify_code"
+        android:layout_marginLeft="8dip"
+        android:gravity="left"
+        android:text="邀请码"
+        android:textSize="14sp" />
 
-	<Button android:id="@+id/btn_register"
-	   android:layout_width="fill_parent" 
-	   android:layout_height="wrap_content"
-	   android:text="@string/register" 
-	   android:layout_below="@id/et_invite_code"
-	   android:layout_margin="8dip"/>
+    <EditText
+        android:id="@+id/et_invite_code"
+        style="@style/edit_text_style"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/invite_code_title"
+        android:layout_margin="8dip"
+        android:hint="可不填"
+        android:inputType="number"
+        android:maxLength="6" />
 
-	<!-- Login Info TextView -->
-	<TextView android:id="@+id/alert_tip_text" 
-	   android:layout_width="wrap_content"
-	   android:layout_height="wrap_content" 
-	   android:layout_marginLeft="10dip"
-	   android:layout_marginRight="10dip" 
-	   android:layout_below="@id/top_bar"
-	   android:padding="5dip"
-	   android:background="#FFFFFFCC"
-	   android:visibility="gone"
-	   android:layout_centerHorizontal="true" />
-	   
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_below="@id/et_invite_code"
+        android:layout_margin="8dip"
+        android:background="#2C78D4"
+        android:text="@string/register_label"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
+
 </RelativeLayout>
