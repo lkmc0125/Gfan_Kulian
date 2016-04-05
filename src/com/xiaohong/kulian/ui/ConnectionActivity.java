@@ -22,12 +22,15 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
@@ -61,8 +64,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
      */
     private RelativeLayout layoutSuccess,layoutSearch;
     private Button mAuthBtn;
-    private TextView mWifiStatusDesc;
-    private ImageView mWifiStatusIcon;
+    private TextView mWifiStatusDesc,mWifiStatusDescSearch;
+    private ImageView mWifiStatusIcon,mWifiStatusIconSearch;
     /**
      * 签到界面
      */
@@ -75,6 +78,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     private GridView mGridView;
     private ConnectionAppGridAdapter connectionAppGridAdapter;
     private TextView textViewAllApp;
+    private ArrayList<AppBean> appBeans;
     /**
      * 任务界面
      */
@@ -134,11 +138,13 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         /**
          * 连接界面
          */
-        layoutSuccess=(RelativeLayout)findViewById(R.id.connect_link_status_layout);
+        layoutSuccess=(RelativeLayout)findViewById(R.id.connect_success_status_layout);
         layoutSearch=(RelativeLayout)findViewById(R.id.connect_search_status_layout);
         mAuthBtn=(Button)findViewById(R.id.connection_current_link_wifi_button);
         mWifiStatusDesc=(TextView)findViewById(R.id.connection_link_status_value_text);
         mWifiStatusIcon=(ImageView)findViewById(R.id.wifi_icon_success_status);
+        mWifiStatusDescSearch=(TextView)findViewById(R.id.connection_link_search_status_value_text);
+        mWifiStatusIconSearch=(ImageView)findViewById(R.id.wifi_icon_search_status_01);
         /**
          * 签到界面
          */
@@ -225,9 +231,12 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     }
 
     private void updateWifiStatusUI(ConnectionStatus status) {
+        System.out.println("status"+status);
         switch (status) {
         case DISCONNECTED:
         {
+            layoutSuccess.setVisibility(View.GONE);
+            layoutSearch.setVisibility(View.VISIBLE);
             mWifiStatusDesc.setText("未连接到WIFI");
             mAuthBtn.setText("搜索小鸿Wifi");
             mAuthBtn.setVisibility(View.VISIBLE);
@@ -238,6 +247,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         }
         case CONNECTED:
         {
+            layoutSuccess.setVisibility(View.VISIBLE);
+            layoutSearch.setVisibility(View.GONE);
             mWifiStatusDesc.setText("已连接到Wifi:"+mCurrentSSID);
             mAuthBtn.setText("切换到小鸿Wifi");
             mAuthBtn.setVisibility(View.VISIBLE);
@@ -248,6 +259,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         }
         case HONGWIFI:
         {
+            layoutSuccess.setVisibility(View.VISIBLE);
+            layoutSearch.setVisibility(View.GONE);
             mWifiStatusDesc.setText("已连接到小鸿免费Wifi:"+mCurrentSSID);
             mAuthBtn.setText("认证上网");
             mAuthBtn.setVisibility(View.VISIBLE);
@@ -258,6 +271,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         }
         case HONGWIFI_AUTHED:
         {
+            layoutSuccess.setVisibility(View.VISIBLE);
+            layoutSearch.setVisibility(View.GONE);
             mWifiStatusDesc.setText("已连接到小鸿免费Wifi"+mCurrentSSID);
             mAuthBtn.setVisibility(View.INVISIBLE);
             Drawable img = getApplicationContext().getResources()
@@ -266,6 +281,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             break;
         }
         default:
+            layoutSuccess.setVisibility(View.GONE);
+            layoutSearch.setVisibility(View.VISIBLE);
             mWifiStatusDesc.setText("正在搜索WIFI...");
             break;
         }
@@ -404,6 +421,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         {
             AppListBean appList = (AppListBean) obj;
             ArrayList<AppBean> list = appList.getApplist();
+            appBeans=list;
             if (list.size() > 0) {
                 List<Map<String, Object>> data_list = new ArrayList<Map<String, Object>>();
                 for (AppBean bean : list) {
@@ -457,13 +475,14 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     }
 
     private void showAppData(List<Map<String, Object>> data_list) {
-        String [] from ={"logo_url", "name"};
+        /*String [] from ={"logo_url", "name"};
         int [] to = {R.id.connection_recommend_app_image, R.id.connection_recommend_app_name_hint_text};
         // todo: need a adapter show get image from network and show it in imageview
         SimpleAdapter sim_adapter = new SimpleAdapter(this, data_list, R.layout.connect_third_part_grid_item, from, to);
-        mGridView.setAdapter(sim_adapter);
+        mGridView.setAdapter(sim_adapter);*/
         connectionAppGridAdapter=new ConnectionAppGridAdapter(this, data_list);
         mGridView.setAdapter(connectionAppGridAdapter);
+        mGridView.setOnItemClickListener(new ConnectAppOnItemClick());
 //        gridView_main_push.setOnItemClickListener(new main_push_OnItemClick());
 //        gridView_main_push.setSelector(R.drawable.listview_press);
     }
@@ -577,5 +596,23 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         textViewTaskName.setText(TaskName);
         textViewTaskDsb.setText(TaskDsb);
         textViewTaskCoin.setText(TaskCoin);
+    }
+    
+    class ConnectAppOnItemClick implements OnItemClickListener
+    {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3)
+            {
+                AppBean item = (AppBean) appBeans.get(pos);
+                String pid = item.getAppId() + "";
+                /*Intent detailIntent = new Intent(getApplicationContext(),
+                        PreloadActivity.class);*/
+                Intent detailIntent = new Intent(getApplicationContext(),
+                        AppDetailActivity.class);
+                detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
+                detailIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
+                detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
+                startActivity(detailIntent);
+            }
     }
 }
