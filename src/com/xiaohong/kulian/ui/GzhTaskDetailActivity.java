@@ -2,6 +2,7 @@ package com.xiaohong.kulian.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -39,6 +40,7 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
         mTaskNameTv.setText(getTaskName());
         mTaskWeixinTv = (TextView) findViewById(R.id.task_weixin_id_tv);
         mTaskWeixinTv.setText(mTaskBean.getWeixin_id());
+        mTaskWeixinTv.setTextColor(Color.GREEN);
         mTaskCoinNumTv = (TextView) findViewById(R.id.task_coin_num_tv);
         mTaskCoinNumTv.setText("+" + mTaskBean.getCoin_num());
         mTaskGuide1Tv = (TextView) findViewById(R.id.task_guide_1_tv);
