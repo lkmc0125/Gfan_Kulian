@@ -106,7 +106,7 @@ public class AppDetailActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_detail);
         mSession = Session.get(getApplicationContext());
-        mSession.addObserver(this);
+        //mSession.addObserver(this);
         initViews();
         String appId = getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID);
         String category = getIntent().getStringExtra(Constants.EXTRA_CATEGORY);
@@ -365,6 +365,7 @@ public class AppDetailActivity extends Activity
         }else if(mStatus == STATUS_PAUSE) {
             //继续
             Log.d(TAG, "continue downloading");
+            mSession.addObserver(this);
             mIsDownloading = true;
             mStatus = STATUS_DOWNLOADING;
             showDowloadingView(downloadInfo);
@@ -372,6 +373,7 @@ public class AppDetailActivity extends Activity
             
         }else if(mStatus == STATUS_DOWNLOADING) {
             //暂停
+            mSession.deleteObserver(this);
             Log.d(TAG, "goto pause status");
             mIsDownloading = false;
             mStatus = STATUS_PAUSE;
@@ -381,6 +383,7 @@ public class AppDetailActivity extends Activity
         }else {
             //点击后开始下载
             Log.d(TAG, "begin download");
+            mSession.addObserver(this);
             mIsDownloading = true;
             mStatus = STATUS_DOWNLOADING;
             showDowloadingView(downloadInfo);
