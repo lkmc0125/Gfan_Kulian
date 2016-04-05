@@ -153,12 +153,6 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
     }
 
     /**
-     * 排行榜，需要识别排位
-     */
-    public void setRankList() {
-    }
-
-    /**
      * 用于统计Lable
      */
     public void setmPageType(String mPageType) {

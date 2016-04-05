@@ -1,70 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.xiaohong.kulian"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
     android:background="@drawable/connect_gird_view_line_bg"
-    xmlns:app="http://schemas.android.com/apk/res/com.xiaohong.kulian">
-    <RelativeLayout 
+    android:orientation="vertical" >
+
+    <RelativeLayout
         android:id="@+id/connection_recommend_app_item_layout"
         android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:background="@null"
-        >
-        <com.xiaohong.kulian.common.widget.RoundImageView 
+        android:layout_height="wrap_content"
+        android:background="@null" >
+
+        <ImageView
             android:id="@+id/connection_recommend_app_image"
-            android:layout_width="120dip"
-            android:layout_height="120dip"
-            app:borderRadius="5dip"
-            app:type="round"
-            android:contentDescription="@null"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_marginTop="15dip"
+            android:layout_centerHorizontal="true"
             android:background="@null"
-            />
-	
-	<TextView 
-	    android:id="@+id/connection_recommend_app_name_hint_text"
-	    android:layout_below="@+id/connection_recommend_app_image"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:gravity="center"
-	    android:layout_marginTop="15dip"
-	    android:layout_centerHorizontal="true"
-	    android:textSize="30sp"
-	    android:text="@string/connection_recommend_app_name_hint"
-	    android:textColor="#343434"
-	    />
+            android:contentDescription="@null" />
 
-		<RelativeLayout 
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:background="@null"
-	    	android:layout_centerHorizontal="true"
-	    	android:layout_below="@+id/connection_recommend_app_name_hint_text"
-	        >
+        <TextView
+            android:id="@+id/connection_recommend_app_name_hint_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/connection_recommend_app_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7dip"
+            android:gravity="center"
+            android:text="@string/connection_recommend_app_name_hint"
+            android:textColor="#343434"
+            android:textSize="15sp" />
 
-			<TextView 
-			    android:id="@+id/connection_recommend_app_coin_text"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:gravity="center"
-			    android:layout_marginTop="18dip"
-			    android:layout_centerHorizontal="true"
-			    android:textSize="32sp"
-			    android:layout_marginRight="10dip"
-			    android:text="@string/connection_recommend_app_coin_hint"
-			    android:textColor="#ff4c00"
-			    />
-			<ImageView
-	            android:id="@+id/connection_recommend_app_coin_img"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_toRightOf="@+id/connection_recommend_app_coin_text"
-	            android:layout_centerInParent="true"
-	            android:background="@drawable/goldcoin_small"
-	            android:contentDescription="@null"
-	            />
-	
-		</RelativeLayout>
-	</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/connection_recommend_app_name_hint_text"
+            android:layout_centerHorizontal="true"
+            android:background="@null" >
+
+            <TextView
+                android:id="@+id/connection_recommend_app_coin_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dip"
+                android:gravity="center"
+                android:drawableEnd="@drawable/goldcoin_small"
+                android:text="@string/connection_recommend_app_coin_hint"
+                android:textColor="#ff4c00"
+                android:textSize="16sp" />
+
+            <!-- <ImageView
+                android:id="@+id/connection_recommend_app_coin_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/connection_recommend_app_coin_text"
+                android:background="@drawable/goldcoin_small"
+                android:contentDescription="@null" /> -->
+        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>

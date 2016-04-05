@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/connect_recommend_app_nomol_bg"
+    android:layout_height="180dp"
+    android:background="#ffffff"
     android:orientation="vertical" >
+
     <RelativeLayout
         android:id="@+id/connection_recommend_app_layout"
         android:layout_width="fill_parent"
-        android:layout_height="35dip"
-        android:layout_marginTop="10dip"
+        android:layout_height="30dip"
         android:layout_marginLeft="10dip"
-    	android:layout_marginRight="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="10dip"
         android:background="@null"
         android:orientation="horizontal" >
 
@@ -18,55 +19,48 @@
             android:id="@+id/connection_recommend_app_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"
-            android:layout_gravity="center"
             android:text="@string/connection_recommend_app"
             android:textColor="#333333"
             android:textSize="16sp" />
 
-         <ImageView
+        <ImageView
             android:id="@+id/connection_recommend_app_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
             android:background="@drawable/arrow"
-            android:contentDescription="@null"
-            />
+            android:contentDescription="@null" />
+
         <TextView
             android:id="@+id/connection_recommend_all_app_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
             android:layout_toLeftOf="@+id/connection_recommend_app_img"
             android:text="@string/connection_recommend_all_app"
             android:textColor="#939393"
             android:textSize="13sp" />
-
     </RelativeLayout>
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="1dip"
+        android:layout_below="@+id/connection_recommend_app_layout"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
-        android:background="#99bcbcbc"
-        android:layout_below="@+id/connection_recommend_app_layout"
-        />
+        android:background="#99bcbcbc" />
+
     <GridView
-    android:id="@+id/connect_recommend_app_gridView_layout"  
-    android:layout_below="@+id/connection_recommend_app_layout"
-    android:horizontalSpacing="5dp"
-    android:layout_marginTop="15dip"
-    android:layout_marginBottom="15dip"
-    android:layout_width="fill_parent"   
-    android:layout_height="wrap_content"
-    android:numColumns="3"   
-    android:columnWidth="100dip"  
-    android:stretchMode="columnWidth"  
-    android:gravity="center"  
-    />
-	
+        android:id="@+id/connect_recommend_app_gridView_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/connection_recommend_app_layout"
+        android:columnWidth="93dip"
+        android:numColumns="3"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth" />
+
+        <!-- android:horizontalSpacing="5dp" -->
+    
 </RelativeLayout>

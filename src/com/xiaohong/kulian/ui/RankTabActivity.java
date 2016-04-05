@@ -69,7 +69,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
         setContentView(R.layout.activity_rank);
 //        getWindow().setBackgroundDrawableResource(android.R.color.darker_gray);
         initView();
-        initAdPager();
+//        initAdPager();  // banner
     }
 
     private void initView() {
@@ -93,7 +93,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
         Intent gameIntent = new Intent(getApplicationContext(),
                 ProductListActivity.class);
-        gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_APP);
+        gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
         gameIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
         TabSpec tab2 = mTabHost
                 .newTabSpec(Constants.CATEGORY_APP)
@@ -471,7 +471,8 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
         public void onPageSelected(int arg0) {
 
-            Log.d(TAG, "onPageSelected: " + arg0);
+            // why this function called frequently??
+//            Log.d(TAG, "onPageSelected: " + arg0);
 
             for (int i = 0; i < mAdIndicatorImageViews.length; i++) {
 
@@ -483,7 +484,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
             if(arg0 > mAdIndicatorImageViews.length) {
 
-                Log.d(TAG, "setCurrentItem" + 1);
+//                Log.d(TAG, "setCurrentItem" + 1);
 
                 mAdPager.setCurrentItem(1,false) ;
 

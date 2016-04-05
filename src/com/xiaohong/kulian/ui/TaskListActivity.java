@@ -78,15 +78,11 @@ public class TaskListActivity extends LazyloadListActivity implements
     @Override
     public void doLazyload() {
         Log.d(TAG, "doInitView:mCategory=" + mCategory);
-        if (Constants.CATEGORY_APP.equals(mCategory)) {
-            MarketAPI.getAppList(getApplicationContext(), this, getStartPage(),
-                    mCategory);
-        } else if (Constants.CATEGORY_TASK.equals(mCategory)) {
+        if (Constants.CATEGORY_TASK.equals(mCategory)) {
             MarketAPI.getTaskList(getApplicationContext(), this);
             MarketAPI.getGzhTaskList(getApplicationContext(), 
                     new GzhTaskListApiRequestListener());
         }
-
     }
 
     @Override

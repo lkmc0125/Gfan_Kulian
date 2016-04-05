@@ -2,6 +2,8 @@ package com.xiaohong.kulian.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,12 +25,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.bean.AppBean;
+import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.TopBar;
@@ -48,6 +54,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     private String mCurrentSSID;
     private Session mSession;
     private MyBroadcastReceiver mConnectionReceiver;
+    private GridView mGridView;
     private class MyBroadcastReceiver extends BroadcastReceiver {  
         @Override  
         public void onReceive(Context context, Intent intent) {  
@@ -66,6 +73,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_main_layout);
+        initView();
+        queryAppList();
 //        setContentView(R.layout.activity_connection);
 //        initTopBar();
 //        mLoginRetryCount = 0;
@@ -90,13 +99,10 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
 //        }, 500);
     }
 
-    private void initTopBar() {
-        TopBar.createTopBar(getApplicationContext(),
-                new View[] { findViewById(R.id.top_bar_title) },
-                new int[] { View.VISIBLE },
-                getString(R.string.connection_title));
+    private void initView() {
+        mGridView = (GridView)findViewById(R.id.connect_recommend_app_gridView_layout);
     }
-
+    
     private void checkNetwork() {
         String url = "http://115.159.3.16/cb/app_test";
         if (null == Utils.httpGet(url)) { // 网络不通
@@ -281,6 +287,10 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         updateWifiStatusUI(mConnectionStatus);
     }
 
+    private void queryAppList() {
+        MarketAPI.getAppList(getApplicationContext(), this, 1, Constants.CATEGORY_RCMD);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void onSuccess(int method, Object obj) {
@@ -323,9 +333,40 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             }
             break;
         }
+        case MarketAPI.ACTION_GET_APP_LIST:
+        {
+            AppListBean appList = (AppListBean) obj;
+            ArrayList<AppBean> list = appList.getApplist();
+            if (list.size() > 0) {
+                List<Map<String, Object>> data_list = new ArrayList<Map<String, Object>>();
+                for (AppBean bean : list) {
+                    if (Utils.isApkInstalled(getApplicationContext(),
+                            bean.getPackageName()) ==  true) {
+                        continue;
+                    }
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("logo_url", bean.getAppLogo());
+                    map.put("name", bean.getAppName());
+                    data_list.add(map);
+                    if (data_list.size() >= 3) {
+                        break;
+                    }
+                }
+                showAppData(data_list);
+            }
+            break;
+        }
         default:
             break;
         }
+    }
+
+    private void showAppData(List<Map<String, Object>> data_list) {
+        String [] from ={"logo_url", "name"};
+        int [] to = {R.id.connection_recommend_app_image, R.id.connection_recommend_app_name_hint_text};
+        // todo: need a adapter show get image from network and show it in imageview
+        SimpleAdapter sim_adapter = new SimpleAdapter(this, data_list, R.layout.connect_third_part_grid_item, from, to);
+        mGridView.setAdapter(sim_adapter);
     }
 
     @Override
@@ -344,6 +385,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             }
             break;
         }
+        case MarketAPI.ACTION_GET_APP_LIST:
+            break;
         default:
             break;
         }

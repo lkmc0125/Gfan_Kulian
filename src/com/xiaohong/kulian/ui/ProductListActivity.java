@@ -92,7 +92,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
                     String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
                     Log.d(TAG, "Lanched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
                     Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
-//                    webView.loadUrl("javascript: appLanched('" + applicationInfo.packageName + "')");
+//                    todo: report app launch event
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -137,8 +137,6 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
             mNoData.setOnClickListener(this);
             mList.setEmptyView(mLoading);
             mList.setOnItemClickListener(this);
-//            mList.setDividerHeight(5);
-//            mList.setDivider(getResources().getDrawable(R.drawable.divider_line));
             
             lazyload();
             return true;
@@ -149,12 +147,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
 
     @Override
     public void doLazyload() {
-        if(Constants.CATEGORY_APP.equals(mCategory)) {
-            MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
-        }else if(Constants.CATEGORY_TASK.equals(mCategory)) {
-            MarketAPI.getTaskList(getApplicationContext(), this);
-        }
-        
+        MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
     }
 
     @Override
@@ -163,10 +156,6 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
                 null,
                 R.layout.common_product_list_item);
         mAdapter.setProductList();
-        if (!TextUtils.isEmpty(mCategory)) {
-            // 排行榜列表
-            mAdapter.setRankList();
-        }
         return mAdapter;
     }
     

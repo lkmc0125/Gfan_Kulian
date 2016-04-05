@@ -192,6 +192,7 @@ public class AppDetailActivity extends Activity
             Log.d(TAG, "app summary = " + mDetailInfo.getAppsummary());
             //mAppDescView.setText(mDetailInfo.getAppsummary());
             String desc =  mDetailInfo.getAppsummary();
+            desc = desc.replace("\\n", "\n");
             Log.d(TAG, "app desc = " + desc);
             mAppDescView.setText(desc);
 
