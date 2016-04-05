@@ -2,44 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
     android:background="@color/app_task_background_color"
-     >
-     <include 
-         android:id="@+id/activity_connect_first_part_layout" 
-         layout="@layout/activity_connect_first_part_layout" 
-         
-         />
-     <include 
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="15dip"
-         android:id="@+id/activity_connect_second_part_layout" 
-         layout="@layout/activity_connect_second_part_layout" 
-         
-         />
+    android:orientation="vertical" >
 
-     <include
-         android:id="@+id/activity_connect_third_part_layout"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:layout_marginLeft="10dip"
-         android:layout_marginRight="10dip"
-         android:layout_marginTop="15dip"
-         layout="@layout/activity_connect_third_part_layout" />
+    <include
+    android:layout_width="fill_parent"
+    android:layout_height="133dp"
+        android:id="@+id/activity_connect_first_part_layout"
+        layout="@layout/activity_connect_first_part_layout" />
 
-     <include 
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="15dip"
-         android:layout_marginLeft="10dip"
-         android:layout_marginRight="10dip"
-         android:id="@+id/activity_connect_fouth_part_layout" 
-         layout="@layout/activity_connect_fouth_part_layout" 
-         
-         />
-     
+    <ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+        
+        android:scrollbars="none" >
+        
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
 
-    
+    android:background="@null">
+    <include
+        android:id="@+id/activity_connect_second_part_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        layout="@layout/activity_connect_second_part_layout" />
 
+    <include
+        android:id="@+id/activity_connect_third_part_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="15dip"
+        layout="@layout/activity_connect_third_part_layout" />
+
+    <include
+        android:id="@+id/activity_connect_fouth_part_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="15dip"
+        layout="@layout/activity_connect_fouth_part_layout" />
+    </LinearLayout>
+</ScrollView>
 </LinearLayout>
