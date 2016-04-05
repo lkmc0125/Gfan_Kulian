@@ -10,7 +10,7 @@
     <FrameLayout
         android:id="@+id/app_deail_header_layout"
         android:layout_width="match_parent"
-        android:layout_height="90dp" >
+        android:layout_height="95dp" >
 
         <RelativeLayout
             android:id="@+id/header_blur_layout"
@@ -29,8 +29,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="15dp"
-                    android:contentDescription="@null"
-                    android:background="@drawable/left_arrow" >
+                    android:background="@drawable/left_arrow"
+                    android:contentDescription="@null" >
                 </ImageView>
             </LinearLayout>
 
@@ -44,6 +44,14 @@
                 android:background="@drawable/tasklisticon" >
             </ImageView>
         </RelativeLayout>
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="78dp"
+            android:background="@drawable/app_logo_shadow" >
+        </ImageView>
 
         <ImageView
             android:id="@+id/app_icon"
@@ -60,13 +68,13 @@
     <FrameLayout
         android:id="@+id/app_detail_app_name"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_below="@id/app_deail_header_layout"
         android:orientation="horizontal" >
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:orientation="vertical" >
 
@@ -74,7 +82,6 @@
                 android:id="@+id/app_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:gravity="center"
                 android:text="app name"
                 android:textColor="#333333"
@@ -221,11 +228,12 @@
                         android:textSize="14sp" />
 
                     <!-- divider -->
+
                     <View
                         android:id="@+id/intro_divider"
-                        android:layout_below="@id/intro_title"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_below="@id/intro_title"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:background="#E8E8E8" >
@@ -238,9 +246,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/intro_divider"
-                        android:layout_marginTop="8dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
                         android:lineSpacingMultiplier="1.7"
                         android:text="应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容。"
                         android:textColor="#595959"
@@ -255,8 +263,8 @@
             android:id="@+id/app_action_layout"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="#ffffff"
-            android:layout_alignParentBottom="true" >
+            android:layout_alignParentBottom="true"
+            android:background="#ffffff" >
 
             <View
                 android:layout_width="match_parent"
@@ -268,9 +276,9 @@
                 android:id="@+id/app_action_iv"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_centerVertical="true"
                 android:background="@color/download_button_background_color"
                 android:contentDescription="@null" />
 

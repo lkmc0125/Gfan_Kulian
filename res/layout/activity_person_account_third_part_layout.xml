@@ -135,7 +135,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_marginLeft="10dip"
-            android:background="@drawable/app_icon"
+            android:background="@drawable/feedback_icon"
             android:contentDescription="@null"
             android:textColor="#00ffff" />
 
@@ -169,7 +169,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_marginLeft="10dip"
-            android:background="@drawable/logout_icon"
+            android:background="@drawable/login_icon"
             android:contentDescription="@null"
             android:textColor="#00ffff" />
 
