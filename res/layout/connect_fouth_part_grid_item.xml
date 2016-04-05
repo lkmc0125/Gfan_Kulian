@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
     android:layout_height="100dip"
-    android:background="@null">
+    android:background="@null" xmlns:app="http://schemas.android.com/apk/res/com.xiaohong.kulian">
 
     <RelativeLayout
         android:background="@null"
@@ -9,17 +9,21 @@
         android:layout_height="wrap_content"
         >
 	    <!-- 应用icon -->
-	    <ImageView android:id="@+id/iconnection_recommend_task_logo" 
+	    <com.xiaohong.kulian.common.widget.RoundImageView
+	        android:id="@+id/iconnection_recommend_task_logo" 
 	        android:contentDescription="@null"
-	        android:layout_width="120dp"
-	        android:layout_height="120dp"
+	        android:layout_width="60dp"
+	        android:layout_height="60dp"
 	        android:layout_centerVertical="true"
 	        android:layout_marginRight="10dp"
 	        android:layout_marginLeft="15dp"
 	        style="@style/personal_account_icon"
 	        android:layout_alignParentLeft="true"
 	        android:src="@drawable/loading_icon"
-	        android:scaleType="fitCenter"/>
+	        android:scaleType="fitCenter"
+	        app:type="round"
+	        app:borderRadius="5dip"
+	        />
 	
 	    <!-- 任务的名称 -->
 	    <TextView android:id="@+id/connection_recommend_task_name_text"

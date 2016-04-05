@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,34 +25,67 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.R.layout;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.AppListBean;
-import com.xiaohong.kulian.common.MarketAPI;
+import com.xiaohong.kulian.bean.TaskBean;
+import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
-import com.xiaohong.kulian.common.util.TopBar;
+import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.util.WifiAdmin;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
 import com.xiaohong.kulian.common.widget.BaseActivity;
+import com.xiaohong.kulian.common.widget.RoundImageView;
 
 public class ConnectionActivity extends BaseActivity implements ApiRequestListener, OnClickListener {
     private static final String TAG = "ConnectionActivity"; 
-    private Button mAuthBtn;
+//    private Button mAuthBtn;
     private WifiAuthentication mAuth;
     private WifiAdmin mWifiAdmin;
-    private TextView mWifiStatusDesc;
-    private ImageView mWifiStatusIcon;
+//    private TextView mWifiStatusDesc;
+//    private ImageView mWifiStatusIcon;
     private Integer mLoginRetryCount;
     private String mCurrentSSID;
     private Session mSession;
     private MyBroadcastReceiver mConnectionReceiver;
+    /**
+     * 连接状态页面
+     */
+    private RelativeLayout layoutSuccess,layoutSearch;
+    private Button mAuthBtn;
+    private TextView mWifiStatusDesc;
+    private ImageView mWifiStatusIcon;
+    /**
+     * 签到界面
+     */
+    private RelativeLayout layoutSignIn;
+    private RelativeLayout layoutBuyCoin;
+    private static final int REQUEST_CODE = 20;
+    /**
+     * 推荐应用界面
+     */
     private GridView mGridView;
+    private ConnectionAppGridAdapter connectionAppGridAdapter;
+    private TextView textViewAllApp;
+    /**
+     * 任务界面
+     */
+    private RoundImageView imageViewTaskImg;
+    private TextView textViewTaskName;
+    private TextView textViewTaskDsb;
+    private TextView textViewTaskCoin;
+    private TextView textViewTaskCheck;
+    private String TaskImgUrl,TaskName,TaskDsb,TaskCoin;
+    private TextView textViewAllTask;
+    private TaskBean taskBean;
     private class MyBroadcastReceiver extends BroadcastReceiver {  
         @Override  
         public void onReceive(Context context, Intent intent) {  
@@ -78,29 +109,60 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
 //        setContentView(R.layout.activity_connection);
 //        initTopBar();
 //        mLoginRetryCount = 0;
-//        mAuth = new WifiAuthentication();
-//        mSession = Session.get(getApplicationContext());
-//        mConnectionStatus = ConnectionStatus.DISCONNECTED;
-//        mWifiStatusDesc = (TextView)findViewById(R.id.wifi_status_desc);
-//        mWifiStatusIcon = (ImageView)findViewById(R.id.wifi_status_icon);
-//        mAuthBtn = (Button) findViewById(R.id.authenticationBtn);
-//        mAuthBtn.setVisibility(View.INVISIBLE);
-//        mAuthBtn.setOnClickListener(this);
-//        registerConnection();
-//
-//        new Handler().postDelayed(new Runnable() {  
-//            public void run() {
-//                mWifiAdmin = new WifiAdmin(getApplicationContext());
-//                boolean open = mWifiAdmin.openWifi();
-//                Log.i(TAG, "wifi open:" + open);
-//                mWifiAdmin.startScan();
-////                checkWifiConnection();
-//            }
-//        }, 500);
+        mAuth = new WifiAuthentication();
+        mSession = Session.get(getApplicationContext());
+        mConnectionStatus = ConnectionStatus.DISCONNECTED;
+        /*mWifiStatusDesc = (TextView)findViewById(R.id.wifi_status_desc);
+        mWifiStatusIcon = (ImageView)findViewById(R.id.wifi_status_icon);
+        mAuthBtn = (Button) findViewById(R.id.authenticationBtn);
+        mAuthBtn.setVisibility(View.INVISIBLE);
+        mAuthBtn.setOnClickListener(this);*/
+        registerConnection();
+
+        new Handler().postDelayed(new Runnable() {  
+            public void run() {
+                mWifiAdmin = new WifiAdmin(getApplicationContext());
+                boolean open = mWifiAdmin.openWifi();
+                Log.i(TAG, "wifi open:" + open);
+                mWifiAdmin.startScan();
+//                checkWifiConnection();
+            }
+        }, 500);
     }
 
     private void initView() {
+        /**
+         * 连接界面
+         */
+        layoutSuccess=(RelativeLayout)findViewById(R.id.connect_link_status_layout);
+        layoutSearch=(RelativeLayout)findViewById(R.id.connect_search_status_layout);
+        mAuthBtn=(Button)findViewById(R.id.connection_current_link_wifi_button);
+        mWifiStatusDesc=(TextView)findViewById(R.id.connection_link_status_value_text);
+        mWifiStatusIcon=(ImageView)findViewById(R.id.wifi_icon_success_status);
+        /**
+         * 签到界面
+         */
+        layoutSignIn=(RelativeLayout)findViewById(R.id.person_account_sign_in_layout);
+        layoutSignIn.setOnClickListener(this);
+        layoutBuyCoin=(RelativeLayout)findViewById(R.id.person_account_pay_gold_coins_layout);
+        layoutBuyCoin.setOnClickListener(this);
+        /**
+         * 推荐应用界面
+         */
         mGridView = (GridView)findViewById(R.id.connect_recommend_app_gridView_layout);
+        textViewAllApp=(TextView)findViewById(R.id.connection_recommend_all_app_text);
+        textViewAllApp.setOnClickListener(this);
+        /**
+         * 任务界面
+         */
+        imageViewTaskImg=(RoundImageView)findViewById(R.id.iconnection_recommend_task_logo);
+        textViewTaskName=(TextView)findViewById(R.id.connection_recommend_task_name_text);
+        textViewTaskDsb=(TextView)findViewById(R.id.tv_description);
+        textViewTaskCoin=(TextView)findViewById(R.id.connection_recommend_task_coin_text);
+        textViewTaskCheck=(TextView)findViewById(R.id.tv_action);
+        textViewTaskCheck.setOnClickListener(this);
+        textViewAllTask=(TextView)findViewById(R.id.connection_recommend_all_task_text);
+        textViewAllTask.setOnClickListener(this);
     }
     
     private void checkNetwork() {
@@ -108,6 +170,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         if (null == Utils.httpGet(url)) { // 网络不通
             Log.d(TAG, "network not availabel");
             mAuthBtn.setVisibility(View.VISIBLE);
+            layoutSuccess.setVisibility(View.GONE);
+            layoutSearch.setVisibility(View.VISIBLE);
             new Handler().postDelayed(new Runnable() {  
                 public void run() {
                     checkNetwork();
@@ -116,6 +180,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         } else {
             Log.d(TAG, "network OK！");
             mAuthBtn.setVisibility(View.INVISIBLE);
+            layoutSuccess.setVisibility(View.VISIBLE);
+            layoutSearch.setVisibility(View.GONE);
             if (mConnectionStatus == ConnectionStatus.HONGWIFI) {
                 mConnectionStatus = ConnectionStatus.HONGWIFI_AUTHED;
                 // reportAuthenSuccess
@@ -289,6 +355,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
 
     private void queryAppList() {
         MarketAPI.getAppList(getApplicationContext(), this, 1, Constants.CATEGORY_RCMD);
+        MarketAPI.getTaskList(getApplicationContext(), this);
     }
 
     @SuppressWarnings("unchecked")
@@ -346,7 +413,9 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                     }
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("logo_url", bean.getAppLogo());
+                    System.out.println("bean.getAppLogo()"+bean.getAppLogo());
                     map.put("name", bean.getAppName());
+                    map.put("GiveCoin", "+"+bean.getGiveCoin());
                     data_list.add(map);
                     if (data_list.size() >= 3) {
                         break;
@@ -356,6 +425,32 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             }
             break;
         }
+        case MarketAPI.ACTION_GET_TASK_LIST:
+            TaskListBean result = (TaskListBean) obj;
+            if(result.getTasklist() != null) {
+                Log.d(TAG, "size = " + result.getTasklist().size());
+                TaskBean bean = new TaskBean();
+                /*bean.setType(TaskBean.ITEM_TYPE_TITLE);
+                bean.setTitle(getResources().getString(R.string.title_task_todo));
+                for(TaskBean item : result.getTasklist()) {
+                    //set remain num to 1 for normal task
+                    item.setRemain_tasknum(1);
+                    item.setTaskType(TaskListAdapter.TYPE_NORMAL_TASK);
+                }
+                result.getTasklist().add(0, bean);*/
+                bean=result.getTasklist().get(0);
+                taskBean=bean;
+                TaskImgUrl=bean.getLogo_url();
+                System.out.println("TaskImgUrl"+TaskImgUrl);
+                TaskName=bean.getName();
+                TaskDsb=bean.getDesc();
+                TaskCoin="+"+String.valueOf(bean.getCoin_num());
+                updateTaskLayout();
+                
+            }else {
+                Log.d(TAG, "no data from server");
+            }
+            break;
         default:
             break;
         }
@@ -367,6 +462,10 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         // todo: need a adapter show get image from network and show it in imageview
         SimpleAdapter sim_adapter = new SimpleAdapter(this, data_list, R.layout.connect_third_part_grid_item, from, to);
         mGridView.setAdapter(sim_adapter);
+        connectionAppGridAdapter=new ConnectionAppGridAdapter(this, data_list);
+        mGridView.setAdapter(connectionAppGridAdapter);
+//        gridView_main_push.setOnItemClickListener(new main_push_OnItemClick());
+//        gridView_main_push.setSelector(R.drawable.listview_press);
     }
 
     @Override
@@ -424,8 +523,59 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             }
             break;
         }
+        case R.id.connection_recommend_all_app_text:
+            Intent gameIntent = new Intent(getApplicationContext(),
+                    ProductListActivity.class);
+            gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
+            gameIntent.putExtra(Constants.EXTRA_MAX_ITEMS, 100);
+            startActivity(gameIntent);
+            break;
+        case R.id.connection_recommend_all_task_text:
+            Intent growIntent = new Intent(getApplicationContext(),
+                    TaskListActivity.class);
+            growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);
+            growIntent.putExtra(Constants.EXTRA_MAX_ITEMS, 100);
+            startActivity(growIntent);
+            break;
+        case R.id.tv_action:
+            Intent intent = new Intent(getApplicationContext(), GzhTaskDetailActivity.class);
+            intent.putExtra(Constants.EXTRA_TASK_BEAN, taskBean);
+            startActivity(intent);
+        case R.id.person_account_sign_in_layout:
+            if (!mSession.isLogin()) {
+                if (!autoLogin()) {
+                    Intent intent_next = new Intent(getApplicationContext(), RegisterActivity.class);
+                    startActivityForResult(intent_next, REQUEST_CODE);
+                }
+            } else {
+                MarketAPI.signIn(getApplicationContext(), this);
+            }
+            break;
+        case R.id.person_account_pay_gold_coins_layout:
+            Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
+            startActivity(PayIntent);
+            break;
         default:
             break;
         }
+    }
+    
+    private boolean autoLogin() {
+        if (mSession.getUserName() != null && mSession.getUserName().length() > 0 && mSession.getPassword() != null
+                && mSession.getPassword().length() > 0) {
+            MarketAPI.login(getApplicationContext(), this, mSession.getUserName(), mSession.getPassword());
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /**
+     * 更新推荐任务界面
+     */
+    public void updateTaskLayout(){
+        ImageLoader.getInstance().displayImage(TaskImgUrl, imageViewTaskImg);
+        textViewTaskName.setText(TaskName);
+        textViewTaskDsb.setText(TaskDsb);
+        textViewTaskCoin.setText(TaskCoin);
     }
 }

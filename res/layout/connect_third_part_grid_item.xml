@@ -12,13 +12,15 @@
         android:layout_height="wrap_content"
         android:background="@null" >
 
-        <ImageView
+        <com.xiaohong.kulian.common.widget.RoundImageView
             android:id="@+id/connection_recommend_app_image"
             android:layout_width="60dip"
             android:layout_height="60dip"
             android:layout_marginTop="15dip"
             android:layout_centerHorizontal="true"
             android:background="@null"
+            app:type="round"
+            app:borderRadius="5dip"
             android:contentDescription="@null" />
 
         <TextView
