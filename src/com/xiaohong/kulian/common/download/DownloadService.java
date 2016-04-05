@@ -70,6 +70,8 @@ public class DownloadService extends Service {
      * provider.
      */
     private boolean mPendingUpdate;
+    
+    private Handler mUiHandler;
 
     /**
      * Receives notifications when the data in the content provider changes
@@ -107,6 +109,7 @@ public class DownloadService extends Service {
     public void onCreate() {
         super.onCreate();
         Utils.D("Service onCreate");
+        mUiHandler = new Handler();
 
         mObserver = new DownloadManagerContentObserver();
         getContentResolver().registerContentObserver(DownloadManager.Impl.CONTENT_URI,
@@ -222,7 +225,16 @@ public class DownloadService extends Service {
                 for (Long id : idsNoLongerInDatabase) {
                     deleteDownload(id);
                 }
-                mNotifier.updateNotification(mDownloads.values());
+                //Fix crash
+                mUiHandler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        mNotifier.updateNotification(mDownloads.values());
+                    }
+                    
+                });
+                //mNotifier.updateNotification(mDownloads.values());
 
                 // look for all rows with deleted flag set and delete the rows from the database
                 // permanently
