@@ -89,9 +89,9 @@ public class AppDetailActivity extends Activity
     private TextView mAppCoinNumTv;
     private TextView mAppDescView;
 
-    private FrameLayout mAppActionLayout;
+    private RelativeLayout mAppActionLayout;
     private ImageView mAppActionIv;
-    private LinearLayout mRootLayout;
+    private RelativeLayout mRootLayout;
 
     private ArrayList<ImageView> mAppPicViews = new ArrayList<ImageView>();
 
@@ -125,7 +125,7 @@ public class AppDetailActivity extends Activity
     private void initViews() {
         mAppIconView = (ImageView) findViewById(R.id.app_icon);
         mAppIconView.setBackground(null);
-        mHeaderViewLayout = (RelativeLayout) findViewById(R.id.app_deail_header_layout);
+        mHeaderViewLayout = (RelativeLayout) findViewById(R.id.header_blur_layout);
         mBackImageView = (LinearLayout) findViewById(R.id.back_layout);
         mAppNameTv = (TextView) findViewById(R.id.app_name_tv);
         mAppVersionTv = (TextView) findViewById(R.id.app_version_tv);
@@ -138,10 +138,10 @@ public class AppDetailActivity extends Activity
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic5));
         mAppActionView = (TextView) findViewById(R.id.app_action_tv);
 
-        mAppActionLayout = (FrameLayout) findViewById(R.id.app_action_layout);
+        mAppActionLayout = (RelativeLayout) findViewById(R.id.app_action_layout);
         mAppActionIv = (ImageView) findViewById(R.id.app_action_iv);
         
-        mRootLayout = (LinearLayout) findViewById(R.id.app_detail_root_layout);
+        mRootLayout = (RelativeLayout) findViewById(R.id.app_detail_root_layout);
         mRootLayout.setVisibility(View.INVISIBLE);
 
         mAppActionView.setOnClickListener(this);

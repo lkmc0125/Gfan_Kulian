@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/app_detail_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/app_detail_root_layout"
     android:orientation="vertical" >
 
+    <!-- header -->
+
     <FrameLayout
+        android:id="@+id/app_deail_header_layout"
         android:layout_width="match_parent"
         android:layout_height="90dp" >
 
         <RelativeLayout
-            android:id="@+id/app_deail_header_layout"
+            android:id="@+id/header_blur_layout"
             android:layout_width="match_parent"
             android:layout_height="70dp" >
 
             <LinearLayout
                 android:id="@+id/back_layout"
-                android:layout_width="85dp"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true" >
@@ -24,8 +27,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:contentDescription="@null"
                     android:background="@drawable/left_arrow" >
                 </ImageView>
             </LinearLayout>
@@ -43,16 +47,21 @@
 
         <ImageView
             android:id="@+id/app_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
             android:background="@drawable/app_icon" >
         </ImageView>
     </FrameLayout>
 
+    <!-- app name version -->
+
     <FrameLayout
+        android:id="@+id/app_detail_app_name"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/app_deail_header_layout"
         android:orientation="horizontal" >
 
         <LinearLayout
@@ -67,7 +76,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="app name" />
+                android:text="app name"
+                android:textColor="#333333"
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/app_version_tv"
@@ -75,7 +86,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="app version" />
+                android:text="app version"
+                android:textColor="#A5A5A5"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,112 +96,198 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:orientation="horizontal" >
-        <TextView
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/gray_1" />
 
-        <TextView
-            android:id="@+id/app_coin_num_tv"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:drawableEnd="@drawable/goldcoin_right"
-            android:drawablePadding="5dp"
-            android:gravity="right|center"
-            android:paddingRight="5dp"
-            android:text="+600"
-            android:textColor="@color/app_coin_num_color" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="#E8E8E8" />
+
+            <TextView
+                android:id="@+id/app_coin_num_tv"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:drawableEnd="@drawable/goldcoin_right"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:paddingRight="5dp"
+                android:text="+600"
+                android:textColor="@color/app_coin_num_color" />
         </LinearLayout>
     </FrameLayout>
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView1"
-        android:layout_width="match_parent"
+    <!-- images ,text view, download button -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp" >
+        android:layout_below="@id/app_detail_app_name" >
 
-        <LinearLayout
+        <!-- images and text view -->
+
+        <ScrollView
+            android:id="@+id/verticalScrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/app_action_layout"
+            android:background="@color/app_task_background_color"
+            android:scrollbars="none" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <!-- images scroller -->
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+                    android:scrollbars="none" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:id="@+id/app_desc_pic1"
+                            android:layout_width="143dp"
+                            android:layout_height="215dp"
+                            android:layout_marginRight="5dp"
+                            android:contentDescription="@null"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/app_icon" />
+
+                        <ImageView
+                            android:id="@+id/app_desc_pic2"
+                            android:layout_width="143dp"
+                            android:layout_height="215dp"
+                            android:layout_marginRight="5dp"
+                            android:contentDescription="@null"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/app_icon" />
+
+                        <ImageView
+                            android:id="@+id/app_desc_pic3"
+                            android:layout_width="143dp"
+                            android:layout_height="215dp"
+                            android:layout_marginRight="5dp"
+                            android:contentDescription="@null"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/app_icon" />
+
+                        <ImageView
+                            android:id="@+id/app_desc_pic4"
+                            android:layout_width="143dp"
+                            android:layout_height="215dp"
+                            android:layout_marginRight="5dp"
+                            android:contentDescription="@null"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/app_icon" />
+
+                        <ImageView
+                            android:id="@+id/app_desc_pic5"
+                            android:layout_width="143dp"
+                            android:layout_height="215dp"
+                            android:layout_marginRight="5dp"
+                            android:contentDescription="@null"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/app_icon" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/horizontalScrollView1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#ffffff"
+                    android:padding="8dp" >
+
+                    <!-- app introduce title -->
+
+                    <TextView
+                        android:id="@+id/intro_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="8dp"
+                        android:text="应用介绍"
+                        android:textColor="#333333"
+                        android:textSize="14sp" />
+
+                    <!-- divider -->
+                    <View
+                        android:id="@+id/intro_divider"
+                        android:layout_below="@id/intro_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="#E8E8E8" >
+                    </View>
+
+                    <!-- app introduce text -->
+
+                    <TextView
+                        android:id="@+id/app_desc_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/intro_divider"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:lineSpacingMultiplier="1.7"
+                        android:text="应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容。"
+                        android:textColor="#595959"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </ScrollView>
+
+        <!-- download button -->
+
+        <RelativeLayout
+            android:id="@+id/app_action_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E8E8E8" >
+            </View>
 
             <ImageView
-                android:id="@+id/app_desc_pic1"
-                android:layout_width="180dp"
-                android:layout_height="250dp"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/app_icon" />
+                android:id="@+id/app_action_iv"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/download_button_background_color"
+                android:contentDescription="@null" />
 
-            <ImageView
-                android:id="@+id/app_desc_pic2"
-                android:layout_width="180dp"
-                android:layout_height="250dp"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/app_icon" />
+            <TextView
+                android:id="@+id/app_action_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@null"
+                android:gravity="center"
+                android:text="下载安装赚金币(50MB)"
+                android:textColor="#ffffff" />
+        </RelativeLayout>
+    </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/app_desc_pic3"
-                android:layout_width="180dp"
-                android:layout_height="250dp"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/app_icon" />
-
-            <ImageView
-                android:id="@+id/app_desc_pic4"
-                android:layout_width="180dp"
-                android:layout_height="250dp"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/app_icon" />
-
-            <ImageView
-                android:id="@+id/app_desc_pic5"
-                android:layout_width="180dp"
-                android:layout_height="250dp"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/app_icon" />
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginLeft="8dp"
-        android:text="应用介绍" />
-
-    <TextView
-        android:layout_weight="1"
-        android:id="@+id/app_desc_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp" />
-
-    <FrameLayout 
-        android:id="@+id/app_action_layout"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="8dp">
-        <ImageView 
-            android:id="@+id/app_action_iv"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/download_button_background_color"/>
-        <TextView
-        android:id="@+id/app_action_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@null"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:text="下载安装赚金币(50MB)"
-        android:textColor="#ffffff" />
-        
-    </FrameLayout>
-    
-
-</LinearLayout>
+</RelativeLayout>
