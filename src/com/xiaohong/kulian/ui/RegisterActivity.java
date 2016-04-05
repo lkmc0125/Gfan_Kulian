@@ -34,6 +34,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
@@ -162,11 +163,6 @@ public class RegisterActivity extends BaseActivity
     }
 
     private void initView() {
-        // top bar
-        TopBar.createTopBar(this, 
-                new View[] { findViewById(R.id.top_bar_title) },
-                new int[] { View.VISIBLE }, 
-                getString(R.string.register));
 
         etUsername = (EditText) findViewById(R.id.et_username);
         String userName = TextUtils.isEmpty(mSession.getUserName()) ? "" : mSession.getUserName();
@@ -370,14 +366,14 @@ public class RegisterActivity extends BaseActivity
     private boolean checkUserName() {
         String input = etUsername.getText().toString();
         if (TextUtils.isEmpty(input)) {
-            etUsername.setError(getString(R.string.error_username_empty));
+            etUsername.setError(getDisplayText(R.string.error_username_empty));
             return false;
         } else {
             etUsername.setError(null);
         }
         int length = input.length();
         if (length != 11) {
-            etUsername.setError(getString(R.string.error_username_length_invalid));
+            etUsername.setError(getDisplayText(R.string.error_username_length_invalid));
             return false;
         } else {
             etUsername.setError(null);
@@ -393,14 +389,14 @@ public class RegisterActivity extends BaseActivity
     private boolean checkVerifyCode(EditText input) {
         String verifyCode = input.getText().toString();
         if (TextUtils.isEmpty(verifyCode)) {
-            input.setError(getString(R.string.error_verifycode_empty));
+            input.setError(getDisplayText(R.string.error_verifycode_empty));
             return false;
         } else {
             input.setError(null);
         }
         int length = verifyCode.length();
         if (length != 4) {
-            input.setError(getString(R.string.error_verifycode_length_invalid));
+            input.setError(getDisplayText(R.string.error_verifycode_length_invalid));
             return false;
         } else {
             input.setError(null);
@@ -408,7 +404,9 @@ public class RegisterActivity extends BaseActivity
         // todo: must be pure number
         return true;
     }
-    
+    private CharSequence getDisplayText(int resId) {
+        return Html.fromHtml("<font color='#2C78D4'>"+getString(resId)+"</font>");
+    }
     /*
      * 检查邀请码合法性
      * 6位数字
@@ -420,7 +418,7 @@ public class RegisterActivity extends BaseActivity
         }
         int length = inviteCode.length();
         if (length != 6) {
-            input.setError(getString(R.string.error_invitecode_length_invalid));
+            input.setError(getDisplayText(R.string.error_invitecode_length_invalid));
             return false;
         } else {
             input.setError(null);
