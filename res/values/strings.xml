@@ -444,7 +444,7 @@
     <string name="ic_preference">设置</string>
     <string name="ic_exit">退出</string>
     <string name="ic_logout">注销</string>
-    <string name="exit_wifikulian">退出WIFI酷连？</string>
+    <string name="exit_wifikulian">是否退出WIFI酷连？</string>
     <string name="alert_safe">安全保证</string>
 
     <!-- About Activity -->

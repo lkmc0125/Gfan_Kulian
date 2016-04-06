@@ -1,25 +1,29 @@
 package com.xiaohong.kulian.ui;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.TaskBean;
+import com.xiaohong.kulian.common.util.CustomDialog;
 
 public class GzhTaskDetailActivity extends Activity implements OnClickListener {
     private static final String TAG = "GzhTaskDetailActivity";
     private TaskBean mTaskBean;
 
-    private LinearLayout mBackLayout;
-
+    private ImageButton mBackBtn;
+    private TextView mCopyBtn;
     private TextView mTaskNameTv;
     private TextView mTaskWeixinTv;
     private TextView mTaskCoinNumTv;
@@ -40,7 +44,6 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
         mTaskNameTv.setText(getTaskName());
         mTaskWeixinTv = (TextView) findViewById(R.id.task_weixin_id_tv);
         mTaskWeixinTv.setText(mTaskBean.getWeixin_id());
-        mTaskWeixinTv.setTextColor(Color.GREEN);
         mTaskCoinNumTv = (TextView) findViewById(R.id.task_coin_num_tv);
         mTaskCoinNumTv.setText("+" + mTaskBean.getCoin_num());
         mTaskGuide1Tv = (TextView) findViewById(R.id.task_guide_1_tv);
@@ -49,9 +52,10 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
         mTaskGuide2Tv = (TextView) findViewById(R.id.task_guide_2_tv);
         mTaskGuide2Tv.setText(Html.fromHtml(getResources().getString(
                 R.string.task_guide_2)));
-        mBackLayout = (LinearLayout) findViewById(R.id.back_layout);
-        mBackLayout.setOnClickListener(this);
-
+        mBackBtn = (ImageButton) findViewById(R.id.back_btn);
+        mBackBtn.setOnClickListener(this);
+        mCopyBtn = (TextView) findViewById(R.id.task_copy_tv);
+        mCopyBtn.setOnClickListener(this);
     }
 
     @Override
@@ -64,14 +68,28 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.back_layout :
+            case R.id.back_btn :
                 finish();
+                break;
+            case R.id.task_copy_tv:
+                copyWeixinId();
                 break;
             default :
                 break;
-
         }
+    }
 
+    private void copyWeixinId() {
+        Log.d(TAG, "copy to clipboard");
+        ClipboardManager cbm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        cbm.setPrimaryClip(ClipData.newPlainText(null, mTaskBean.getWeixin_id()));
+        CustomDialog dialog = new CustomDialog.Builder(this).setMessage("公众号已复制到剪贴板")
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        dialog.show();
     }
 
     private String getTaskName() {

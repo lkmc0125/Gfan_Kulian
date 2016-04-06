@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/task_deail_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null" >
+
+        <!-- header bg -->
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/gzh_task_detail_header_bg" />
+
+        <!-- back button -->
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="30dip"
+            android:layout_height="20dip"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="15dip"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:gravity="left"
+            android:src="@drawable/left_arrow" />
+
+        <!-- right up corner icon -->
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/tasklisticon"
+            android:contentDescription="@null" />
+    </RelativeLayout>
+
+    <!-- logo -->
+
+    <ImageView
+        android:id="@+id/gzh_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-30dp"
+        android:layout_below="@id/task_deail_header_layout"
+        android:background="@drawable/wechat"
+        android:contentDescription="@null" >
+    </ImageView>
+
+    <!-- name -->
+
+    <TextView
+        android:id="@+id/task_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/gzh_icon"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/gzh_icon"
+        android:text="gzh name"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+    <!-- desc and coin -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@id/gzh_icon"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/gzh_icon"
+        android:gravity="bottom"
+        android:orientation="horizontal" >
+
+        <!-- desc -->
+
+        <TextView
+            android:id="@+id/task_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="3dp"
+            android:drawableStart="@drawable/wechat_circle_icon"
+            android:gravity="left|center"
+            android:text="讲述老板姓自己的故事"
+            android:textColor="#A5A5A5"
+            android:textSize="12sp" />
+
+        <!-- divider -->
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_toLeftOf="@+id/task_coin_num_tv"
+            android:background="#E8E8E8" />
+
+        <!-- coin -->
+
+        <TextView
+            android:id="@+id/task_coin_num_tv"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:drawableEnd="@drawable/goldcoin_right"
+            android:drawablePadding="5dp"
+            android:gravity="right|center"
+            android:paddingRight="10dp"
+            android:text="+600"
+            android:textColor="@color/app_coin_num_color" />
+    </RelativeLayout>
+
+</RelativeLayout>

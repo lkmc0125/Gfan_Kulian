@@ -153,7 +153,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             TaskBean item = list.get(position);
             String clickUrl = item.getClick_url();
             if(clickUrl != null && !clickUrl.equals("")) {
-                openWebView(clickUrl, item.getTitle());
+                openWebView(clickUrl, item.getName());
             }else {
                 Log.w(TAG, "no click url");
                 Intent intent = new Intent(TaskListActivity.this, GzhTaskDetailActivity.class);

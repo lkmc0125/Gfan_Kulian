@@ -510,22 +510,17 @@ public class HomeTabActivity extends BaseTabActivity implements
         switch (id) {
         case DIALOG_EXIT:
             return new CustomDialog.Builder(this)
-                    .setTitle(getString(R.string.exit_wifikulian))
+                    .setMessage(getString(R.string.exit_wifikulian))
                     .setPositiveButton(R.string.yes,
                             new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                        int whichButton) {
+                                public void onClick(DialogInterface dialog, int whichButton) {
                                     exit();
                                 }
                             })
                     .setNegativeButton(R.string.no,
                             new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                        int whichButton) {
-                                    try {
-                                        HomeTabActivity.this.dismissDialog(id);
-                                    } catch (IllegalArgumentException e) {
-                                    }
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.dismiss();
                                 }
                             }).create();
 
@@ -540,8 +535,7 @@ public class HomeTabActivity extends BaseTabActivity implements
                                     + optUpdateDesc)
                     .setPositiveButton(R.string.btn_yes,
                             new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                        int whichButton) {
+                                public void onClick(DialogInterface dialog, int whichButton) {
                                     if (checkDownload()) {
                                         sendBroadcast(new Intent(
                                                 Constants.BROADCAST_FORCE_EXIT));
@@ -554,8 +548,7 @@ public class HomeTabActivity extends BaseTabActivity implements
                             })
                     .setNegativeButton(R.string.btn_next_time,
                             new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                        int whichButton) {
+                                public void onClick(DialogInterface dialog, int whichButton) {
                                     sendBroadcast(new Intent(
                                             Constants.BROADCAST_REMIND_LATTER));
                                     removeDialog(id);

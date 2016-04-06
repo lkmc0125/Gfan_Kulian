@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_task_background_color"
+    android:orientation="vertical" >
+
+    <!-- line -->
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:contentDescription="@null"
+        android:src="@drawable/task_detail_line" />
+
+    <!-- steps -->
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/line" >
+
+        <!-- step 1 -->
+
+        <LinearLayout
+            android:id="@+id/step1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="一.关注公众号" />
+
+            <!-- divider -->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="#E8E8E8" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="进入微信关注公众号"
+                android:textColor="#595959"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="微信公众号："
+                    android:textColor="#A5A5A5"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/task_weixin_id_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="wifikulian"
+                    android:textColor="#0BB615"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/task_copy_tv"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:background="#2C78D4"
+                android:gravity="center"
+                android:text="复制"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- step 2 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/step1"
+            android:layout_margin="10dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="二.任务指引" />
+
+            <!-- divider -->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="#E8E8E8" />
+
+            <!-- the text will be changed in java code from html format -->
+
+            <TextView
+                android:id="@+id/task_guide_1_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/task_guide_1"
+                android:textColor="#595959"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/task_guide_2_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/task_guide_2"
+                android:textColor="#595959"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
