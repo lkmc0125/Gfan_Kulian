@@ -421,7 +421,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         {
             AppListBean appList = (AppListBean) obj;
             ArrayList<AppBean> list = appList.getApplist();
-            appBeans=list;
+            appBeans = new ArrayList<AppBean>();
             if (list.size() > 0) {
                 List<Map<String, Object>> data_list = new ArrayList<Map<String, Object>>();
                 for (AppBean bean : list) {
@@ -435,6 +435,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                     map.put("name", bean.getAppName());
                     map.put("GiveCoin", "+"+bean.getGiveCoin());
                     data_list.add(map);
+                    appBeans.add(bean);
                     if (data_list.size() >= 3) {
                         break;
                     }
@@ -475,16 +476,9 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     }
 
     private void showAppData(List<Map<String, Object>> data_list) {
-        /*String [] from ={"logo_url", "name"};
-        int [] to = {R.id.connection_recommend_app_image, R.id.connection_recommend_app_name_hint_text};
-        // todo: need a adapter show get image from network and show it in imageview
-        SimpleAdapter sim_adapter = new SimpleAdapter(this, data_list, R.layout.connect_third_part_grid_item, from, to);
-        mGridView.setAdapter(sim_adapter);*/
-        connectionAppGridAdapter=new ConnectionAppGridAdapter(this, data_list);
+        connectionAppGridAdapter = new ConnectionAppGridAdapter(this, data_list);
         mGridView.setAdapter(connectionAppGridAdapter);
         mGridView.setOnItemClickListener(new ConnectAppOnItemClick());
-//        gridView_main_push.setOnItemClickListener(new main_push_OnItemClick());
-//        gridView_main_push.setSelector(R.drawable.listview_press);
     }
 
     @Override
@@ -557,9 +551,19 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             startActivity(growIntent);
             break;
         case R.id.tv_action:
-            Intent intent = new Intent(getApplicationContext(), GzhTaskDetailActivity.class);
-            intent.putExtra(Constants.EXTRA_TASK_BEAN, taskBean);
-            startActivity(intent);
+            String clickUrl = taskBean.getClick_url();
+            if (clickUrl != null && !clickUrl.equals("")) {
+                Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
+                detailIntent.putExtra("extra.url", clickUrl);
+                detailIntent.putExtra("extra.title", taskBean.getName());
+                startActivity(detailIntent);
+            } else {
+                Log.w(TAG, "no click url");
+                Intent intent = new Intent(getApplicationContext(), GzhTaskDetailActivity.class);
+                intent.putExtra(Constants.EXTRA_TASK_BEAN, taskBean);
+                startActivity(intent);
+            }
+            break;
         case R.id.person_account_sign_in_layout:
             if (!mSession.isLogin()) {
                 if (!autoLogin()) {

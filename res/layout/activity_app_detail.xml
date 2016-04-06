@@ -114,7 +114,7 @@
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
                 android:drawableEnd="@drawable/goldcoin_right"
-                android:drawablePadding="5dp"
+                android:drawablePadding="3dp"
                 android:gravity="center"
                 android:paddingRight="5dp"
                 android:text="+600"

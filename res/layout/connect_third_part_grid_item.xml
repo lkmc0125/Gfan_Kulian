@@ -50,18 +50,11 @@
                 android:layout_marginTop="8dip"
                 android:gravity="center"
                 android:drawableEnd="@drawable/goldcoin_small"
+                android:drawablePadding="3dp"        
                 android:text="@string/connection_recommend_app_coin_hint"
                 android:textColor="#ff4c00"
                 android:textSize="16sp" />
 
-            <!-- <ImageView
-                android:id="@+id/connection_recommend_app_coin_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_toRightOf="@+id/connection_recommend_app_coin_text"
-                android:background="@drawable/goldcoin_small"
-                android:contentDescription="@null" /> -->
         </RelativeLayout>
     </RelativeLayout>
 
