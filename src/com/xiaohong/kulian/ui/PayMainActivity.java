@@ -19,15 +19,19 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.bean.GoodsListBean;
+import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
-public class PayMainActivity extends BaseActivity implements OnClickListener {
+public class PayMainActivity extends BaseActivity implements OnClickListener, ApiRequestListener {
     private IWXAPI mWxApi;
     private static final String TAG = "PayMainActivity";
     private Button mPayBtn;
     private EditText mCoinNumEt;
+    private GoodsListBean mGoodsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,8 @@ public class PayMainActivity extends BaseActivity implements OnClickListener {
         boolean isPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
         Toast.makeText(PayMainActivity.this, String.valueOf(isPaySupported),
                 Toast.LENGTH_SHORT).show();
+        
+        getGoodsList();
     }
 
     void initTopBar() {
@@ -66,6 +72,10 @@ public class PayMainActivity extends BaseActivity implements OnClickListener {
         });
     }
 
+    private void getGoodsList() {
+        MarketAPI.getGoodsList(getApplicationContext(), this);
+    }
+    
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -85,7 +95,7 @@ public class PayMainActivity extends BaseActivity implements OnClickListener {
     }
 
     private void doPay() {
-        final String url = "http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
+        final String url = "http://115.159.76.147:8390/cb/getprepayid?phone_number=13418680969&type=1&goods_id=1";
         Toast.makeText(PayMainActivity.this, "请稍候...", Toast.LENGTH_SHORT)
                 .show();
         new AsyncTask<Void, Void, Void>() {
@@ -153,4 +163,19 @@ public class PayMainActivity extends BaseActivity implements OnClickListener {
 
     }
 
+    @Override
+    public void onSuccess(int method, Object obj) {
+        switch (method) {
+        case MarketAPI.ACTION_GET_GOODS_LIST:
+            mGoodsList = (GoodsListBean)obj;
+            break;
+        default:
+            break;
+        }
+    }
+
+    @Override
+    public void onError(int method, int statusCode) {
+        
+    }
 }

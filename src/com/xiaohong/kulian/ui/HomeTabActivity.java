@@ -168,7 +168,7 @@ public class HomeTabActivity extends BaseTabActivity implements
             String action = intent.getAction();
             if (action.equals(Constants.BROADCAST_FORCE_EXIT)) {
                 // 强制退出
-                // exit();
+                 exit();
             } else if (action.equals(Constants.BROADCAST_REMIND_LATTER)) {
                 // do nothing
             } else if (action.equals(Constants.BROADCAST_DOWNLOAD_OPT)) {
@@ -526,24 +526,22 @@ public class HomeTabActivity extends BaseTabActivity implements
 
         case DIALOG_OPT_UPDATE:
 
-            String optVersionName = mSession.getUpdateVersionName();
             String optUpdateDesc = mSession.getUpdateVersionDesc();
             return new CustomDialog.Builder(this)
                     .setTitle(R.string.find_new_version)
                     .setMessage(
-                            getString(R.string.update_prompt, optVersionName)
-                                    + optUpdateDesc)
+                            getString(R.string.update_prompt) + optUpdateDesc)
                     .setPositiveButton(R.string.btn_yes,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    if (checkDownload()) {
+                                    if (checkDownload()) { // 安装已经下载的apk
                                         sendBroadcast(new Intent(
                                                 Constants.BROADCAST_FORCE_EXIT));
                                     } else {
                                         sendBroadcast(new Intent(
                                                 Constants.BROADCAST_DOWNLOAD_OPT));
                                     }
-                                    removeDialog(id);
+                                    dialog.dismiss();
                                 }
                             })
                     .setNegativeButton(R.string.btn_next_time,
@@ -551,19 +549,17 @@ public class HomeTabActivity extends BaseTabActivity implements
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     sendBroadcast(new Intent(
                                             Constants.BROADCAST_REMIND_LATTER));
-                                    removeDialog(id);
+                                    dialog.dismiss();
                                 }
                             }).create();
 
         case DIALOG_FORCE_UPDATE:
 
-            String forceVersionName = mSession.getUpdateVersionName();
             String forceUpdateDesc = mSession.getUpdateVersionDesc();
             return new CustomDialog.Builder(this)
                     .setTitle(R.string.find_new_version)
                     .setMessage(
-                            getString(R.string.update_prompt_stronger,
-                                    forceVersionName) + forceUpdateDesc)
+                            getString(R.string.update_prompt) + forceUpdateDesc)
                     .setPositiveButton(R.string.btn_yes,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,

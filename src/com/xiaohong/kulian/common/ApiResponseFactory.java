@@ -41,6 +41,7 @@ import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.bean.AppDetailBean;
 import com.xiaohong.kulian.bean.AppListBean;
+import com.xiaohong.kulian.bean.GoodsListBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.codec.binary.Base64;
 import com.xiaohong.kulian.common.util.Crypter;
@@ -106,14 +107,11 @@ public class ApiResponseFactory {
                 requestMethod = "ACTION_LOGIN";
                 result = parseLoginOrRegisterResult(context, inputBody);
                 break;
-                
 
             case MarketAPI.ACTION_GET_PRODUCT_DETAIL:
                 
                 // 获取应用详细
                 requestMethod = "ACTION_GET_PRODUCT_DETAIL";
-                //result = parseProductDetail(context, inputBody);
-                //Log.d("free", "inputBody = " + inputBody);
                 result = gson.fromJson(inputBody, AppDetailBean.class);
                 break;
 
@@ -121,7 +119,6 @@ public class ApiResponseFactory {
             {
                 // 获取app列表
                 requestMethod = "ACTION_GET_APP_LIST";
-                //result = parseProductList(context, inputBody);
                 result = gson.fromJson(inputBody, AppListBean.class);
                 break;
             }
@@ -157,6 +154,11 @@ public class ApiResponseFactory {
             case MarketAPI.ACTION_SIGN_IN:
                 requestMethod = "ACTION_SIGN_IN";
                 result = parseSignIn(context, inputBody);
+                break;
+
+            case MarketAPI.ACTION_GET_GOODS_LIST:
+                requestMethod = "ACTION_GET_GOODS_LIST";
+                result = gson.fromJson(inputBody, GoodsListBean.class);
                 break;
 
             default:
@@ -198,63 +200,6 @@ public class ApiResponseFactory {
             Utils.D("have json exception when parse search result from bbs", e);
         }
 
-        return result;
-    }
-
-    private static HashMap<String, Object> parseProductList(Context context, String body) {
-        if (body == null) {
-            return null;
-        }
-        HashMap<String, Object> result = null;
-        try {
-            JSONObject jsonObj = new JSONObject(body);
-            ArrayList<HashMap<String, Object>> productArray = null;
-            result = new HashMap<String, Object>();
-            // 获取已经安装的应用列表
-            Session session = Session.get(context);
-            ArrayList<String> installedApps = session.getInstalledApps();
-            if (jsonObj.getInt("ret_code") == 0) {
-                productArray = new ArrayList<HashMap<String, Object>>();
-                JSONArray array = jsonObj.getJSONArray("applist");
-
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject obj = array.getJSONObject(i);
-                    HashMap<String, Object> item = new HashMap<String, Object>();
-                    item.put(Constants.KEY_PRODUCT_ID, obj.getString("AppId"));
-                    String packageName = obj.getString("PackageName");
-                    item.put(Constants.KEY_PRODUCT_PACKAGE_NAME, packageName);
-                    item.put(Constants.KEY_PRODUCT_APK_URL, obj.getString("AppSource"));
-                    int price = Utils.getInt(obj.getString("GiveCoin"));
-                    String priceText = price == 0 ? context.getString(R.string.free) : context
-                            .getString(R.string.coin_unit, price);
-                    item.put(Constants.KEY_PRODUCT_PRICE, priceText);
-                    // 忽略星标
-                    item.put(Constants.KEY_PRODUCT_IS_STAR, false);
-                    
-                    if (installedApps.contains(packageName)) {
-                        // 应用已经安装，显示已经安装的信息提示
-                        item.put(Constants.KEY_PRODUCT_DOWNLOAD, Constants.STATUS_INSTALLED);
-                    } else {
-                        // 应用未安装，显示正常信息提示
-                        item.put(Constants.KEY_PRODUCT_DOWNLOAD, Constants.STATUS_NORMAL);
-                    }
-
-                    item.put(Constants.KEY_PRODUCT_NAME, obj.getString("AppName"));
-                    item.put(Constants.KEY_PRODUCT_AUTHOR, "author");
-                    item.put(Constants.KEY_PRODUCT_SUB_CATEGORY, "category");
-                    item.put(Constants.KEY_PRODUCT_PAY_TYPE, 0);
-                    item.put(Constants.KEY_PRODUCT_RATING, 100);
-                    item.put(Constants.KEY_PRODUCT_SIZE, obj.getString("AppSize"));
-                    item.put(Constants.KEY_PRODUCT_ICON_URL, obj.getString("AppLogo"));
-                    item.put(Constants.KEY_PRODUCT_SHORT_DESCRIPTION, obj.getString("BriefSummary"));
-                    productArray.add(item);
-                }
-                result.put(Constants.KEY_PRODUCT_LIST, productArray);
-            }
-            
-        } catch (JSONException e) {
-            Utils.D("have json exception when parse app list", e);
-        }
         return result;
     }
 

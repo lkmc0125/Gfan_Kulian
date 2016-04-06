@@ -432,12 +432,10 @@
 
     <!-- UpdateActivity -->
     <string name="find_new_version">发现新版本</string>
-    <string name="update_prompt">发现新版WIFI酷连，版本号 %s，是否立即安装？\n\n更新列表：\n\n</string>
+    <string name="update_prompt">发现新版本，是否立即安装？\n</string>
     <string name="btn_yes">立即更新</string>
     <string name="btn_next_time">下次再说</string>
-    <string name="update_prompt_stronger">发现新版WIFI酷连，版本号
-        %s，是否立即安装？\n警告：此版本包含重要功能更新，若不更新将不能正常使用本软件！\n\n更新列表：\n\n</string>
-    <string name="btn_exit">取消</string>
+    <string name="btn_exit">退出应用</string>
 
     <!-- Menu -->
     <string name="ic_about">关于</string>

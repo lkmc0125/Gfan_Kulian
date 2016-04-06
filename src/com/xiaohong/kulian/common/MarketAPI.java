@@ -47,34 +47,34 @@ import com.xiaohong.kulian.common.vo.UpgradeInfo;
  */
 public class MarketAPI {
 
-    public static final String API_BASE_URL = 
-      "http://livew.mobdsp.com/cb";
-    
+    public static final String API_BASE_URL = "http://livew.mobdsp.com/cb";
+
     // API URLS
     static final String[] API_URLS = {
-        // ACTION_CHECK_NEW_VERSION
-        API_BASE_URL + "/klappversion",
-        // ACTION_LOGIN
-        API_BASE_URL + "/applogin",
-        // ACTION_REGISTER
-        API_BASE_URL + "/appregister",
-        // ACTION_GET_APP_LIST
-        API_BASE_URL + "/applist_page",
-        // ACTION_GET_PRODUCT_DETAIL
-        API_BASE_URL + "/appdetail",
-        // ACTION_CHECK_NEW_SPLASH
-        API_BASE_URL + "/checkNewSplash",
-        // ACTION_GET_SSID_LIST
-        API_BASE_URL + "/get_ssidlist",
-        // ACTION_GET_TASK_LIST
-        API_BASE_URL + "/get_tasklist",
-        // ACTION_GET_GZH_TASKLIST
-        API_BASE_URL + "/get_gzhtasklist",
-        // ACTION_GET_MESSAGES
-        API_BASE_URL + "/app_broadcast",
-        // ACTION_SIGN_IN
-        API_BASE_URL + "/user_sign",
-        };
+            // ACTION_CHECK_NEW_VERSION
+            API_BASE_URL + "/klappversion",
+            // ACTION_LOGIN
+            API_BASE_URL + "/applogin",
+            // ACTION_REGISTER
+            API_BASE_URL + "/appregister",
+            // ACTION_GET_APP_LIST
+            API_BASE_URL + "/applist_page",
+            // ACTION_GET_PRODUCT_DETAIL
+            API_BASE_URL + "/appdetail",
+            // ACTION_CHECK_NEW_SPLASH
+            API_BASE_URL + "/checkNewSplash",
+            // ACTION_GET_SSID_LIST
+            API_BASE_URL + "/get_ssidlist",
+            // ACTION_GET_TASK_LIST
+            API_BASE_URL + "/get_tasklist",
+            // ACTION_GET_GZH_TASKLIST
+            API_BASE_URL + "/get_gzhtasklist",
+            // ACTION_GET_MESSAGES
+            API_BASE_URL + "/app_broadcast",
+            // ACTION_SIGN_IN
+            API_BASE_URL + "/user_sign",
+            // ACTION_GET_GOODS_LIST
+            API_BASE_URL + "/get_goodslist", };
 
     /** 检查更新 */
     public static final int ACTION_CHECK_NEW_VERSION = 0;
@@ -98,35 +98,36 @@ public class MarketAPI {
     public static final int ACTION_GET_MESSAGES = 9;
     /** 签到 */
     public static final int ACTION_SIGN_IN = 10;
+    /** 获取商品列表 */
+    public static final int ACTION_GET_GOODS_LIST = 11;
 
     /**
-	 * Register API<br>
-	 * Do the register process, UserName, Password, Email must be provided.<br>
-	 */
-	public static void register(Context context, ApiRequestListener handler,
-			String username, String password, String verifyCode, String inviteCode) {
+     * Register API<br>
+     * Do the register process, UserName, Password, Email must be provided.<br>
+     */
+    public static void register(Context context, ApiRequestListener handler, String username, String password,
+            String verifyCode, String inviteCode) {
 
-		final HashMap<String, Object> params = new HashMap<String, Object>(3);
+        final HashMap<String, Object> params = new HashMap<String, Object>(3);
 
-		params.put("phone_number", username);
-		params.put("passwd", Utils.getMD5(password));
-		params.put("verify_code", verifyCode);
-		if (inviteCode != null && inviteCode.length() > 0) {
-		    params.put("invite_code", inviteCode);
-		}
-		if (Utils.isLeShiMobile()) {
-	         params.put("leshi", 1);		    
-		}
+        params.put("phone_number", username);
+        params.put("passwd", Utils.getMD5(password));
+        params.put("verify_code", verifyCode);
+        if (inviteCode != null && inviteCode.length() > 0) {
+            params.put("invite_code", inviteCode);
+        }
+        if (Utils.isLeShiMobile()) {
+            params.put("leshi", 1);
+        }
 
-		new ApiAsyncTask(context, ACTION_REGISTER, handler, params).execute();
-	}
-	
+        new ApiAsyncTask(context, ACTION_REGISTER, handler, params).execute();
+    }
+
     /**
      * Login API<br>
      * Do the login process, UserName, Password must be provided.<br>
      */
-    public static void login(Context context, ApiRequestListener handler,
-            String username, String password) {
+    public static void login(Context context, ApiRequestListener handler, String username, String password) {
 
         final HashMap<String, Object> params = new HashMap<String, Object>(2);
 
@@ -136,108 +137,105 @@ public class MarketAPI {
         new ApiAsyncTask(context, ACTION_LOGIN, handler, params).execute();
     }
 
-	/**
+    /**
      * 获取软件列表
      */
-    public static void getAppList(Context context,
-            ApiRequestListener handler, int page, String category) {
+    public static void getAppList(Context context, ApiRequestListener handler, int page, String category) {
 
-//        Session session = Session.get(context);
+        // Session session = Session.get(context);
 
         HashMap<String, String> categoryMap = new HashMap<String, String>(3);
         categoryMap.put(Constants.CATEGORY_RCMD, "1");
         categoryMap.put(Constants.CATEGORY_APP, "2");
         categoryMap.put(Constants.CATEGORY_GAME, "3");
-        
+
         final HashMap<String, Object> params = new HashMap<String, Object>(3);
         params.put("apptype", categoryMap.get(category));
         params.put("page", page);
         params.put("phone_number", "13800138000");
-        
+
         new ApiAsyncTask(context, ACTION_GET_APP_LIST, handler, params).execute();
     }
-    
-	/**
-	 * 获取商品详细信息
-	 */
-	public static void getProductDetailWithId(Context context,
-			ApiRequestListener handler, String pId, String category) {
+
+    /**
+     * 获取商品详细信息
+     */
+    public static void getProductDetailWithId(Context context, ApiRequestListener handler, String pId, String category) {
 
         HashMap<String, String> categoryMap = new HashMap<String, String>(3);
         categoryMap.put(Constants.CATEGORY_RCMD, "1");
         categoryMap.put(Constants.CATEGORY_APP, "2");
         categoryMap.put(Constants.CATEGORY_GAME, "3");
 
-		final HashMap<String, Object> params = new HashMap<String, Object>(3);
-		params.put("appid", pId);
-		params.put("apptype", categoryMap.get(category));
+        final HashMap<String, Object> params = new HashMap<String, Object>(3);
+        params.put("appid", pId);
+        params.put("apptype", categoryMap.get(category));
         params.put("phone_number", "13800138000");
-		new ApiAsyncTask(context, ACTION_GET_PRODUCT_DETAIL, handler, params).execute();
-	}
+        new ApiAsyncTask(context, ACTION_GET_PRODUCT_DETAIL, handler, params).execute();
+    }
 
-	/**
-	 * 检查更新
-	 */
-	public static void checkUpdate(Context context, ApiRequestListener handler) {
+    /**
+     * 检查更新
+     */
+    public static void checkUpdate(Context context, ApiRequestListener handler) {
 
-		Session mSession = Session.get(context);
+        Session mSession = Session.get(context);
 
-		final HashMap<String, Object> params = new HashMap<String, Object>(4);
-		params.put("version_code", mSession.getVersionCode());
+        final HashMap<String, Object> params = new HashMap<String, Object>(4);
+        params.put("version_code", mSession.getVersionCode());
 
-		new ApiAsyncTask(context, ACTION_CHECK_NEW_VERSION, handler, params)
-				.execute();
-	}
+        new ApiAsyncTask(context, ACTION_CHECK_NEW_VERSION, handler, params).execute();
+    }
 
-	/**
-	 * 检查是否有新splash需要下载
-	 * */
-	public static void checkNewSplash(Context context,
-			ApiRequestListener handler) {
+    /**
+     * 检查是否有新splash需要下载
+     * */
+    public static void checkNewSplash(Context context, ApiRequestListener handler) {
 
-		Session mSession = Session.get(context);
+        Session mSession = Session.get(context);
 
-		final HashMap<String, Object> params = new HashMap<String, Object>(4);
-		params.put("package_name", mSession.getPackageName());
-		params.put("version_code", mSession.getVersionCode());
-		params.put("sdk_id", mSession.getCpid());
-		params.put("time", mSession.getSplashTime());
+        final HashMap<String, Object> params = new HashMap<String, Object>(4);
+        params.put("package_name", mSession.getPackageName());
+        params.put("version_code", mSession.getVersionCode());
+        params.put("sdk_id", mSession.getCpid());
+        params.put("time", mSession.getSplashTime());
 
-		new ApiAsyncTask(context, ACTION_CHECK_NEW_SPLASH, handler, params)
-				.execute();
-	}
+        new ApiAsyncTask(context, ACTION_CHECK_NEW_SPLASH, handler, params).execute();
+    }
 
-	/**
+    /**
      * 获取wifi列表
      */
-	public static void getSSIDList(Context context, ApiRequestListener handler) {
+    public static void getSSIDList(Context context, ApiRequestListener handler) {
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
-//        params.put("phone_number", "13800138000");
+        // params.put("phone_number", "13800138000");
 
         new ApiAsyncTask(context, ACTION_GET_SSID_LIST, handler, params).execute();
-	}
-	
+    }
+
     /**
      * 获取任务列表
+     * 
      * @param context
      * @param handler
      * @param page
      * @param category
      */
-    public static void getTaskList(Context context, ApiRequestListener handler ) {
+    public static void getTaskList(Context context, ApiRequestListener handler) {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
         String phoneNumber = session.getUserName();
-        if(phoneNumber == null || phoneNumber.equals("")) {
+        if (phoneNumber == null || phoneNumber.equals("")) {
             phoneNumber = "18980928189";
         }
         params.put("phone_number", session.getUserName());
 
         new ApiAsyncTask(context, ACTION_GET_TASK_LIST, handler, params).execute();
     }
-    
+
     /**
      * 获取公众号任务列表
+     * 
      * @param context
      * @param handler
      * @param page
@@ -247,14 +245,14 @@ public class MarketAPI {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
         String phoneNumber = session.getUserName();
-        if(phoneNumber == null || phoneNumber.equals("")) {
+        if (phoneNumber == null || phoneNumber.equals("")) {
             phoneNumber = "18980928189";
         }
         params.put("phone_number", phoneNumber);
         Log.d("free", "getGzhTaskList");
         new ApiAsyncTask(context, ACTION_GET_GZH_TASK_LIST, handler, params).execute();
     }
-    
+
     public static void getMessages(Context context, ApiRequestListener handler) {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
@@ -273,4 +271,16 @@ public class MarketAPI {
 
         new ApiAsyncTask(context, ACTION_SIGN_IN, handler, params).execute();
     }
+    
+    /**
+     * 获取商品列表
+     */
+    public static void getGoodsList(Context context, ApiRequestListener handler) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("phone_number", session.getUserName());
+
+        new ApiAsyncTask(context, ACTION_GET_GOODS_LIST, handler, params).execute();
+    }
+    
 }

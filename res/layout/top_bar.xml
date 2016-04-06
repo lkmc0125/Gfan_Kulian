@@ -13,7 +13,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="8dip"
         android:layout_alignParentLeft="true"
-        android:background="#00000000"
+        android:background="@null"
+        android:contentDescription="@null"
         android:gravity="center_vertical"
         android:src="@drawable/left_arrow" 
         android:visibility="gone" />
