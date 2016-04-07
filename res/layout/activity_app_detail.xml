@@ -59,7 +59,7 @@
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:background="@drawable/app_icon" >
+            android:background="@drawable/push" >
         </ImageView>
     </FrameLayout>
 
@@ -167,7 +167,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/app_icon" />
+                            android:src="@drawable/push" />
 
                         <ImageView
                             android:id="@+id/app_desc_pic2"
@@ -176,7 +176,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/app_icon" />
+                            android:src="@drawable/push" />
 
                         <ImageView
                             android:id="@+id/app_desc_pic3"
@@ -185,7 +185,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/app_icon" />
+                            android:src="@drawable/push" />
 
                         <ImageView
                             android:id="@+id/app_desc_pic4"
@@ -194,7 +194,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/app_icon" />
+                            android:src="@drawable/push" />
 
                         <ImageView
                             android:id="@+id/app_desc_pic5"
@@ -203,7 +203,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/app_icon" />
+                            android:src="@drawable/push" />
                     </LinearLayout>
                 </HorizontalScrollView>
 

@@ -25,7 +25,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:contentDescription="GDT"
-        android:src="@drawable/app_icon" />
+        android:src="@drawable/push" />
 
     <!-- 开屏广告容器，不得小于400dp -->
     <FrameLayout

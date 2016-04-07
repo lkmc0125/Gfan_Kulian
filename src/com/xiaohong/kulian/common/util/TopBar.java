@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
-import com.xiaohong.kulian.ui.FileManagerActivity;
 
 /**
  * TopBar utility class

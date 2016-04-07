@@ -22,6 +22,7 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.GoodsListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
+import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
@@ -53,16 +54,14 @@ public class PayMainActivity extends BaseActivity implements OnClickListener, Ap
         mWxApi.registerApp(Constants.APP_ID);
 
         boolean isPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
-        Toast.makeText(PayMainActivity.this, String.valueOf(isPaySupported),
-                Toast.LENGTH_SHORT).show();
-        
+        Toast.makeText(PayMainActivity.this, String.valueOf(isPaySupported), Toast.LENGTH_SHORT).show();
+
         getGoodsList();
     }
 
     void initTopBar() {
-        TopBar.createTopBar(this, new View[]{findViewById(R.id.back_btn),
-                findViewById(R.id.top_bar_title)}, new int[]{View.VISIBLE,
-                View.VISIBLE}, getString(R.string.feedback_title));
+        TopBar.createTopBar(this, new View[] { findViewById(R.id.back_btn), findViewById(R.id.top_bar_title) },
+                new int[] { View.VISIBLE, View.VISIBLE }, getString(R.string.feedback_title));
         ImageButton back = (ImageButton) findViewById(R.id.back_btn);
         back.setOnClickListener(new OnClickListener() {
             @Override
@@ -75,29 +74,27 @@ public class PayMainActivity extends BaseActivity implements OnClickListener, Ap
     private void getGoodsList() {
         MarketAPI.getGoodsList(getApplicationContext(), this);
     }
-    
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.appay_btn :
-                if (mCoinNumEt.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "亲，请输入要购买的金币数目",
-                            Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "no input data");
-                    return;
-                } else {
-                    doPay();
-                }
-                break;
+        case R.id.appay_btn:
+            if (mCoinNumEt.getText().toString().equals("")) {
+                Toast.makeText(getApplicationContext(), "亲，请输入要购买的金币数目", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "no input data");
+                return;
+            } else {
+                doPay();
+            }
+            break;
         }
 
     }
 
     private void doPay() {
         final String url = "http://115.159.76.147:8390/cb/getprepayid?phone_number=13418680969&type=1&goods_id=1";
-        Toast.makeText(PayMainActivity.this, "请稍候...", Toast.LENGTH_SHORT)
-                .show();
+        Toast.makeText(PayMainActivity.this, "请稍候...", Toast.LENGTH_SHORT).show();
         new AsyncTask<Void, Void, Void>() {
 
             protected void onPreExecute() {
@@ -116,37 +113,29 @@ public class PayMainActivity extends BaseActivity implements OnClickListener, Ap
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                    if (null != json && !json.has("retcode")) {
-                        PayReq req = new PayReq();
-                        try {
+                    try {
+                        if (null != json && json.has("ret_code") && json.getInt("ret_code") == 0) {
+                            PayReq req = new PayReq();
+
                             req.appId = json.getString("appid");
-                            req.partnerId = json.getString("partnerid");
-                            req.prepayId = json.getString("prepayid");
-                            req.nonceStr = json.getString("noncestr");
-                            req.timeStamp = json.getString("timestamp");
-                            req.packageValue = json.getString("package");
+                            req.partnerId = json.getString("partnerId");
+                            req.prepayId = json.getString("prepayId");
+                            req.nonceStr = json.getString("nonceStr");
+                            req.timeStamp = json.getString("timeStamp");
+                            req.packageValue = json.getString("packageValue");
                             req.sign = json.getString("sign");
                             req.extData = "app data"; // optional
                             // Toast.makeText(PayMainActivity.this, "正在跳转到微信",
                             // Toast.LENGTH_SHORT).show();
                             mWxApi.sendReq(req);
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                        } else {
+                            DialogUtils.showMessage(getApplicationContext(), "获取支付信息失败", json.getString("retmsg"));
                         }
-
-                    } else {
-                        try {
-                            Log.d(TAG, "获取支付信息失败：" + json.getString("retmsg"));
-                            // Toast.makeText(PayMainActivity.this,
-                            // "错误信息："+json.getString("retmsg"),
-                            // Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
+
                 } else {
                     Log.d(TAG, "服务器连接失败");
                     // Toast.makeText(PayMainActivity.this, "无法连接到服务器，请稍后再试",
@@ -158,16 +147,14 @@ public class PayMainActivity extends BaseActivity implements OnClickListener, Ap
             protected void onPostExecute(Void result) {
                 mPayBtn.setEnabled(true);
             };
-
         }.execute();
-
     }
 
     @Override
     public void onSuccess(int method, Object obj) {
         switch (method) {
         case MarketAPI.ACTION_GET_GOODS_LIST:
-            mGoodsList = (GoodsListBean)obj;
+            mGoodsList = (GoodsListBean) obj;
             break;
         default:
             break;
@@ -176,6 +163,6 @@ public class PayMainActivity extends BaseActivity implements OnClickListener, Ap
 
     @Override
     public void onError(int method, int statusCode) {
-        
+
     }
 }

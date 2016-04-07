@@ -55,7 +55,7 @@ import com.xiaohong.kulian.common.vo.DownloadInfo;
 import com.xiaohong.kulian.common.vo.DownloadItem;
 import com.xiaohong.kulian.common.vo.UpgradeInfo;
 import com.xiaohong.kulian.ui.RegisterActivity;
-import com.xiaohong.kulian.ui.PreloadActivity;
+
 
 /**
  * GfanClient ListView associating adapter<br>
@@ -565,12 +565,12 @@ public class AppListAdapter extends CommonAdapter implements Observer, ApiReques
                 
                 if (Constants.PAY_TYPE_PAID == payType) {
                     if (Session.get(mContext).isLogin()) {
-                        Intent intent = new Intent(mContext, PreloadActivity.class);
-                        intent.putExtra(Constants.EXTRA_PRODUCT_ID,
-                                (String) item.get(Constants.KEY_PRODUCT_ID));
-                        intent.putExtra(Constants.IS_BUY, true);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(intent);
+//                        Intent intent = new Intent(mContext, PreloadActivity.class);
+//                        intent.putExtra(Constants.EXTRA_PRODUCT_ID,
+//                                (String) item.get(Constants.KEY_PRODUCT_ID));
+//                        intent.putExtra(Constants.IS_BUY, true);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        mContext.startActivity(intent);
                     } else {
                         Intent loginIntent = new Intent(mContext, RegisterActivity.class);
                         loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -610,11 +610,11 @@ public class AppListAdapter extends CommonAdapter implements Observer, ApiReques
             } else if(Constants.STATUS_INSTALLED == status) {
                 
                 // 已经安装，去产品详细页
-                String packageName = (String) item.get(Constants.KEY_PRODUCT_PACKAGE_NAME);
-                Intent detailIntent = new Intent(mContext, PreloadActivity.class);
-                detailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                detailIntent.putExtra(Constants.EXTRA_PACKAGE_NAME, packageName);
-                mContext.startActivity(detailIntent);
+//                String packageName = (String) item.get(Constants.KEY_PRODUCT_PACKAGE_NAME);
+//                Intent detailIntent = new Intent(mContext, PreloadActivity.class);
+//                detailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                detailIntent.putExtra(Constants.EXTRA_PACKAGE_NAME, packageName);
+//                mContext.startActivity(detailIntent);
             }
         }
     };

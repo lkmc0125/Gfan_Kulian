@@ -2,8 +2,8 @@ package com.xiaohong.kulian.bean;
 
 public class GoodsBean {
     private Integer goods_id;
-    private Integer coin_num;
-    private Integer money; // cent
+    private String name;
+    private Integer price; // cent
 
     public void setGoodsId(Integer goodsId) {
         this.goods_id = goodsId;
@@ -11,28 +11,16 @@ public class GoodsBean {
     public Integer getGoodsId() {
         return goods_id;
     }
-//    public void setName(String name) {
-//        this.name = name; 
-//    }
-//    public String getName() {
-//        return name;
-//    }
-//    public void setPrice(Integer price) {
-//        this.price = price;
-//    }
-//    public Integer getPrice() {
-//        return price;
-//    }
-    public void setCoinNum(Integer coinNum) {
-        this.coin_num = coinNum;
+    public void setName(String name) {
+        this.name = name; 
     }
-    public Integer getCoinNum() {
-        return coin_num;
+    public String getName() {
+        return name;
     }
-    public void setMoney(Integer money) {
-        this.money = money;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
-    public Integer getMoney() {
-        return money;
+    public Integer getPrice() {
+        return price;
     }
 }

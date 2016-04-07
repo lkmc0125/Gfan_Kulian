@@ -64,7 +64,7 @@ import com.xiaohong.kulian.common.vo.DownloadItem;
 import com.xiaohong.kulian.common.vo.UpgradeInfo;
 import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
 import com.xiaohong.kulian.ui.RegisterActivity;
-import com.xiaohong.kulian.ui.PreloadActivity;
+
 
 /**
  * GfanClient ListView associating adapter<br>
@@ -461,13 +461,13 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
 
                 if (Constants.PAY_TYPE_PAID == payType) {
                     if (Session.get(mContext).isLogin()) {
-                        Intent intent = new Intent(mContext,
-                                PreloadActivity.class);
-                        intent.putExtra(Constants.EXTRA_PRODUCT_ID,
-                                item.getAppId() + "");
-                        intent.putExtra(Constants.IS_BUY, true);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(intent);
+//                        Intent intent = new Intent(mContext,
+//                                PreloadActivity.class);
+//                        intent.putExtra(Constants.EXTRA_PRODUCT_ID,
+//                                item.getAppId() + "");
+//                        intent.putExtra(Constants.IS_BUY, true);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        mContext.startActivity(intent);
                     } else {
                         Intent loginIntent = new Intent(mContext,
                                 RegisterActivity.class);
@@ -510,13 +510,13 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
             } else if (Constants.STATUS_INSTALLED == status) {
 
                 // 已经安装，去产品详细页
-                String packageName = item.getPackageName();
-                Intent detailIntent = new Intent(mContext,
-                        PreloadActivity.class);
-                detailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                detailIntent
-                        .putExtra(Constants.EXTRA_PACKAGE_NAME, packageName);
-                mContext.startActivity(detailIntent);
+//                String packageName = item.getPackageName();
+//                Intent detailIntent = new Intent(mContext,
+//                        PreloadActivity.class);
+//                detailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                detailIntent
+//                        .putExtra(Constants.EXTRA_PACKAGE_NAME, packageName);
+//                mContext.startActivity(detailIntent);
             }
         }
     };
@@ -601,6 +601,5 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
        viewHolder.mActionView.setVisibility(View.VISIBLE); 
        viewHolder.mStatusView.setVisibility(View.GONE); 
    }
-
 
 }

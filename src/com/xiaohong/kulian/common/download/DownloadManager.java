@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
-import com.xiaohong.kulian.ui.AppsManagerActivity;
 
 /**
  * The download manager is a system service that handles long-running HTTP downloads. Clients may
@@ -115,7 +114,7 @@ public class DownloadManager {
         // use the title as the file's name
         values.put(Impl.COLUMN_FILE_NAME_HINT, (String) request.mTitle);
         values.put(Impl.COLUMN_PACKAGE_NAME, request.mPackageName);
-        values.put(Impl.COLUMN_NOTIFICATION_CLASS, AppsManagerActivity.class.getName());
+//        values.put(Impl.COLUMN_NOTIFICATION_CLASS, AppsManagerActivity.class.getName());
         values.put(Impl.COLUMN_MD5, request.mMD5);
         if (request.mSourceType == Constants.DOWNLOAD_FROM_OTA) {
             values.put(Impl.COLUMN_DESTINATION, DownloadManager.Impl.DESTINATION_CACHE_PARTITION);

@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
@@ -36,12 +37,15 @@ import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.R.layout;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.adapter.ConnectionAppGridAdapter;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
+import com.xiaohong.kulian.common.util.CustomDialog;
+import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.util.WifiAdmin;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
@@ -110,8 +114,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         setContentView(R.layout.activity_connect_main_layout);
         initView();
         queryAppList();
-//        setContentView(R.layout.activity_connection);
-//        initTopBar();
 //        mLoginRetryCount = 0;
         mAuth = new WifiAuthentication();
         mSession = Session.get(getApplicationContext());
@@ -198,7 +200,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                         try {
                             JSONObject obj = new JSONObject(ret);
                             if (obj.getInt("ret_code") == 0) {
-                                Utils.makeEventToast(getApplicationContext(), "扣了"+obj.getString("dec_coin_num")+"金币", false);
+                                DialogUtils.showMessage(this, "认证成功", "使用金币" + obj.getString("dec_coin_num") + "枚");
                             } else if (obj.getInt("ret_code") == 3001) { // 3001 means already deduction coin today
                                 Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
                             }
@@ -299,15 +301,14 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         if (ret != null) {
             try {
                 JSONObject obj = new JSONObject(ret);
-                // // 3001 means already deduction coin today
+                // 3001 means already deduction coin today
                 if (obj.getInt("ret_code") == 0 || obj.getInt("ret_code") == 3001) {
                     return true;
                 } else {
-                    Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
+                    DialogUtils.showMessage(this, "出错啦", obj.getString("ret_msg"));
                     return false;
                 }
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

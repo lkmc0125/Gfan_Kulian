@@ -152,7 +152,7 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
      */
     public void reset() {
         mStartPage = 1;
-        AppListAdapter adapter = (AppListAdapter) ((HeaderViewListAdapter) mList.getAdapter())
+        TabAppListAdapter adapter = (TabAppListAdapter) ((HeaderViewListAdapter) mList.getAdapter())
                 .getWrappedAdapter();
         adapter.clearData();
     }

@@ -20,7 +20,6 @@ import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
-import com.xiaohong.kulian.ui.ProductDetailActivity;
 
 /**
  * <p>
@@ -29,7 +28,19 @@ import com.xiaohong.kulian.ui.ProductDetailActivity;
  * 
  * @author llh
  */
-public class DialogUtil {
+public class DialogUtils {
+    
+    public static void showMessage(Context context, String title, String message) {
+        CustomDialog dialog = new CustomDialog.Builder(context).setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        dialog.show();
+    }
+    
     
     public static interface WarningDialogListener {
         
@@ -92,102 +103,7 @@ public class DialogUtil {
 
         return dialog;
     }
-    
-    /**
-     * <p>
-     * 创建支付确认提醒框
-     * </p>
-     * 
-     * @param context
-     *            {@link ProductDetailActivity} object
-     * @param id
-     *            dialog id
-     * @param hint
-     *            hint message
-     * @return an input dialog instance
-     */
-    public static Dialog newEnsurePurchaseDialog(final ProductDetailActivity context, final int id,
-            String hint) {
-        /*
-         * Common input dialog Two buttons, one edittext, one hint, and title
-         */
-        LayoutInflater factory = LayoutInflater.from(context);
-        View view = factory.inflate(R.layout.alert_dialog_text_entry, null);
 
-        // set hint
-        if (hint == null) {
-            throw new RuntimeException("Must provide a hint string for input dialog");
-        }
-        TextView tvHint = (TextView) view.findViewById(R.id.tv_hint);
-        tvHint.setText(hint);
-
-        // set init value
-        final EditText etInput = (EditText) view.findViewById(R.id.et_input);
-        etInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle(R.string.app_download)
-                .setView(view)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String value = etInput.getText().toString();
-                        if (TextUtils.isEmpty(value)) {
-                            // 密码不能为空
-                            Utils.makeEventToast(context,
-                                    context.getString(R.string.error_verifycode_empty), false);
-                        } else {
-                            context.removeDialog(id);
-//                            context.purchaseProduct(value);
-                        }
-                    }
-                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    public void onCancel(DialogInterface arg0) {
-                        context.removeDialog(id);
-                    }
-                });
-        return builder.create();
-    }
-    
-    /**
-     * <p>
-     * 创建账户余额不足提醒框
-     * </p>
-     * 
-     * @param context
-     *            {@link ProductDetailActivity} object
-     * @param id
-     *            dialog id
-     * @param warning
-     *            warning message, should not be null
-     * @param listener
-     *            {@link WarningDialogListener} instance, should not be null
-     * @return a warning dialog instance
-     */
-    public static Dialog newInsufficientBalanceDialog(final ProductDetailActivity context,
-            final int id, String warning) {
-        /*
-         * Common warning dialog Two buttons, one message, an icon
-         */
-        return new AlertDialog.Builder(context)
-                .setTitle(R.string.attention)
-                .setMessage(warning)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        context.removeDialog(id);
-                        context.gotoDepositPage();
-                    }
-                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        context.removeDialog(id);
-                    }
-                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    public void onCancel(DialogInterface arg0) {
-                        context.removeDialog(id);
-                    }
-                }).create();
-    }
-    
-    
     public static interface YesNoDialogListener {
         public void onYesDialog(int id);
 
