@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -70,12 +72,15 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     private Button mAuthBtn;
     private TextView mWifiStatusDesc,mWifiStatusDescSearch;
     private ImageView mWifiStatusIcon,mWifiStatusIconSearch;
+    private TextView textViewMessage;
     /**
      * 签到界面
      */
     private RelativeLayout layoutSignIn;
     private RelativeLayout layoutBuyCoin;
     private static final int REQUEST_CODE = 20;
+    private TextView textView_coin_num;
+    private TextView textView_signIn_status;
     /**
      * 推荐应用界面
      */
@@ -147,6 +152,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         mWifiStatusIcon=(ImageView)findViewById(R.id.wifi_icon_success_status);
         mWifiStatusDescSearch=(TextView)findViewById(R.id.connection_link_search_status_value_text);
         mWifiStatusIconSearch=(ImageView)findViewById(R.id.wifi_icon_search_status_01);
+        textViewMessage=(TextView)findViewById(R.id.connection_current_activity_info_text);
         /**
          * 签到界面
          */
@@ -154,6 +160,9 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         layoutSignIn.setOnClickListener(this);
         layoutBuyCoin=(RelativeLayout)findViewById(R.id.person_account_pay_gold_coins_layout);
         layoutBuyCoin.setOnClickListener(this);
+        textView_coin_num=(TextView)findViewById(R.id.main_home_person_center_coin_text);
+        textView_coin_num.setText("0");
+        textView_signIn_status=(TextView)findViewById(R.id.person_account_sign_in_value_text);
         /**
          * 推荐应用界面
          */
@@ -384,7 +393,23 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         {
             Log.d(TAG, "login success");
             HashMap<String, Object> result = (HashMap<String, Object>) obj;
-            mSession.setCoinNum((Integer)result.get(Constants.KEY_COIN_NUM));
+            if ((Integer) result.get("ret_code") == 0) {
+                mSession.setLogin(true);
+                mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
+                textView_coin_num.setText(mSession.getCoinNum().toString());
+                if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
+                    mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
+                }
+                if (mSession.getSignInToday()) {
+                    textView_signIn_status.setText("今天已签到");
+                } else {
+                    MarketAPI.signIn(getApplicationContext(), this);
+                }
+                if (mSession.getMessages() == null) {
+                    MarketAPI.getMessages(getApplicationContext(), this);
+                }
+            }
+            /*mSession.setCoinNum((Integer)result.get(Constants.KEY_COIN_NUM));
             mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true")); 
             mSession.setLogin(true);
 
@@ -395,14 +420,20 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             // 签到
             if (!mSession.getSignInToday()) {
                 MarketAPI.signIn(getApplicationContext(), this);
-            }
+            }*/
             break;
         }
         case MarketAPI.ACTION_GET_MESSAGES:
         {
             ArrayList<HashMap<String, String>> messages = (ArrayList<HashMap<String, String>>)obj;
             if (messages.size() > 0) {
-                mSession.setMessages(messages);    
+                mSession.setMessages(messages);  
+                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().size());
+                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(0).get("text"));
+                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(1).get("text"));
+                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(2).get("text"));
+                textViewMessage.setText(mSession.getMessages().get(0).get("text"));
+                
             }
             break;
         }
@@ -413,8 +444,36 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             if (ret_code == 0) {
                 mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
                 mSession.setSignInToday(true);
+                textView_coin_num.setText(mSession.getCoinNum().toString());
+                textView_signIn_status.setText("今天已签到");
+                CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_success))
+                        .setMessage("本次签到获得了" + result.get(Constants.KEY_ADD_COIN_NUM) + "个金币")
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+                dialog.show();
             } else if (ret_code == 3002) { // 今天已经签到领取过了
+                textView_signIn_status.setText("今天已签到");
                 Log.d(TAG, "Already sign in today, ret_code 3002");
+                CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_success))
+                        .setMessage("今天已经领取过金币了，明天再来哦")
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+                dialog.show();
+            }else{
+                CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_fail))
+                        .setMessage(result.get("ret_msg").toString())
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+                dialog.show();
             }
             break;
         }
@@ -480,6 +539,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         connectionAppGridAdapter = new ConnectionAppGridAdapter(this, data_list);
         mGridView.setAdapter(connectionAppGridAdapter);
         mGridView.setOnItemClickListener(new ConnectAppOnItemClick());
+        mGridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
@@ -619,5 +679,19 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
                 startActivity(detailIntent);
             }
+    }
+    @Override
+    protected void onResume() {
+        if (!mSession.isLogin()) {
+            textView_signIn_status.setText(R.string.person_account_sign_in_value);
+        } else if (mSession.isLogin()) {
+            textView_coin_num.setText(mSession.getCoinNum().toString());
+            if (mSession.getSignInToday()) {
+                textView_signIn_status.setText("今天已经签到");
+            } else {
+                textView_signIn_status.setText(R.string.person_account_sign_in_value);
+            }
+        }
+        super.onResume();
     }
 }

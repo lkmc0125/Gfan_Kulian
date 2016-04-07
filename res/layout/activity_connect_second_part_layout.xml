@@ -10,7 +10,7 @@
         >
 		<RelativeLayout 
 			android:id="@+id/person_account_sign_in_layout" 
-			android:layout_width="wrap_content" 
+			android:layout_width="120dip" 
 			android:layout_height="41dip"
 			android:layout_marginLeft="15dip"
 			android:layout_marginTop="17dip"
