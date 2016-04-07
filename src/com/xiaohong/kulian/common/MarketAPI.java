@@ -74,7 +74,13 @@ public class MarketAPI {
             // ACTION_SIGN_IN
             API_BASE_URL + "/user_sign",
             // ACTION_GET_GOODS_LIST
-            API_BASE_URL + "/get_goodslist", };
+            API_BASE_URL + "/get_goodslist", 
+            //ACTION_REPORT_APP_INSTALLED
+            API_BASE_URL + "/download_report", 
+            //ACTION_REPORT_APP_LAUNCHED
+            API_BASE_URL + "/applaunch_report", 
+            
+            };
 
     /** 检查更新 */
     public static final int ACTION_CHECK_NEW_VERSION = 0;
@@ -100,6 +106,14 @@ public class MarketAPI {
     public static final int ACTION_SIGN_IN = 10;
     /** 获取商品列表 */
     public static final int ACTION_GET_GOODS_LIST = 11;
+    /**
+     * 报告app安装完毕
+     */
+    public static final int ACTION_REPORT_APP_INSTALLED = 12;
+    /**
+     * 报告app已启动
+     */
+    public static final int ACTION_REPORT_APP_LAUNCHED = 13;
 
     /**
      * Register API<br>
@@ -281,6 +295,51 @@ public class MarketAPI {
         params.put("phone_number", session.getUserName());
 
         new ApiAsyncTask(context, ACTION_GET_GOODS_LIST, handler, params).execute();
+    }
+    
+    /**
+     * 报告app已完成安装
+     * @param context
+     * @param handler
+     */
+    public static void reportAppInstalled(Context context, ApiRequestListener handler, int appId) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("appid", appId + "");
+        params.put("phone_number", session.getUserName());
+        params.put("imei", session.getIMEI());
+
+        new ApiAsyncTask(context, ACTION_REPORT_APP_INSTALLED, handler, params).execute();
+    }
+    
+    /**
+     * 报告APP已启动
+     * @param context
+     * @param handler
+     */
+    public static void reportAppLaunched(Context context, ApiRequestListener handler, String packageName) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("phone_number", session.getUserName());
+        params.put("imei", session.getIMEI());
+        params.put("pkgname", packageName);
+
+        new ApiAsyncTask(context, ACTION_REGISTER, handler, params).execute();
+    }
+    
+    /**
+     * 报告APP已启动
+     * @param context
+     * @param handler
+     */
+    public static void reportAppLaunched(Context context, ApiRequestListener handler, int appId) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("phone_number", session.getUserName());
+        params.put("imei", session.getIMEI());
+        params.put("appid", appId + "");
+
+        new ApiAsyncTask(context, ACTION_REGISTER, handler, params).execute();
     }
     
 }

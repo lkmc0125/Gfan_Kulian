@@ -42,6 +42,7 @@ import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.bean.AppDetailBean;
 import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.bean.GoodsListBean;
+import com.xiaohong.kulian.bean.ReportResultBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.codec.binary.Base64;
 import com.xiaohong.kulian.common.util.Crypter;
@@ -159,6 +160,16 @@ public class ApiResponseFactory {
             case MarketAPI.ACTION_GET_GOODS_LIST:
                 requestMethod = "ACTION_GET_GOODS_LIST";
                 result = gson.fromJson(inputBody, GoodsListBean.class);
+                break;
+                
+            case MarketAPI.ACTION_REPORT_APP_INSTALLED:
+                requestMethod = "ACTION_REPORT_APP_INSTALLED";
+                result = gson.fromJson(inputBody, ReportResultBean.class);
+                break;
+                
+            case MarketAPI.ACTION_REPORT_APP_LAUNCHED:
+                requestMethod = "ACTION_REPORT_APP_LAUNCHED";
+                result = gson.fromJson(inputBody, ReportResultBean.class);
                 break;
 
             default:

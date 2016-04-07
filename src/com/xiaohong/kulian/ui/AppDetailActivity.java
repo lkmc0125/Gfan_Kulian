@@ -336,6 +336,8 @@ public class AppDetailActivity extends Activity
                     mAppActionView.setBackgroundColor(getResources().getColor(
                             R.color.install_button_background_color));
                     // mProduct.setFilePath(info.mFilePath);
+                    Log.d(TAG, "download success then do install apk");
+                    Utils.installApk(getApplicationContext(), new File(info.mFilePath));
                 } else if (DownloadManager.Impl.isStatusError(info.mStatus)) {
                     // 下载失败
 

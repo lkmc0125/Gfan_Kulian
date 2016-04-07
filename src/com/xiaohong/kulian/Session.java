@@ -696,6 +696,7 @@ public class Session extends Observable {
             Utils.getAllInstalledApps(mContext);
         }
         mInstalledApps.add(packageName);
+        //TODO call MarketAPI.reportAppInstalled
         mHandler.sendEmptyMessage(CURSOR_UPDATE);
     }
     
