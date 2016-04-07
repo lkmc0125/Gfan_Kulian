@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.Constants;
@@ -29,6 +30,8 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
     private TextView mTaskCoinNumTv;
     private TextView mTaskGuide1Tv;
     private TextView mTaskGuide2Tv;
+    private RelativeLayout mTaskStatus;
+    private TextView mTaskStatusTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,26 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
         mBackBtn.setOnClickListener(this);
         mCopyBtn = (TextView) findViewById(R.id.task_copy_tv);
         mCopyBtn.setOnClickListener(this);
+        mTaskStatus = (RelativeLayout) findViewById(R.id.status);
+        mTaskStatusTv = (TextView) findViewById(R.id.task_status_tv);
+        
+        // task status: 1 可领取    2 已领取    3 已完成   4 超时（领取但未完成）   5任务已结束（未领取）
+        switch (mTaskBean.getTask_status()) {
+        case 1:
+        case 2:
+            break;
+        case 3:
+            mTaskStatus.setVisibility(View.VISIBLE);
+            break;
+        case 4:
+            break;
+        case 5:
+            mTaskStatus.setVisibility(View.VISIBLE);
+            mTaskStatusTv.setText("任务已结束");
+            break;
+        default:
+            break;
+        }
     }
 
     @Override
@@ -83,7 +106,7 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
         Log.d(TAG, "copy to clipboard");
         ClipboardManager cbm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         cbm.setPrimaryClip(ClipData.newPlainText(null, mTaskBean.getWeixin_id()));
-        CustomDialog dialog = new CustomDialog.Builder(this).setMessage("公众号已复制到剪贴板")
+        CustomDialog dialog = new CustomDialog.Builder(this).setMessage("公众号id已复制到剪贴板")
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
