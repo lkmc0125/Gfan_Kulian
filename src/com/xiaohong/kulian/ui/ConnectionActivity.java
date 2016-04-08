@@ -61,7 +61,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     private WifiAdmin mWifiAdmin;
 //    private TextView mWifiStatusDesc;
 //    private ImageView mWifiStatusIcon;
-    private Integer mLoginRetryCount;
+    private Integer mLoginRetryCount = 0;
     private String mCurrentSSID;
     private Session mSession;
     private MyBroadcastReceiver mConnectionReceiver;
