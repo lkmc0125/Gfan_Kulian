@@ -249,30 +249,7 @@ public class ImageUtils {
             task.execute(context, url, TYPE_NORAML);
         }
     }
-    
-    /**
-     * 下载首页的顶部推荐图
-     */
-    public static void downloadHomeTopDrawable(Context context, String url, ImageView imageView) {
-        
-        CacheManager cache = CacheManager.getInstance();
-        if (cache.existsDrawable(url)) {
-            BitmapDrawable background = new BitmapDrawable(cache.getDrawableFromCache(url));
-            StateListDrawable foreground = getMaskDrawable(context);
-            imageView.setImageDrawable(foreground);
-            imageView.setBackgroundDrawable(background);
-            return;
-        }
 
-        Drawable defaultDrawable = context.getResources().getDrawable(R.drawable.banner_loading);
-        if (cancelPotentialBitmapDownload(url, imageView)) {
-            BitmapDownloaderTask task = new BitmapDownloaderTask(imageView);
-            DownloadedDrawable1 downloadedDrawable = new DownloadedDrawable1(defaultDrawable, task);
-            imageView.setImageDrawable(downloadedDrawable);
-            task.execute(context, url, TYPE_TOP);
-        }
-    }
-    
     /**
      * 下载产品详细页的截图
      */
