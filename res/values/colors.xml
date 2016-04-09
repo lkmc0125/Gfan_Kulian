@@ -54,4 +54,8 @@
     <color name="current_link_wifi_hint_text_color">#174E9D</color>
     <color name="connect_dialog_border">#99BCBCBC</color>
     <color name="connect_dialog_title_color">#2C78D4</color>
+    <!-- 购买金币界面 -->
+    <color name="buy_coin_item_selected_color">#FFFFFF</color>
+    <color name="buy_coin_item_un_selected_black_color">#595959</color>
+    <color name="buy_coin_item_un_selected_blue_color">#2C78D4</color>
 </resources>

@@ -471,5 +471,14 @@
     
     <string name="task_guide_1"><Data><![CDATA[1.向公众号发送\"<font color="#0000ff">小鸿</font>\"]]></Data></string>
     <string name="task_guide_2"><Data><![CDATA[2.点击公众号回复的连接，在打开的页面输入<font color="#0000ff">WIFI酷连账号（手机号）</font>，获得任务通过密码]]></Data></string>
+    
+    <!-- 微信支付页面 -->
+    <string name="wechatpay">微信支付</string>
+    <string name="one">1</string>
+    <string name="five">5</string>
+    <string name="ten">10</string>
+    <string name="thirty">30</string>
+    <string name="moneyunit">元</string>
+     <string name="buy">购买金币</string>
 
 </resources>
