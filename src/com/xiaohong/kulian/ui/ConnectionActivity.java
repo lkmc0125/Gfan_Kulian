@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -397,6 +399,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             if ((Integer) result.get("ret_code") == 0) {
                 mSession.setLogin(true);
                 mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
+                mSession.setToken((String) result.get(Constants.KEY_TOKEN));
                 textView_coin_num.setText(mSession.getCoinNum().toString());
                 if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
                     mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));

@@ -205,8 +205,9 @@ public class ApiResponseFactory {
             if (jsonObj.getInt("ret_code") == 0) {
                 result.put(Constants.KEY_COIN_NUM, Integer.valueOf(jsonObj.getString("coin_num")));
                 if (jsonObj.has("is_sign")) {
-                    result.put(Constants.KEY_SIGN_IN_TODAY, jsonObj.getString("is_sign"));                    
+                    result.put(Constants.KEY_SIGN_IN_TODAY, jsonObj.getString("is_sign")); 
                 }
+                result.put(Constants.KEY_TOKEN, jsonObj.getString("token"));
             }
         } catch (JSONException e) {
             Utils.D("have json exception when parse search result from bbs", e);

@@ -307,6 +307,7 @@ public interface Constants {
     static final String KEY_ADD_COIN_NUM = "add_coin_num";
     static final String KEY_USER_EMAIL = "email";
     static final String KEY_SIGN_IN_TODAY = "sign_in_today";
+    static final String KEY_TOKEN = "token";
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     static final String KEY_COMMENTS = "comments";
     static final String KEY_COMMENT = "comment";

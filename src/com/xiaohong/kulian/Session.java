@@ -234,6 +234,12 @@ public class Session extends Observable {
 
     /** 今天是否已经签到过 */
     private boolean signInToday;
+    
+    /**
+     * A cookie
+     */
+    private String mToken;
+    
     /**
      * default constructor
      * @param context
@@ -1010,5 +1016,13 @@ public class Session extends Observable {
                 break;
             }
         }
+    }
+    
+    public void setToken(String token) {
+        mToken = token;
+    }
+    
+    public String getToken() {
+        return mToken;
     }
 }

@@ -128,6 +128,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             if ((Integer) result.get("ret_code") == 0) {
                 mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
                 mSession.setSignInToday(true);
+                mSession.setToken((String) result.get(Constants.KEY_TOKEN));
                 textView_coin_num.setText(mSession.getCoinNum().toString());
                 textView_signIn_status.setText("今天已签到");
 

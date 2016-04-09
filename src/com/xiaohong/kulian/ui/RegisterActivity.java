@@ -286,6 +286,7 @@ public class RegisterActivity extends BaseActivity
             mSession.setUserName(userName);
             mSession.setPassword(password);
             mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
+            mSession.setToken((String) result.get(Constants.KEY_TOKEN));
             if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
                 mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).toString().equals("true"));    
             } else {
