@@ -122,10 +122,10 @@ public class TaskListAdapter extends CommonAdapter {
     @SuppressLint("NewApi")
     private void showActioViews(ViewHolder viewHolder) {
         viewHolder.mGoldView.setVisibility(View.VISIBLE);
-        Bitmap background = BitmapFactory.decodeResource(mContext.getResources(), 
-                R.drawable.task_action_view_border);
-        BitmapDrawable drawable = new BitmapDrawable(background);
-        viewHolder.mActionView.setBackground(drawable);
+//        Bitmap background = BitmapFactory.decodeResource(mContext.getResources(), 
+//                R.drawable.task_action_view_border);
+//        BitmapDrawable drawable = new BitmapDrawable(background);
+//        viewHolder.mActionView.setBackground(drawable);
         viewHolder.mActionView.setText(R.string.app_item_action_view);
     }
     
