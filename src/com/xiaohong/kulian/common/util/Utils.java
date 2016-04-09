@@ -107,6 +107,7 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.common.AndroidHttpClient;
+import com.xiaohong.kulian.ui.BuyCoinActivity;
 
 /**
  * Common Utils for the application
@@ -1260,7 +1261,13 @@ public class Utils {
         context.startActivity(intent);
         return true;
     }
-    
+
+    /**
+     * do blur for a bitmap
+     * @param context
+     * @param bitmap the bitmap to be blured
+     * @return 
+     */
     @SuppressLint("NewApi")
     public static Bitmap blurBitmap(Context context, Bitmap bitmap) {
 
@@ -1295,7 +1302,10 @@ public class Utils {
         rs.destroy();
         return outBitmap;
     }
-    
+
+    /**
+     * A display option for ImageLoader
+     */
     public static final  DisplayImageOptions sDisplayImageOptions = new DisplayImageOptions.Builder()
     // .showImageOnLoading(R.drawable.ic_stub) //加载图片时的图片
     // .showImageForEmptyUri(R.drawable.ic_e ynmnmpty) //没有图片资源时的默认图片
@@ -1305,4 +1315,13 @@ public class Utils {
             .considerExifParams(true) // 启用EXIF和JPEG图像格式
             .displayer(new RoundedBitmapDisplayer(20)) // 设置显示风格这里是圆角矩形
             .build();
+
+    /**
+     * Go to BuyCoinActivity 
+     * @param context A context which should be a Activity context
+     */
+    public static void gotoBuyCoinPage(Context context) {
+        Intent intent = new Intent(context, BuyCoinActivity.class);
+        context.startActivity(intent);
+    }
 }
