@@ -495,16 +495,17 @@ public class HomeTabActivity extends BaseTabActivity implements
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
             if (!isFinishing()) {
                 showDialog(DIALOG_EXIT);
             }
             return true;
         }
-        return super.onKeyDown(keyCode, event);
+        return super.dispatchKeyEvent(event);
     }
-
+    
     @Override
     protected Dialog onCreateDialog(final int id) {
         switch (id) {
