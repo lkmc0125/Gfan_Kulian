@@ -183,6 +183,9 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         textViewTaskCheck.setOnClickListener(this);
         textViewAllTask=(TextView)findViewById(R.id.connection_recommend_all_task_text);
         textViewAllTask.setOnClickListener(this);
+        
+        RelativeLayout humorLayout = (RelativeLayout)findViewById(R.id.humor_title);
+        humorLayout.setOnClickListener(this);
     }
     
     private void checkNetwork() {
@@ -643,6 +646,12 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             /*Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
             startActivity(PayIntent);*/
             Utils.gotoBuyCoinPage(ConnectionActivity.this);
+            break;
+        case R.id.humor_title:
+            Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
+            detailIntent.putExtra("extra.url", "http://xhaz.come11.com");
+            detailIntent.putExtra("extra.title", "搞笑幽默");
+            startActivity(detailIntent);
             break;
         default:
             break;
