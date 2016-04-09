@@ -32,6 +32,7 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.CustomDialog;
+import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
 /**
@@ -300,8 +301,9 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             }
             break;
         case R.id.buy_layout:
-            Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
-            startActivity(PayIntent);
+            /*Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
+            startActivity(PayIntent);*/
+            Utils.gotoBuyCoinPage(PersonalAccountActivity.this);
             break;
         default:
             break;
