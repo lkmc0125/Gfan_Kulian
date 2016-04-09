@@ -85,14 +85,17 @@ public class PayMainActivity extends BaseActivity implements OnClickListener, Ap
                 Log.d(TAG, "no input data");
                 return;
             } else {
-                doPay();
+                doWechatPay();
             }
             break;
         }
 
     }
 
-    private void doPay() {
+    /**
+     * Wechat pay logic
+     */
+    private void doWechatPay() {
         final String url = "http://115.159.76.147:8390/cb/getprepayid?phone_number=13418680969&type=1&goods_id=1";
         Toast.makeText(PayMainActivity.this, "请稍候...", Toast.LENGTH_SHORT).show();
         new AsyncTask<Void, Void, Void>() {
