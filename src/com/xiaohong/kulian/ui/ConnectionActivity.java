@@ -637,8 +637,9 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             }
             break;
         case R.id.person_account_pay_gold_coins_layout:
-            Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
-            startActivity(PayIntent);
+            /*Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
+            startActivity(PayIntent);*/
+            Utils.gotoBuyCoinPage(ConnectionActivity.this);
             break;
         default:
             break;
