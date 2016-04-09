@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_centerInParent="true"
-            android:text="购买金币"
+            android:text="@string/buy"
             android:textColor="#FFFFFF"
             android:textSize="36px"
             ></TextView>
@@ -43,15 +43,18 @@
         android:orientation="horizontal" >
 
         <RelativeLayout
+            android:id="@+id/oneyuanlayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
             android:layout_weight="1"
+            android:drawSelectorOnTop="true" 
             android:background="@drawable/coincheckedbg"
             android:orientation="horizontal" >
             <TextView 
+                android:id="@+id/onehundredtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100"
@@ -62,9 +65,20 @@
                 android:drawableEnd="@drawable/goldcoin_small"
                 />
             <TextView 
+                 android:id="@+id/onetv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1元"
+                android:text="@string/one"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/oneyuanunit"
+                />
+            <TextView 
+                android:id="@+id/oneyuanunit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/moneyunit"
                 android:textColor="#FFFFFF"
                 android:textSize="16dp"
                 android:layout_centerVertical="true"
@@ -74,15 +88,17 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/fiveyuanlayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
             android:layout_weight="1"
-            android:background="@drawable/coindefaultbg"
+            android:background="@drawable/buy_money_item_background"
             android:orientation="horizontal" >
             <TextView 
+                android:id="@+id/fivehundredtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="500"
@@ -93,11 +109,22 @@
                 android:drawableEnd="@drawable/goldcoin_small"
                 />
             <TextView 
+                android:id="@+id/fivetv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5元"
+                android:text="@string/five"
                 android:textColor="#2C78D4"
-                android:textSize="20dp"
+                android:textSize="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/fiveyuanunit"
+                />
+            <TextView 
+                android:id="@+id/fiveyuanunit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/moneyunit"
+                android:textColor="#000000"
+                android:textSize="16dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
@@ -113,15 +140,17 @@
         android:orientation="horizontal" >
 
        <RelativeLayout
+           android:id="@+id/tenyuanlayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
             android:layout_weight="1"
-            android:background="@drawable/coindefaultbg"
+            android:background="@drawable/buy_money_item_background"
             android:orientation="horizontal" >
             <TextView 
+                android:id="@+id/onethousandtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1000"
@@ -132,11 +161,22 @@
                 android:drawableEnd="@drawable/goldcoin_small"
                 />
             <TextView 
+                android:id="@+id/tentv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10元"
+                android:text="@string/ten"
                 android:textColor="#2C78D4"
-                android:textSize="20dp"
+                android:textSize="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tenyuanunit"
+                />
+            <TextView 
+                android:id="@+id/tenyuanunit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/moneyunit"
+                android:textColor="#000000"
+                android:textSize="16dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
@@ -144,15 +184,17 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/thirtyyuanlayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
             android:layout_weight="1"
-            android:background="@drawable/coindefaultbg"
+            android:background="@drawable/buy_money_item_background"
             android:orientation="horizontal" >
             <TextView 
+                android:id="@+id/threethousandtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3000"
@@ -163,11 +205,22 @@
                 android:drawableEnd="@drawable/goldcoin_small"
                 />
             <TextView 
+                android:id="@+id/thirtytv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="30元"
+                android:text="@string/thirty"
                 android:textColor="#2C78D4"
-                android:textSize="20dp"
+                android:textSize="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/thirtyyuanunit"
+                />
+            <TextView 
+                android:id="@+id/thirtyyuanunit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/moneyunit"
+                android:textColor="#000000"
+                android:textSize="16dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
@@ -183,7 +236,7 @@
         android:layout_marginRight="30dp"
         android:background="#00FF00"
         android:gravity="center"
-        android:text="微信支付"
+        android:text="@string/wechatpay"
         android:textColor="#FFFFFF"
         android:textSize="28dp" 
         android:id="@+id/wechatpaytv"/>
