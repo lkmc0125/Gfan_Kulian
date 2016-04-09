@@ -448,68 +448,6 @@ public class DialogUtils {
         return builder.create();
     }
 
-    public static Dialog createListCheckboxDialog(final Context context, final int id, final CharSequence[] items, int initialSelection,
-            final ListCheckboxDialogListener listener) {
-        return createListCheckboxDialog(context, id, items, null, initialSelection, listener);
-    }
-
-    public static Dialog createListCheckboxDialog(final Context context, final int id, final CharSequence[] items, final int[] itemIds, int initialSelection,
-            final ListCheckboxDialogListener listener) {
-        mWhich = initialSelection;
-        if (itemIds != null && itemIds.length >= items.length)
-            mItemIds = itemIds;
-        else
-            mItemIds = null;
-        AlertDialog.Builder builder = new AlertDialog.Builder(context).setOnCancelListener(new DialogInterface.OnCancelListener() {
-            public void onCancel(DialogInterface arg0) {
-                if (context instanceof Activity) {
-                    ((Activity) context).removeDialog(id);
-                }
-
-                if (listener != null)
-                    listener.onListDialogCancel(id, items);
-            }
-        });
-
-        if (initialSelection == -1) {
-            builder.setAdapter(new ArrayAdapter<CharSequence>(context, R.layout.market_list_item_textview_large_inverse, items),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            if (context instanceof Activity)
-                                ((Activity) context).removeDialog(id);
-
-                            if (listener != null)
-                                listener.onListDialogOK(id, items, mItemIds == null ? -1 : mItemIds[whichButton], whichButton);
-                        }
-                    });
-        } else {
-            builder.setSingleChoiceItems(new ArrayAdapter<CharSequence>(context, R.layout.market_list_item_single_choice, R.id.text1, items), initialSelection,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            mWhich = whichButton;
-                        }
-                    }).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    if (context instanceof Activity)
-                        ((Activity) context).removeDialog(id);
-
-                    if (listener != null)
-                        listener.onListDialogOK(id, items, mItemIds == null ? -1 : mItemIds[whichButton], mWhich);
-                }
-            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    if (context instanceof Activity)
-                        ((Activity) context).removeDialog(id);
-
-                    if (listener != null)
-                        listener.onListDialogCancel(id, items);
-                }
-            });
-        }
-
-        return builder.create();
-    }
-
     /**
      * <p>
      * Create an input dialog

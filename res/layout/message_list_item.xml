@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 产品列表项 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="100dip"
+    android:background="@color/app_task_background_color" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dip"
+        android:background="@drawable/app_task_item_bg_with_shadow" >
+
+        <!-- blue point -->
+
+        <View
+            android:id="@+id/blue_point"
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="#2c78d4" >
+        </View>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/blue_point"
+            android:layout_toLeftOf="@+id/tv_action"
+            android:gravity="left|center"
+            android:text="taobao"
+            android:textAppearance="@style/app_text_style1" />
+
+        <!-- 查看 -->
+
+        <TextView
+            android:id="@+id/tv_action"
+            android:layout_width="50dip"
+            android:layout_height="20dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/task_action_view_border"
+            android:gravity="center"
+            android:text="@string/app_item_action_view"
+            android:textAppearance="@style/app_text_style12" />
+    </RelativeLayout>
+
+</RelativeLayout>

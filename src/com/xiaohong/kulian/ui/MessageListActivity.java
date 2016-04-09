@@ -15,10 +15,14 @@ import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.adapter.MessageListAdapter;
+import com.xiaohong.kulian.adapter.TaskListAdapter;
+import com.xiaohong.kulian.bean.MessageBean;
+import com.xiaohong.kulian.bean.MessageListBean;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
-public class MessagesActivity extends BaseActivity {
+public class MessageListActivity extends BaseActivity {
     private ListView mListView;
     private ArrayAdapter<String> adapter;
     private FrameLayout mLoading;
@@ -35,16 +39,13 @@ public class MessagesActivity extends BaseActivity {
         mLoading = (FrameLayout) findViewById(R.id.loading);
         mNoData = (TextView) mLoading.findViewById(R.id.no_data);
         mListView.setEmptyView(mLoading);
-        ArrayList<String> data = new ArrayList<String>();
         Session session = Session.get(getApplicationContext());
-        ArrayList<HashMap<String, String>> messages = session.getMessages();
-        if (messages != null && messages.size() > 0) {
-            for (HashMap<String, String> item : messages) {
-                data.add(item.get("text"));
-            }
-            adapter = new ArrayAdapter<String>(MessagesActivity.this,
-                    android.R.layout.simple_list_item_1, data);
+        MessageListBean messages = session.getMessageList();
+        if (messages != null && messages.getMessageList() != null && messages.getMessageList().size() > 0) {
+            MessageListAdapter adapter = new MessageListAdapter(MessageListActivity.this);
             mListView.setAdapter(adapter);
+            adapter.setData(messages.getMessageList());
+            adapter.notifyDataSetChanged();
         } else {
             mNoData.setVisibility(View.VISIBLE);
             // mProgress.setVisibility(View.GONE);

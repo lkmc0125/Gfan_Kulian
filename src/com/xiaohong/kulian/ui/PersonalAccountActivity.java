@@ -277,7 +277,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
 
             break;
         case R.id.person_account_message_center_value_layout:
-            Intent MessagesIntent = new Intent(getApplicationContext(), MessagesActivity.class);
+            Intent MessagesIntent = new Intent(getApplicationContext(), MessageListActivity.class);
             startActivityForResult(MessagesIntent, REQUEST_CODE);
             break;
         case R.id.person_account_normol_question_layout:

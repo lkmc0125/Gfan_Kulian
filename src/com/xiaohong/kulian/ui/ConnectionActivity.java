@@ -42,6 +42,7 @@ import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.adapter.ConnectionAppGridAdapter;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.AppListBean;
+import com.xiaohong.kulian.bean.MessageListBean;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
@@ -405,7 +406,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 } else {
                     MarketAPI.signIn(getApplicationContext(), this);
                 }
-                if (mSession.getMessages() == null) {
+                if (mSession.getMessageList() == null) {
                     MarketAPI.getMessages(getApplicationContext(), this);
                 }
             }
@@ -425,15 +426,15 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         }
         case MarketAPI.ACTION_GET_MESSAGES:
         {
-            ArrayList<HashMap<String, String>> messages = (ArrayList<HashMap<String, String>>)obj;
-            if (messages.size() > 0) {
+            MessageListBean messages = (MessageListBean)obj;
+            if (messages!= null && messages.getMessageList() != null
+                    && messages.getMessageList().size() > 0) {
                 mSession.setMessages(messages);  
-                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().size());
-                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(0).get("text"));
-                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(1).get("text"));
-                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(2).get("text"));
-                textViewMessage.setText(mSession.getMessages().get(0).get("text"));
-                
+//                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().size());
+//                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(0).get("text"));
+//                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(1).get("text"));
+//                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(2).get("text"));
+                textViewMessage.setText(mSession.getMessageList().getMessageList().get(0).getMessageText());
             }
             break;
         }

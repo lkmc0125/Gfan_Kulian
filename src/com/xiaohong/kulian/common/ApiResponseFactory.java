@@ -42,6 +42,7 @@ import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.bean.AppDetailBean;
 import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.bean.GoodsListBean;
+import com.xiaohong.kulian.bean.MessageListBean;
 import com.xiaohong.kulian.bean.ReportResultBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.codec.binary.Base64;
@@ -149,7 +150,7 @@ public class ApiResponseFactory {
 
             case MarketAPI.ACTION_GET_MESSAGES:
                 requestMethod = "ACTION_GET_MESSAGES";
-                result = parseMessages(context, inputBody);
+                result = gson.fromJson(inputBody, MessageListBean.class);
                 break;
 
             case MarketAPI.ACTION_SIGN_IN:
@@ -278,38 +279,6 @@ public class ApiResponseFactory {
             Utils.D("have json exception when parse new version info", e);
         }
         return null;
-    }
-    
-    /*
-     * 解析消息列表
-     */
-    private static ArrayList<HashMap<String, String>> parseMessages(Context context, String body) {
-        if (body == null) {
-            return null;
-        }
-        ArrayList<HashMap<String, String>> result = null;
-        try {
-            // { "broadcastlist" : [ { "broadcast_item" : "完成关注公众号任务,可赚取金币哦!\n" }, { "broadcast_item" : "唯享客任务,只要注册成功,即可获得1000金币!请点这里>>", "click_url" : "http://120.193.39.115:8010/1/" }, { "broadcast_item" : "2万份精美礼品免费领!请点这里>>", "click_url" : "http://www.exiaohong.com/VIP/yyzcdl.html" } ], "ret_code" : 0, "ret_msg" : "success", "total_count" : 1 } 
-            JSONObject jsonObj = new JSONObject(body);
-            result = new ArrayList<HashMap<String, String>>();
-            if (jsonObj.getInt("ret_code") == 0) {
-                JSONArray array = jsonObj.getJSONArray("broadcastlist");
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject obj = array.getJSONObject(i);
-                    HashMap<String, String> item = new HashMap<String, String>();
-                    item.put("text", obj.getString("broadcast_item"));
-                    try {
-                        item.put("url", obj.getString("click_url"));  
-                    } catch (JSONException e) {
-                    }
-                    result.add(item);
-                }
-            }
-        } catch (JSONException e) {
-            Utils.D("have json exception when parse search result from bbs", e);
-        }
-
-        return result;
     }
 
     /*

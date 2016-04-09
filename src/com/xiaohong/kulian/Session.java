@@ -68,6 +68,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.bean.MessageListBean;
 import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.download.DownloadManager.Impl;
 import com.xiaohong.kulian.common.util.DBUtils;
@@ -229,7 +230,7 @@ public class Session extends Observable {
     /** 广播和私人消息
      * 每个条目有text字段，可能有url字段
      *  */
-    private ArrayList<HashMap<String, String>> messages;
+    private MessageListBean messageList;
 
     /** 今天是否已经签到过 */
     private boolean signInToday;
@@ -320,12 +321,12 @@ public class Session extends Observable {
         super.notifyObservers(new Pair<String, Object>(P_UID, uid));
     }
 
-    public ArrayList<HashMap<String, String>> getMessages() {
-        return messages;
+    public MessageListBean getMessageList() {
+        return messageList;
     }
 
-    public void setMessages(ArrayList<HashMap<String, String>> messages) {
-        this.messages = messages;
+    public void setMessages(MessageListBean messageList) {
+        this.messageList = messageList;
     }
 
     public String getScreenSize() {
