@@ -104,15 +104,15 @@ public class TaskListActivity extends LazyloadListActivity implements
         TaskListBean result = (TaskListBean) obj;
         if(result.getTasklist() != null) {
             Log.d(TAG, "size = " + result.getTasklist().size());
-            TaskBean bean = new TaskBean();
-            bean.setType(TaskBean.ITEM_TYPE_TITLE);
-            bean.setTitle(getResources().getString(R.string.title_task_todo));
+//            TaskBean bean = new TaskBean();
+//            bean.setType(TaskBean.ITEM_TYPE_TITLE);
+//            bean.setTitle(getResources().getString(R.string.title_task_todo));
             for(TaskBean item : result.getTasklist()) {
                 //set remain num to 1 for normal task
                 item.setRemain_tasknum(1);
                 item.setTaskType(TaskListAdapter.TYPE_NORMAL_TASK);
             }
-            result.getTasklist().add(0, bean);
+//            result.getTasklist().add(0, bean);
             mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK,result.getTasklist());
             mAdapter.notifyDataSetChanged();
         }else {
@@ -198,36 +198,45 @@ public class TaskListActivity extends LazyloadListActivity implements
         public void onSuccess(int method, Object obj) {
             Log.d(TAG, obj.toString());
             TaskListBean result = (TaskListBean) obj;
-            ArrayList<TaskBean> list = result.getTasklist();
+            ArrayList<TaskBean> availableList = new ArrayList<TaskBean>();;
+            ArrayList<TaskBean> finishedList = new ArrayList<TaskBean>();
             int titlePos = 0;
-            if(list != null) {
-                Log.d(TAG, "ApiRequestListener size = " + list.size());
-                for(int i = 0; i< list.size(); i++) {
-                    if(list.get(i).getRemain_tasknum() == 0 && titlePos == 0) {
-                        TaskBean bean = new TaskBean();
-                        bean.setType(TaskBean.ITEM_TYPE_TITLE);
-                        bean.setTaskType(TaskListAdapter.TYPE_GZH_TAK);
-                        bean.setTitle(getResources().getString(R.string.title_task_done));
-                        list.add(i, bean);
-                        titlePos = i;
-                        //break;
-                    }else if(list.get(i).getRemain_tasknum() > 0){
-                        if(titlePos > 0) {
-                            TaskBean bean = list.remove(i);
-                            list.add(titlePos, bean);
-                        }
+            if(result.getTasklist() != null) {
+                Log.d(TAG, "ApiRequestListener size = " + result.getTasklist().size());
+                for(int i = 0; i< result.getTasklist().size(); i++) {
+                    TaskBean bean = result.getTasklist().get(i);
+                    if (bean.getRemain_tasknum() == 0) {
+                        finishedList.add(bean);                        
+                    } else {
+                        availableList.add(bean);
                     }
+                    
+//                    if(list.get(i).getRemain_tasknum() == 0 && titlePos == 0) {
+//                        TaskBean bean = new TaskBean();
+//                        bean.setType(TaskBean.ITEM_TYPE_TITLE);
+//                        bean.setTaskType(TaskListAdapter.TYPE_GZH_TAK);
+//                        bean.setTitle(getResources().getString(R.string.title_task_done));
+//                        list.add(i, bean);
+//                        titlePos = i;
+                        //break;
+//                    }else if(list.get(i).getRemain_tasknum() > 0){
+//                        if(titlePos > 0) {
+//                            TaskBean bean = list.remove(i);
+//                            list.add(titlePos, bean);
+//                        }
+//                    }
+                }
+                if (finishedList.size() > 0) {
+                    availableList.addAll(finishedList);
                 }
                 Log.d(TAG, "onSuccess done");
-                mAdapter.setData(TaskListAdapter.TYPE_GZH_TAK, 
-                        list);
+                mAdapter.setData(TaskListAdapter.TYPE_GZH_TAK, availableList);
                 mAdapter.notifyDataSetChanged();
             }else {
                 Log.d(TAG, "no data from server");
             }
             mIsEnd = true;
             setLoadResult(true);
-            
         }
 
         @Override

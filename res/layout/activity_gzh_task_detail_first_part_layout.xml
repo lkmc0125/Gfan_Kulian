@@ -36,7 +36,7 @@
             android:gravity="left"
             android:src="@drawable/left_arrow" />
 
-        <!-- right up corner icon -->
+        <!-- right up corner icon 
 
         <ImageView
             android:layout_width="wrap_content"
@@ -47,6 +47,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/tasklisticon"
             android:contentDescription="@null" />
+            -->
     </RelativeLayout>
 
     <!-- logo -->
