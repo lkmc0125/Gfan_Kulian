@@ -27,7 +27,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dip"
-                layout="@layout/activity_connect_second_part_layout" />
+                layout="@layout/activity_person_account_second_part_layout" />
 
             <include
                 android:id="@+id/activity_connect_third_part_layout"

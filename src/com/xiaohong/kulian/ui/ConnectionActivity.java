@@ -161,13 +161,13 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         /**
          * 签到界面
          */
-        layoutSignIn=(RelativeLayout)findViewById(R.id.person_account_sign_in_layout);
+        layoutSignIn=(RelativeLayout)findViewById(R.id.sign_in_layout);
         layoutSignIn.setOnClickListener(this);
-        layoutBuyCoin=(RelativeLayout)findViewById(R.id.person_account_pay_gold_coins_layout);
+        layoutBuyCoin=(RelativeLayout)findViewById(R.id.gold_coins_layout);
         layoutBuyCoin.setOnClickListener(this);
-        textView_coin_num=(TextView)findViewById(R.id.main_home_person_center_coin_text);
+        textView_coin_num=(TextView)findViewById(R.id.coin_text);
         textView_coin_num.setText("0");
-        textView_signIn_status=(TextView)findViewById(R.id.person_account_sign_in_value_text);
+        textView_signIn_status=(TextView)findViewById(R.id.sign_in_value_text);
         /**
          * 推荐应用界面
          */
@@ -643,7 +643,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             }
             break;
         //签到点击事件
-        case R.id.person_account_sign_in_layout:
+        case R.id.sign_in_layout:
             if (!mSession.isLogin()) {
                 if (!autoLogin()) {
                     Intent intent_next = new Intent(getApplicationContext(), RegisterActivity.class);
@@ -654,7 +654,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             }
             break;
         //购买金币点击事件
-        case R.id.person_account_pay_gold_coins_layout:
+        case R.id.gold_coins_layout:
             /*Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
             startActivity(PayIntent);*/
             Utils.gotoBuyCoinPage(ConnectionActivity.this);
