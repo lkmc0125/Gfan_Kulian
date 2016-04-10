@@ -30,6 +30,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
@@ -68,7 +69,11 @@ public class ApiRequestFactory {
 
         String requestString = url+"?"+EntityUtils.toString(entity);
         HttpGet request = new HttpGet(requestString);
-        request.addHeader("Cookie", "token=" + session.getToken());
+        if(action == MarketAPI.ACTION_REPORT_APP_INSTALLED || 
+                action == MarketAPI.ACTION_REPORT_APP_LAUNCHED) {
+            BasicHeader header = new BasicHeader("Cookie", "token=" + session.getToken());
+            request.addHeader(header);
+        }
         return request;
     }
     

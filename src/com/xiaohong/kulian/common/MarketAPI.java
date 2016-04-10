@@ -324,7 +324,7 @@ public class MarketAPI {
         params.put("imei", session.getIMEI());
         params.put("pkgname", packageName);
 
-        new ApiAsyncTask(context, ACTION_REGISTER, handler, params).execute();
+        new ApiAsyncTask(context, ACTION_REPORT_APP_LAUNCHED, handler, params).execute();
     }
     
     /**
@@ -339,7 +339,7 @@ public class MarketAPI {
         params.put("imei", session.getIMEI());
         params.put("appid", appId + "");
 
-        new ApiAsyncTask(context, ACTION_REGISTER, handler, params).execute();
+        new ApiAsyncTask(context, ACTION_REPORT_APP_LAUNCHED, handler, params).execute();
     }
     
 }

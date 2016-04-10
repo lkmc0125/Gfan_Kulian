@@ -3,7 +3,7 @@ package com.xiaohong.kulian.bean;
 public class ReportResultBean {
 
     private int coin_num;
-    private int dec_coin_num;
+    private int added_coin;
     private int ret_code;
     private String ret_msg;
 
@@ -14,11 +14,11 @@ public class ReportResultBean {
         return coin_num;
     }
 
-    public void setDecCoinNum(int decCoinNum) {
-        this.dec_coin_num = decCoinNum;
+    public void setAddedCoinNum(int decCoinNum) {
+        this.added_coin = decCoinNum;
     }
-    public int getDecCoinNum() {
-        return dec_coin_num;
+    public int getAddedCoinNum() {
+        return added_coin;
     }
 
     public void setRetCode(int retCode) {
@@ -36,8 +36,8 @@ public class ReportResultBean {
     }
     
     public String toString() {
-        return "ReportResultBean[coin_num=" + coin_num + ", dec_coin_num = "
-                + dec_coin_num + ", ret_code = " + ret_code + ", ret_msg = " + ret_msg + "]";
+        return "ReportResultBean[coin_num=" + coin_num + ", added_coin = "
+                + added_coin + ", ret_code = " + ret_code + ", ret_msg = " + ret_msg + "]";
                 
     }
 
