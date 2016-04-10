@@ -1,5 +1,7 @@
 package com.xiaohong.kulian.ui;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +11,11 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.adapter.BuyItemGridViewAdapter;
+import com.xiaohong.kulian.bean.GoodsListBean;
+import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.Utils;
 
@@ -18,6 +25,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,14 +39,16 @@ import android.widget.Toast;
  * @author free
  *
  */
-public class BuyCoinActivity extends Activity implements OnClickListener {
+public class BuyCoinActivity extends Activity implements OnClickListener, ApiRequestListener,
+    OnItemClickListener{
     private static final String TAG = "BuyCoinActivity";
 
     private IWXAPI mWxApi;
 
     private ImageButton mBackBtn;
     private TextView mWechatPayTv;
-    private RelativeLayout mOneyuanLayout;
+    
+    /*private RelativeLayout mOneyuanLayout;
     private RelativeLayout mFiveyuanLayout;
     private RelativeLayout mTenyuanLayout;
     private RelativeLayout mThirtyyuanLayout;
@@ -54,23 +66,29 @@ public class BuyCoinActivity extends Activity implements OnClickListener {
 
     private TextView mThreethousandTv;
     private TextView mThirtyTv;
-    private TextView mThirtyUnittv;
+    private TextView mThirtyUnittv;*/
 
     // the default item is one yuan
     private int mMoney = 1;
+    
+    private GridView mGridView;
+    private BuyItemGridViewAdapter mAdapter;
+    private GoodsListBean mGoodsList;
+    private Session mSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_coin);
-        initData();
+        mSession = Session.get(getApplicationContext());
         initViews();
+        initData();
     }
 
     private void initViews() {
         mBackBtn = (ImageButton) findViewById(R.id.back_btn);
         mWechatPayTv = (TextView) findViewById(R.id.wechatpaytv);
-        mOneyuanLayout = (RelativeLayout) findViewById(R.id.oneyuanlayout);
+        /*mOneyuanLayout = (RelativeLayout) findViewById(R.id.oneyuanlayout);
         mFiveyuanLayout = (RelativeLayout) findViewById(R.id.fiveyuanlayout);
         mTenyuanLayout = (RelativeLayout) findViewById(R.id.tenyuanlayout);
         mThirtyyuanLayout = (RelativeLayout) findViewById(R.id.thirtyyuanlayout);
@@ -89,19 +107,26 @@ public class BuyCoinActivity extends Activity implements OnClickListener {
 
         mThreethousandTv = (TextView) findViewById(R.id.threethousandtv);
         mThirtyTv = (TextView) findViewById(R.id.thirtytv);
-        mThirtyUnittv = (TextView) findViewById(R.id.thirtyyuanunit);
-
+        mThirtyUnittv = (TextView) findViewById(R.id.thirtyyuanunit);*/
+        
+        mGridView = (GridView) findViewById(R.id.buycoinitemgridview);
+       
+        mWechatPayTv.setEnabled(false);
+        
         mBackBtn.setOnClickListener(this);
         mWechatPayTv.setOnClickListener(this);
-        mOneyuanLayout.setOnClickListener(this);
+        
+        /*mOneyuanLayout.setOnClickListener(this);
         mFiveyuanLayout.setOnClickListener(this);
         mTenyuanLayout.setOnClickListener(this);
-        mThirtyyuanLayout.setOnClickListener(this);
+        mThirtyyuanLayout.setOnClickListener(this);*/
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        //MarketAPI.reportAppInstalled(getApplicationContext(), null, 154);
+        //MarketAPI.reportAppLaunched(getApplicationContext(), null, 154);
         switch (id) {
             case R.id.back_btn :
                 finish();
@@ -109,7 +134,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener {
             case R.id.wechatpaytv :
                 doWechatPay();
                 break;
-            case R.id.oneyuanlayout :
+           /* case R.id.oneyuanlayout :
                 doSelectOneyuan();
                 break;
             case R.id.fiveyuanlayout :
@@ -120,13 +145,13 @@ public class BuyCoinActivity extends Activity implements OnClickListener {
                 break;
             case R.id.thirtyyuanlayout :
                 doSelectThirtyyuan();
-                break;
+                break;*/
             default :
                 break;
         }
     }
 
-    private void doSelectOneyuan() {
+    /*private void doSelectOneyuan() {
         mMoney = 1;
         mOneyuanLayout.setBackgroundResource(R.drawable.coincheckedbg);
         mFiveyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
@@ -225,7 +250,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener {
         mThreethousandTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
         mThirtyTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
         mThirtyUnittv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-    }
+    }*/
 
     /**
      * Init wechat pay api
@@ -238,14 +263,16 @@ public class BuyCoinActivity extends Activity implements OnClickListener {
         Toast.makeText(getApplicationContext(), String.valueOf(isPaySupported),
                 Toast.LENGTH_SHORT).show();
 
-        // getGoodsList();
+        getGoodsList();
     }
 
     /**
      * Wechat pay logic
      */
     private void doWechatPay() {
-        final String url = "http://115.159.76.147:8390/cb/getprepayid?phone_number=13418680969&type=1&goods_id=1";
+        final String url = "http://115.159.76.147:8390/cb/getprepayid?phone_number="
+                + mSession.getUserName() + "&type=1&goods_id=" + mAdapter.getSelectedGoodsId();
+        Log.d(TAG, "doWechatPay url = " + url);
         Toast.makeText(getApplicationContext(), "请稍候...", Toast.LENGTH_SHORT)
                 .show();
         new AsyncTask<Void, Void, Void>() {
@@ -278,8 +305,8 @@ public class BuyCoinActivity extends Activity implements OnClickListener {
                             req.timeStamp = json.getString("timeStamp");
                             req.packageValue = json.getString("packageValue");
                             req.sign = json.getString("sign");
-                            req.extData = "app data"; // optional
-                            // Toast.makeText(PayMainActivity.this, "正在跳转到微信",
+                            /*req.extData = "app data"; // optional
+*/                            // Toast.makeText(PayMainActivity.this, "正在跳转到微信",
                             // Toast.LENGTH_SHORT).show();
                             mWxApi.sendReq(req);
                         } else {
@@ -304,6 +331,41 @@ public class BuyCoinActivity extends Activity implements OnClickListener {
                 mWechatPayTv.setEnabled(true);
             };
         }.execute();
+    }
+
+    @Override
+    public void onSuccess(int method, Object obj) {
+        switch (method) {
+            case MarketAPI.ACTION_GET_GOODS_LIST:
+                mGoodsList = (GoodsListBean) obj;
+                mAdapter = new BuyItemGridViewAdapter(getApplicationContext(), mGoodsList.getGoodsList());
+                mGridView.setAdapter(mAdapter);
+                mWechatPayTv.setEnabled(true);
+                mGridView.setOnItemClickListener(BuyCoinActivity.this);
+
+                break;
+            default:
+                break;
+            }
+        
+    }
+
+    @Override
+    public void onError(int method, int statusCode) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    private void getGoodsList() {
+        MarketAPI.getGoodsList(getApplicationContext(), this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+            long id) {
+       mAdapter.setSelectedPos(position);
+       mAdapter.notifyDataSetChanged();
+        
     }
 
 }

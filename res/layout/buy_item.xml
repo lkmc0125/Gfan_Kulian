@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/coinlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/buy_money_item_background"
+            android:orientation="horizontal" >
+            <TextView 
+                android:id="@+id/cointv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="500"
+                android:textColor="#595959"
+                android:textSize="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:drawableEnd="@drawable/goldcoin_small"
+                />
+            <TextView 
+                android:id="@+id/moneytv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/five"
+                android:textColor="#2C78D4"
+                android:textSize="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/moneyunittv"
+                />
+            <TextView 
+                android:id="@+id/moneyunittv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/moneyunit"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                />
+        </RelativeLayout>

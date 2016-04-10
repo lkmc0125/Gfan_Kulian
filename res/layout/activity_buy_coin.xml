@@ -35,7 +35,7 @@
             ></TextView>
     </RelativeLayout>
 
-    <!-- first line coin -->
+<!--     first line coin
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,7 +132,7 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <!-- second line coin -->
+    second line coin
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -226,7 +226,19 @@
                 android:layout_marginRight="10dp"
                 />
         </RelativeLayout>
-    </LinearLayout>
+    </LinearLayout> -->
+    
+    <GridView
+        android:id="@+id/buycoinitemgridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:horizontalSpacing="30dp"
+        android:verticalSpacing="30dp"
+        android:numColumns="2" >
+    </GridView>
 
     <TextView
         android:layout_width="match_parent"
@@ -240,5 +252,6 @@
         android:textColor="#FFFFFF"
         android:textSize="28dp" 
         android:id="@+id/wechatpaytv"/>
+
 
 </LinearLayout>

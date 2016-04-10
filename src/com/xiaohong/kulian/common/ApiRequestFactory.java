@@ -68,6 +68,7 @@ public class ApiRequestFactory {
 
         String requestString = url+"?"+EntityUtils.toString(entity);
         HttpGet request = new HttpGet(requestString);
+        request.addHeader("Cookie", "token=" + session.getToken());
         return request;
     }
     

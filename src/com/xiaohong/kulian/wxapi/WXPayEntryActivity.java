@@ -26,31 +26,34 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_result);
+        Log.d(TAG, "onCreate");
         
-    	api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
+        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
         api.handleIntent(getIntent(), this);
     }
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		setIntent(intent);
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
         api.handleIntent(intent, this);
-	}
+    }
 
-	@Override
-	public void onReq(BaseReq req) {
-	}
+    @Override
+    public void onReq(BaseReq req) {
+        Log.d(TAG, "onReq: " + req);
+    }
 
-	@Override
-	public void onResp(BaseResp resp) {
-		Log.d(TAG, "onPayFinish, errCode = " + resp.errCode);
+    @Override
+    public void onResp(BaseResp resp) {
+        Log.d(TAG, "onPayFinish, errCode = " + resp.errCode);
 
-		if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("支付结果");
-			builder.setMessage(getString(R.string.pay_result_callback_msg, String.valueOf(resp.errCode)));
-			builder.show();
-		}
-	}
+        if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("支付结果");
+            builder.setMessage(getString(R.string.pay_result_callback_msg,
+                    String.valueOf(resp.errCode)));
+            builder.show();
+        }
+    }
 }

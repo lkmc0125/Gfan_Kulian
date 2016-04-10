@@ -78,7 +78,7 @@ public class MarketAPI {
             //ACTION_REPORT_APP_INSTALLED
             API_BASE_URL + "/download_report", 
             //ACTION_REPORT_APP_LAUNCHED
-            API_BASE_URL + "/applaunch_report", 
+            API_BASE_URL + "/applanch_report", 
             
             };
 

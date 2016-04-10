@@ -166,11 +166,13 @@ public class ApiResponseFactory {
             case MarketAPI.ACTION_REPORT_APP_INSTALLED:
                 requestMethod = "ACTION_REPORT_APP_INSTALLED";
                 result = gson.fromJson(inputBody, ReportResultBean.class);
+                Log.d("free", "installed report result = " + result);
                 break;
                 
             case MarketAPI.ACTION_REPORT_APP_LAUNCHED:
                 requestMethod = "ACTION_REPORT_APP_LAUNCHED";
                 result = gson.fromJson(inputBody, ReportResultBean.class);
+                Log.d("free", "launched result = " + result);
                 break;
 
             default:
@@ -207,7 +209,9 @@ public class ApiResponseFactory {
                 if (jsonObj.has("is_sign")) {
                     result.put(Constants.KEY_SIGN_IN_TODAY, jsonObj.getString("is_sign")); 
                 }
-                result.put(Constants.KEY_TOKEN, jsonObj.getString("token"));
+                String token = jsonObj.getString("token");
+                Log.d("free", "token = " + token);
+                result.put(Constants.KEY_TOKEN, token);
             }
         } catch (JSONException e) {
             Utils.D("have json exception when parse search result from bbs", e);

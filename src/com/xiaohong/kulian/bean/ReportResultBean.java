@@ -34,5 +34,11 @@ public class ReportResultBean {
     public String getRetMsg() {
         return ret_msg;
     }
+    
+    public String toString() {
+        return "ReportResultBean[coin_num=" + coin_num + ", dec_coin_num = "
+                + dec_coin_num + ", ret_code = " + ret_code + ", ret_msg = " + ret_msg + "]";
+                
+    }
 
 }
