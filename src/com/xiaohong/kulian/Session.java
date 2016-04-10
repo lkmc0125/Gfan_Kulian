@@ -43,9 +43,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Observable;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -69,6 +72,9 @@ import android.util.Log;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.MessageListBean;
+import com.xiaohong.kulian.bean.ReportResultBean;
+import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.download.DownloadManager.Impl;
 import com.xiaohong.kulian.common.util.DBUtils;
@@ -239,6 +245,8 @@ public class Session extends Observable {
      * A cookie
      */
     private String mToken;
+    
+    private final ReportApiRequestListener mReportApiRequestListener = new ReportApiRequestListener();
     
     /**
      * default constructor
@@ -699,6 +707,7 @@ public class Session extends Observable {
 
     public void addInstalledApp(String packageName) {
 
+        reportAppInstalled(packageName);
         if (mInstalledApps == null) {
             Utils.getAllInstalledApps(mContext);
         }
@@ -1024,5 +1033,82 @@ public class Session extends Observable {
     
     public String getToken() {
         return mToken;
+    }
+    
+    private void reportAppInstalled(String packagename) {
+        DownloadInfo info = mDownloadingList.get(packagename);
+        if(info != null) {
+            MarketAPI.reportAppInstalled(mContext, mReportApiRequestListener, packagename);
+        }
+    }
+    
+    private void reportAppLaunched(String packagename) {
+        DownloadInfo info = mDownloadingList.get(packagename);
+        if(info != null) {
+            MarketAPI.reportAppLaunched(mContext, mReportApiRequestListener, packagename);
+        }
+    }
+    
+    private class ReportApiRequestListener implements ApiRequestListener {
+
+        @Override
+        public void onSuccess(int method, Object obj) {
+            
+            switch(method) {
+                case MarketAPI.ACTION_REPORT_APP_INSTALLED:
+                {
+                    ReportResultBean result = (ReportResultBean) obj;
+                    coinNum += result.getAddedCoinNum();
+                    break;
+                }
+                case MarketAPI.ACTION_REPORT_APP_LAUNCHED:
+                {
+                    ReportResultBean result = (ReportResultBean) obj;
+                    coinNum += result.getAddedCoinNum();
+                    break;
+                }
+            }
+            
+        }
+
+        @Override
+        public void onError(int method, int statusCode) {
+            // TODO Auto-generated method stub
+            
+        }
+        
+    }
+
+    // 正在运行的
+    private List<String> getRunningProcess() {
+        ActivityManager am = (ActivityManager) mContext
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        // 获取正在运行的应用
+        List<RunningAppProcessInfo> runList = am.getRunningAppProcesses();
+        ArrayList<String> runPackageList = new ArrayList<String>();
+        for (RunningAppProcessInfo info : runList) {
+            runPackageList.add(info.processName);
+        }
+        return runPackageList;
+    }
+    
+    private volatile boolean mNeedStopThread = false;
+
+    private class QueryRunningAppThread extends Thread {
+        @Override
+        public void run() {
+            while(true) {
+                if(mNeedStopThread == true) {
+                    break;
+                }
+                List<String> list = getRunningProcess();
+                
+                for(String pkg : list) {
+                    if(mDownloadingList.get(pkg) != null) {
+                        reportAppLaunched(pkg);
+                    }
+                }
+            }
+        }
     }
 }

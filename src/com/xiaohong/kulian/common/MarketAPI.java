@@ -313,6 +313,21 @@ public class MarketAPI {
     }
     
     /**
+     * 报告app已完成安装
+     * @param context
+     * @param handler
+     */
+    public static void reportAppInstalled(Context context, ApiRequestListener handler, String packageName) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("pkgname", packageName);
+        params.put("phone_number", session.getUserName());
+        params.put("imei", session.getIMEI());
+
+        new ApiAsyncTask(context, ACTION_REPORT_APP_INSTALLED, handler, params).execute();
+    }
+    
+    /**
      * 报告APP已启动
      * @param context
      * @param handler

@@ -48,12 +48,14 @@ public class DownloadInfo {
     /** ICON URL*/
     public Object mIconUrl;
     
+    public String mAppId;
+    
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return "packagename : " + mPackageName + " status " + mStatus + " progress " + mProgress
-                + " level " + mProgressLevel;
+                + " level " + mProgressLevel + ", mAppId = " + mAppId;
     }
 }

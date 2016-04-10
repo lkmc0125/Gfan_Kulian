@@ -165,16 +165,16 @@ public class ApiResponseFactory {
                 
             case MarketAPI.ACTION_REPORT_APP_INSTALLED:
                 requestMethod = "ACTION_REPORT_APP_INSTALLED";
-                //Log.d("free", "installed report  result str = " + inputBody);
+                Log.d("free", "installed report  result str = " + inputBody);
                 result = gson.fromJson(inputBody, ReportResultBean.class);
-                //Log.d("free", "installed report result = " + result);
+                Log.d("free", "installed report result = " + result);
                 break;
                 
             case MarketAPI.ACTION_REPORT_APP_LAUNCHED:
                 requestMethod = "ACTION_REPORT_APP_LAUNCHED";
-                //Log.d("free", "launched result str = " + inputBody);
+                Log.d("free", "launched result str = " + inputBody);
                 result = gson.fromJson(inputBody, ReportResultBean.class);
-                //Log.d("free", "launched result = " + result);
+                Log.d("free", "launched result = " + result);
                 break;
 
             default:

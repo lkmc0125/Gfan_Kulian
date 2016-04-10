@@ -829,6 +829,8 @@ public class DownloadManager {
          * The package name of the APK file. This not necessary for other files.
          */
         public static final String COLUMN_PACKAGE_NAME = "package_name";
+        
+        public static final String COLUMN_APP_ID = "app_id";
 
         /*
          * Lists the destinations that an application can specify for a download.
