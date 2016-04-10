@@ -28,22 +28,22 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
-import com.xiaohong.kulian.R.layout;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.adapter.ConnectionAppGridAdapter;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.AppListBean;
+import com.xiaohong.kulian.bean.MessageBean;
 import com.xiaohong.kulian.bean.MessageListBean;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.bean.TaskListBean;
@@ -55,6 +55,7 @@ import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.util.WifiAdmin;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
 import com.xiaohong.kulian.common.widget.BaseActivity;
+import com.xiaohong.kulian.common.widget.MarqueeTextView;
 import com.xiaohong.kulian.common.widget.RoundImageView;
 
 public class ConnectionActivity extends BaseActivity implements ApiRequestListener, OnClickListener {
@@ -75,7 +76,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     private Button mAuthBtn;
     private TextView mWifiStatusDesc,mWifiStatusDescSearch;
     private ImageView mWifiStatusIcon,mWifiStatusIconSearch;
-    private TextView textViewMessage;
+    private MarqueeTextView textViewMessage;
     /**
      * 签到界面
      */
@@ -155,7 +156,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         mWifiStatusIcon=(ImageView)findViewById(R.id.wifi_icon_success_status);
         mWifiStatusDescSearch=(TextView)findViewById(R.id.connection_link_search_status_value_text);
         mWifiStatusIconSearch=(ImageView)findViewById(R.id.wifi_icon_search_status_01);
-        textViewMessage=(TextView)findViewById(R.id.connection_current_activity_info_text);
+        textViewMessage=(MarqueeTextView)findViewById(R.id.connection_current_activity_info_text);
+        textViewMessage.setOnClickListener(this);
         /**
          * 签到界面
          */
@@ -440,7 +442,12 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
 //                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(0).get("text"));
 //                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(1).get("text"));
 //                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(2).get("text"));
-                textViewMessage.setText(mSession.getMessageList().getMessageList().get(0).getMessageText());
+                String Message_value="";
+                for(MessageBean s:mSession.getMessageList().getMessageList()){
+                    Message_value+=s.getMessageText();
+                }
+                textViewMessage.setMessageBeans(mSession.getMessageList().getMessageList());
+                textViewMessage.setText(Message_value);
             }
             break;
         }
@@ -604,6 +611,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             }
             break;
         }
+        //推荐应用详情点击事件
         case R.id.connection_recommend_all_app_text:
             Intent gameIntent = new Intent(getApplicationContext(),
                     ProductListActivity.class);
@@ -611,6 +619,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             gameIntent.putExtra(Constants.EXTRA_MAX_ITEMS, 100);
             startActivity(gameIntent);
             break;
+        //推荐任务详情点击事件
         case R.id.connection_recommend_all_task_text:
             Intent growIntent = new Intent(getApplicationContext(),
                     TaskListActivity.class);
@@ -618,6 +627,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             growIntent.putExtra(Constants.EXTRA_MAX_ITEMS, 100);
             startActivity(growIntent);
             break;
+        //查看点击事件
         case R.id.tv_action:
             String clickUrl = taskBean.getClick_url();
             if (clickUrl != null && !clickUrl.equals("")) {
@@ -632,6 +642,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 startActivity(intent);
             }
             break;
+        //签到点击事件
         case R.id.person_account_sign_in_layout:
             if (!mSession.isLogin()) {
                 if (!autoLogin()) {
@@ -642,16 +653,29 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 MarketAPI.signIn(getApplicationContext(), this);
             }
             break;
+        //购买金币点击事件
         case R.id.person_account_pay_gold_coins_layout:
             /*Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
             startActivity(PayIntent);*/
             Utils.gotoBuyCoinPage(ConnectionActivity.this);
             break;
+        //搞笑幽默点击事件
         case R.id.humor_title:
             Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
             detailIntent.putExtra("extra.url", "http://xhaz.come11.com");
             detailIntent.putExtra("extra.title", "搞笑幽默");
             startActivity(detailIntent);
+            break;
+        case R.id.connection_current_activity_info_text:
+            int positon=textViewMessage.getPosition();
+            String url=textViewMessage.getMessageBeans().get(positon).getClickUrl();
+            String Message=textViewMessage.getMessageBeans().get(positon).getMessageText();
+            if(url!=null){
+                Intent MessageIntent = new Intent(getApplicationContext(), WebviewActivity.class);
+                MessageIntent.putExtra("extra.url", url);
+                MessageIntent.putExtra("extra.title", Message);
+                startActivity(MessageIntent);
+            }
             break;
         default:
             break;

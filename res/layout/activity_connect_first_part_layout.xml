@@ -190,7 +190,7 @@
                 android:background="@drawable/notice_icon"
                 android:contentDescription="@null" />
 
-            <TextView
+            <com.xiaohong.kulian.common.widget.MarqueeTextView
                 android:id="@+id/connection_current_activity_info_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
