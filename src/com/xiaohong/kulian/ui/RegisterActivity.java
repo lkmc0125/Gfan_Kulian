@@ -28,16 +28,13 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -46,13 +43,11 @@ import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
-import com.xiaohong.kulian.common.util.TopBar;
+import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
@@ -233,15 +228,17 @@ public class RegisterActivity extends BaseActivity
                 try {
                     JSONObject obj = new JSONObject(ret);
                     if (obj.getInt("ret_code") == 0) {
-                        Utils.makeEventToast(getApplicationContext(), "验证码已通过短信发送", false);
+                        DialogUtils.showMessage(this, null, "验证码已通过短信发送");
                     } else {
-                        Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
-                    }   
+                        DialogUtils.showMessage(this, "错误", obj.getString("ret_msg"));
+                    }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }                    
                 Log.d(TAG, ret);
+            } else {
+                DialogUtils.showMessage(this, "网络错误", "请检查网络连接");
             }
         }
     }
