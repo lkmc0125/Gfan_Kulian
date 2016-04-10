@@ -152,7 +152,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         layoutSuccess=(RelativeLayout)findViewById(R.id.connect_success_status_layout);
         layoutSearch=(RelativeLayout)findViewById(R.id.connect_search_status_layout);
         mAuthBtn=(Button)findViewById(R.id.connection_current_link_wifi_button);
-        mWifiStatusDesc=(TextView)findViewById(R.id.connection_link_status_value_text);
+        mWifiStatusDesc=(TextView)findViewById(R.id.connection_current_link_wifi_name_value_text);
         mWifiStatusIcon=(ImageView)findViewById(R.id.wifi_icon_success_status);
         mWifiStatusDescSearch=(TextView)findViewById(R.id.connection_link_search_status_value_text);
         mWifiStatusIconSearch=(ImageView)findViewById(R.id.wifi_icon_search_status_01);
@@ -186,7 +186,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         textViewAllTask=(TextView)findViewById(R.id.connection_recommend_all_task_text);
         textViewAllTask.setOnClickListener(this);
         
-        RelativeLayout humorLayout = (RelativeLayout)findViewById(R.id.humor_title);
+        RelativeLayout humorLayout = (RelativeLayout)findViewById(R.id.connection_recommend_humor_layout);
         humorLayout.setOnClickListener(this);
     }
     
@@ -268,7 +268,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         {
             layoutSuccess.setVisibility(View.VISIBLE);
             layoutSearch.setVisibility(View.GONE);
-            mWifiStatusDesc.setText("已连接到Wifi:"+mCurrentSSID);
+            mWifiStatusDesc.setText(mCurrentSSID);
             mAuthBtn.setText("切换到小鸿Wifi");
             mAuthBtn.setVisibility(View.VISIBLE);
             Drawable img = getApplicationContext().getResources()
@@ -660,7 +660,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             Utils.gotoBuyCoinPage(ConnectionActivity.this);
             break;
         //搞笑幽默点击事件
-        case R.id.humor_title:
+        case R.id.connection_recommend_humor_layout:
             Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
             detailIntent.putExtra("extra.url", "http://xhaz.come11.com");
             detailIntent.putExtra("extra.title", "搞笑幽默");

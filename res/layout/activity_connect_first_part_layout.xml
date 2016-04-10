@@ -21,17 +21,17 @@
             android:background="@null"
             android:orientation="vertical"
             android:visibility="gone" >
-
+            
             <ImageView
                 android:id="@+id/wifi_icon_success_status"
                 android:layout_width="60dip"
                 android:layout_height="60dip"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="40dip"
+                android:layout_marginLeft="37dip"
                 android:layout_marginTop="25dip"
                 android:background="@drawable/link_succ"
                 android:contentDescription="@null" />
-
+<!-- 
             <ImageView
                 android:id="@+id/change_wifi_icon_success_status"
                 android:layout_width="wrap_content"
@@ -41,15 +41,16 @@
                 android:layout_marginTop="35dip"
                 android:background="@drawable/change_wifi_icon"
                 android:contentDescription="@null" />
-
+-->
             <TextView
                 android:id="@+id/connection_link_status_value_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="15dip"
-                android:layout_marginTop="45dip"
+                android:layout_marginLeft="23dip"
+                android:layout_marginTop="30dip"
                 android:layout_toRightOf="@+id/wifi_icon_success_status"
+                
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/connection_link_status_value"
@@ -61,8 +62,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/connection_link_status_value_text"
+                android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="15dip"
+                android:layout_marginLeft="23dip"
                 android:layout_toRightOf="@+id/wifi_icon_success_status"
                 android:gravity="center"
                 android:singleLine="true"
@@ -77,12 +79,14 @@
                 android:layout_below="@+id/connection_link_status_value_text"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dip"
+                android:layout_marginTop="5dip"
                 android:layout_toRightOf="@+id/connection_current_link_wifi_name_hint_text"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/connection_current_link_wifi_name_value"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
+
         </RelativeLayout>
         <!-- 搜索wifi、连接失败时的界面 -->
 
@@ -91,15 +95,17 @@
             android:layout_width="fill_parent"
             android:layout_height="110dip"
             android:background="@null"
-            android:orientation="vertical" >
-
+            android:orientation="vertical"
+            
+             >
+<!-- android:visibility="gone" -->
             
             <RelativeLayout
                 android:id="@+id/connect_search_wifi_icon_search_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="40dip"
+                android:layout_marginLeft="30dip"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="-20dip"
                 android:orientation="vertical" >
@@ -128,7 +134,7 @@
                     android:background="@drawable/wifiloop_3"
                     android:contentDescription="@null" />
             </RelativeLayout>
-
+<!-- 
             <ImageView
                 android:id="@+id/change_wifi_icon_search_status"
                 android:layout_width="wrap_content"
@@ -138,7 +144,7 @@
                 android:layout_marginTop="35dip"
                 android:background="@drawable/change_wifi_icon"
                 android:contentDescription="@null" />
-
+ -->
             <TextView
                 android:id="@+id/connection_link_search_status_value_text"
                 android:layout_width="wrap_content"

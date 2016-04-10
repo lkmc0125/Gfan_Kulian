@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/connect_recommend_app_nomol_bg"
+    android:background="#ffffff"
     android:orientation="vertical" >
     <RelativeLayout
         android:id="@+id/connection_recommend_task_layout"
