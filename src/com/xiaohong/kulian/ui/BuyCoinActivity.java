@@ -1,7 +1,5 @@
 package com.xiaohong.kulian.ui;
 
-import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +27,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,30 +44,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
 
     private ImageButton mBackBtn;
     private TextView mWechatPayTv;
-    
-    /*private RelativeLayout mOneyuanLayout;
-    private RelativeLayout mFiveyuanLayout;
-    private RelativeLayout mTenyuanLayout;
-    private RelativeLayout mThirtyyuanLayout;
 
-    private TextView mOnehoundredTv;
-    private TextView mOnetv;
-    private TextView mOneUnitTv;
-    private TextView mFivehoundredTv;
-    private TextView mFiveTv;
-    private TextView mFiveUnittv;
-
-    private TextView mOnethousandTv;
-    private TextView mTentv;
-    private TextView mTenUnitTv;
-
-    private TextView mThreethousandTv;
-    private TextView mThirtyTv;
-    private TextView mThirtyUnittv;*/
-
-    // the default item is one yuan
-    private int mMoney = 1;
-    
     private GridView mGridView;
     private BuyItemGridViewAdapter mAdapter;
     private GoodsListBean mGoodsList;
@@ -88,38 +62,13 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     private void initViews() {
         mBackBtn = (ImageButton) findViewById(R.id.back_btn);
         mWechatPayTv = (TextView) findViewById(R.id.wechatpaytv);
-        /*mOneyuanLayout = (RelativeLayout) findViewById(R.id.oneyuanlayout);
-        mFiveyuanLayout = (RelativeLayout) findViewById(R.id.fiveyuanlayout);
-        mTenyuanLayout = (RelativeLayout) findViewById(R.id.tenyuanlayout);
-        mThirtyyuanLayout = (RelativeLayout) findViewById(R.id.thirtyyuanlayout);
-
-        mOnehoundredTv = (TextView) findViewById(R.id.onehundredtv);
-        mOnetv = (TextView) findViewById(R.id.onetv);
-        mOneUnitTv = (TextView) findViewById(R.id.oneyuanunit);
-
-        mFivehoundredTv = (TextView) findViewById(R.id.fivehundredtv);
-        mFiveTv = (TextView) findViewById(R.id.fivetv);
-        mFiveUnittv = (TextView) findViewById(R.id.fiveyuanunit);
-
-        mOnethousandTv = (TextView) findViewById(R.id.onethousandtv);
-        mTentv = (TextView) findViewById(R.id.tentv);
-        mTenUnitTv = (TextView) findViewById(R.id.tenyuanunit);
-
-        mThreethousandTv = (TextView) findViewById(R.id.threethousandtv);
-        mThirtyTv = (TextView) findViewById(R.id.thirtytv);
-        mThirtyUnittv = (TextView) findViewById(R.id.thirtyyuanunit);*/
-        
         mGridView = (GridView) findViewById(R.id.buycoinitemgridview);
        
         mWechatPayTv.setEnabled(false);
         
         mBackBtn.setOnClickListener(this);
         mWechatPayTv.setOnClickListener(this);
-        
-        /*mOneyuanLayout.setOnClickListener(this);
-        mFiveyuanLayout.setOnClickListener(this);
-        mTenyuanLayout.setOnClickListener(this);
-        mThirtyyuanLayout.setOnClickListener(this);*/
+
     }
 
     @Override
@@ -134,123 +83,10 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
             case R.id.wechatpaytv :
                 doWechatPay();
                 break;
-           /* case R.id.oneyuanlayout :
-                doSelectOneyuan();
-                break;
-            case R.id.fiveyuanlayout :
-                doSelectFiveyuan();
-                break;
-            case R.id.tenyuanlayout :
-                doSelectTenyuan();
-                break;
-            case R.id.thirtyyuanlayout :
-                doSelectThirtyyuan();
-                break;*/
             default :
                 break;
         }
     }
-
-    /*private void doSelectOneyuan() {
-        mMoney = 1;
-        mOneyuanLayout.setBackgroundResource(R.drawable.coincheckedbg);
-        mFiveyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
-        mTenyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
-        mThirtyyuanLayout
-                .setBackgroundResource(R.drawable.coindefaultbg);
-        
-        mOnehoundredTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-        mOnetv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-        mOneUnitTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-        
-        mFivehoundredTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mFiveTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mFiveUnittv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-                         
-        mOnethousandTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mTentv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mTenUnitTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-                         
-        mThreethousandTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mThirtyTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mThirtyUnittv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-    }
-
-    private void doSelectFiveyuan() {
-        mMoney = 5;
-        mOneyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
-        mFiveyuanLayout.setBackgroundResource(R.drawable.coincheckedbg);
-        mTenyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
-        mThirtyyuanLayout
-                .setBackgroundResource(R.drawable.coindefaultbg);
-        
-        mOnehoundredTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mOnetv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mOneUnitTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        
-        mFivehoundredTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-        mFiveTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-        mFiveUnittv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-                         
-        mOnethousandTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mTentv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mTenUnitTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-                         
-        mThreethousandTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mThirtyTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mThirtyUnittv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        
-    }
-
-    private void doSelectTenyuan() {
-        mMoney = 10;
-        mOneyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
-        mFiveyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
-        mTenyuanLayout.setBackgroundResource(R.drawable.coincheckedbg);
-        mThirtyyuanLayout
-                .setBackgroundResource(R.drawable.coindefaultbg);
-        
-        mOnehoundredTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mOnetv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mOneUnitTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        
-        mFivehoundredTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mFiveTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mFiveUnittv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-                         
-        mOnethousandTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-        mTentv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-        mTenUnitTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-                         
-        mThreethousandTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mThirtyTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mThirtyUnittv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-    }
-
-    private void doSelectThirtyyuan() {
-        mMoney = 30;
-        mOneyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
-        mFiveyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
-        mTenyuanLayout.setBackgroundResource(R.drawable.coindefaultbg);
-        mThirtyyuanLayout
-                .setBackgroundResource(R.drawable.coincheckedbg);
-        
-        mOnehoundredTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mOnetv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mOneUnitTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        
-        mFivehoundredTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mFiveTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mFiveUnittv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-
-        mOnethousandTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-        mTentv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
-        mTenUnitTv.setTextColor(getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
-                         
-        mThreethousandTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-        mThirtyTv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-        mThirtyUnittv.setTextColor(getResources().getColor(R.color.buy_coin_item_selected_color));
-    }*/
 
     /**
      * Init wechat pay api
