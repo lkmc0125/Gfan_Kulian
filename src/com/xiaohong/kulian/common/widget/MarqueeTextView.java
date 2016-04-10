@@ -119,9 +119,15 @@ private void getTextWidth() {
  */
 private void getTextWidth_First() {
     Paint paint = this.getPaint();
+    String Message_value="";
     if(messageBeans!=null){
         for(MessageBean s:messageBeans){
-            String str=s.getMessageText();
+            String str="";
+            if(!Message_value.equals("")){
+                Message_value+="                                        ";
+                str+="                                        ";
+            }
+            str=s.getMessageText()+"          ";
             textWidth += (int) paint.measureText(str);
             messageWidthList.add(textWidth);
         } 

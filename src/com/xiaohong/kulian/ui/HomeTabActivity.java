@@ -197,6 +197,20 @@ public class HomeTabActivity extends BaseTabActivity implements
             }
         }
     };
+    
+    // 打开推荐和任务详情
+    private BroadcastReceiver mCheckAllReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Constants.BROADCAST_CATEGORY_TASK)) {
+                mTabHost.setCurrentTab(1);
+            } else if (action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
+                mTabHost.setCurrentTab(1);
+            } 
+        }
+    };
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -254,6 +268,13 @@ public class HomeTabActivity extends BaseTabActivity implements
         updatefilter.addAction(Constants.BROADCAST_DOWNLOAD_OPT);
         updatefilter.addAction(Constants.BROADCAST_DOWNLOAD);
         registerReceiver(mUpdateReceiver, updatefilter);
+        /**
+         * Albert 2016/4/10注册查看所有的任务和推荐的广播，
+         */
+        IntentFilter mCheckAllfilter = new IntentFilter();
+        mCheckAllfilter.addAction(Constants.BROADCAST_CATEGORY_TASK);
+        mCheckAllfilter.addAction(Constants.BROADCAST_CATEGORY_RCMD);
+        registerReceiver(mCheckAllReceiver, mCheckAllfilter);
     }
 
     private void unregisterReceiver() {
@@ -261,6 +282,7 @@ public class HomeTabActivity extends BaseTabActivity implements
         unregisterReceiver(mIntentClickReceiver);
         unregisterReceiver(mInstallReceiver);
         unregisterReceiver(mUpdateReceiver);
+        unregisterReceiver(mCheckAllReceiver);
     }
 
     /*

@@ -444,7 +444,10 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
 //                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(2).get("text"));
                 String Message_value="";
                 for(MessageBean s:mSession.getMessageList().getMessageList()){
-                    Message_value+=s.getMessageText();
+                    if(!Message_value.equals("")){
+                        Message_value+="                                        ";
+                    }
+                    Message_value+=s.getMessageText()+"          ";
                 }
                 textViewMessage.setMessageBeans(mSession.getMessageList().getMessageList());
                 textViewMessage.setText(Message_value);
@@ -613,19 +616,25 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         }
         //推荐应用详情点击事件
         case R.id.connection_recommend_all_app_text:
-            Intent gameIntent = new Intent(getApplicationContext(),
-                    ProductListActivity.class);
+            /*Intent gameIntent = new Intent(getApplicationContext(),
+                    RankTabActivity.class);
             gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
             gameIntent.putExtra(Constants.EXTRA_MAX_ITEMS, 100);
-            startActivity(gameIntent);
+            startActivity(gameIntent);*/
+            Intent gameIntent = new Intent();
+            gameIntent.setAction(Constants.BROADCAST_CATEGORY_RCMD);
+            sendBroadcast(gameIntent);
             break;
         //推荐任务详情点击事件
         case R.id.connection_recommend_all_task_text:
-            Intent growIntent = new Intent(getApplicationContext(),
-                    TaskListActivity.class);
+/*            Intent growIntent = new Intent(getApplicationContext(),
+                    RankTabActivity.class);
             growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);
             growIntent.putExtra(Constants.EXTRA_MAX_ITEMS, 100);
-            startActivity(growIntent);
+            startActivity(growIntent);*/
+            Intent growIntent = new Intent();
+            growIntent.setAction(Constants.BROADCAST_CATEGORY_TASK);
+            sendBroadcast(growIntent);
             break;
         //查看点击事件
         case R.id.tv_action:

@@ -517,4 +517,8 @@ public interface Constants {
     static final String MENU_CLICK_BBS = "打开社区";
     // 微信支付appid
     static final String APP_ID = "wx558a2f397b2b0be4";
+    //打开所有推荐
+    static final String BROADCAST_CATEGORY_TASK = "com.xiaohong.kulian.ui.connection.checkAllTask";
+    //打开所有任务
+    static final String BROADCAST_CATEGORY_RCMD = "com.xiaohong.kulian.ui.connection.checkAllApp";
 }

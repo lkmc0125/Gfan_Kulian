@@ -18,7 +18,11 @@ package com.xiaohong.kulian.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -66,12 +70,58 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //注册一个广播接收器，用于初始化tab的选取页
+        registerReceivers();
         setContentView(R.layout.activity_rank);
 //        getWindow().setBackgroundDrawableResource(android.R.color.darker_gray);
         initView();
 //        initAdPager();  // banner
+
     }
 
+    /**
+     * added by albert liu 2016/4/10
+     */
+    private void registerReceivers() {
+        /**
+         * Albert 2016/4/10注册查看所有的任务和推荐的广播
+         */
+        IntentFilter mCheckAllfilter = new IntentFilter();
+        mCheckAllfilter.addAction(Constants.BROADCAST_CATEGORY_TASK);
+        mCheckAllfilter.addAction(Constants.BROADCAST_CATEGORY_RCMD);
+        registerReceiver(mCheckAllReceiver, mCheckAllfilter);
+    }
+    /**
+     * added by albert liu 2016/4/10
+     */
+    private void unregisterReceiver() {
+        unregisterReceiver(mCheckAllReceiver);
+    }
+    /**
+     * added by albert liu 2016/4/10
+     */
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        unregisterReceiver();
+    }
+    /**
+     * added by albert liu 2016/4/10
+     */
+ // 打开推荐和任务详情
+    private BroadcastReceiver mCheckAllReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Constants.BROADCAST_CATEGORY_TASK)) {
+                mTabHost.setCurrentTab(1);
+            } else if (action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
+                mTabHost.setCurrentTab(0);
+            } 
+        }
+    };
     private void initView() {
 
         mTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
@@ -148,6 +198,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
     @Override
     public void onTabChanged(String tabId) {
+        System.out.println("onTabChanged"+tabId);
         if (Constants.CATEGORY_APP.equals(tabId)) {
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_6, Constants.CLICK_RANK_APP);
         } else if (Constants.CATEGORY_GAME.equals(tabId)) {
