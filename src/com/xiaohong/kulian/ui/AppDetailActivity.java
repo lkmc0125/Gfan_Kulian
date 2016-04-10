@@ -333,7 +333,8 @@ public class AppDetailActivity extends Activity
                 if (info.mStatus == DownloadManager.Impl.STATUS_SUCCESS) {
                     // 已经下载成功
                     mAppActionView.setText("安装");
-                    mAppActionView.setBackgroundColor(getResources().getColor(
+                    mAppActionView.setTextColor(Color.WHITE);
+                    mAppActionIv.setBackgroundColor(getResources().getColor(
                             R.color.install_button_background_color));
                     // mProduct.setFilePath(info.mFilePath);
                     Log.d(TAG, "download success then do install apk");
