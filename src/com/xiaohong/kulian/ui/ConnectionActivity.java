@@ -60,22 +60,18 @@ import com.xiaohong.kulian.common.widget.RoundImageView;
 
 public class ConnectionActivity extends BaseActivity implements ApiRequestListener, OnClickListener {
     private static final String TAG = "ConnectionActivity"; 
-//    private Button mAuthBtn;
+   
     private WifiAuthentication mAuth;
     private WifiAdmin mWifiAdmin;
-//    private TextView mWifiStatusDesc;
-//    private ImageView mWifiStatusIcon;
     private Integer mLoginRetryCount = 0;
     private String mCurrentSSID;
-    private Session mSession;
     private MyBroadcastReceiver mConnectionReceiver;
     /**
      * 连接状态页面
      */
-    private RelativeLayout layoutSuccess,layoutSearch;
     private Button mAuthBtn;
-    private TextView mWifiStatusDesc,mWifiStatusDescSearch;
-    private ImageView mWifiStatusIcon,mWifiStatusIconSearch;
+    private TextView mWifiStatusTitle, mWifiStatusDesc;
+    private ImageView mWifiStatusIcon;
     private MarqueeTextView textViewMessage;
     /**
      * 签到界面
@@ -124,19 +120,13 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         initView();
         queryAppList();
 //        mLoginRetryCount = 0;
+        mWifiAdmin = new WifiAdmin(getApplicationContext());
         mAuth = new WifiAuthentication();
-        mSession = Session.get(getApplicationContext());
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
-        /*mWifiStatusDesc = (TextView)findViewById(R.id.wifi_status_desc);
-        mWifiStatusIcon = (ImageView)findViewById(R.id.wifi_status_icon);
-        mAuthBtn = (Button) findViewById(R.id.authenticationBtn);
-        mAuthBtn.setVisibility(View.INVISIBLE);
-        mAuthBtn.setOnClickListener(this);*/
-        registerConnection();
 
+        registerConnection();
         new Handler().postDelayed(new Runnable() {  
             public void run() {
-                mWifiAdmin = new WifiAdmin(getApplicationContext());
                 boolean open = mWifiAdmin.openWifi();
                 Log.i(TAG, "wifi open:" + open);
                 mWifiAdmin.startScan();
@@ -149,13 +139,11 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         /**
          * 连接界面
          */
-        layoutSuccess=(RelativeLayout)findViewById(R.id.connect_success_status_layout);
-        layoutSearch=(RelativeLayout)findViewById(R.id.connect_search_status_layout);
-        mAuthBtn=(Button)findViewById(R.id.connection_current_link_wifi_button);
-        mWifiStatusDesc=(TextView)findViewById(R.id.connection_current_link_wifi_name_value_text);
-        mWifiStatusIcon=(ImageView)findViewById(R.id.wifi_icon_success_status);
-        mWifiStatusDescSearch=(TextView)findViewById(R.id.connection_link_search_status_value_text);
-        mWifiStatusIconSearch=(ImageView)findViewById(R.id.wifi_icon_search_status_01);
+        mAuthBtn=(Button)findViewById(R.id.auth_button);
+        mAuthBtn.setOnClickListener(this);
+        mWifiStatusTitle=(TextView)findViewById(R.id.wifi_status_title);
+        mWifiStatusDesc=(TextView)findViewById(R.id.wifi_status_desc);
+        mWifiStatusIcon=(ImageView)findViewById(R.id.wifi_status_icon);
         textViewMessage=(MarqueeTextView)findViewById(R.id.connection_current_activity_info_text);
         textViewMessage.setOnClickListener(this);
         /**
@@ -195,8 +183,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         if (null == Utils.httpGet(url)) { // 网络不通
             Log.d(TAG, "network not availabel");
             mAuthBtn.setVisibility(View.VISIBLE);
-            layoutSuccess.setVisibility(View.GONE);
-            layoutSearch.setVisibility(View.VISIBLE);
             new Handler().postDelayed(new Runnable() {  
                 public void run() {
                     checkNetwork();
@@ -205,8 +191,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         } else {
             Log.d(TAG, "network OK！");
             mAuthBtn.setVisibility(View.INVISIBLE);
-            layoutSuccess.setVisibility(View.VISIBLE);
-            layoutSearch.setVisibility(View.GONE);
             if (mConnectionStatus == ConnectionStatus.HONGWIFI) {
                 mConnectionStatus = ConnectionStatus.HONGWIFI_AUTHED;
                 // reportAuthenSuccess
@@ -250,58 +234,60 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     }
 
     private void updateWifiStatusUI(ConnectionStatus status) {
-        System.out.println("status"+status);
+        System.out.println("status:"+status);
         switch (status) {
         case DISCONNECTED:
         {
-            layoutSuccess.setVisibility(View.GONE);
-            layoutSearch.setVisibility(View.VISIBLE);
-            mWifiStatusDesc.setText("未连接到WIFI");
+            mWifiStatusTitle.setText("未连接Wifi");
+            mWifiStatusDesc.setText("点击按钮搜索小鸿免费Wifi");
             mAuthBtn.setText("搜索小鸿Wifi");
             mAuthBtn.setVisibility(View.VISIBLE);
-            Drawable img = getApplicationContext().getResources()
-            .getDrawable(R.drawable.wifi_state_off);
-            mWifiStatusIcon.setImageDrawable(img);
+//            Drawable img = getApplicationContext().getResources()
+//            .getDrawable(R.drawable.wifi_state_off);
+//            mWifiStatusIcon.setImageDrawable(img);
+            mWifiStatusIcon.getBackground().setAlpha(125);
             break;
         }
         case CONNECTED:
         {
-            layoutSuccess.setVisibility(View.VISIBLE);
-            layoutSearch.setVisibility(View.GONE);
-            mWifiStatusDesc.setText(mCurrentSSID);
-            mAuthBtn.setText("切换到小鸿Wifi");
-            mAuthBtn.setVisibility(View.VISIBLE);
-            Drawable img = getApplicationContext().getResources()
-            .getDrawable(R.drawable.wifi_state_on);
-            mWifiStatusIcon.setImageDrawable(img);
+            mWifiStatusTitle.setText("已连接Wifi");
+            mWifiStatusDesc.setText("已连接到 "+mCurrentSSID);
+            if (getHongWifi() != null) {
+                mAuthBtn.setText("切换到小鸿Wifi");
+                mAuthBtn.setVisibility(View.VISIBLE);
+            } else {
+                mAuthBtn.setVisibility(View.INVISIBLE);
+            }
+//            Drawable img = getApplicationContext().getResources()
+//            .getDrawable(R.drawable.wifi_state_on);
+//            mWifiStatusIcon.setImageDrawable(img);
+            mWifiStatusIcon.getBackground().setAlpha(255);
             break;
         }
         case HONGWIFI:
         {
-            layoutSuccess.setVisibility(View.VISIBLE);
-            layoutSearch.setVisibility(View.GONE);
-            mWifiStatusDesc.setText("已连接到小鸿免费Wifi:"+mCurrentSSID);
+            mWifiStatusTitle.setText("已连接Wifi");
+            mWifiStatusDesc.setText("已连接到小鸿Wifi:"+mCurrentSSID);
             mAuthBtn.setText("认证上网");
             mAuthBtn.setVisibility(View.VISIBLE);
-            Drawable img = getApplicationContext().getResources()
-            .getDrawable(R.drawable.wifi_state_on);
-            mWifiStatusIcon.setImageDrawable(img);
+//            Drawable img = getApplicationContext().getResources()
+//            .getDrawable(R.drawable.wifi_state_on);
+//            mWifiStatusIcon.setImageDrawable(img);
+            mWifiStatusIcon.getBackground().setAlpha(255);
             break;
         }
         case HONGWIFI_AUTHED:
         {
-            layoutSuccess.setVisibility(View.VISIBLE);
-            layoutSearch.setVisibility(View.GONE);
-            mWifiStatusDesc.setText("已连接到小鸿免费Wifi"+mCurrentSSID);
+            mWifiStatusTitle.setText("已认证上网");
+            mWifiStatusDesc.setText("已连接到小鸿Wifi："+mCurrentSSID);
             mAuthBtn.setVisibility(View.INVISIBLE);
-            Drawable img = getApplicationContext().getResources()
-            .getDrawable(R.drawable.wifi_state_on);
-            mWifiStatusIcon.setImageDrawable(img);
+//            Drawable img = getApplicationContext().getResources()
+//            .getDrawable(R.drawable.wifi_state_on);
+//            mWifiStatusIcon.setImageDrawable(img);
+            mWifiStatusIcon.getBackground().setAlpha(255);
             break;
         }
         default:
-            layoutSuccess.setVisibility(View.GONE);
-            layoutSearch.setVisibility(View.VISIBLE);
             mWifiStatusDesc.setText("正在搜索WIFI...");
             break;
         }
@@ -409,13 +395,16 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
                     mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
                 }
-                if (mSession.getSignInToday()) {
-                    textView_signIn_status.setText("今天已签到");
-                } else {
-                    MarketAPI.signIn(getApplicationContext(), this);
-                }
+//                if (mSession.getSignInToday()) {
+//                    textView_signIn_status.setText("今天已签到");
+//                } else {
+//                    MarketAPI.signIn(getApplicationContext(), this);
+//                }
                 if (mSession.getMessageList() == null) {
                     MarketAPI.getMessages(getApplicationContext(), this);
+                }
+                if (appBeans == null) {
+                    queryAppList();
                 }
             }
             /*mSession.setCoinNum((Integer)result.get(Constants.KEY_COIN_NUM));
@@ -582,25 +571,39 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         }
     }
 
+    private ScanResult getHongWifi() {
+        if (mWifiAdmin == null || mWifiAdmin.getWifiList() == null) {
+            return null;
+        }
+        for (ScanResult scanResult : mWifiAdmin.getWifiList()) {
+            if (isHongWifi(scanResult.SSID)) {
+                String encryptType = mWifiAdmin.wifiEncryptType(scanResult.capabilities); 
+                if (encryptType.length() > 0) { // only connect to no password wifi
+                    continue;
+                }
+                return scanResult;
+            }
+        }
+        return null;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.authenticationBtn:
+        case R.id.auth_button:
         {
             switch (mConnectionStatus) {
             case DISCONNECTED:
+            {
+                Boolean ret = mWifiAdmin.openWifi();
+                Log.d(TAG, "open wifi result:"+ret);
+                break;
+            }
             case CONNECTED:
             {
-                for (ScanResult scanResult : mWifiAdmin.getWifiList()) {
-                    if (isHongWifi(scanResult.SSID)) {
-                        String encryptType = mWifiAdmin.wifiEncryptType(scanResult.capabilities); 
-                        if (encryptType.length() > 0) { // only connect to no password wifi
-                            continue;
-                        }
-                        mWifiAdmin.connectWifi(scanResult.SSID, "", encryptType);
-                        Log.d(TAG, "Trying to connect "+scanResult.SSID);
-                        break;
-                    }
+                ScanResult scanResult = getHongWifi();
+                if (scanResult != null) {
+                    mWifiAdmin.connectWifi(scanResult.SSID, "", mWifiAdmin.wifiEncryptType(scanResult.capabilities));
+                    Log.d(TAG, "Trying to connect "+scanResult.SSID);
                 }
                 break;
             }
@@ -616,22 +619,12 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         }
         //推荐应用详情点击事件
         case R.id.connection_recommend_all_app_text:
-            /*Intent gameIntent = new Intent(getApplicationContext(),
-                    RankTabActivity.class);
-            gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
-            gameIntent.putExtra(Constants.EXTRA_MAX_ITEMS, 100);
-            startActivity(gameIntent);*/
             Intent gameIntent = new Intent();
             gameIntent.setAction(Constants.BROADCAST_CATEGORY_RCMD);
             sendBroadcast(gameIntent);
             break;
         //推荐任务详情点击事件
         case R.id.connection_recommend_all_task_text:
-/*            Intent growIntent = new Intent(getApplicationContext(),
-                    RankTabActivity.class);
-            growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);
-            growIntent.putExtra(Constants.EXTRA_MAX_ITEMS, 100);
-            startActivity(growIntent);*/
             Intent growIntent = new Intent();
             growIntent.setAction(Constants.BROADCAST_CATEGORY_TASK);
             sendBroadcast(growIntent);
@@ -712,20 +705,18 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     
     class ConnectAppOnItemClick implements OnItemClickListener
     {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3)
-            {
-                AppBean item = (AppBean) appBeans.get(pos);
-                String pid = item.getAppId() + "";
-                /*Intent detailIntent = new Intent(getApplicationContext(),
-                        PreloadActivity.class);*/
-                Intent detailIntent = new Intent(getApplicationContext(),
-                        AppDetailActivity.class);
-                detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
-                detailIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
-                detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
-                startActivity(detailIntent);
-            }
+        @Override
+        public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3)
+        {
+            AppBean item = (AppBean) appBeans.get(pos);
+            String pid = item.getAppId() + "";
+            Intent detailIntent = new Intent(getApplicationContext(),
+                    AppDetailActivity.class);
+            detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
+            detailIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
+            detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
+            startActivity(detailIntent);
+        }
     }
     @Override
     protected void onResume() {
