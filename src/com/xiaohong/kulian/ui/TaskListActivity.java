@@ -218,7 +218,7 @@ public class TaskListActivity extends LazyloadListActivity implements
 //                        bean.setTitle(getResources().getString(R.string.title_task_done));
 //                        list.add(i, bean);
 //                        titlePos = i;
-                        //break;
+//                        break;
 //                    }else if(list.get(i).getRemain_tasknum() > 0){
 //                        if(titlePos > 0) {
 //                            TaskBean bean = list.remove(i);
