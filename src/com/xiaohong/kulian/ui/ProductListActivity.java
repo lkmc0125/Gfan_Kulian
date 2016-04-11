@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
+import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.SessionManager;
 import com.xiaohong.kulian.adapter.CommonAdapter;
 import com.xiaohong.kulian.bean.AppBean;
@@ -48,6 +49,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     private String mCategory;
     private boolean mIsEnd;
 
+
     private BroadcastReceiver mAppInstallReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -69,6 +71,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
 //                        webView.loadUrl("javascript: appInstallFinished(" + appId + ")");
 //                        mDownloadAppInfoHashMap.remove(applicationName);
 //                    }
+                      mSession.addInstalledApp(applicationInfo.packageName);
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -92,7 +95,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
                     String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
                     Log.d(TAG, "Lanched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
                     Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
-//                    todo: report app launch event
+                    mSession.reportAppLaunched(applicationInfo.packageName);
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }

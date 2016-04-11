@@ -1042,7 +1042,7 @@ public class Session extends Observable {
         }
     }
     
-    private void reportAppLaunched(String packagename) {
+    public void reportAppLaunched(String packagename) {
         DownloadInfo info = mDownloadingList.get(packagename);
         if(info != null) {
             MarketAPI.reportAppLaunched(mContext, mReportApiRequestListener, packagename);

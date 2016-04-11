@@ -28,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.adapter.CommonAdapter;
 import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
 
@@ -55,11 +56,13 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
     private FrameLayout mFooterView;
     private ProgressBar mFooterLoading;
     private TextView mFooterNoData;
+    
+    protected Session mSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mSession = Session.get(getApplicationContext());
         if (doInitView(savedInstanceState)) {
             initListView();
         }
