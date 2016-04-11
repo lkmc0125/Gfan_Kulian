@@ -57,12 +57,18 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
     private ProgressBar mFooterLoading;
     private TextView mFooterNoData;
     
-    protected Session mSession;
+    /**
+     * 由于需要预加载数据，因此调整之前的架构,
+     * 之前的架构在调用setLoadResult的时候可能还没初始化listview
+     */
+    private boolean mIsListViewInited = false;
+    
+    //protected Session mSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSession = Session.get(getApplicationContext());
+        //mSession = Session.get(getApplicationContext());
         if (doInitView(savedInstanceState)) {
             initListView();
         }
@@ -123,6 +129,7 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
      * 子类必须通过此方法通知异步任务结果
      */
     public void setLoadResult(final boolean isLoadSuccess) {
+        initListView();
         mIsLoadOver = true;
         if (isLoadSuccess) {
             // 加载成功
@@ -161,6 +168,10 @@ public abstract class LazyloadListActivity extends BaseActivity implements Lazyl
     }
 
     private void initListView() {
+        if(mIsListViewInited == true) {
+            return;
+        }
+        mIsListViewInited = true;
         CommonAdapter adapter = doInitListAdapter();
         adapter.setLazyloadListener(this);
         doInitHeaderViewOrFooterView();

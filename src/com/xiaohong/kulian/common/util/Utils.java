@@ -106,7 +106,14 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.adapter.TaskListAdapter;
+import com.xiaohong.kulian.bean.AppBean;
+import com.xiaohong.kulian.bean.AppListBean;
+import com.xiaohong.kulian.bean.TaskBean;
+import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.AndroidHttpClient;
+import com.xiaohong.kulian.common.MarketAPI;
+import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.ui.BuyCoinActivity;
 
 /**
@@ -1323,5 +1330,132 @@ public class Utils {
     public static void gotoBuyCoinPage(Context context) {
         Intent intent = new Intent(context, BuyCoinActivity.class);
         context.startActivity(intent);
+    }
+    
+    //do preload for make money page - app and task
+    private static boolean sIsLoaded = false;
+    private static int sStartPage = 1;
+    private static LoadAppAndTaskApiResponseListener sLoadAppAndTaskApiResponseListener =
+            null;
+    
+    /*
+     * 预加载赚金币页面的数据
+     */
+    public static void doPreloadAppAndTask(Context context) {
+        if(sIsLoaded == true) {
+            Log.d(TAG, "already loaded");
+            return;
+        }
+        sIsLoaded = true;
+        loadApp(context);
+        loadTask(context);
+    }
+    
+    private synchronized static void loadApp(Context context) {
+        if(sLoadAppAndTaskApiResponseListener == null) {
+            sLoadAppAndTaskApiResponseListener =
+                    new LoadAppAndTaskApiResponseListener(context);
+        }
+        MarketAPI.getAppList(context, sLoadAppAndTaskApiResponseListener, sStartPage, Constants.CATEGORY_RCMD);
+    }
+    
+    private synchronized static void loadTask(Context context) {
+        if(sLoadAppAndTaskApiResponseListener == null) {
+            sLoadAppAndTaskApiResponseListener =
+                    new LoadAppAndTaskApiResponseListener(context);
+        }
+        MarketAPI.getTaskList(context, sLoadAppAndTaskApiResponseListener);
+        MarketAPI.getGzhTaskList(context, 
+                sLoadAppAndTaskApiResponseListener);
+    }
+    
+    private static final ArrayList<AppBean> sAppList = new ArrayList<AppBean>(); 
+    
+    private static final ArrayList<TaskBean> sTaskList = new ArrayList<TaskBean>(); 
+    
+    public static ArrayList<AppBean> getPreloadedAppList() {
+        return sAppList;
+    }
+    
+    public static ArrayList<TaskBean> getPreloadedTaskList() {
+        return sTaskList;
+    }
+    
+    private static class LoadAppAndTaskApiResponseListener
+            implements
+                ApiRequestListener {
+        private Context mContext;
+
+        public LoadAppAndTaskApiResponseListener(Context context) {
+            mContext = context;
+        }
+
+        @Override
+        public void onSuccess(int method, Object obj) {
+            switch (method) {
+                case MarketAPI.ACTION_GET_APP_LIST :
+                    AppListBean appList = (AppListBean) obj;
+                    sAppList.addAll(appList.getApplist());
+                    for (AppBean bean : sAppList) {
+                        if (Utils.isApkInstalled(mContext,
+                                bean.getPackageName()) == true) {
+                            bean.setIsInstalled(true);
+                        }
+                    }
+                    break;
+                case MarketAPI.ACTION_GET_TASK_LIST : {
+                    TaskListBean result = (TaskListBean) obj;
+                    if (result.getTasklist() != null) {
+                        Log.d(TAG, "size = " + result.getTasklist().size());
+                        for (TaskBean item : result.getTasklist()) {
+                            // set remain num to 1 for normal task
+                            item.setRemain_tasknum(1);
+                            item.setTaskType(TaskListAdapter.TYPE_NORMAL_TASK);
+                        }
+                    } else {
+                        Log.d(TAG, "no data from server");
+                    }
+                    sTaskList.addAll(result.getTasklist());
+                    break;
+                }
+                case MarketAPI.ACTION_GET_GZH_TASK_LIST :
+                    TaskListBean result = (TaskListBean) obj;
+                    ArrayList<TaskBean> availableList = new ArrayList<TaskBean>();
+                    ArrayList<TaskBean> finishedList = new ArrayList<TaskBean>();
+                    int titlePos = 0;
+                    if (result.getTasklist() != null) {
+                        Log.d(TAG, "ApiRequestListener size = "
+                                + result.getTasklist().size());
+                        for (int i = 0; i < result.getTasklist().size(); i++) {
+                            TaskBean bean = result.getTasklist().get(i);
+                            if (bean.getRemain_tasknum() == 0) {
+                                finishedList.add(bean);
+                            } else {
+                                availableList.add(bean);
+                            }
+
+                            if (finishedList.size() > 0) {
+                                availableList.addAll(finishedList);
+                            }
+                            Log.d(TAG, "onSuccess done");
+                        }
+                    }
+                    if (finishedList.size() > 0) {
+                        availableList.addAll(finishedList);
+                    }
+                    sTaskList.addAll(availableList);
+                    break;
+                default :
+                    break;
+            }
+
+        }
+
+        @Override
+        public void onError(int method, int statusCode) {
+            // TODO Auto-generated method stub
+
+        }
+
     }
 }

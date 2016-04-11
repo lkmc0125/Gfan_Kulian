@@ -386,6 +386,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         case MarketAPI.ACTION_LOGIN:
         {
             Log.d(TAG, "login success");
+            Utils.doPreloadAppAndTask(getApplicationContext());
             HashMap<String, Object> result = (HashMap<String, Object>) obj;
             if ((Integer) result.get("ret_code") == 0) {
                 mSession.setLogin(true);

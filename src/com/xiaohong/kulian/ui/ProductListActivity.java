@@ -140,6 +140,9 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
             mNoData.setOnClickListener(this);
             mList.setEmptyView(mLoading);
             mList.setOnItemClickListener(this);
+            mAdapter = new TabAppListAdapter(getApplicationContext(),
+                    null,
+                    R.layout.common_product_list_item);
             
             lazyload();
             return true;
@@ -150,14 +153,21 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
 
     @Override
     public void doLazyload() {
+        ArrayList<AppBean> appList = Utils.getPreloadedAppList();
+        if(appList != null && appList.size() > 0) {
+            Log.d(TAG,"preloaded");
+            mIsEnd = appList.size() < 10;
+            mAdapter.addData(appList);
+            setLoadResult(true);
+            return;
+        }
+        Log.d(TAG,"no preloaded");
         MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
     }
 
     @Override
     public CommonAdapter doInitListAdapter() {
-        mAdapter = new TabAppListAdapter(getApplicationContext(),
-                null,
-                R.layout.common_product_list_item);
+        
         mAdapter.setProductList();
         return mAdapter;
     }
