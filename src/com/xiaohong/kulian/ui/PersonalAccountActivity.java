@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.Session.OnCoinUpdatedListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.Utils;
@@ -42,7 +43,7 @@ import com.xiaohong.kulian.common.widget.CustomDialog;
  * @date 2011-5-17
  */
 public class PersonalAccountActivity extends BaseActivity implements android.view.View.OnClickListener,
-        ApiRequestListener {
+        ApiRequestListener , OnCoinUpdatedListener{
 
     private static final int ACCOUNT_REGIST = 0;
     private static final int REQUEST_CODE = 20;
@@ -60,6 +61,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         setContentView(R.layout.activity_person_account_fragment_layout);
 
         initView();
+        mSession.addOnCoinUpdateListener(this);
     }
 
     @Override
@@ -84,6 +86,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
 
     @Override
     protected void onPause() {
+        mSession.removeOnCoinUpdateListener(this);
         super.onPause();
     }
 
@@ -309,5 +312,11 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         default:
             break;
         }
+    }
+
+    @Override
+    public void onCoinUpdate(int newTotalCoinNum) {
+        textView_coin_num.setText(newTotalCoinNum + "");
+        
     }
 }

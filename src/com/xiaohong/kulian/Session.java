@@ -248,6 +248,8 @@ public class Session extends Observable {
     
     private final ReportApiRequestListener mReportApiRequestListener = new ReportApiRequestListener();
     
+    private final ArrayList<OnCoinUpdatedListener> mOnCoinUpdatedListener = new ArrayList<OnCoinUpdatedListener>();
+    
     /**
      * default constructor
      * @param context
@@ -1059,12 +1061,14 @@ public class Session extends Observable {
                 {
                     ReportResultBean result = (ReportResultBean) obj;
                     coinNum += result.getAddedCoinNum();
+                    notifyCoinUpdated();
                     break;
                 }
                 case MarketAPI.ACTION_REPORT_APP_LAUNCHED:
                 {
                     ReportResultBean result = (ReportResultBean) obj;
                     coinNum += result.getAddedCoinNum();
+                    notifyCoinUpdated();
                     break;
                 }
             }
@@ -1109,6 +1113,29 @@ public class Session extends Observable {
                     }
                 }
             }
+        }
+    }
+    
+    /**
+     * 用于通知金币数量发声变化，个人主页需要更新
+     * @author free
+     *
+     */
+    public static interface OnCoinUpdatedListener {
+        public void onCoinUpdate(int newTotalCoinNum);
+    }
+    
+    public void addOnCoinUpdateListener(OnCoinUpdatedListener listener) {
+        mOnCoinUpdatedListener.add(listener);
+    }
+    
+    public void removeOnCoinUpdateListener(OnCoinUpdatedListener listener) {
+        mOnCoinUpdatedListener.remove(listener);
+    }
+    
+    private void notifyCoinUpdated() {
+        for(OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
+            listener.onCoinUpdate(coinNum);
         }
     }
 }

@@ -86,8 +86,8 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        MarketAPI.reportAppInstalled(getApplicationContext(), this, "com.achievo.vipshop");
-       // MarketAPI.reportAppLaunched(getApplicationContext(), this, "com.achievo.vipshop");
+        //MarketAPI.reportAppInstalled(getApplicationContext(), this, "com.achievo.vipshop");
+        //MarketAPI.reportAppLaunched(getApplicationContext(), this, "com.achievo.vipshop");
         switch (id) {
             case R.id.back_btn :
                 finish();
