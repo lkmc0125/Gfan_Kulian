@@ -15,6 +15,7 @@ import com.xiaohong.kulian.bean.GoodsListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.DialogUtils;
+import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 
 import android.app.Activity;
@@ -42,7 +43,6 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
 
     private IWXAPI mWxApi;
 
-    private ImageButton mBackBtn;
     private TextView mWechatPayTv;
 
     private GridView mGridView;
@@ -60,22 +60,34 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     }
 
     private void initViews() {
-        mBackBtn = (ImageButton) findViewById(R.id.back_btn);
+        initTopBar("购买金币");
         mWechatPayTv = (TextView) findViewById(R.id.wechatpaytv);
         mGridView = (GridView) findViewById(R.id.buycoinitemgridview);
-       
-        mWechatPayTv.setEnabled(false);
-        
-        mBackBtn.setOnClickListener(this);
-        mWechatPayTv.setOnClickListener(this);
 
+        mWechatPayTv.setVisibility(View.INVISIBLE);
+        mWechatPayTv.setEnabled(false);
+        mWechatPayTv.setOnClickListener(this);
     }
 
+    private void initTopBar(String title) {
+        TopBar.createTopBar(this, 
+                new View[] { findViewById(R.id.back_btn), findViewById(R.id.top_bar_title) },
+                new int[] { View.VISIBLE, View.VISIBLE}, 
+                title);
+        ImageButton back = (ImageButton)findViewById(R.id.back_btn);
+        back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+    
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        //MarketAPI.reportAppInstalled(getApplicationContext(), null, "com.achievo.vipsho");
-       // MarketAPI.reportAppLaunched(getApplicationContext(), null, "com.achievo.vipsho");
+        MarketAPI.reportAppInstalled(getApplicationContext(), this, "com.achievo.vipshop");
+       // MarketAPI.reportAppLaunched(getApplicationContext(), this, "com.achievo.vipshop");
         switch (id) {
             case R.id.back_btn :
                 finish();
@@ -95,9 +107,9 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         mWxApi = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
         mWxApi.registerApp(Constants.APP_ID);
 
-        boolean isPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
-        Toast.makeText(getApplicationContext(), String.valueOf(isPaySupported),
-                Toast.LENGTH_SHORT).show();
+//        boolean isPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
+//        Toast.makeText(getApplicationContext(), String.valueOf(isPaySupported),
+//                Toast.LENGTH_SHORT).show();
 
         getGoodsList();
     }
@@ -178,12 +190,11 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                 mGridView.setAdapter(mAdapter);
                 mWechatPayTv.setEnabled(true);
                 mGridView.setOnItemClickListener(BuyCoinActivity.this);
-
+                mWechatPayTv.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
             }
-        
     }
 
     @Override

@@ -657,8 +657,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             break;
         //购买金币点击事件
         case R.id.buy_layout:
-            /*Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
-            startActivity(PayIntent);*/
             Utils.gotoBuyCoinPage(ConnectionActivity.this);
             break;
         //搞笑幽默点击事件

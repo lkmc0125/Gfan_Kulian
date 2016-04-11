@@ -98,7 +98,7 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
             holder.mMoneyUnitTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
         }
         GoodsBean item = mData.get(position);
-        holder.mCoinTv.setText(item.getPrice() + "");
+        holder.mCoinTv.setText(item.getName());
         holder.mMoneyTv.setText(item.getPrice()/100 + "");
         return convertView;
     }

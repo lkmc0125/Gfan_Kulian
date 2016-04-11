@@ -43,22 +43,23 @@ public class ConnectionAppGridAdapter extends BaseAdapter
     public long getItemId(int position) {
             return position;
     }
+
     public void setList_result(List<Map<String, Object>> list_result) {
             this.list_result = list_result;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-            convertView=inflater.inflate(R.layout.connect_third_part_grid_item, null);
+        convertView=inflater.inflate(R.layout.connect_third_part_grid_item, null);
 //          System.out.println("activity_main_content_item"+list_data_main_push);
-            RoundImageView iv=(RoundImageView)convertView.findViewById(R.id.connection_recommend_app_image); 
-            TextView tv_name=(TextView)convertView.findViewById(R.id.connection_recommend_app_name_hint_text); 
-            TextView tv_coin=(TextView)convertView.findViewById(R.id.connection_recommend_app_coin_text); 
-            String path=list_result.get(position).get("logo_url").toString();
-            String name=list_result.get(position).get("name").toString();
-            String GiveCoin=list_result.get(position).get("GiveCoin").toString();
-            ImageLoader.getInstance().displayImage(path, iv);
-            tv_name.setText(name);
-            tv_coin.setText(GiveCoin);
-            return convertView;
+        RoundImageView iv=(RoundImageView)convertView.findViewById(R.id.connection_recommend_app_image); 
+        TextView tv_name=(TextView)convertView.findViewById(R.id.connection_recommend_app_name_hint_text); 
+        TextView tv_coin=(TextView)convertView.findViewById(R.id.connection_recommend_app_coin_text); 
+        String path=list_result.get(position).get("logo_url").toString();
+        String name=list_result.get(position).get("name").toString();
+        String GiveCoin=list_result.get(position).get("GiveCoin").toString();
+        ImageLoader.getInstance().displayImage(path, iv);
+        tv_name.setText(name);
+        tv_coin.setText(GiveCoin);
+        return convertView;
     }
 }

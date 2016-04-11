@@ -1,14 +1,14 @@
 package com.xiaohong.kulian.bean;
 
 public class GoodsBean {
-    private Integer goods_id;
+    private int goods_id;
     private String name;
-    private Integer price; // cent
+    private int price; // cent
 
     public void setGoodsId(Integer goodsId) {
         this.goods_id = goodsId;
     }
-    public Integer getGoodsId() {
+    public int getGoodsId() {
         return goods_id;
     }
     public void setName(String name) {
@@ -17,10 +17,10 @@ public class GoodsBean {
     public String getName() {
         return name;
     }
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
     }
-    public Integer getPrice() {
+    public int getPrice() {
         return price;
     }
 }

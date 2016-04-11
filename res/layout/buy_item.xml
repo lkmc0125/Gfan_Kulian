@@ -10,17 +10,16 @@
             android:layout_marginRight="15dp"
             android:layout_weight="1"
             android:background="@drawable/buy_money_item_background"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
             <TextView 
                 android:id="@+id/cointv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="500"
                 android:textColor="#595959"
-                android:textSize="20dp"
+                android:textSize="18sp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:drawableEnd="@drawable/goldcoin_small"
                 />
             <TextView 
                 android:id="@+id/moneytv"
@@ -28,19 +27,21 @@
                 android:layout_height="wrap_content"
                 android:text="@string/five"
                 android:textColor="#2C78D4"
-                android:textSize="16dp"
+                android:textSize="18sp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/moneyunittv"
                 />
-            <TextView 
+
+            <TextView
                 android:id="@+id/moneyunittv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/moneyunit"
-                android:textColor="#000000"
-                android:textSize="16dp"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="23dp"
                 android:layout_marginRight="10dp"
-                />
+                android:gravity="bottom"
+                android:text="@string/moneyunit"
+                android:textColor="#595959"
+                android:textSize="12sp" />
+                <!-- android:layout_centerVertical="true" -->
         </RelativeLayout>

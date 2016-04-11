@@ -5,60 +5,46 @@
     android:background="@color/app_task_background_color"
     android:orientation="vertical" >
 
-    <!-- header -->
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="92dip"
-        android:background="@drawable/buycoinlistheadbg"
-        android:orientation="horizontal" >
-        
-        <ImageButton
-            android:id="@+id/back_btn"
-            android:layout_width="40dip"
-            android:layout_height="30dip"
-            android:layout_gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dip"
-            android:background="@null"
-            android:contentDescription="@null"
-            android:gravity="left"
-            android:src="@drawable/left_arrow" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_centerInParent="true"
-            android:text="@string/buy"
-            android:textColor="#FFFFFF"
-            android:textSize="36px"
-            ></TextView>
-    </RelativeLayout>
+    <include android:id="@+id/top_bar" 
+        layout="@layout/top_bar" />
 
     <GridView
         android:id="@+id/buycoinitemgridview"
+        android:listSelector="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
         android:horizontalSpacing="15dp"
-        android:verticalSpacing="15dp"
-        android:numColumns="2" >
+        android:numColumns="2"
+        android:scrollbars="none"
+        android:verticalSpacing="15dp" >
+
     </GridView>
 
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#E8E8E8"
+        />
+    
     <TextView
+        android:id="@+id/wechatpaytv"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="#00FF00"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="#60AF0A"
         android:gravity="center"
         android:text="@string/wechatpay"
         android:textColor="#FFFFFF"
-        android:textSize="28dp" 
-        android:id="@+id/wechatpaytv"/>
+        android:textSize="14sp" 
+        />
 
 
 </LinearLayout>
