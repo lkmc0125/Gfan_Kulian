@@ -21,11 +21,13 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.adapter.CommonAdapter;
 import com.xiaohong.kulian.adapter.TaskListAdapter;
+import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.LazyloadListActivity;
 import com.xiaohong.kulian.common.widget.LoadingDrawable;
 
@@ -67,7 +69,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             mList.setOnItemClickListener(this);
 //            mList.setDividerHeight(5);
 //            mList.setDivider(getResources().getDrawable(R.drawable.divider_line));
-
+            mAdapter = new TaskListAdapter(TaskListActivity.this);
             lazyload();
             return true;
         } else {
@@ -79,6 +81,27 @@ public class TaskListActivity extends LazyloadListActivity implements
     public void doLazyload() {
         Log.d(TAG, "doInitView:mCategory=" + mCategory);
         if (Constants.CATEGORY_TASK.equals(mCategory)) {
+            ArrayList<TaskBean> taskList = Utils.getPreloadedTaskList();
+            boolean isLoaded = false;
+            if(taskList != null && taskList.size() > 0) {
+                Log.d(TAG,"preloaded task size = " + taskList.size());
+                mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK, taskList);
+                isLoaded = true;
+            }
+            ArrayList<TaskBean> gzhTaskList = Utils.getPreloadedGzhTaskList();
+            if(gzhTaskList != null && gzhTaskList.size() > 0) {
+                Log.d(TAG,"preloaded gzh task size: " + gzhTaskList.size());
+                mAdapter.setData(TaskListAdapter.TYPE_GZH_TAK, gzhTaskList);
+                
+                isLoaded = true;;
+            }
+            if(isLoaded == true) {
+                Log.d(TAG,"set mIsEnd to true");
+                mIsEnd = true;
+                setLoadResult(true);
+                return;
+            }
+            Log.d(TAG,"not preloaded task");
             MarketAPI.getTaskList(getApplicationContext(), this);
             MarketAPI.getGzhTaskList(getApplicationContext(), 
                     new GzhTaskListApiRequestListener());
@@ -87,13 +110,12 @@ public class TaskListActivity extends LazyloadListActivity implements
 
     @Override
     public CommonAdapter doInitListAdapter() {
-        mAdapter = new TaskListAdapter(TaskListActivity.this);
-       
         return mAdapter;
     }
 
     @Override
     public boolean isEnd() {
+        Log.d(TAG, "isEnd return " + mIsEnd);
         return mIsEnd;
     }
 

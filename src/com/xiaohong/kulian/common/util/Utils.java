@@ -1373,12 +1373,18 @@ public class Utils {
     
     private static final ArrayList<TaskBean> sTaskList = new ArrayList<TaskBean>(); 
     
+    private static final ArrayList<TaskBean> sGzhTaskList = new ArrayList<TaskBean>(); 
+    
     public static ArrayList<AppBean> getPreloadedAppList() {
         return sAppList;
     }
     
     public static ArrayList<TaskBean> getPreloadedTaskList() {
         return sTaskList;
+    }
+    
+    public static ArrayList<TaskBean> getPreloadedGzhTaskList() {
+        return sGzhTaskList;
     }
     
     private static class LoadAppAndTaskApiResponseListener
@@ -1395,6 +1401,7 @@ public class Utils {
             switch (method) {
                 case MarketAPI.ACTION_GET_APP_LIST :
                     AppListBean appList = (AppListBean) obj;
+                    sAppList.clear();
                     sAppList.addAll(appList.getApplist());
                     for (AppBean bean : sAppList) {
                         if (Utils.isApkInstalled(mContext,
@@ -1402,11 +1409,12 @@ public class Utils {
                             bean.setIsInstalled(true);
                         }
                     }
+                    Log.d(TAG, "onSuccess sAppList size = " + sAppList.size());
                     break;
                 case MarketAPI.ACTION_GET_TASK_LIST : {
                     TaskListBean result = (TaskListBean) obj;
                     if (result.getTasklist() != null) {
-                        Log.d(TAG, "size = " + result.getTasklist().size());
+                        Log.d(TAG, "task size = " + result.getTasklist().size());
                         for (TaskBean item : result.getTasklist()) {
                             // set remain num to 1 for normal task
                             item.setRemain_tasknum(1);
@@ -1415,7 +1423,9 @@ public class Utils {
                     } else {
                         Log.d(TAG, "no data from server");
                     }
+                    sTaskList.clear();
                     sTaskList.addAll(result.getTasklist());
+                    Log.d(TAG, "onSuccess sTaskList size = " + sTaskList.size());
                     break;
                 }
                 case MarketAPI.ACTION_GET_GZH_TASK_LIST :
@@ -1424,7 +1434,7 @@ public class Utils {
                     ArrayList<TaskBean> finishedList = new ArrayList<TaskBean>();
                     int titlePos = 0;
                     if (result.getTasklist() != null) {
-                        Log.d(TAG, "ApiRequestListener size = "
+                        Log.d(TAG, " gzh size = "
                                 + result.getTasklist().size());
                         for (int i = 0; i < result.getTasklist().size(); i++) {
                             TaskBean bean = result.getTasklist().get(i);
@@ -1433,17 +1443,14 @@ public class Utils {
                             } else {
                                 availableList.add(bean);
                             }
-
-                            if (finishedList.size() > 0) {
-                                availableList.addAll(finishedList);
-                            }
-                            Log.d(TAG, "onSuccess done");
+                        }
+                        if (finishedList.size() > 0) {
+                            availableList.addAll(finishedList);
                         }
                     }
-                    if (finishedList.size() > 0) {
-                        availableList.addAll(finishedList);
-                    }
-                    sTaskList.addAll(availableList);
+                    sGzhTaskList.clear();
+                    sGzhTaskList.addAll(availableList);
+                    Log.d(TAG, "onSuccess sGzhTaskList size = " + sGzhTaskList.size());
                     break;
                 default :
                     break;
