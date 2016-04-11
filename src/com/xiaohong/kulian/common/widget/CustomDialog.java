@@ -1,4 +1,4 @@
-package com.xiaohong.kulian.common.util;
+package com.xiaohong.kulian.common.widget;
 
 import com.xiaohong.kulian.R;
 

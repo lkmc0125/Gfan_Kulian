@@ -21,9 +21,9 @@ import android.widget.ImageButton;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
-import com.xiaohong.kulian.common.util.CustomDialog;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
+import com.xiaohong.kulian.common.widget.CustomDialog;
 
 public class FeedBackActivity extends BaseActivity {
     private final static String TAG = "FeedBackActivity";

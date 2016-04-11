@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.TaskBean;
-import com.xiaohong.kulian.common.util.CustomDialog;
+import com.xiaohong.kulian.common.widget.CustomDialog;
 
 public class GzhTaskDetailActivity extends Activity implements OnClickListener {
     private static final String TAG = "GzhTaskDetailActivity";

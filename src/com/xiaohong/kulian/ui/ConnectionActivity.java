@@ -49,12 +49,12 @@ import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
-import com.xiaohong.kulian.common.util.CustomDialog;
 import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.util.WifiAdmin;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
 import com.xiaohong.kulian.common.widget.BaseActivity;
+import com.xiaohong.kulian.common.widget.CustomDialog;
 import com.xiaohong.kulian.common.widget.MarqueeTextView;
 import com.xiaohong.kulian.common.widget.RoundImageView;
 

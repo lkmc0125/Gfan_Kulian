@@ -38,6 +38,7 @@ import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.DownloadInfo;
+import com.xiaohong.kulian.common.widget.CustomProgressBar;
 
 public class AppDetailActivity extends Activity
         implements
@@ -89,13 +90,11 @@ public class AppDetailActivity extends Activity
     private TextView mAppCoinNumTv;
     private TextView mAppDescView;
 
-    private RelativeLayout mAppActionLayout;
-    private ImageView mAppActionIv;
     private RelativeLayout mRootLayout;
 
+    private CustomProgressBar mProgressBar;
+    
     private ArrayList<ImageView> mAppPicViews = new ArrayList<ImageView>();
-
-    private TextView mAppActionView;
 
     private DetailInfo mDetailInfo = null;
     private long mDownloadId = -1;
@@ -136,18 +135,14 @@ public class AppDetailActivity extends Activity
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic3));
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic4));
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic5));
-        mAppActionView = (TextView) findViewById(R.id.app_action_tv);
-
-        mAppActionLayout = (RelativeLayout) findViewById(R.id.app_action_layout);
-        mAppActionIv = (ImageView) findViewById(R.id.app_action_iv);
         
+        mProgressBar = (CustomProgressBar) findViewById(R.id.download_progress_bar);
+
         mRootLayout = (RelativeLayout) findViewById(R.id.app_detail_root_layout);
         mRootLayout.setVisibility(View.INVISIBLE);
 
-        mAppActionView.setOnClickListener(this);
+        mProgressBar.setOnClickListener(this);
         mBackImageView.setOnClickListener(this);
-        mAppActionLayout.setOnClickListener(this);
-        mAppActionIv.setOnClickListener(this);
     }
 
     @Override
@@ -234,7 +229,8 @@ public class AppDetailActivity extends Activity
                     showInstallView();
                 } else if (mIsDownloading == true) {
                     mStatus = STATUS_DOWNLOADING;
-                    showDowloadingView(downloadInfo);
+                    mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
+                    showDownloadingView(downloadInfo);
                 } else {
                     mStatus = STATUS_PAUSE;
                     showContinueView(downloadInfo);
@@ -243,9 +239,8 @@ public class AppDetailActivity extends Activity
                 // do download
                 mStatus = STATUS_WAITING_DOWNLOAD;
                 showDownloadView();
-
             }
-            mAppActionView.setOnClickListener(AppDetailActivity.this);
+
             mImageLoader.displayImage(mDetailInfo.getApplogo(), mAppIconView,
                     Utils.sDisplayImageOptions, new ImageLoadingListener() {
 
@@ -294,7 +289,6 @@ public class AppDetailActivity extends Activity
         public void onError(int method, int statusCode) {
             Log.w(TAG, "get app detail fail");
         }
-
     }
 
     @Override
@@ -305,16 +299,12 @@ public class AppDetailActivity extends Activity
             case R.id.back_layout :
                 finish();
                 break;
-            case R.id.app_action_layout :
-            case R.id.app_action_iv:
-            case R.id.app_action_tv:
+            case R.id.download_progress_bar:
                 handleActionTvClicked();
                 break;
-
             default :
                 break;
         }
-
     }
 
     @Override
@@ -332,10 +322,8 @@ public class AppDetailActivity extends Activity
                 Log.d(TAG, "download progress update:" + info.mProgress);
                 if (info.mStatus == DownloadManager.Impl.STATUS_SUCCESS) {
                     // 已经下载成功
-                    mAppActionView.setText("安装");
-                    mAppActionView.setTextColor(Color.WHITE);
-                    mAppActionIv.setBackgroundColor(getResources().getColor(
-                            R.color.install_button_background_color));
+                    mProgressBar.setText("安装");
+                    mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
                     // mProduct.setFilePath(info.mFilePath);
                     Log.d(TAG, "download success then do install apk");
                     Utils.installApk(getApplicationContext(), new File(info.mFilePath));
@@ -344,17 +332,15 @@ public class AppDetailActivity extends Activity
 
                 } else if(info.mProgress != null){
                     // 下载中
-                    showDowloadingView(info);
+                    showDownloadingView(info);
                 }
             } else {
 
             }
         }
-
     }
 
     private void handleActionTvClicked() {
-        String tvStr = (String) mAppActionView.getText();
         DownloadInfo downloadInfo = mSession.getDownloadingList().get(
                 mDetailInfo.getPackagename());
         Log.d(TAG, "handleActionTvClicked mStatus = " + mStatus);
@@ -371,7 +357,8 @@ public class AppDetailActivity extends Activity
             mSession.addObserver(this);
             mIsDownloading = true;
             mStatus = STATUS_DOWNLOADING;
-            showDowloadingView(downloadInfo);
+            mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
+            showDownloadingView(downloadInfo);
             mSession.getDownloadManager().resumeDownload(mDownloadId);
             
         }else if(mStatus == STATUS_DOWNLOADING) {
@@ -389,7 +376,8 @@ public class AppDetailActivity extends Activity
             mSession.addObserver(this);
             mIsDownloading = true;
             mStatus = STATUS_DOWNLOADING;
-            showDowloadingView(downloadInfo);
+            mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
+            showDownloadingView(downloadInfo);
             mDownloadId = startDownload(mDetailInfo);
             
         }
@@ -431,7 +419,7 @@ public class AppDetailActivity extends Activity
                 Log.d(TAG, "continue downloading");
                 mIsDownloading = true;
                 mSession.getDownloadManager().resumeDownload(mDownloadId);
-                showDowloadingView(downloadInfo);
+                showDownloadingView(downloadInfo);
             }else if (mIsDownloading == true) {
                 mIsDownloading = false;
                 mSession.getDownloadManager().pauseDownload(mDownloadId);
@@ -439,7 +427,7 @@ public class AppDetailActivity extends Activity
             } else {
                 mIsDownloading = true;
                 mSession.getDownloadManager().resumeDownload(mDownloadId);
-                showDowloadingView(downloadInfo);
+                showDownloadingView(downloadInfo);
             }
         } else {
             // do download
@@ -466,18 +454,6 @@ public class AppDetailActivity extends Activity
         return id;
     }
 
-    /**
-     * 为了让下载、继续这个文本框具有进度条的效果 使用一个FrameLayout里面一个ImageView和一个TextView
-     * 通过改变ImageView的宽度来达到进度条的效果
-     */
-    private void changeAppActionIvWidth(int percent) {
-        int total = mAppActionLayout.getWidth();
-        int current = percent * total / 100;
-        android.view.ViewGroup.LayoutParams lp = mAppActionIv.getLayoutParams();
-        lp.width = current;
-        mAppActionIv.setLayoutParams(lp);
-    }
-
     private int progressStr2Int(String progress) {
         if (progress == null) {
             return 0;
@@ -496,76 +472,45 @@ public class AppDetailActivity extends Activity
      * 之前从来没有下载过，提示下载
      */
     private void showDownloadView() {
-        mAppActionView.setText("下载安装赚金币(" + mDetailInfo.getAppsize() + ")");
-        // test
-        changeAppActionIvWidth(100);
+        mProgressBar.setText("下载安装赚金币(" + mDetailInfo.getAppsize() + ")");
+        mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
     }
 
     /**
      * 正在下载，会不断更新进度条
      */
-    private void showDowloadingView(DownloadInfo downloadInfo) {
+    private void showDownloadingView(DownloadInfo downloadInfo) {
         String progress = "0%";
         if(downloadInfo != null) {
             progress = downloadInfo.mProgress == null ? "0%" : downloadInfo.mProgress;
+            mProgressBar.setProgress(progressStr2Int(downloadInfo.mProgress));
         }
-        mAppActionView.setText("正在下载（" + progress + "）");
-        mAppActionView.setTextColor(Color.BLUE);
-        mAppActionIv.setBackgroundColor(getResources().getColor(
-                R.color.pause_button_background_color));
-        if(downloadInfo != null) {
-            changeAppActionIvWidth(progressStr2Int(downloadInfo.mProgress));
-        }else {
-            changeAppActionIvWidth(0);
-        }
-        
+        mProgressBar.setText("正在下载（" + progress + "）");
     }
 
     /**
      * 已安装，显示打开
      */
     private void showOpenView() {
-        mAppActionView.setText(TEXT_OPEN);
-        mAppActionIv.setBackgroundColor(getResources().getColor(
-                R.color.open_button_background_color));
-        changeAppActionIvWidth(100);
+        mProgressBar.setText(TEXT_OPEN);
+        mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
     }
 
     /**
      * 下载被暂停，显示继续
      */
     private void showContinueView(DownloadInfo downloadInfo) {
-       /* if(downloadInfo == null) {
-            Log.w(TAG, "showContinueView downloadInfo is null");
-            return;
-        }*/
         Log.d(TAG, "showContinueView");
-        mAppActionView.setText(TEXT_CONTINUE);
-        if(downloadInfo == null || progressStr2Int(downloadInfo.mProgress) < 50) {
-            mAppActionView.setTextColor(getResources().
-                    getColor(R.color.redownload_button_background_color));
-        }else {
-            mAppActionView.setTextColor(Color.WHITE);
-        }
-        
-        mAppActionIv.setBackgroundColor(getResources().getColor(
-                R.color.redownload_button_background_color));
-        if(downloadInfo == null) {
-            changeAppActionIvWidth(0);
-        }else {
-            changeAppActionIvWidth(progressStr2Int(downloadInfo.mProgress));
-        }
-        
+        mProgressBar.setText(TEXT_CONTINUE);
+        mProgressBar.setStatus(CustomProgressBar.Status.PAUSED);
     }
 
     /**
      * 下载已完成等待安装
      */
     private void showInstallView() {
-        mAppActionView.setText(TEXT_INSTALL);
-        mAppActionIv.setBackgroundColor(getResources().getColor(
-                R.color.install_button_background_color));
-        changeAppActionIvWidth(100);
+        mProgressBar.setText(TEXT_INSTALL);
+        mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
     }
 
 }

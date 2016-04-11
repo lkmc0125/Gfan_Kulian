@@ -20,6 +20,7 @@ import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.common.widget.CustomDialog;
 
 /**
  * <p>

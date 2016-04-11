@@ -272,28 +272,18 @@
                 android:background="#E8E8E8" >
             </View>
 
-            <ImageView
-                android:id="@+id/app_action_iv"
-                android:layout_width="match_parent"
+            <com.xiaohong.kulian.common.widget.CustomProgressBar
+                android:id="@+id/download_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
                 android:layout_height="35dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:background="@color/download_button_background_color"
-                android:contentDescription="@null" />
-
-            <TextView
-                android:id="@+id/app_action_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:background="@null"
-                android:gravity="center"
-                android:text="下载安装赚金币(50MB)"
-                android:textColor="#ffffff" />
+                android:max="100"
+                android:progressDrawable="@drawable/custom_progressbar"
+                android:visibility="visible" />
+            <!-- android:background="@drawable/custom_progressbar_bg" -->
         </RelativeLayout>
     </RelativeLayout>
 

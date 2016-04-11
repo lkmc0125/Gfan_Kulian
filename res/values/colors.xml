@@ -43,13 +43,10 @@
     <color name="app_task_tab_color">#FFFFFF</color>
     <color name="app_task_background_color">#F3F3F3</color>
     <color name="app_coin_num_color">#FF0000</color>
-    <color name="download_button_background_color">#2c78d4</color>
-    <color name="open_button_background_color">#60AF0A</color>
-    <color name="install_button_background_color">#F5A623</color>
-    <!--     处于下载状态中  显示 下载（20%）-->
-    <color name="pause_button_background_color">#2F83E9</color>
-    <!--     处于暂停状态中 -->
-    <color name="redownload_button_background_color">#F5A623</color>
+    <!-- 应用详情页面下载按钮颜色 -->
+    <color name="download_button_blue_color">#2c78d4</color>
+    <color name="download_button_yellow_color">#F5A623</color>
+    <color name="download_button_green_color">#60AF0A</color>
     <!-- 连接页面颜色 -->
     <color name="current_link_wifi_hint_text_color">#174E9D</color>
     <color name="connect_dialog_border">#99BCBCBC</color>

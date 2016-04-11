@@ -31,9 +31,9 @@ import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
-import com.xiaohong.kulian.common.util.CustomDialog;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
+import com.xiaohong.kulian.common.widget.CustomDialog;
 
 /**
  * this view is displaying for login success to personal center

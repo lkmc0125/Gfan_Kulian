@@ -74,11 +74,11 @@ import com.xiaohong.kulian.common.ResponseCacheManager;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.util.CacheManager;
-import com.xiaohong.kulian.common.util.CustomDialog;
 import com.xiaohong.kulian.common.util.DBUtils;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.UpdateInfo;
 import com.xiaohong.kulian.common.widget.BaseTabActivity;
+import com.xiaohong.kulian.common.widget.CustomDialog;
 
 /**
  * Home Tab Activity
