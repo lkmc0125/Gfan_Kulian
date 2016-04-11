@@ -91,6 +91,8 @@ public class AppListAdapter extends CommonAdapter implements Observer, ApiReques
 		 * @return
 		 */
 		boolean isLoadOver();
+		
+		void loadMore();
 	}
 
     @Override

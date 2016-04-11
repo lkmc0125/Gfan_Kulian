@@ -245,14 +245,14 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Log.d("free", "getView");
+        Log.d("free", "getView size = " + mDataSource.size());
         // last 4 item trigger the lazyload event
         if (mIsLazyLoad && !mLazyloadListener.isEnd()
                 && (position == getCount() - 4)) {
             // fix the multi-load situation
             synchronized (this) {
                 if (mLazyloadListener.isLoadOver()) {
-                    mLazyloadListener.lazyload();
+                    mLazyloadListener.loadMore();
                     Utils.trackEvent(mContext, mPageType,
                             Constants.PRODUCT_LAZY_LOAD);
                 }

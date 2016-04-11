@@ -155,11 +155,18 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     public void doLazyload() {
         ArrayList<AppBean> appList = Utils.getPreloadedAppList();
         if(appList != null && appList.size() > 0) {
-            Log.d(TAG,"preloaded");
+            Log.d(TAG,"app preloaded size = " + appList.size());
             mIsEnd = appList.size() < 10;
+            mAdapter.clearData();
             mAdapter.addData(appList);
+            mAdapter.notifyDataSetChanged();
             setLoadResult(true);
             return;
+        }
+        try {
+            throw new Exception("test");
+        }catch(Exception e) {
+            e.printStackTrace();
         }
         Log.d(TAG,"no preloaded");
         MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
@@ -179,6 +186,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     @SuppressWarnings("unchecked")
     @Override
     public void onSuccess(int method, Object obj) {
+        Log.d(TAG, "onSuccess product");
  
         //HashMap<String, Object> result = (HashMap<String, Object>) obj;
 
@@ -252,6 +260,13 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
         // 重试
         mProgress.setVisibility(View.VISIBLE);
         mNoData.setVisibility(View.GONE);
-        lazyload();
+        doLazyload();
+    }
+
+
+    @Override
+    public void loadMore() {
+        Log.d(TAG, "load more data");
+        MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
     }
 }

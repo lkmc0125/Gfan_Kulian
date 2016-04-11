@@ -232,21 +232,6 @@ public class TaskListActivity extends LazyloadListActivity implements
                     } else {
                         availableList.add(bean);
                     }
-                    
-//                    if(list.get(i).getRemain_tasknum() == 0 && titlePos == 0) {
-//                        TaskBean bean = new TaskBean();
-//                        bean.setType(TaskBean.ITEM_TYPE_TITLE);
-//                        bean.setTaskType(TaskListAdapter.TYPE_GZH_TAK);
-//                        bean.setTitle(getResources().getString(R.string.title_task_done));
-//                        list.add(i, bean);
-//                        titlePos = i;
-//                        break;
-//                    }else if(list.get(i).getRemain_tasknum() > 0){
-//                        if(titlePos > 0) {
-//                            TaskBean bean = list.remove(i);
-//                            list.add(titlePos, bean);
-//                        }
-//                    }
                 }
                 if (finishedList.size() > 0) {
                     availableList.addAll(finishedList);
@@ -266,6 +251,12 @@ public class TaskListActivity extends LazyloadListActivity implements
             Log.d(TAG, "GzhTaskListApiRequestListener onError" + statusCode);
             
         }
+        
+    }
+
+    @Override
+    public void loadMore() {
+        // TODO Auto-generated method stub
         
     }
 }
