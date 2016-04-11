@@ -35,10 +35,10 @@
             />
         <TextView
             android:id="@+id/connection_recommend_all_task_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
             android:layout_centerInParent="true"
-            android:layout_gravity="left|center"
+            android:gravity="right|center"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="5dip"
             android:layout_toLeftOf="@+id/connection_recommend_task_img"

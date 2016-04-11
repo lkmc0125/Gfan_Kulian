@@ -34,9 +34,10 @@
 
         <TextView
             android:id="@+id/connection_recommend_all_app_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
             android:layout_marginRight="5dip"
+            android:gravity="right"
             android:layout_toLeftOf="@+id/connection_recommend_app_img"
             android:text="@string/connection_recommend_all_app"
             android:textColor="#939393"
