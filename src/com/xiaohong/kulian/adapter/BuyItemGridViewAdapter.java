@@ -3,6 +3,7 @@
  */
 package com.xiaohong.kulian.adapter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.xiaohong.kulian.R;
@@ -103,7 +104,12 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
         }
         GoodsBean item = mData.get(position);
         holder.mCoinTv.setText(item.getName());
-        holder.mMoneyTv.setText(item.getPrice()/100 + "");
+        if (item.getPrice() % 100 == 0) {
+            holder.mMoneyTv.setText(item.getPrice()/100);
+        } else {
+            float price = (float)item.getPrice()/100.f;
+            holder.mMoneyTv.setText(new DecimalFormat("#0.00").format(price));
+        }
         return convertView;
     }
     
