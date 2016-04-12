@@ -60,8 +60,8 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener, 
 
     private static final int VALID = 1;
     private static final int LOAD = 2;
-    private SplashAD splashAD;
-    private ViewGroup container;
+//    private SplashAD splashAD;
+//    private ViewGroup container;
     public boolean canJump = false;
 
     @Override
@@ -80,9 +80,9 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener, 
         }
 
         // 初始化加载页
-//        initSplashBg();
-        container = (ViewGroup) this.findViewById(R.id.splash_container);
-        splashAD = new SplashAD(this, container, "1105244906", "9010002916167210", this);
+        initSplashBg();
+//        container = (ViewGroup) this.findViewById(R.id.splash_container);
+//        splashAD = new SplashAD(this, container, "1105244906", "9010002916167210", this);
 
         /**
          * 开屏广告现已增加新的接口，可以由开发者在代码中设置开屏的超时时长
@@ -145,21 +145,21 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener, 
     /*
      * 初始化Splash背景图
      */
-//    private void initSplashBg() {
-//
-//        File splashFile = new File(getApplicationContext().getCacheDir(), "splash.png");
-//
-//        if (splashFile.exists()) {
-//            Bitmap bmp = BitmapFactory.decodeFile(splashFile.getAbsolutePath());
-//            if (bmp != null) {
-//                setSplashBitmap(bmp);
-//                return;
-//            }
-//        }
-//        // 没有新的Splash页，使用默认图
-//        setSplashBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.splash));
-//        mSession.setSplashTime(0);
-//    }
+    private void initSplashBg() {
+
+        File splashFile = new File(getApplicationContext().getCacheDir(), "splash.png");
+
+        if (splashFile.exists()) {
+            Bitmap bmp = BitmapFactory.decodeFile(splashFile.getAbsolutePath());
+            if (bmp != null) {
+                setSplashBitmap(bmp);
+                return;
+            }
+        }
+        // 没有新的Splash页，使用默认图
+        setSplashBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.splash));
+        mSession.setSplashTime(0);
+    }
     
     @SuppressWarnings("unchecked")
     @Override
@@ -173,17 +173,17 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener, 
     /*
      * 设置Splash背景图
      */
-//    private void setSplashBitmap(Bitmap bmp) {
-//
-//        // 针对不同分辨率的屏幕做Splash的适配
-//        Bitmap scaledBitmap = ImageUtils.sacleBitmap(getApplicationContext(), bmp);
-//        ImageView v = ((ImageView) findViewById(R.id.iv_splashBg));
-//        if (scaledBitmap == null) {
-//            v.setImageBitmap(bmp);
-//        } else {
-//            v.setImageBitmap(scaledBitmap);
-//        }
-//    }
+    private void setSplashBitmap(Bitmap bmp) {
+
+        // 针对不同分辨率的屏幕做Splash的适配
+        Bitmap scaledBitmap = ImageUtils.sacleBitmap(getApplicationContext(), bmp);
+        ImageView v = ((ImageView) findViewById(R.id.iv_splashBg));
+        if (scaledBitmap == null) {
+            v.setImageBitmap(bmp);
+        } else {
+            v.setImageBitmap(scaledBitmap);
+        }
+    }
 
     @Override
     public void onADPresent() {

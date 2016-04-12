@@ -121,6 +121,8 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         } else if (mSession.isLogin()) {
             textView_login.setText("账号退出");
         }
+        TextView versionTv = (TextView)this.findViewById(R.id.about_text);
+        versionTv.setText("V"+mSession.getVersionName()+"Build"+mSession.getVersionCode());
     }
 
     @Override

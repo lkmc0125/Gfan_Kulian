@@ -13,7 +13,8 @@
         android:layout_marginRight="10dip"
         android:layout_marginTop="15dip"
         android:background="@drawable/app_task_item_bg_with_shadow"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
         <ImageView
             android:id="@+id/person_account_my_task_value_img1"
