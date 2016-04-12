@@ -161,7 +161,19 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                             req.timeStamp = json.getString("timeStamp");
                             req.packageValue = json.getString("packageValue");
                             req.sign = json.getString("sign");
-                            req.extData = goodsName;
+                            String extDataStr = "{\"goods_name\":" + goodsName ;
+                            
+                            try {
+                                int added_coin = json.getInt("added_coin");
+                                extDataStr += ", \"added_coin\":" + added_coin;
+                                Log.d(TAG, "doWechatPay added_coin = " + added_coin);
+                            }catch(JSONException e) {
+                                Log.e(TAG, "JSONException : " + e.getMessage());
+                                e.printStackTrace();
+                                extDataStr += ", \"added_coin\":" + 0;
+                            }
+                            extDataStr += "}";
+                            req.extData = extDataStr;
                             mWxApi.sendReq(req);
                         } else {
                             DialogUtils.showMessage(getApplicationContext(),

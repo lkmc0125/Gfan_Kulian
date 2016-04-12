@@ -1141,4 +1141,10 @@ public class Session extends Observable {
             listener.onCoinUpdate(coinNum);
         }
     }
+    
+    public void notifyCoinUpdated(int added_coin) {
+        for(OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
+            listener.onCoinUpdate(added_coin);
+        }
+    }
 }

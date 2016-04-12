@@ -1,5 +1,6 @@
 package com.xiaohong.kulian.wxapi;
 
+import com.google.gson.Gson;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -9,6 +10,7 @@ import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.common.util.TopBar;
 
 import android.app.Activity;
@@ -94,7 +96,10 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
             if (resp.getClass() == PayResp.class) {
                 PayResp payResp = (PayResp) resp;
                 TextView goodsNameTv = (TextView) findViewById(R.id.goods_name);
-                goodsNameTv.setText("购买商品: "+payResp.extData);
+                Gson gson = new Gson();
+                GoodsBean bean = gson.fromJson(payResp.extData, GoodsBean.class);
+                goodsNameTv.setText("购买商品: " + bean.getGoods_name());
+                Session.get(getApplicationContext()).notifyCoinUpdated(bean.getAdded_coin());
             }
             TextView payResultTv = (TextView) findViewById(R.id.pay_result);
             payResultTv.setText(msg);
@@ -110,5 +115,23 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
         default:
             break;
         }
+    }
+    
+    private static class GoodsBean {
+        public String getGoods_name() {
+            return goods_name;
+        }
+        public void setGoods_name(String goods_name) {
+            this.goods_name = goods_name;
+        }
+        public int getAdded_coin() {
+            return added_coin;
+        }
+        public void setAdded_coin(int added_coin) {
+            this.added_coin = added_coin;
+        }
+        private String goods_name;
+        private int added_coin;
+        
     }
 }
