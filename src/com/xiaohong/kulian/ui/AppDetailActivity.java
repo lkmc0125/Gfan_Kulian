@@ -178,6 +178,7 @@ public class AppDetailActivity extends Activity
 
         @Override
         public void onSuccess(int method, Object obj) {
+            mSession.addObserver(AppDetailActivity.this);
             AppDetailBean appDetail = (AppDetailBean) obj;
             mDetailInfo = appDetail.getDetailInfo();
             mAppNameTv.setText(mDetailInfo.getAppname());
@@ -194,9 +195,9 @@ public class AppDetailActivity extends Activity
             HashMap<String, DownloadInfo> downloadingMap = mSession
                     .getDownloadingList();
             Log.d(TAG, "downloadingMap size = " + downloadingMap.size());
-            for (String pkg : downloadingMap.keySet()) {
+            /*for (String pkg : downloadingMap.keySet()) {
                 Log.d(TAG, "pkg = " + pkg);
-            }
+            }*/
             if (Utils.isApkInstalled(getApplicationContext(),
                     mDetailInfo.getPackagename())) {
                 // 已安装 显示打开
@@ -227,14 +228,15 @@ public class AppDetailActivity extends Activity
                     mStatus = STATUS_WAITING_INSTALL;
                     mFilePath = downloadInfo.mFilePath;
                     showInstallView();
-                } else if (mIsDownloading == true) {
+                } else /*if (mIsDownloading == true)*/ {
                     mStatus = STATUS_DOWNLOADING;
+                    mIsDownloading = true;
                     mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
                     showDownloadingView(downloadInfo);
-                } else {
+                }/* else {
                     mStatus = STATUS_PAUSE;
                     showContinueView(downloadInfo);
-                }
+                }*/
             } else {
                 // do download
                 mStatus = STATUS_WAITING_DOWNLOAD;
@@ -369,7 +371,7 @@ public class AppDetailActivity extends Activity
             mStatus = STATUS_PAUSE;
             showContinueView(downloadInfo);
             mSession.getDownloadManager().pauseDownload(mDownloadId);
-            
+
         }else {
             //点击后开始下载
             Log.d(TAG, "begin download");
