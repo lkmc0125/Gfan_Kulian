@@ -136,7 +136,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_above="@+id/app_action_layout"
-            android:background="@color/app_task_background_color"
+            android:background="@color/background_color"
             android:scrollbars="none" >
 
             <RelativeLayout
@@ -167,7 +167,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/push" />
+                            android:src="@drawable/snapshot_default" />
 
                         <ImageView
                             android:id="@+id/app_desc_pic2"
@@ -176,7 +176,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/push" />
+                            android:src="@drawable/snapshot_default" />
 
                         <ImageView
                             android:id="@+id/app_desc_pic3"
@@ -185,7 +185,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/push" />
+                            android:src="@drawable/snapshot_default" />
 
                         <ImageView
                             android:id="@+id/app_desc_pic4"
@@ -194,7 +194,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/push" />
+                            android:src="@drawable/snapshot_default" />
 
                         <ImageView
                             android:id="@+id/app_desc_pic5"
@@ -203,7 +203,7 @@
                             android:layout_marginRight="5dp"
                             android:contentDescription="@null"
                             android:scaleType="fitXY"
-                            android:src="@drawable/push" />
+                            android:src="@drawable/snapshot_default" />
                     </LinearLayout>
                 </HorizontalScrollView>
 

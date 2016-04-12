@@ -508,6 +508,9 @@ public class Session extends Observable {
     }
     
     public String getUserName() {
+        if (userName == null) {
+            return "";
+        }
         return userName;
     }
 

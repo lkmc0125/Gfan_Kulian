@@ -25,7 +25,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="37dip"
                 android:layout_marginTop="25dip"
-                android:background="@drawable/link_succ"
+                android:background="@drawable/link_success"
                 android:contentDescription="@null" />
 
             <TextView

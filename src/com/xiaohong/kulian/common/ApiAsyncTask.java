@@ -84,6 +84,8 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Object> {
         }
 	    
         Object result = null;
+
+/*  not use cache for now
         //缓存唯一标识
         String cacheKey = "";
         if (!ApiRequestFactory.API_NO_CACHE_MAP.contains(mReuqestAction)) {
@@ -110,7 +112,7 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Object> {
                 return result;
             }
         }
-        
+*/        
         HttpResponse response = null;
         HttpUriRequest request = null;
         try {
@@ -128,9 +130,10 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Object> {
 
             // fetch result from remote server
             result = ApiResponseFactory.getResponse(mContext, mReuqestAction, response);
-            if (result != null && !ApiRequestFactory.API_NO_CACHE_MAP.contains(mReuqestAction)) {
-                mResponseCache.putResponse(cacheKey, result);
-            }
+//            not use cache for now            
+//            if (result != null && !ApiRequestFactory.API_NO_CACHE_MAP.contains(mReuqestAction)) {
+//                mResponseCache.putResponse(cacheKey, result);
+//            }
             // 处理API Response，如果解析出错，返回BUSSINESS_ERROR【610】
             return result == null ? BUSSINESS_ERROR : result;
             

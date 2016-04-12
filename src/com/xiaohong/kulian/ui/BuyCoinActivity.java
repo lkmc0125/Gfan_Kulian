@@ -49,7 +49,8 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     private BuyItemGridViewAdapter mAdapter;
     private GoodsListBean mGoodsList;
     private Session mSession;
-
+    private TextView mRetryTv;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +68,9 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         mWechatPayTv.setVisibility(View.INVISIBLE);
         mWechatPayTv.setEnabled(false);
         mWechatPayTv.setOnClickListener(this);
+        
+        mRetryTv = (TextView) findViewById(R.id.no_data);
+        mRetryTv.setOnClickListener(this);
     }
 
     private void initTopBar(String title) {
@@ -95,6 +99,9 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
             case R.id.wechatpaytv :
                 doWechatPay();
                 break;
+            case R.id.no_data:
+                getGoodsList();
+                break;
             default :
                 break;
         }
@@ -121,6 +128,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         final String url = "http://115.159.76.147:8390/cb/getprepayid?phone_number="
                 + mSession.getUserName() + "&type=1&goods_id=" + mAdapter.getSelectedGoodsId();
         Log.d(TAG, "doWechatPay url = " + url);
+        final String goodsName = mAdapter.getSelectedGoodsName();
         Toast.makeText(getApplicationContext(), "请稍候...", Toast.LENGTH_SHORT)
                 .show();
         new AsyncTask<Void, Void, Void>() {
@@ -153,9 +161,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                             req.timeStamp = json.getString("timeStamp");
                             req.packageValue = json.getString("packageValue");
                             req.sign = json.getString("sign");
-                            /*req.extData = "app data"; // optional
-*/                            // Toast.makeText(PayMainActivity.this, "正在跳转到微信",
-                            // Toast.LENGTH_SHORT).show();
+                            req.extData = goodsName;
                             mWxApi.sendReq(req);
                         } else {
                             DialogUtils.showMessage(getApplicationContext(),
@@ -186,11 +192,16 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         switch (method) {
             case MarketAPI.ACTION_GET_GOODS_LIST:
                 mGoodsList = (GoodsListBean) obj;
-                mAdapter = new BuyItemGridViewAdapter(getApplicationContext(), mGoodsList.getGoodsList());
-                mGridView.setAdapter(mAdapter);
-                mWechatPayTv.setEnabled(true);
-                mGridView.setOnItemClickListener(BuyCoinActivity.this);
-                mWechatPayTv.setVisibility(View.VISIBLE);
+                if (mGoodsList.getGoodsList() != null) {
+                    mRetryTv.setVisibility(View.GONE);
+                    mAdapter = new BuyItemGridViewAdapter(getApplicationContext(), mGoodsList.getGoodsList());
+                    mGridView.setAdapter(mAdapter);
+                    mWechatPayTv.setEnabled(true);
+                    mGridView.setOnItemClickListener(BuyCoinActivity.this);
+                    mWechatPayTv.setVisibility(View.VISIBLE);
+                } else {
+                    mRetryTv.setVisibility(View.VISIBLE);
+                }
                 break;
             default:
                 break;
@@ -199,8 +210,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
 
     @Override
     public void onError(int method, int statusCode) {
-        // TODO Auto-generated method stub
-        
+        mRetryTv.setVisibility(View.VISIBLE);
     }
     
     private void getGoodsList() {

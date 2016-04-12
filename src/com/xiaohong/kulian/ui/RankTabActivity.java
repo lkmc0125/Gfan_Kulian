@@ -235,7 +235,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
         ImageView img1 = new ImageView(this) ;
 
-        img1.setBackgroundResource(R.drawable.gallery5) ;
+        img1.setBackgroundResource(R.drawable.push) ;
 
         img1.setOnClickListener(mAdItemClickListener) ;
 
@@ -243,7 +243,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
         ImageView img2 = new ImageView(this) ;
 
-        img2.setBackgroundResource(R.drawable.gallery6) ;
+        img2.setBackgroundResource(R.drawable.push) ;
 
         img2.setOnClickListener(mAdItemClickListener) ;
 

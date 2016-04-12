@@ -21,7 +21,7 @@ import java.util.HashMap;
 import android.text.TextUtils;
 
 /**
- * 机锋市场API响应缓存管理器
+ * API响应缓存管理器
  * 
  * @author Andrew
  * @date 2011-5-11

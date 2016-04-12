@@ -33,6 +33,10 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
     public int getSelectedGoodsId() {
         return mData.get(mSelectedPos).getGoodsId();
     }
+
+    public String getSelectedGoodsName() {
+        return mData.get(mSelectedPos).getName();
+    }
     
     public BuyItemGridViewAdapter(Context context, ArrayList<GoodsBean> data) {
         mContext = context;

@@ -156,7 +156,7 @@ public class MarketAPI {
      */
     public static void getAppList(Context context, ApiRequestListener handler, int page, String category) {
 
-        // Session session = Session.get(context);
+        Session session = Session.get(context);
 
         HashMap<String, String> categoryMap = new HashMap<String, String>(3);
         categoryMap.put(Constants.CATEGORY_RCMD, "1");
@@ -166,7 +166,7 @@ public class MarketAPI {
         final HashMap<String, Object> params = new HashMap<String, Object>(3);
         params.put("apptype", categoryMap.get(category));
         params.put("page", page);
-        params.put("phone_number", "13800138000");
+        params.put("phone_number", session.getUserName());
 
         new ApiAsyncTask(context, ACTION_GET_APP_LIST, handler, params).execute();
     }
@@ -176,6 +176,7 @@ public class MarketAPI {
      */
     public static void getProductDetailWithId(Context context, ApiRequestListener handler, String pId, String category) {
 
+        Session session = Session.get(context);
         HashMap<String, String> categoryMap = new HashMap<String, String>(3);
         categoryMap.put(Constants.CATEGORY_RCMD, "1");
         categoryMap.put(Constants.CATEGORY_APP, "2");
@@ -184,7 +185,7 @@ public class MarketAPI {
         final HashMap<String, Object> params = new HashMap<String, Object>(3);
         params.put("appid", pId);
         params.put("apptype", categoryMap.get(category));
-        params.put("phone_number", "13800138000");
+        params.put("phone_number", session.getUserName());
         new ApiAsyncTask(context, ACTION_GET_PRODUCT_DETAIL, handler, params).execute();
     }
 
@@ -193,10 +194,10 @@ public class MarketAPI {
      */
     public static void checkUpdate(Context context, ApiRequestListener handler) {
 
-        Session mSession = Session.get(context);
+        Session session = Session.get(context);
 
         final HashMap<String, Object> params = new HashMap<String, Object>(4);
-        params.put("version_code", mSession.getVersionCode());
+        params.put("version_code", session.getVersionCode());
 
         new ApiAsyncTask(context, ACTION_CHECK_NEW_VERSION, handler, params).execute();
     }
@@ -206,13 +207,13 @@ public class MarketAPI {
      * */
     public static void checkNewSplash(Context context, ApiRequestListener handler) {
 
-        Session mSession = Session.get(context);
+        Session session = Session.get(context);
 
         final HashMap<String, Object> params = new HashMap<String, Object>(4);
-        params.put("package_name", mSession.getPackageName());
-        params.put("version_code", mSession.getVersionCode());
-        params.put("sdk_id", mSession.getCpid());
-        params.put("time", mSession.getSplashTime());
+        params.put("package_name", session.getPackageName());
+        params.put("version_code", session.getVersionCode());
+        params.put("sdk_id", session.getCpid());
+        params.put("time", session.getSplashTime());
 
         new ApiAsyncTask(context, ACTION_CHECK_NEW_SPLASH, handler, params).execute();
     }
@@ -221,8 +222,9 @@ public class MarketAPI {
      * 获取wifi列表
      */
     public static void getSSIDList(Context context, ApiRequestListener handler) {
+        Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
-        // params.put("phone_number", "13800138000");
+        params.put("phone_number", session.getUserName());
 
         new ApiAsyncTask(context, ACTION_GET_SSID_LIST, handler, params).execute();
     }
@@ -238,10 +240,6 @@ public class MarketAPI {
     public static void getTaskList(Context context, ApiRequestListener handler) {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
-        String phoneNumber = session.getUserName();
-        if (phoneNumber == null || phoneNumber.equals("")) {
-            phoneNumber = "18980928189";
-        }
         params.put("phone_number", session.getUserName());
 
         new ApiAsyncTask(context, ACTION_GET_TASK_LIST, handler, params).execute();

@@ -29,7 +29,7 @@
         android:drawableTop="@drawable/btn_retry"
         android:drawablePadding="10dp"
         android:text="@string/no_data" 
-        android:textColor="@color/black"
+        android:textColor="#595959"
         android:visibility="gone" />
 
 </FrameLayout>
