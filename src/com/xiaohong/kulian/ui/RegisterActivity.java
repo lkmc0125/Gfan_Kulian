@@ -27,6 +27,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -44,6 +45,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
@@ -71,6 +73,7 @@ public class RegisterActivity extends BaseActivity
     private static TimeCount time;
     private long time_default=60000;
     private Button btnVerifyCode;
+    private TextView license_tv;
     
     class SmsObserver extends ContentObserver {
 
@@ -182,6 +185,11 @@ public class RegisterActivity extends BaseActivity
         btnRegister.setOnClickListener(this);
         btnVerifyCode = (Button) findViewById(R.id.btn_verify_code);
         btnVerifyCode.setOnClickListener(this);
+        
+        license_tv = (TextView) findViewById(R.id.license_tv);
+        license_tv.setText(Html.fromHtml(getResources().getString(
+                R.string.register_license_hint)));
+        license_tv.setOnClickListener(this);
     }
 
     @Override
@@ -194,6 +202,14 @@ public class RegisterActivity extends BaseActivity
             onClickVerifyCodeBtn();
             time = new TimeCount(time_default, 1000);
             time.start();
+            break;
+        case R.id.license_tv:
+            Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
+            detailIntent.putExtra("extra.url", "file:///android_asset/license.html");
+            detailIntent.putExtra("extra.title", "服务协议");
+            startActivityForResult(detailIntent, 0);
+            break;
+        default:
             break;
         }
     }

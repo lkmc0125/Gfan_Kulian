@@ -93,4 +93,17 @@
         android:textColor="#FFFFFF"
         android:textSize="14sp" />
 
+    <TextView
+        android:id="@+id/license_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="35"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_below="@id/btn_register"
+        android:layout_marginTop="20dp"
+        android:text="@string/register_license_hint"
+        android:textSize="12sp" />
+
+        />
+    
 </RelativeLayout>
