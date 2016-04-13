@@ -200,13 +200,6 @@ public class RegisterActivity extends BaseActivity
         TopBar.createTopBar(this, new View[] { findViewById(R.id.back_btn),
                 findViewById(R.id.top_bar_title) }, new int[] { View.INVISIBLE,
                 View.VISIBLE }, getString(R.string.register_title));
-        ImageButton back = (ImageButton) findViewById(R.id.back_btn);
-        back.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                finish();
-            }
-        });
     }
 
     @Override
