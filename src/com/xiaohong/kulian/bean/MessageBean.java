@@ -5,7 +5,7 @@ public class MessageBean {
     private String click_url;
     
     public String getMessageText() {
-        return broadcast_item;
+        return broadcast_item.replace("\n", "");
     }
     public String getClickUrl() {
         return click_url;

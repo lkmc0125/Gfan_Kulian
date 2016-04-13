@@ -45,6 +45,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.Constants;
@@ -52,6 +53,7 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.DialogUtils;
+import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 public class RegisterActivity extends BaseActivity 
@@ -167,6 +169,7 @@ public class RegisterActivity extends BaseActivity
 
     private void initView() {
 
+        initTopBar();
         etUsername = (EditText) findViewById(R.id.et_username);
         String userName = TextUtils.isEmpty(mSession.getUserName()) ? "" : mSession.getUserName();
         etUsername.setText(userName);
@@ -190,6 +193,20 @@ public class RegisterActivity extends BaseActivity
         license_tv.setText(Html.fromHtml(getResources().getString(
                 R.string.register_license_hint)));
         license_tv.setOnClickListener(this);
+    }
+
+    private void initTopBar() {
+
+        TopBar.createTopBar(this, new View[] { findViewById(R.id.back_btn),
+                findViewById(R.id.top_bar_title) }, new int[] { View.INVISIBLE,
+                View.VISIBLE }, getString(R.string.register_title));
+        ImageButton back = (ImageButton) findViewById(R.id.back_btn);
+        back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                finish();
+            }
+        });
     }
 
     @Override

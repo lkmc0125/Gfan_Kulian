@@ -36,7 +36,7 @@
     <string name="register_tip">还没有机锋账号？\n立即创建</string>
 
     <!-- 登录页 -->
-    <string name="login">验证</string>
+    <string name="register_title">验证手机号码</string>
     <string name="login_success">验证成功</string>
     <string name="singin">验证中，请稍候</string>
     <string name="error_login_username">用户名不存在，请重新输入。</string>
