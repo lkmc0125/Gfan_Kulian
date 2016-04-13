@@ -98,7 +98,7 @@
                 android:background="@drawable/notice_icon"
                 android:contentDescription="@null" />
 
-            <com.xiaohong.kulian.common.widget.MarqueeTextView
+            <com.xiaohong.kulian.common.widget.AutoScrollTextViewH
                 android:id="@+id/connection_current_activity_info_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -42,7 +42,7 @@ private int firstScrollX=0;
 private boolean isStop = false;
 private int textWidth;
 private int mWidth=0; //控件宽度
-private int speed=10;
+private int speed=20;
 private int delayed=200;
 private int start_delayed=200;
 private int endX; //滚动到哪个位置

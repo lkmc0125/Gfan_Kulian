@@ -53,6 +53,7 @@ import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.util.WifiAdmin;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
+import com.xiaohong.kulian.common.widget.AutoScrollTextViewH;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.CustomDialog;
 import com.xiaohong.kulian.common.widget.MarqueeTextView;
@@ -72,7 +73,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     private Button mAuthBtn;
     private TextView mWifiStatusTitle, mWifiStatusDesc;
     private ImageView mWifiStatusIcon;
-    private MarqueeTextView textViewMessage;
+    private AutoScrollTextViewH mAutoScroolView;
     /**
      * 签到界面
      */
@@ -144,8 +145,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         mWifiStatusTitle=(TextView)findViewById(R.id.wifi_status_title);
         mWifiStatusDesc=(TextView)findViewById(R.id.wifi_status_desc);
         mWifiStatusIcon=(ImageView)findViewById(R.id.wifi_status_icon);
-        textViewMessage=(MarqueeTextView)findViewById(R.id.connection_current_activity_info_text);
-        textViewMessage.setOnClickListener(this);
+        mAutoScroolView=(AutoScrollTextViewH)findViewById(R.id.connection_current_activity_info_text);
+        mAutoScroolView.setOnClickListener(this);
         /**
          * 签到界面
          */
@@ -423,6 +424,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         }
         case MarketAPI.ACTION_GET_MESSAGES:
         {
+            Log.d(TAG, "ACTION_GET_MESSAGES");
             MessageListBean messages = (MessageListBean)obj;
             if (messages!= null && messages.getMessageList() != null
                     && messages.getMessageList().size() > 0) {
@@ -430,12 +432,15 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 String Message_value="";
                 for(MessageBean s:mSession.getMessageList().getMessageList()){
                     if(!Message_value.equals("")){
-                        Message_value+="                                        ";
+                        Message_value += "          ";
                     }
-                    Message_value+=s.getMessageText()+"          ";
+                    Message_value += s.getMessageText()+"          ";
                 }
-                textViewMessage.setMessageBeans(mSession.getMessageList().getMessageList());
-                textViewMessage.setText(Message_value);
+                Log.d(TAG, "ACTION_GET_MESSAGES Message_value = " + Message_value);
+                //mAutoScroolView.setMessageBeans(mSession.getMessageList().getMessageList());
+                mAutoScroolView.setTexts(Message_value);
+                mAutoScroolView.init(getWindowManager());
+                mAutoScroolView.startScroll();
             }
             break;
         }
@@ -649,15 +654,15 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             startActivity(detailIntent);
             break;
         case R.id.connection_current_activity_info_text:
-            int positon=textViewMessage.getPosition();
-            String url=textViewMessage.getMessageBeans().get(positon).getClickUrl();
-            String Message=textViewMessage.getMessageBeans().get(positon).getMessageText();
+            /*int positon=mAutoScroolView.getPosition();
+            String url=mAutoScroolView.getMessageBeans().get(positon).getClickUrl();
+            String Message=mAutoScroolView.getMessageBeans().get(positon).getMessageText();
             if(url!=null){
                 Intent MessageIntent = new Intent(getApplicationContext(), WebviewActivity.class);
                 MessageIntent.putExtra("extra.url", url);
                 MessageIntent.putExtra("extra.title", Message);
                 startActivity(MessageIntent);
-            }
+            }*/
             break;
         default:
             break;
