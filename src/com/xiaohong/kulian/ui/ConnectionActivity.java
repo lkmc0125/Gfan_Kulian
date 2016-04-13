@@ -432,12 +432,12 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 String Message_value="";
                 for(MessageBean s:mSession.getMessageList().getMessageList()){
                     if(!Message_value.equals("")){
-                        Message_value += "          ";
+                        Message_value += "                    ";
                     }
                     Message_value += s.getMessageText()+"          ";
                 }
                 Log.d(TAG, "ACTION_GET_MESSAGES Message_value = " + Message_value);
-                //mAutoScroolView.setMessageBeans(mSession.getMessageList().getMessageList());
+                mAutoScroolView.setMessageBeans(mSession.getMessageList().getMessageList());
                 mAutoScroolView.setTexts(Message_value);
                 mAutoScroolView.init(getWindowManager());
                 mAutoScroolView.startScroll();
@@ -654,7 +654,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             startActivity(detailIntent);
             break;
         case R.id.connection_current_activity_info_text:
-            /*int positon=mAutoScroolView.getPosition();
+            int positon=mAutoScroolView.getPosition();
+            System.out.println("getTextWidth_First()"+positon);
             String url=mAutoScroolView.getMessageBeans().get(positon).getClickUrl();
             String Message=mAutoScroolView.getMessageBeans().get(positon).getMessageText();
             if(url!=null){
@@ -662,7 +663,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 MessageIntent.putExtra("extra.url", url);
                 MessageIntent.putExtra("extra.title", Message);
                 startActivity(MessageIntent);
-            }*/
+            }
             break;
         default:
             break;

@@ -1,5 +1,9 @@
 package com.xiaohong.kulian.common.widget;
 
+import java.util.ArrayList;
+
+import com.xiaohong.kulian.bean.MessageBean;
+
 import android.content.Context ;
 import android.graphics.Canvas ;
 import android.graphics.Color ;
@@ -26,6 +30,10 @@ public class AutoScrollTextViewH extends TextView {
     private float mXCoordinateFirstLine = 0f ;
     private float mYCoordinate;//文字的y坐标
     private Handler mHandler = null;
+    private int position=0;
+    private ArrayList<Integer> messageWidthList=new ArrayList<Integer>();
+
+    private ArrayList<MessageBean> messageBeans;
    
     
     public void setTexts(String text) {
@@ -66,9 +74,13 @@ public class AutoScrollTextViewH extends TextView {
         mTextLength = mPaint.measureText(mText);
         mYCoordinate = getTextSize() + getPaddingTop() ;
         mXCoordinateFirstLine = mViewWidth;
+        System.out.println("getTextWidth_First()"+(mTextLength));
+        System.out.println("getTextWidth_First()"+(mYCoordinate));
+        System.out.println("getTextWidth_First()"+(mXCoordinateFirstLine));
         Log.d(TAG, "mTextLength = " + mTextLength);
         Log.d(TAG, "mYCoordinate = " + mYCoordinate);
         Log.d(TAG, "mXCoordinateFirstLine = " + mXCoordinateFirstLine);
+        getTextWidth_First();
     }
     
     public void init(WindowManager windowManager, int lineNum) {
@@ -185,6 +197,57 @@ public class AutoScrollTextViewH extends TextView {
         /*Log.d(TAG, "drawFirstLine mXCoordinateFirstLine = " + mXCoordinateFirstLine);
         Log.d(TAG, "drawFirstLine mStepFirstLine = " + mStepFirstLine);
         Log.d(TAG, "drawFirstLine mText = " + mText);*/
+    }
+    /**
+     * 获取文字的宽度，同时保存每一条消息的位置信息
+     */
+    private void getTextWidth_First() {
+        Paint paint = this.getPaint();
+        String Message_value="";
+        int textWidth=0;
+        if(messageBeans!=null){
+            for(MessageBean s:messageBeans){
+                String str="";
+                if(!Message_value.equals("")){
+                    Message_value+="          ";
+                    str+="                    ";
+                }
+                str=s.getMessageText()+"          ";
+                textWidth += (int) paint.measureText(str);
+                messageWidthList.add(textWidth);
+            } 
+            if(messageWidthList!=null){
+                System.out.println("getTextWidth_First()"+messageWidthList);
+            }
+        }
+    }
+    
+    /**
+     * 判断当前消息是那一条信息
+     * @return
+     */
+    public int getPosition() {
+//        System.out.println("getTextWidth_First()"+textWidth);
+        System.out.println("getTextWidth_First()"+messageWidthList);
+        System.out.println("getTextWidth_First()"+(mXCoordinateFirstLine));
+        for(int i=0;i<messageWidthList.size();i++){
+            if(mXCoordinateFirstLine>0){
+                position=0;
+            } else{
+            if(Math.abs(mXCoordinateFirstLine)%(messageWidthList.get(messageWidthList.size()-1))
+                    <messageWidthList.get(i)){
+                position=i;
+                break;
+            }
+            }
+        }
+        return position;
+    }
+    public ArrayList<MessageBean> getMessageBeans() {
+        return messageBeans;
+    }
+    public void setMessageBeans(ArrayList<MessageBean> messageBeans) {
+        this.messageBeans = messageBeans;
     }
 
 }
