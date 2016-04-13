@@ -69,8 +69,10 @@ public class ApiRequestFactory {
 
         String requestString = url+"?"+EntityUtils.toString(entity);
         HttpGet request = new HttpGet(requestString);
-        if(action == MarketAPI.ACTION_REPORT_APP_INSTALLED || 
-                action == MarketAPI.ACTION_REPORT_APP_LAUNCHED) {
+        if (action == MarketAPI.ACTION_REPORT_APP_INSTALLED
+                || action == MarketAPI.ACTION_REPORT_APP_LAUNCHED
+                || action == MarketAPI.ACTION_REPORT_ORDER_PAY
+                ) {
             BasicHeader header = new BasicHeader("Cookie", "token=" + session.getToken());
             request.addHeader(header);
         }

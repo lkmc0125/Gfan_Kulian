@@ -358,7 +358,7 @@ public class MarketAPI {
 
         new ApiAsyncTask(context, ACTION_REPORT_APP_LAUNCHED, handler, params).execute();
     }
-    
+
     /**
      * 报告订单支付成功
         realBuyer 用于代买，表示实际买主
@@ -370,7 +370,8 @@ public class MarketAPI {
         params.put("other_phone", realBuyer);
         params.put("out_trade_no", outTradeNo+"");
         params.put("goods_id", goodsId+"");
+        params.put("imei", session.getIMEI());
         new ApiAsyncTask(context, ACTION_REPORT_ORDER_PAY, handler, params).execute();
     }
-    
+
 }

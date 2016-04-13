@@ -297,7 +297,7 @@ public class AppDetailActivity extends Activity
     public static Bitmap getImageTopPart(Bitmap bitmap) {
         int w = bitmap.getWidth();
         int h = w/5;
-        return Bitmap.createBitmap(bitmap, 0, 0, w, h, null, false);
+        return Bitmap.createBitmap(bitmap, w/4, 0, w/2, h, null, false);
     }
     
     @Override
