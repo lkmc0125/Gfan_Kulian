@@ -120,7 +120,7 @@ public class AppDetailActivity extends Activity
                 new AppDetailApiRequestListener(), appId, category);
     }
 
-    @SuppressLint("NewApi")
+   @SuppressLint("NewApi")
     private void initViews() {
         mAppIconView = (ImageView) findViewById(R.id.app_icon);
         mAppIconView.setBackground(null);
@@ -163,7 +163,8 @@ public class AppDetailActivity extends Activity
 
         @Override
         protected Bitmap doInBackground(Void... params) {
-            return Utils.blurBitmap(getApplicationContext(), mBitmap);
+            return Utils.doFastBlur(mBitmap, 25, false);
+            //return Utils.blurBitmap(getApplicationContext(), mBitmap);
         }
 
         @SuppressLint("NewApi")
