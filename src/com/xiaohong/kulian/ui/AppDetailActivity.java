@@ -263,9 +263,9 @@ public class AppDetailActivity extends Activity
                         public void onLoadingComplete(String arg0, View arg1,
                                 Bitmap arg2) {
                             mAppIconView.setImageBitmap(arg2);
-                            new GaussBlurTask(arg2, mHeaderViewLayout)
-                                    .execute();
 
+                            new GaussBlurTask(getImageTopPart(arg2), mHeaderViewLayout)
+                                    .execute();
                         }
 
                         @Override
@@ -293,6 +293,12 @@ public class AppDetailActivity extends Activity
         }
     }
 
+    public static Bitmap getImageTopPart(Bitmap bitmap) {
+        int w = bitmap.getWidth();
+        int h = w/5;
+        return Bitmap.createBitmap(bitmap, 0, 0, w, h, null, false);
+    }
+    
     @Override
     public void onClick(View v) {
         Log.d(TAG, "onClick");
