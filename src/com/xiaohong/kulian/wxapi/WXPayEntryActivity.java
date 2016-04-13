@@ -11,6 +11,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.bean.WeChatGoodsBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.DialogUtils;
@@ -100,8 +101,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
 
                 TextView goodsNameTv = (TextView) findViewById(R.id.goods_name);
                 Gson gson = new Gson();
-                GoodsBean bean = gson
-                        .fromJson(payResp.extData, GoodsBean.class);
+                WeChatGoodsBean bean = gson
+                        .fromJson(payResp.extData, WeChatGoodsBean.class);
                 goodsNameTv.setText("购买商品: " + bean.getGoodsName());
 
                 TextView payResultTv = (TextView) findViewById(R.id.pay_result);
@@ -127,24 +128,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
         default:
             break;
         }
-    }
-
-    private static class GoodsBean {
-        public String getGoodsName() {
-            return goods_name;
-        }
-
-        public int getGoodsId() {
-            return goods_id;
-        }
-
-        public long getOutTradeNo() {
-            return out_trade_no;
-        }
-
-        private String goods_name;
-        private int goods_id;
-        private long out_trade_no;
     }
 
     @Override
