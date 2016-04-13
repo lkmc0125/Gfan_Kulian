@@ -26,6 +26,7 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
     private ImageButton mBackBtn;
     private TextView mCopyBtn;
     private TextView mTaskNameTv;
+    private TextView mTaskDescTv;
     private TextView mTaskWeixinTv;
     private TextView mTaskCoinNumTv;
     private TextView mTaskGuide1Tv;
@@ -45,6 +46,8 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
     private void initViews() {
         mTaskNameTv = (TextView) findViewById(R.id.task_name_tv);
         mTaskNameTv.setText(getTaskName());
+        mTaskDescTv = (TextView) findViewById(R.id.task_desc_tv);
+        mTaskDescTv.setText(mTaskBean.getDesc());        
         mTaskWeixinTv = (TextView) findViewById(R.id.task_weixin_id_tv);
         mTaskWeixinTv.setText(mTaskBean.getWeixin_id());
         mTaskCoinNumTv = (TextView) findViewById(R.id.task_coin_num_tv);

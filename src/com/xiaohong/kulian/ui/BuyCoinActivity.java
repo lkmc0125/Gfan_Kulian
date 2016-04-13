@@ -129,6 +129,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                 + mSession.getUserName() + "&type=1&goods_id=" + mAdapter.getSelectedGoodsId();
         Log.d(TAG, "doWechatPay url = " + url);
         final String goodsName = mAdapter.getSelectedGoodsName();
+        final int goodsId = mAdapter.getSelectedGoodsId();
         Toast.makeText(getApplicationContext(), "请稍候...", Toast.LENGTH_SHORT)
                 .show();
         new AsyncTask<Void, Void, Void>() {
@@ -161,19 +162,12 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                             req.timeStamp = json.getString("timeStamp");
                             req.packageValue = json.getString("packageValue");
                             req.sign = json.getString("sign");
-                            String extDataStr = "{\"goods_name\":" + goodsName ;
-                            
-                            try {
-                                int added_coin = json.getInt("added_coin");
-                                extDataStr += ", \"added_coin\":" + added_coin;
-                                Log.d(TAG, "doWechatPay added_coin = " + added_coin);
-                            }catch(JSONException e) {
-                                Log.e(TAG, "JSONException : " + e.getMessage());
-                                e.printStackTrace();
-                                extDataStr += ", \"added_coin\":" + 0;
-                            }
-                            extDataStr += "}";
-                            req.extData = extDataStr;
+
+                            long out_trade_no = json.getInt("out_trade_no");                            
+                            Log.d(TAG, "out_trade_no = " + out_trade_no);
+                            req.extData = "{\"goods_name\":\"" + goodsName + "\","
+                                    +" \"goods_id\":" + goodsId
+                                    +" \"out_trade_no\":" + out_trade_no + "}";
                             mWxApi.sendReq(req);
                         } else {
                             DialogUtils.showMessage(getApplicationContext(),

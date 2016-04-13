@@ -177,43 +177,53 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         RelativeLayout humorLayout = (RelativeLayout)findViewById(R.id.connection_recommend_humor_layout);
         humorLayout.setOnClickListener(this);
     }
-    
+
+    // 检查外网是否通
     private void checkNetwork() {
         String url = "http://115.159.3.16/cb/app_test";
         if (null == Utils.httpGet(url)) { // 网络不通
             Log.d(TAG, "network not availabel");
             mAuthBtn.setVisibility(View.VISIBLE);
+            
+            // 外网不通，当前连接小鸿wifi，自动进行网络认证
+            if (mConnectionStatus == ConnectionStatus.HONGWIFI) {
+                authentication();
+            }
+
             new Handler().postDelayed(new Runnable() {  
                 public void run() {
                     checkNetwork();
                 }
-            }, 5 * 1000);
+            }, 5 * 1000);// 5秒检查一次
         } else {
             Log.d(TAG, "network OK！");
             mAuthBtn.setVisibility(View.INVISIBLE);
             if (mConnectionStatus == ConnectionStatus.HONGWIFI) {
-                mConnectionStatus = ConnectionStatus.HONGWIFI_AUTHED;
-                // reportAuthenSuccess
                 if (mSession.isLogin()) {
-                    url = MarketAPI.API_BASE_URL + "/dec_coin?phone_number="+mSession.getUserName();
-                    String ret = Utils.httpGet(url);
-                    if (ret != null) {
-                        try {
-                            JSONObject obj = new JSONObject(ret);
-                            if (obj.getInt("ret_code") == 0) {
-                                DialogUtils.showMessage(this, "认证成功", "使用金币" + obj.getString("dec_coin_num") + "枚");
-                            } else if (obj.getInt("ret_code") == 3001) { // 3001 means already deduction coin today
-                                Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    decCoin();  // reportAuthenSuccess
                 }
+                mConnectionStatus = ConnectionStatus.HONGWIFI_AUTHED;
             }
         }
     }
 
+    private void decCoin() {
+        String url = MarketAPI.API_BASE_URL + "/dec_coin?phone_number="+mSession.getUserName();
+        String ret = Utils.httpGet(url);
+        if (ret != null) {
+            try {
+                JSONObject obj = new JSONObject(ret);
+                if (obj.getInt("ret_code") == 0) {
+                    DialogUtils.showMessage(this, "认证成功", "使用金币" + obj.getString("dec_coin_num") + "枚");
+                } else if (obj.getInt("ret_code") == 3001) { // 3001 means already deduction coin today
+                    Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     private boolean isHongWifi(String ssid) {
         if (ssid == null) {
             return false;
@@ -242,10 +252,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             mWifiStatusDesc.setText("点击按钮搜索小鸿免费Wifi");
             mAuthBtn.setText("搜索小鸿Wifi");
             mAuthBtn.setVisibility(View.VISIBLE);
-//            Drawable img = getApplicationContext().getResources()
-//            .getDrawable(R.drawable.wifi_state_off);
-//            mWifiStatusIcon.setImageDrawable(img);
-            mWifiStatusIcon.getBackground().setAlpha(125);
+            mWifiStatusIcon.getBackground().setAlpha(125);// 50%透明度
             break;
         }
         case CONNECTED:
@@ -258,10 +265,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             } else {
                 mAuthBtn.setVisibility(View.INVISIBLE);
             }
-//            Drawable img = getApplicationContext().getResources()
-//            .getDrawable(R.drawable.wifi_state_on);
-//            mWifiStatusIcon.setImageDrawable(img);
-            mWifiStatusIcon.getBackground().setAlpha(255);
+            mWifiStatusIcon.getBackground().setAlpha(255); // 100%透明度
             break;
         }
         case HONGWIFI:
@@ -270,10 +274,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             mWifiStatusDesc.setText("已连接到小鸿Wifi:"+mCurrentSSID);
             mAuthBtn.setText("认证上网");
             mAuthBtn.setVisibility(View.VISIBLE);
-//            Drawable img = getApplicationContext().getResources()
-//            .getDrawable(R.drawable.wifi_state_on);
-//            mWifiStatusIcon.setImageDrawable(img);
-            mWifiStatusIcon.getBackground().setAlpha(255);
+            mWifiStatusIcon.getBackground().setAlpha(255); // 100%透明度
             break;
         }
         case HONGWIFI_AUTHED:
@@ -281,9 +282,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             mWifiStatusTitle.setText("已认证上网");
             mWifiStatusDesc.setText("已连接到小鸿Wifi："+mCurrentSSID);
             mAuthBtn.setVisibility(View.INVISIBLE);
-//            Drawable img = getApplicationContext().getResources()
-//            .getDrawable(R.drawable.wifi_state_on);
-//            mWifiStatusIcon.setImageDrawable(img);
             mWifiStatusIcon.getBackground().setAlpha(255);
             break;
         }
@@ -308,8 +306,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 if (obj.getInt("ret_code") == 0 || obj.getInt("ret_code") == 3001) {
                     return true;
                 } else {
-                    DialogUtils.showMessage(this, "出错啦", obj.getString("ret_msg"));
-                    return false;
+                    // 金币不足，提示购买
+                    showBuyCoinDialog(obj.getString("ret_msg"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -318,6 +316,24 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         return false;
     }
 
+    private void showBuyCoinDialog(String msg) {
+        CustomDialog dialog = new CustomDialog.Builder(this)
+        .setTitle("金币不足")
+        .setMessage(msg)
+        .setNegativeButton("暂不购买", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+            }
+        })
+        .setPositiveButton("购买金币", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                Utils.gotoBuyCoinPage(ConnectionActivity.this);                                    
+                dialog.dismiss();
+            }
+        }).create();
+        dialog.show();
+    }
+    
     private void registerConnection() {
         if (mConnectionReceiver == null) {
             mConnectionReceiver = new MyBroadcastReceiver();
@@ -348,7 +364,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         ConnectivityManager conMan = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (State.CONNECTED != conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState()) {
             Log.i(TAG, "unconnect");
-                wifiStatusChanged(null);
+            wifiStatusChanged(null);
         } else {
             Log.i(TAG, "connected");
             WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
@@ -396,11 +412,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
                     mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
                 }
-//                if (mSession.getSignInToday()) {
-//                    textView_signIn_status.setText("今天已签到");
-//                } else {
-//                    MarketAPI.signIn(getApplicationContext(), this);
-//                }
                 if (mSession.getMessageList() == null) {
                     MarketAPI.getMessages(getApplicationContext(), this);
                 }
@@ -408,18 +419,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                     queryAppList();
                 }
             }
-            /*mSession.setCoinNum((Integer)result.get(Constants.KEY_COIN_NUM));
-            mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true")); 
-            mSession.setLogin(true);
-
-            if (mSession.getMessages() == null) {
-                MarketAPI.getMessages(getApplicationContext(), this);
-            }
-
-            // 签到
-            if (!mSession.getSignInToday()) {
-                MarketAPI.signIn(getApplicationContext(), this);
-            }*/
             break;
         }
         case MarketAPI.ACTION_GET_MESSAGES:
@@ -428,10 +427,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             if (messages!= null && messages.getMessageList() != null
                     && messages.getMessageList().size() > 0) {
                 mSession.setMessages(messages);  
-//                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().size());
-//                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(0).get("text"));
-//                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(1).get("text"));
-//                System.out.println("mSession.setMessages(messages)"+mSession.getMessages().get(2).get("text"));
                 String Message_value="";
                 for(MessageBean s:mSession.getMessageList().getMessageList()){
                     if(!Message_value.equals("")){
@@ -464,23 +459,9 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             } else if (ret_code == 3002) { // 今天已经签到领取过了
                 textView_signIn_status.setText("今天已签到");
                 Log.d(TAG, "Already sign in today, ret_code 3002");
-                CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_success))
-                        .setMessage("今天已经领取过金币了，明天再来哦")
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create();
-                dialog.show();
-            }else{
-                CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_fail))
-                        .setMessage(result.get("ret_msg").toString())
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create();
-                dialog.show();
+                DialogUtils.showMessage(this, getString(R.string.sign_in_success), "今天已经领取过金币了，明天再来哦");
+            } else {
+                DialogUtils.showMessage(this, getString(R.string.sign_in_fail), result.get("ret_msg").toString());
             }
             break;
         }

@@ -11,6 +11,9 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.MarketAPI;
+import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.TopBar;
 
 import android.app.Activity;
@@ -24,7 +27,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
-        OnClickListener {
+        OnClickListener, ApiRequestListener {
 
     private static final String TAG = "MicroMsg.SDKSample.WXPayEntryActivity";
 
@@ -77,32 +80,41 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
     @Override
     public void onResp(BaseResp resp) {
         Log.d(TAG, "onPayFinish, errCode = " + resp.errCode);
+        if (resp.getClass() == PayResp.class) {
+            PayResp payResp = (PayResp) resp;
+            if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+                String msg = "";
+                switch (resp.errCode) {
+                case 0:
+                    msg = "支付成功";
+                    break;
+                case -1:
+                    msg = "支付失败";
+                    break;
+                case -2:
+                    msg = "用户取消支付";
+                    break;
+                default:
+                    break;
+                }
 
-        if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-            String msg = "";
-            switch (resp.errCode) {
-            case 0:
-                msg = "支付成功";
-                break;
-            case -1:
-                msg = "支付失败";
-                break;
-            case -2:
-                msg = "用户取消支付";
-                break;
-            default:
-                break;
-            }
-            if (resp.getClass() == PayResp.class) {
-                PayResp payResp = (PayResp) resp;
                 TextView goodsNameTv = (TextView) findViewById(R.id.goods_name);
                 Gson gson = new Gson();
-                GoodsBean bean = gson.fromJson(payResp.extData, GoodsBean.class);
-                goodsNameTv.setText("购买商品: " + bean.getGoods_name());
-                Session.get(getApplicationContext()).notifyCoinUpdated(bean.getAdded_coin());
+                GoodsBean bean = gson
+                        .fromJson(payResp.extData, GoodsBean.class);
+                goodsNameTv.setText("购买商品: " + bean.getGoodsName());
+
+                TextView payResultTv = (TextView) findViewById(R.id.pay_result);
+                payResultTv.setText(msg);
+                
+                // report apy sucssess
+                if (resp.errCode == 0) {
+                    Session session = Session.get(this);
+                    MarketAPI.reportOrderPay(this, this, bean.getGoodsId(), bean.getOutTradeNo(), session.getUserName());
+                }
             }
-            TextView payResultTv = (TextView) findViewById(R.id.pay_result);
-            payResultTv.setText(msg);
+        } else {
+            DialogUtils.showMessage(this, "出错啦", "支付结果异常");
         }
     }
 
@@ -116,22 +128,44 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
             break;
         }
     }
-    
+
     private static class GoodsBean {
-        public String getGoods_name() {
+        public String getGoodsName() {
             return goods_name;
         }
-        public void setGoods_name(String goods_name) {
-            this.goods_name = goods_name;
+
+        public int getGoodsId() {
+            return goods_id;
         }
-        public int getAdded_coin() {
-            return added_coin;
+
+        public long getOutTradeNo() {
+            return out_trade_no;
         }
-        public void setAdded_coin(int added_coin) {
-            this.added_coin = added_coin;
-        }
+
         private String goods_name;
-        private int added_coin;
-        
+        private int goods_id;
+        private long out_trade_no;
+    }
+
+    @Override
+    public void onSuccess(int method, Object obj) {
+        switch (method) {
+        case MarketAPI.ACTION_REPORT_ORDER_PAY:
+            // Session.get(getApplicationContext()).notifyCoinUpdated(bean.getAdded_coin());
+            break;
+        default:
+            break;
+        }
+    }
+
+    @Override
+    public void onError(int method, int statusCode) {
+        switch (method) {
+        case MarketAPI.ACTION_REPORT_ORDER_PAY:
+            DialogUtils.showMessage(this, "出错啦", "支付结果同步失败，请联系客服");
+            break;
+        default:
+            break;
+        }
     }
 }

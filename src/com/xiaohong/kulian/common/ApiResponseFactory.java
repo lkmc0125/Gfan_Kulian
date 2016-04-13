@@ -177,6 +177,12 @@ public class ApiResponseFactory {
                 Log.d("free", "launched result = " + result);
                 break;
 
+            case MarketAPI.ACTION_REPORT_ORDER_PAY:
+                requestMethod = "ACTION_REPORT_ORDER_PAY";
+                Log.d("free", "report result str = " + inputBody);
+                result = gson.fromJson(inputBody, ReportResultBean.class);
+                Log.d("free", "report result = " + result);
+                break;
             default:
                 break;
             }

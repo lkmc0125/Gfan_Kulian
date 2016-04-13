@@ -114,6 +114,10 @@ public class MarketAPI {
      * 报告app已启动
      */
     public static final int ACTION_REPORT_APP_LAUNCHED = 13;
+    /**
+     * 报告订单支付成功
+     */
+    public static final int ACTION_REPORT_ORDER_PAY = 14;
 
     /**
      * Register API<br>
@@ -353,6 +357,20 @@ public class MarketAPI {
         params.put("appid", appId + "");
 
         new ApiAsyncTask(context, ACTION_REPORT_APP_LAUNCHED, handler, params).execute();
+    }
+    
+    /**
+     * 报告订单支付成功
+        realBuyer 用于代买，表示实际买主
+     */
+    public static void reportOrderPay(Context context, ApiRequestListener handler, int goodsId, long outTradeNo, String realBuyer) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("self_phone", session.getUserName());
+        params.put("other_phone", realBuyer);
+        params.put("out_trade_no", outTradeNo+"");
+        params.put("goods_id", goodsId+"");
+        new ApiAsyncTask(context, ACTION_REPORT_ORDER_PAY, handler, params).execute();
     }
     
 }
