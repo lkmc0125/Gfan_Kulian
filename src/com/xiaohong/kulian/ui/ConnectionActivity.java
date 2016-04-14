@@ -119,19 +119,20 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_main_layout);
         initView();
-        queryAppList();
-//        mLoginRetryCount = 0;
+
         mWifiAdmin = new WifiAdmin(getApplicationContext());
         mAuth = new WifiAuthentication();
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
 
         registerConnection();
+
+        queryAppList();
+
         new Handler().postDelayed(new Runnable() {  
             public void run() {
                 boolean open = mWifiAdmin.openWifi();
                 Log.i(TAG, "wifi open:" + open);
                 mWifiAdmin.startScan();
-//                checkWifiConnection();
             }
         }, 500);
     }
@@ -413,7 +414,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
                     mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
                 }
-                if (mSession.getMessageList() == null) {
+                if (mSession.getMessages() == null) {
                     MarketAPI.getMessages(getApplicationContext(), this);
                 }
                 if (appBeans == null) {
@@ -430,14 +431,14 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                     && messages.getMessageList().size() > 0) {
                 mSession.setMessages(messages);  
                 String Message_value="";
-                for(MessageBean s:mSession.getMessageList().getMessageList()){
+                for(MessageBean s:mSession.getMessages().getMessageList()){
                     if(!Message_value.equals("")){
                         Message_value += "                    ";
                     }
                     Message_value += s.getMessageText()+"          ";
                 }
                 Log.d(TAG, "ACTION_GET_MESSAGES Message_value = " + Message_value);
-                mAutoScroolView.setMessageBeans(mSession.getMessageList().getMessageList());
+                mAutoScroolView.setMessageBeans(mSession.getMessages().getMessageList());
                 mAutoScroolView.setTexts(Message_value);
                 mAutoScroolView.init(getWindowManager());
                 mAutoScroolView.startScroll();
@@ -716,6 +717,22 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 textView_signIn_status.setText(R.string.person_account_sign_in_value);
             }
         }
+
+        if (mAutoScroolView.getMessageBeans() == null && mSession.getMessages() != null) {
+            String Message_value="";
+            for (MessageBean s:mSession.getMessages().getMessageList()){
+                if(!Message_value.equals("")){
+                    Message_value += "                    ";
+                }
+                Message_value += s.getMessageText()+"          ";
+            }
+            Log.d(TAG, "ACTION_GET_MESSAGES Message_value = " + Message_value);
+            mAutoScroolView.setMessageBeans(mSession.getMessages().getMessageList());
+            mAutoScroolView.setTexts(Message_value);
+            mAutoScroolView.init(getWindowManager());
+            mAutoScroolView.startScroll();
+        }
+        
         super.onResume();
     }
 }

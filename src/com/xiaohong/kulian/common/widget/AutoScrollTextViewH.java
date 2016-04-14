@@ -26,10 +26,9 @@ public class AutoScrollTextViewH extends TextView {
     private Paint mPaint = null ;// 绘图样式
     private String mText = "" ;
     private float mTextLength;//文字总长度
-    private float mStepFirstLine = 2.3f ;//每次左移的步长,控制移动速度
+    private float mStepFirstLine = 1.f ;//每次左移的步长,控制移动速度
     private float mXCoordinateFirstLine = 0f ;
     private float mYCoordinate;//文字的y坐标
-    private Handler mHandler = null;
     private int position=0;
     private ArrayList<Integer> messageWidthList=new ArrayList<Integer>();
 
@@ -59,7 +58,6 @@ public class AutoScrollTextViewH extends TextView {
      * @param windowManager
      */
     public void init(WindowManager windowManager) {
-        mHandler = new Handler();
         mPaint = getPaint() ;
         mPaint.setColor(Color.WHITE) ;
         mViewWidth = getWidth() ;

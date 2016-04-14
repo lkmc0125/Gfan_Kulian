@@ -337,7 +337,7 @@ public class Session extends Observable {
         super.notifyObservers(new Pair<String, Object>(P_UID, uid));
     }
 
-    public MessageListBean getMessageList() {
+    public MessageListBean getMessages() {
         return messageList;
     }
 
@@ -1144,7 +1144,7 @@ public class Session extends Observable {
     
     public void notifyCoinUpdated(int added_coin) {
         for(OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
-            listener.onCoinUpdate(added_coin);
+            listener.onCoinUpdate(coinNum + added_coin);
         }
     }
 }

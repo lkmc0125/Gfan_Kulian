@@ -11,6 +11,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.bean.ReportResultBean;
 import com.xiaohong.kulian.bean.WeChatGoodsBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
@@ -50,20 +51,21 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
         initTopBar();
         confirmBtn = (TextView) findViewById(R.id.confirm_button);
         confirmBtn.setOnClickListener(this);
+        confirmBtn.setEnabled(false);
     }
 
     private void initTopBar() {
 
         TopBar.createTopBar(this, new View[] { findViewById(R.id.back_btn),
-                findViewById(R.id.top_bar_title) }, new int[] { View.VISIBLE,
+                findViewById(R.id.top_bar_title) }, new int[] { View.INVISIBLE,
                 View.VISIBLE }, getString(R.string.title_pay));
-        ImageButton back = (ImageButton) findViewById(R.id.back_btn);
-        back.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                finish();
-            }
-        });
+//        ImageButton back = (ImageButton) findViewById(R.id.back_btn);
+//        back.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View arg0) {
+//                finish();
+//            }
+//        });
     }
 
     @Override
@@ -134,7 +136,12 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
     public void onSuccess(int method, Object obj) {
         switch (method) {
         case MarketAPI.ACTION_REPORT_ORDER_PAY:
-            // Session.get(getApplicationContext()).notifyCoinUpdated(bean.getAdded_coin());
+            ReportResultBean bean = (ReportResultBean)obj;
+            if (bean.getRetCode() == 0) {
+                DialogUtils.showMessage(this, "购买成功", "您获得了"+bean.getAddedCoinNum()+"个金币");
+                Session.get(getApplicationContext()).notifyCoinUpdated(bean.getAddedCoinNum());
+            }
+            confirmBtn.setEnabled(true);
             break;
         default:
             break;
@@ -146,6 +153,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
         switch (method) {
         case MarketAPI.ACTION_REPORT_ORDER_PAY:
             DialogUtils.showMessage(this, "出错啦", "支付结果同步失败，请联系客服");
+            confirmBtn.setEnabled(true);
             break;
         default:
             break;
