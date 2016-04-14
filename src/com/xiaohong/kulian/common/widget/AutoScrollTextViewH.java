@@ -235,7 +235,7 @@ public class AutoScrollTextViewH extends TextView {
                 position=0;
             } else{
             if(Math.abs(mXCoordinateFirstLine)%(messageWidthList.get(messageWidthList.size()-1))
-                    <messageWidthList.get(i)){
+               <messageWidthList.get(i)){
                 position=i;
                 break;
             }

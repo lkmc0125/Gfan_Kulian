@@ -5,6 +5,7 @@
     android:background="@color/background_color"
     android:orientation="vertical" >
 
+
     <RelativeLayout
         android:id="@+id/person_account_my_task_value_layout"
         android:layout_width="fill_parent"
@@ -186,5 +187,6 @@
             android:textColor="#595959"
             android:textSize="15sp" />
     </RelativeLayout>
+    
 
 </LinearLayout>

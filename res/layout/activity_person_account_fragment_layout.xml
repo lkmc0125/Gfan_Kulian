@@ -18,21 +18,39 @@
         android:layout_below="@+id/person_account_first_part_layout"
         android:layout_marginTop="-22px"
         layout="@layout/activity_person_account_second_part_layout" />
+     <include
+        android:layout_width="wrap_content"
+        android:layout_height="50dip"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dip"
+        android:id="@+id/activity_person_account_fourth_part"
+        layout="@layout/activity_person_account_fourth_part_layout" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/activity_person_account_second_part"
+        android:layout_above="@+id/activity_person_account_fourth_part"
+        android:scrollbars="none" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:orientation="vertical" >
 
     <include
         android:id="@+id/activity_person_account_third_part"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@+id/activity_person_account_second_part"
         layout="@layout/activity_person_account_third_part_layout" />
+        <!--  android:layout_below="@+id/activity_person_account_second_part"-->
+        
+     </RelativeLayout>
+    </ScrollView>
+        
 
-    <include
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/activity_person_account_third_part"
-        android:layout_centerHorizontal="true"
-        layout="@layout/activity_person_account_fourth_part_layout" />
+    
 
 </RelativeLayout>
