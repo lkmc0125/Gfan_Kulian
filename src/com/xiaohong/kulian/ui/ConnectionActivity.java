@@ -411,8 +411,9 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
                 mSession.setToken((String) result.get(Constants.KEY_TOKEN));
                 textView_coin_num.setText(mSession.getCoinNum().toString());
-                if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
-                    mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
+                mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
+                if (mSession.getSignInToday()) {
+                    textView_signIn_status.setText("今天已签到");                    
                 }
                 if (mSession.getMessages() == null) {
                     MarketAPI.getMessages(getApplicationContext(), this);

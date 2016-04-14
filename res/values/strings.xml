@@ -120,7 +120,7 @@
     <!-- start added by albert liu 2016-03-28 -->
     <string name="person_account_hint_name">Albert</string>
     <string name="person_account_sign_in_hint">每日签到</string>
-    <string name="person_account_gold_coins_hint">750</string>
+    <string name="person_account_gold_coins_hint">2750</string>
     <string name="person_account_pay_gold_coins_hint">购买金币</string>
     <string name="person_account_sign_in_value">今天还没有签到哦^_^</string>
     <string name="person_account_my_task_value">我的任务</string>
