@@ -111,10 +111,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
                 TextView payResultTv = (TextView) findViewById(R.id.pay_result);
                 payResultTv.setText(msg);
 
-                // report apy sucssess
+                // report pay success
                 if (resp.errCode == 0) {
                     Session session = Session.get(this);
                     MarketAPI.reportOrderPay(getApplicationContext(), this, bean.getGoodsId(), bean.getOutTradeNo(), session.getUserName());
+                    findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
                 } else {
                     confirmBtn.setEnabled(true);
                 }
@@ -147,6 +148,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
                 session.notifyCoinUpdated();
             }
             confirmBtn.setEnabled(true);
+            findViewById(R.id.progressbar).setVisibility(View.GONE);
             break;
         default:
             break;
@@ -159,6 +161,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
         case MarketAPI.ACTION_REPORT_ORDER_PAY:
             DialogUtils.showMessage(this, "出错啦", "支付结果同步失败，错误码"+String.valueOf(statusCode)+"，请联系客服");
             confirmBtn.setEnabled(true);
+            findViewById(R.id.progressbar).setVisibility(View.GONE);
             break;
         default:
             break;

@@ -1,55 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/background_color"
-    android:orientation="vertical" >
+    android:background="@null" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/background_color"
+        android:orientation="vertical" >
+
+        <include
+            android:id="@+id/top_bar"
+            layout="@layout/top_bar" />
+
+        <TextView
+            android:id="@+id/trade_no"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="订单号"
+            android:textColor="#595959"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/goods_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="商品名称"
+            android:textColor="#595959"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/pay_result"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="支付结果"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/confirm_button"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:background="#60AF0A"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </LinearLayout>
 
     <include
-        android:id="@+id/top_bar"
-        layout="@layout/top_bar" />
+        android:id="@+id/loading"
+        layout="@layout/loading" />
 
-    <TextView
-        android:id="@+id/trade_no"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:text="订单号"
-        android:textColor="#595959"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/goods_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="商品名称"
-        android:textColor="#595959"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/pay_result"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:text="支付结果"
-        android:textColor="#000000"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/confirm_button"
-        android:layout_width="fill_parent"
-        android:layout_height="35dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="30dp"
-        android:background="#60AF0A"
-        android:gravity="center"
-        android:text="确定"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp" />
-
-</LinearLayout>
+</FrameLayout>

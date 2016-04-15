@@ -50,7 +50,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     private GoodsListBean mGoodsList;
     private Session mSession;
     private TextView mRetryTv;
-    
+    private boolean mIsPaySupported;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +68,14 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         mWechatPayTv.setVisibility(View.INVISIBLE);
         mWechatPayTv.setEnabled(false);
         mWechatPayTv.setOnClickListener(this);
-        
+
+        mWxApi = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
+        mWxApi.registerApp(Constants.APP_ID);
+        mIsPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
+        if (!mIsPaySupported) {
+            mWechatPayTv.setText("仅支持微信支付");
+        }
+
         mRetryTv = (TextView) findViewById(R.id.no_data);
         mRetryTv.setOnClickListener(this);
     }
@@ -90,8 +97,6 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        //MarketAPI.reportAppInstalled(getApplicationContext(), this, "com.achievo.vipshop");
-        //MarketAPI.reportAppLaunched(getApplicationContext(), this, "com.achievo.vipshop");
         switch (id) {
             case R.id.back_btn :
                 finish();
@@ -111,13 +116,6 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
      * Init wechat pay api
      */
     private void initData() {
-        mWxApi = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
-        mWxApi.registerApp(Constants.APP_ID);
-
-//        boolean isPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
-//        Toast.makeText(getApplicationContext(), String.valueOf(isPaySupported),
-//                Toast.LENGTH_SHORT).show();
-
         getGoodsList();
     }
 
@@ -164,7 +162,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                             req.sign = json.getString("sign");
                             req.extData = "{\"goods_name\":\"" + goodsName
                                     +"\", \"goods_id\":" + goodsId
-                                    +", \"out_trade_no\":" + json.getString("out_trade_no") + "}";
+                                    +", \"out_trade_no\":\"" + json.getString("out_trade_no") + "\"}";
                             mWxApi.sendReq(req);
                         } else {
                             DialogUtils.showMessage(getApplicationContext(),
@@ -199,7 +197,9 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                     mRetryTv.setVisibility(View.GONE);
                     mAdapter = new BuyItemGridViewAdapter(getApplicationContext(), mGoodsList.getGoodsList());
                     mGridView.setAdapter(mAdapter);
-                    mWechatPayTv.setEnabled(true);
+                    if (mIsPaySupported) {
+                        mWechatPayTv.setEnabled(true);                        
+                    }
                     mGridView.setOnItemClickListener(BuyCoinActivity.this);
                     mWechatPayTv.setVisibility(View.VISIBLE);
                 } else {
