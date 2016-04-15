@@ -1075,7 +1075,6 @@ public class Session extends Observable {
                     break;
                 }
             }
-            
         }
 
         @Override
@@ -1136,7 +1135,7 @@ public class Session extends Observable {
         mOnCoinUpdatedListener.remove(listener);
     }
     
-    private void notifyCoinUpdated() {
+    public void notifyCoinUpdated() {
         for(OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
             listener.onCoinUpdate(coinNum);
         }

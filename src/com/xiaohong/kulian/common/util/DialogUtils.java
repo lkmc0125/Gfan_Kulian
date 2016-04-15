@@ -34,15 +34,14 @@ public class DialogUtils {
     public static void showMessage(Context context, String title, String message) {
         CustomDialog dialog = new CustomDialog.Builder(context).setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
                     }
                 }).create();
         dialog.show();
     }
-    
-    
+
     public static interface WarningDialogListener {
         
         public void onWarningDialogOK(int id);

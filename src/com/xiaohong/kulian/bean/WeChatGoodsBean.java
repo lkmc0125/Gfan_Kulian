@@ -10,7 +10,7 @@ public class WeChatGoodsBean {
         return goods_id;
     }
 
-    public long getOutTradeNo() {
+    public String getOutTradeNo() {
         return out_trade_no;
     }
     
@@ -24,13 +24,11 @@ public class WeChatGoodsBean {
         this.goods_id = goods_id;
     }
 
-    public void setOut_trade_no(long out_trade_no) {
+    public void setOut_trade_no(String out_trade_no) {
         this.out_trade_no = out_trade_no;
     }
 
-
-
+    private int    goods_id;
     private String goods_name;
-    private int goods_id;
-    private long out_trade_no;
+    private String out_trade_no;
 }

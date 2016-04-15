@@ -162,12 +162,9 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                             req.timeStamp = json.getString("timeStamp");
                             req.packageValue = json.getString("packageValue");
                             req.sign = json.getString("sign");
-
-                            long out_trade_no = json.getInt("out_trade_no");                            
-                            Log.d(TAG, "out_trade_no = " + out_trade_no);
-                            req.extData = "{\"goods_name\":\"" + goodsName + "\","
-                                    +" \"goods_id\":" + goodsId
-                                    +" \"out_trade_no\":" + out_trade_no + "}";
+                            req.extData = "{\"goods_name\":\"" + goodsName
+                                    +"\", \"goods_id\":" + goodsId
+                                    +", \"out_trade_no\":" + json.getString("out_trade_no") + "}";
                             mWxApi.sendReq(req);
                         } else {
                             DialogUtils.showMessage(getApplicationContext(),

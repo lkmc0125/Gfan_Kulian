@@ -10,14 +10,24 @@
         layout="@layout/top_bar" />
 
     <TextView
-        android:id="@+id/goods_name"
+        android:id="@+id/trade_no"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:gravity="center"
+        android:text="订单号"
+        android:textColor="#595959"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/goods_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
         android:text="商品名称"
         android:textColor="#595959"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/pay_result"

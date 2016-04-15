@@ -75,11 +75,12 @@ public class MarketAPI {
             API_BASE_URL + "/user_sign",
             // ACTION_GET_GOODS_LIST
             API_BASE_URL + "/get_goodslist", 
-            //ACTION_REPORT_APP_INSTALLED
+            // ACTION_REPORT_APP_INSTALLED
             API_BASE_URL + "/download_report", 
-            //ACTION_REPORT_APP_LAUNCHED
+            // ACTION_REPORT_APP_LAUNCHED
             API_BASE_URL + "/applanch_report", 
-            
+            // ACTION_REPORT_ORDER_PAY
+            API_BASE_URL + "/pay_report"
             };
 
     /** 检查更新 */
@@ -106,17 +107,11 @@ public class MarketAPI {
     public static final int ACTION_SIGN_IN = 10;
     /** 获取商品列表 */
     public static final int ACTION_GET_GOODS_LIST = 11;
-    /**
-     * 报告app安装完毕
-     */
+    /** 报告app安装完毕  */
     public static final int ACTION_REPORT_APP_INSTALLED = 12;
-    /**
-     * 报告app已启动
-     */
+    /** 报告app已启动 */
     public static final int ACTION_REPORT_APP_LAUNCHED = 13;
-    /**
-     * 报告订单支付成功
-     */
+    /** 报告订单支付成功 */
     public static final int ACTION_REPORT_ORDER_PAY = 14;
 
     /**
@@ -363,15 +358,14 @@ public class MarketAPI {
      * 报告订单支付成功
         realBuyer 用于代买，表示实际买主
      */
-    public static void reportOrderPay(Context context, ApiRequestListener handler, int goodsId, long outTradeNo, String realBuyer) {
+    public static void reportOrderPay(Context context, ApiRequestListener handler, int goodsId, String outTradeNo, String realBuyer) {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
         params.put("self_phone", session.getUserName());
         params.put("other_phone", realBuyer);
-        params.put("out_trade_no", outTradeNo+"");
-        params.put("goods_id", goodsId+"");
+        params.put("out_trade_no", outTradeNo);
+        params.put("goods_id", Integer.toString(goodsId));
         params.put("imei", session.getIMEI());
         new ApiAsyncTask(context, ACTION_REPORT_ORDER_PAY, handler, params).execute();
     }
-
 }

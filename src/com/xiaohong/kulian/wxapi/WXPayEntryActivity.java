@@ -40,11 +40,10 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_result);
+        initView();
         Log.d(TAG, "onCreate");
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
         api.handleIntent(getIntent(), this);
-
-        initView();
     }
 
     private void initView() {
@@ -101,19 +100,23 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
                     break;
                 }
 
-                TextView goodsNameTv = (TextView) findViewById(R.id.goods_name);
-                Gson gson = new Gson();
-                WeChatGoodsBean bean = gson
-                        .fromJson(payResp.extData, WeChatGoodsBean.class);
-                goodsNameTv.setText("购买商品: " + bean.getGoodsName());
+                WeChatGoodsBean bean = new Gson().fromJson(payResp.extData, WeChatGoodsBean.class);
+
+                TextView tradeNoTv = (TextView) findViewById(R.id.trade_no);
+                tradeNoTv.setText("订单号："+bean.getOutTradeNo());
+
+                TextView goodsNameTv = (TextView) findViewById(R.id.goods_name);                
+                goodsNameTv.setText("购买商品：" + bean.getGoodsName());
 
                 TextView payResultTv = (TextView) findViewById(R.id.pay_result);
                 payResultTv.setText(msg);
-                
+
                 // report apy sucssess
                 if (resp.errCode == 0) {
                     Session session = Session.get(this);
-                    MarketAPI.reportOrderPay(this, this, bean.getGoodsId(), bean.getOutTradeNo(), session.getUserName());
+                    MarketAPI.reportOrderPay(getApplicationContext(), this, bean.getGoodsId(), bean.getOutTradeNo(), session.getUserName());
+                } else {
+                    confirmBtn.setEnabled(true);
                 }
             }
         } else {
@@ -138,8 +141,10 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
         case MarketAPI.ACTION_REPORT_ORDER_PAY:
             ReportResultBean bean = (ReportResultBean)obj;
             if (bean.getRetCode() == 0) {
-                DialogUtils.showMessage(this, "购买成功", "您获得了"+bean.getAddedCoinNum()+"个金币");
-                Session.get(getApplicationContext()).notifyCoinUpdated(bean.getAddedCoinNum());
+                DialogUtils.showMessage(this, "购买成功", "您获得了"+String.valueOf(bean.getAddedCoinNum())+"个金币");
+                Session session = Session.get(getApplicationContext()); 
+                session.setCoinNum(bean.getCoinNum());
+                session.notifyCoinUpdated();
             }
             confirmBtn.setEnabled(true);
             break;
@@ -152,7 +157,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
     public void onError(int method, int statusCode) {
         switch (method) {
         case MarketAPI.ACTION_REPORT_ORDER_PAY:
-            DialogUtils.showMessage(this, "出错啦", "支付结果同步失败，请联系客服");
+            DialogUtils.showMessage(this, "出错啦", "支付结果同步失败，错误码"+String.valueOf(statusCode)+"，请联系客服");
             confirmBtn.setEnabled(true);
             break;
         default:

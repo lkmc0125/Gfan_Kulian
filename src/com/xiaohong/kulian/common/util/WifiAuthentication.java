@@ -28,6 +28,7 @@ public class WifiAuthentication {
         @Override
         public void run() {
             try {
+                sendKangKaiAuthRequest();
                 sendShenZhouAuthRequest();
                 sendHuanChuangAuthRequest();
                 sendHillStoneAuthRequest();
@@ -37,6 +38,12 @@ public class WifiAuthentication {
             }
         }
     };
+
+    private void sendKangKaiAuthRequest() throws Exception {
+        Log.d(TAG, "sendKangKaiAuthRequest");
+        String url = "http://182.254.140.228/portaltt/Logon.html";
+        Utils.httpGet(url);
+    }
 
     private void sendShenZhouAuthRequest() throws Exception {
         Log.d(TAG, "sendShenZhouAuthRequest");

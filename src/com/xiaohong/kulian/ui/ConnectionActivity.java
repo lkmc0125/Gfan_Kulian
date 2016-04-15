@@ -183,7 +183,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
     // 检查外网是否通
     private void checkNetwork() {
         String url = "http://115.159.3.16/cb/app_test";
-        if (null == Utils.httpGet(url)) { // 网络不通
+        String ret = Utils.httpGet(url);
+        if (null == ret || ret.indexOf("success") == -1) { // 网络不通
             Log.d(TAG, "network not availabel");
             mAuthBtn.setVisibility(View.VISIBLE);
             
@@ -217,6 +218,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 JSONObject obj = new JSONObject(ret);
                 if (obj.getInt("ret_code") == 0) {
                     DialogUtils.showMessage(this, "认证成功", "使用金币" + obj.getString("dec_coin_num") + "枚");
+                    mSession.setCoinNum(Integer.valueOf("coin_num").intValue());
+                    mSession.notifyCoinUpdated();
                 } else if (obj.getInt("ret_code") == 3001) { // 3001 means already deduction coin today
                     Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
                 }
