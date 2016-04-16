@@ -108,7 +108,7 @@ public class BaseImageDecoder implements ImageDecoder {
 		//fix native crash refer https://github.com/nostra13/Android-Universal-Image-Loader/issues/504
 		String pathString = decodingInfo.getImageUri();
         String filePath = Scheme.FILE.crop(pathString);
-        Log.d("free", "option decode");
+        Log.d("free", "option decode filePath = " + filePath);
         BitmapFactory.decodeFile(filePath, options);
         Log.d("free", "option decoded");
 		//
