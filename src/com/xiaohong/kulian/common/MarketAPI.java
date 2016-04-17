@@ -80,7 +80,9 @@ public class MarketAPI {
             // ACTION_REPORT_APP_LAUNCHED
             API_BASE_URL + "/applanch_report", 
             // ACTION_REPORT_ORDER_PAY
-            API_BASE_URL + "/pay_report"
+            API_BASE_URL + "/pay_report",
+            // ACTION_ACCEPT_GZH_TASK
+            API_BASE_URL + "/accept_gzh_task"
             };
 
     /** 检查更新 */
@@ -113,6 +115,8 @@ public class MarketAPI {
     public static final int ACTION_REPORT_APP_LAUNCHED = 13;
     /** 报告订单支付成功 */
     public static final int ACTION_REPORT_ORDER_PAY = 14;
+    /** 领取公众号任务 */
+    public static final int ACTION_ACCEPT_GZH_TASK = 15;
 
     /**
      * Register API<br>
@@ -262,6 +266,15 @@ public class MarketAPI {
         params.put("phone_number", phoneNumber);
         Log.d("free", "getGzhTaskList");
         new ApiAsyncTask(context, ACTION_GET_GZH_TASK_LIST, handler, params).execute();
+    }
+
+    public static void acceptGzhTask(Context context, ApiRequestListener handler, int taskId) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        String phoneNumber = session.getUserName();
+        params.put("phone_number", phoneNumber);
+        params.put("task_id", String.valueOf(taskId));
+        new ApiAsyncTask(context, ACTION_ACCEPT_GZH_TASK, handler, params).execute();
     }
 
     public static void getMessages(Context context, ApiRequestListener handler) {

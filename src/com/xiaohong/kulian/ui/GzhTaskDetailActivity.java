@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.TaskBean;
+import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.widget.CustomDialog;
 
 public class GzhTaskDetailActivity extends Activity implements OnClickListener {
@@ -99,6 +100,7 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
                 break;
             case R.id.task_copy_tv:
                 copyWeixinId();
+                MarketAPI.acceptGzhTask(getApplicationContext(), this, mTaskBean.getId())
                 break;
             default :
                 break;
