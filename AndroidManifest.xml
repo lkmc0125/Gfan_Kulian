@@ -253,6 +253,7 @@
     <permission android:name="com.xiaohong.kulian.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <!-- Permission Group -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
