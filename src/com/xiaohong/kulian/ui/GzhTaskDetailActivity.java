@@ -17,10 +17,11 @@ import android.widget.TextView;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.TaskBean;
+import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.widget.CustomDialog;
 
-public class GzhTaskDetailActivity extends Activity implements OnClickListener {
+public class GzhTaskDetailActivity extends Activity implements OnClickListener, ApiRequestListener {
     private static final String TAG = "GzhTaskDetailActivity";
     private TaskBean mTaskBean;
 
@@ -100,7 +101,7 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
                 break;
             case R.id.task_copy_tv:
                 copyWeixinId();
-                MarketAPI.acceptGzhTask(getApplicationContext(), this, mTaskBean.getId())
+                MarketAPI.acceptGzhTask(getApplicationContext(), this, mTaskBean.getId());
                 break;
             default :
                 break;
@@ -130,6 +131,18 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener {
             return name;
         }
         return name.substring(startIndex + 1, endIndex);
+    }
+
+    @Override
+    public void onSuccess(int method, Object obj) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onError(int method, int statusCode) {
+        // TODO Auto-generated method stub
+        
     }
 
 }
