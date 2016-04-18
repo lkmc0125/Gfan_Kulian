@@ -33,15 +33,18 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.bean.AppDetailBean;
 import com.xiaohong.kulian.bean.DetailInfo;
+import com.xiaohong.kulian.bean.ReportResultBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.download.DownloadManager;
+import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.DownloadInfo;
 import com.xiaohong.kulian.common.widget.CustomProgressBar;
 
 public class AppDetailActivity extends Activity
         implements
+            ApiRequestListener,
             OnClickListener,
             Observer {
     private static final String TAG = "AppDetailActivity";
@@ -354,6 +357,7 @@ public class AppDetailActivity extends Activity
             Utils.installApk(getApplicationContext(), new File(mFilePath));
         }else if(mStatus == STATUS_WAITING_OPEN) {
             //打开
+            MarketAPI.reportAppLaunched(getApplicationContext(), this, mDetailInfo.getPackagename());
             Utils.openApkByPackageName(getApplicationContext(),
                     mDetailInfo.getPackagename());
         }else if(mStatus == STATUS_PAUSE) {
@@ -516,6 +520,29 @@ public class AppDetailActivity extends Activity
     private void showInstallView() {
         mProgressBar.setText(TEXT_INSTALL);
         mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
+    }
+
+    @Override
+    public void onSuccess(int method, Object obj) {
+        switch (method) {
+        case MarketAPI.ACTION_REPORT_APP_LAUNCHED: {
+            ReportResultBean result = (ReportResultBean) obj;
+            if (result.getAddedCoinNum() > 0) {
+                DialogUtils.showMessage(AppDetailActivity.this, "金币奖励", "您获得了"+result.getAddedCoinNum()+"个金币");
+                mSession.setCoinNum(result.getCoinNum());
+                mSession.notifyCoinUpdated();
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }
+
+    @Override
+    public void onError(int method, int statusCode) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

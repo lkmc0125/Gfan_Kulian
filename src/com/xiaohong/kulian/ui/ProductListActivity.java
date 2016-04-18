@@ -49,31 +49,6 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     private String mCategory;
     private boolean mIsEnd;
 
-
-    private BroadcastReceiver mAppInstallReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            String packageName = null;
-            if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)
-                    || intent.getAction().equals(Intent.ACTION_PACKAGE_REPLACED)) {
-                packageName = intent.getData().getSchemeSpecificPart();
-                ApplicationInfo applicationInfo = null;
-                PackageManager packageManager = null;
-                try {
-                    packageManager = context.getPackageManager();
-                    applicationInfo = packageManager.getApplicationInfo(packageName, 0);
-                    String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
-                    Log.d(TAG, "installed [" + applicationName + "] pkg-name: " + applicationInfo.packageName);
-//                    Toast.makeText(context, "安装成功: " + applicationName, Toast.LENGTH_LONG).show();
-                    mSession.addInstalledApp(applicationInfo.packageName);
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
-
     private BroadcastReceiver mAppLanchReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -89,7 +64,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
                     applicationInfo = packageManager.getApplicationInfo(packageName, 0);
                     String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
                     Log.d(TAG, "Lanched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
-                    Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
                     mSession.reportAppLaunched(applicationInfo.packageName);
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
@@ -97,14 +72,6 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
             }
         }
     };
-	
-    private void registerAppInstall() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
-        filter.addDataScheme("package");
-        registerReceiver(mAppInstallReceiver, filter);
-    }
 
     private void registerAppLanch() {
         IntentFilter filter = new IntentFilter();
@@ -117,7 +84,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     public boolean doInitView(Bundle savedInstanceState) {
         Intent intent = getIntent();
         if (intent != null) {
-            registerAppInstall();
+
             registerAppLanch();
             mCategory = intent.getStringExtra(Constants.EXTRA_CATEGORY);
             if (TextUtils.isEmpty(mCategory)) {
