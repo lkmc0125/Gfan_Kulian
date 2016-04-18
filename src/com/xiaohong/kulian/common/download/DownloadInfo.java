@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import com.xiaohong.kulian.common.download.Constants;
 import com.xiaohong.kulian.common.download.DownloadManager.Impl;
@@ -125,6 +126,7 @@ public class DownloadInfo {
         Intent intent = new Intent(DownloadManager.BROADCAST_DOWNLOAD_APP_SUCCESS);
 //        intent.setClassName(mPackage, mClass);
         intent.putExtra("FILENAME", mFileName);
+        Log.d("free", "send  broadcast mFileName = " + mFileName);
         mContext.sendBroadcast(intent);
     }
 

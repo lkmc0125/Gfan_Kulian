@@ -154,6 +154,7 @@ public class HomeTabActivity extends BaseTabActivity implements
         @Override
         public void onReceive(Context context, Intent intent) {
             String filePath = intent.getStringExtra("FILENAME");
+            Log.d(TAG, "mDownloadReceiver onReceive filePath = " + filePath);
             if (filePath != null) {
                 Utils.installApk(getApplicationContext(), new File(filePath));    
             }
