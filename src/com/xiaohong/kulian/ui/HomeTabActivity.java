@@ -96,7 +96,6 @@ public class HomeTabActivity extends BaseTabActivity implements
     
     // Tab id
     private static final String TAB_HOME = "home";
-    private static final String TAB_HUMOR = "humor";
     private static final String TAB_MINE = "mine";
     private static final String TAB_RANK = "rank";
     private static final String TAB_APP = " app";
@@ -151,6 +150,16 @@ public class HomeTabActivity extends BaseTabActivity implements
         }
     };
 
+    private BroadcastReceiver mDownloadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String filePath = intent.getStringExtra("FILENAME");
+            if (filePath != null) {
+                Utils.installApk(getApplicationContext(), new File(filePath));    
+            }
+        }
+    };
+
     // 检查用户点击下载列表
     private BroadcastReceiver mIntentClickReceiver = new BroadcastReceiver() {
 
@@ -171,7 +180,7 @@ public class HomeTabActivity extends BaseTabActivity implements
                  exit();
             } else if (action.equals(Constants.BROADCAST_REMIND_LATTER)) {
                 // do nothing
-            } else if (action.equals(Constants.BROADCAST_DOWNLOAD_OPT)) {
+            } else if (action.equals(Constants.BROADCAST_DOWNLOAD_OPT)) { // 提示升级
                 // start download
                 DownloadManager.Request request = new DownloadManager.Request(
                         Uri.parse(mSession.getUpdateUri()));
@@ -182,7 +191,7 @@ public class HomeTabActivity extends BaseTabActivity implements
                 request.setMimeType(com.xiaohong.kulian.common.download.Constants.MIMETYPE_APK);
                 mSession.setUpdateID(mSession.getDownloadManager().enqueue(
                         request));
-            } else if (action.equals(Constants.BROADCAST_DOWNLOAD)) {
+            } else if (action.equals(Constants.BROADCAST_DOWNLOAD)) {// 强制升级
                 // start download
                 DownloadManager.Request request = new DownloadManager.Request(
                         Uri.parse(mSession.getUpdateUri()));
@@ -197,12 +206,13 @@ public class HomeTabActivity extends BaseTabActivity implements
             }
         }
     };
-    
+
     // 打开推荐和任务详情
     private BroadcastReceiver mCheckAllReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
             String action = intent.getAction();
             if (action.equals(Constants.BROADCAST_CATEGORY_TASK)) {
                 mTabHost.setCurrentTab(1);
@@ -248,9 +258,11 @@ public class HomeTabActivity extends BaseTabActivity implements
     }
 
     private void registerReceivers() {
+
         IntentFilter filter = new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mNetworkReceiver, filter);
+
         IntentFilter intentClickFilter = new IntentFilter(
                 Constants.BROADCAST_CLICK_INTENT);
         registerReceiver(mIntentClickReceiver, intentClickFilter);
@@ -261,6 +273,10 @@ public class HomeTabActivity extends BaseTabActivity implements
         appFilter.addAction(Intent.ACTION_PACKAGE_CHANGED);
         appFilter.addDataScheme("package");
         registerReceiver(mInstallReceiver, appFilter);
+
+        IntentFilter downloadFilter = new IntentFilter();
+        downloadFilter.addAction(DownloadManager.BROADCAST_DOWNLOAD_APP_SUCCESS);
+        registerReceiver(mDownloadReceiver, downloadFilter);
 
         IntentFilter updatefilter = new IntentFilter();
         updatefilter.addAction(Constants.BROADCAST_FORCE_EXIT);
@@ -281,6 +297,7 @@ public class HomeTabActivity extends BaseTabActivity implements
         unregisterReceiver(mNetworkReceiver);
         unregisterReceiver(mIntentClickReceiver);
         unregisterReceiver(mInstallReceiver);
+        unregisterReceiver(mDownloadReceiver);
         unregisterReceiver(mUpdateReceiver);
         unregisterReceiver(mCheckAllReceiver);
     }
@@ -312,15 +329,6 @@ public class HomeTabActivity extends BaseTabActivity implements
                                 R.drawable.main_tab_earn_selector))
                 .setContent(new Intent(this, RankTabActivity.class));
         mTabHost.addTab(tab2);
-
-        // TabSpec tab3 = mTabHost
-        // .newTabSpec(TAB_HUMOR)
-        // .setIndicator(
-        // createTabView(getApplicationContext(),
-        // getString(R.string.main_tab_humor),
-        // R.drawable.main_tab_humor_selector))
-        // .setContent(new Intent(this, HumorActivity.class));
-        // mTabHost.addTab(tab3);
 
         TabSpec tab4 = mTabHost
                 .newTabSpec(TAB_MINE)

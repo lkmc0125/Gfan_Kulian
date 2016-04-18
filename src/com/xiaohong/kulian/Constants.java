@@ -373,7 +373,7 @@ public interface Constants {
     static final String BROADCAST_REMIND_LATTER = "com.xiaohong.kulian.broadcast.REMIND_LATTER";
     static final String BROADCAST_DOWNLOAD_OPT = "com.xiaohong.kulian.broadcast.DOWNLOAD_OPT";
     static final String BROADCAST_DOWNLOAD = "com.xiaohong.kulian.broadcast.DOWNLOAD";
-
+    
     static final int NO_UPDATE = 0;
     static final String EXTRA_UPDATE_LEVEL = "update_level";
     static final String EXTRA_VERSION_CODE = "version_code";

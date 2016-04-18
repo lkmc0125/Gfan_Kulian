@@ -18,6 +18,8 @@ package com.xiaohong.kulian.common.download;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xiaohong.kulian.ui.HomeTabActivity;
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -37,7 +39,8 @@ import android.text.TextUtils;
  * @since Version 0.7.0
  */
 public class DownloadManager {
-    
+
+    public final static String BROADCAST_DOWNLOAD_APP_SUCCESS = "com.xiaohong.kulian.broadcast.DOWNLOAD_APP_SUCCESS";
     /**
      * Value of {@link #COLUMN_STATUS} when the download is waiting to start.
      */
@@ -114,7 +117,7 @@ public class DownloadManager {
         // use the title as the file's name
         values.put(Impl.COLUMN_FILE_NAME_HINT, (String) request.mTitle);
         values.put(Impl.COLUMN_PACKAGE_NAME, request.mPackageName);
-//        values.put(Impl.COLUMN_NOTIFICATION_CLASS, AppsManagerActivity.class.getName());
+        values.put(Impl.COLUMN_NOTIFICATION_CLASS, HomeTabActivity.class.getName());
         values.put(Impl.COLUMN_MD5, request.mMD5);
         if (request.mSourceType == Constants.DOWNLOAD_FROM_OTA) {
             values.put(Impl.COLUMN_DESTINATION, DownloadManager.Impl.DESTINATION_CACHE_PARTITION);

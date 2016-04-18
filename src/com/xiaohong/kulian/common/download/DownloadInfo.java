@@ -19,10 +19,12 @@ package com.xiaohong.kulian.common.download;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.xiaohong.kulian.common.download.Constants;
 import com.xiaohong.kulian.common.download.DownloadManager.Impl;
 import com.xiaohong.kulian.common.util.Utils;
 
@@ -119,17 +121,11 @@ public class DownloadInfo {
         if (mClass == null) {
             return;
         }
-        // TODO
-//        Intent intent = new Intent(DownloadManager.ACTION_DOWNLOAD_COMPLETED);
+
+        Intent intent = new Intent(DownloadManager.BROADCAST_DOWNLOAD_APP_SUCCESS);
 //        intent.setClassName(mPackage, mClass);
-//        if (mExtras != null) {
-//            intent.putExtra(DownloadManager.Impl.COLUMN_NOTIFICATION_EXTRAS, mExtras);
-//        }
-//        // We only send the content: URI, for security reasons. Otherwise, malicious
-//        // applications would have an easier time spoofing download results by
-//        // sending spoofed intents.
-//        intent.setData(getMyDownloadsUri());
-//        mContext.sendBroadcast(intent);
+        intent.putExtra("FILENAME", mFileName);
+        mContext.sendBroadcast(intent);
     }
 
     /**

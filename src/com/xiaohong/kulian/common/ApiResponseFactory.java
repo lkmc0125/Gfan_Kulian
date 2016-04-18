@@ -183,6 +183,13 @@ public class ApiResponseFactory {
                 result = gson.fromJson(inputBody, ReportResultBean.class);
                 Log.d("free", "report result = " + result);
                 break;
+
+            case MarketAPI.ACTION_ACCEPT_GZH_TASK:
+                requestMethod = "ACTION_ACCEPT_GZH_TASK";
+                Log.d("free", "accept task result str = " + inputBody);
+//                result = gson.fromJson(inputBody, ReportResultBean.class);
+//                Log.d("free", "report result = " + result);
+                break;
             default:
                 break;
             }

@@ -65,20 +65,15 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
                     applicationInfo = packageManager.getApplicationInfo(packageName, 0);
                     String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
                     Log.d(TAG, "installed [" + applicationName + "] pkg-name: " + applicationInfo.packageName);
-//                    String appId = mDownloadAppInfoHashMap.get(applicationInfo.packageName);
-//                    if (appId != null) {
-                        Toast.makeText(context, "安装成功: " + applicationName, Toast.LENGTH_LONG).show();
-//                        webView.loadUrl("javascript: appInstallFinished(" + appId + ")");
-//                        mDownloadAppInfoHashMap.remove(applicationName);
-//                    }
-                      mSession.addInstalledApp(applicationInfo.packageName);
+//                    Toast.makeText(context, "安装成功: " + applicationName, Toast.LENGTH_LONG).show();
+                    mSession.addInstalledApp(applicationInfo.packageName);
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             }
         }
     };
-	    
+
     private BroadcastReceiver mAppLanchReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

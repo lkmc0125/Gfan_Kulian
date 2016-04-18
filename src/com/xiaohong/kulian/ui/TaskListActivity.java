@@ -177,10 +177,14 @@ public class TaskListActivity extends LazyloadListActivity implements
             if(clickUrl != null && !clickUrl.equals("")) {
                 openWebView(clickUrl, item.getName());
             }else {
-                Log.w(TAG, "no click url");
-                Intent intent = new Intent(TaskListActivity.this, GzhTaskDetailActivity.class);
-                intent.putExtra(Constants.EXTRA_TASK_BEAN, item);
-                startActivity(intent);
+                if (!mSession.isLogin()) {
+                    Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(TaskListActivity.this, GzhTaskDetailActivity.class);
+                    intent.putExtra(Constants.EXTRA_TASK_BEAN, item);
+                    startActivity(intent);
+                }
             }
             
         }else {

@@ -716,7 +716,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         } else if (mSession.isLogin()) {
             textView_coin_num.setText(mSession.getCoinNum().toString());
             if (mSession.getSignInToday()) {
-                textView_signIn_status.setText("今天已经签到");
+                textView_signIn_status.setText("今天已签到");
             } else {
                 textView_signIn_status.setText(R.string.person_account_sign_in_value);
             }

@@ -51,7 +51,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
-            android:background="#60AF0A"
+            android:background="@drawable/confirm_btn_bg_selector"
             android:gravity="center"
             android:text="确定"
             android:textColor="#FFFFFF"

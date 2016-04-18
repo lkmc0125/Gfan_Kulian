@@ -221,7 +221,6 @@ public class AppDetailActivity extends Activity
                 Log.d(TAG, "progress:" + downloadInfo.mProgress);
                 Log.d(TAG, "path:" + downloadInfo.mFilePath);
                 Log.d(TAG, "mIsDownloading:" + mIsDownloading);
-                // mSession.getDownloadManager().
                 mDownloadId = downloadInfo.id;
                 Log.d(TAG, "mDownloadId-" + mDownloadId);
                 if (downloadInfo.mFilePath != null
@@ -325,8 +324,7 @@ public class AppDetailActivity extends Activity
         }
         if (data instanceof HashMap) {
             HashMap<String, DownloadInfo> mDownloadingTask = (HashMap<String, DownloadInfo>) data;
-            DownloadInfo info = mDownloadingTask.get(mDetailInfo
-                    .getPackagename());
+            DownloadInfo info = mDownloadingTask.get(mDetailInfo.getPackagename());
             if (info != null) {
                 Log.d(TAG, "download progress update:" + info.mProgress);
                 if (info.mStatus == DownloadManager.Impl.STATUS_SUCCESS) {
@@ -334,8 +332,6 @@ public class AppDetailActivity extends Activity
                     mProgressBar.setText("安装");
                     mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
                     // mProduct.setFilePath(info.mFilePath);
-                    Log.d(TAG, "download success then do install apk");
-                    Utils.installApk(getApplicationContext(), new File(info.mFilePath));
                 } else if (DownloadManager.Impl.isStatusError(info.mStatus)) {
                     // 下载失败
 

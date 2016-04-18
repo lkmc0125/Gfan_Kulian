@@ -135,14 +135,22 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener, 
 
     @Override
     public void onSuccess(int method, Object obj) {
-        // TODO Auto-generated method stub
-        
+        switch (method) {
+        case MarketAPI.ACTION_ACCEPT_GZH_TASK:
+            break;
+        default:
+            break;
+        }
     }
 
     @Override
     public void onError(int method, int statusCode) {
-        // TODO Auto-generated method stub
-        
+        switch (method) {
+        case MarketAPI.ACTION_ACCEPT_GZH_TASK:
+            break;
+        default:
+            break;
+        }
     }
 
 }

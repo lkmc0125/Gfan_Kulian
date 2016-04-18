@@ -6,6 +6,7 @@
     <color name="gray_1">#969696</color>
     <color name="gray_2">#DCDCDC</color>
     <color name="gray_3">#787878</color>
+    <color name="gray_4">#A5A5A5</color>
     <color name="orange">#FFB400</color>
     <color name="list_view_bg_color">#00000000</color>
     <color name="splash_notification_bg">#7FFF</color>
@@ -54,4 +55,5 @@
     <color name="buy_coin_item_selected_color">#FFFFFF</color>
     <color name="buy_coin_item_un_selected_black_color">#595959</color>
     <color name="buy_coin_item_un_selected_blue_color">#2C78D4</color>
+    
 </resources>

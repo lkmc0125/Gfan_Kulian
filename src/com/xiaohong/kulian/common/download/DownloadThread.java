@@ -35,6 +35,7 @@ import org.apache.http.client.methods.HttpGet;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.os.PowerManager;
 import android.os.Process;
 import android.text.TextUtils;
@@ -180,7 +181,7 @@ public class DownloadThread extends Thread {
 			if (!checkFile(state)) {
 				throw new Throwable("File MD5 code is not the same as server");
 			}
-            
+
             finalizeDestinationFile(state);
             finalStatus = DownloadManager.Impl.STATUS_SUCCESS;
         } catch (StopRequest error) {
