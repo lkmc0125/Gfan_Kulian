@@ -11,9 +11,11 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.xiaohong.kulian.common.download.DownloadService;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
 
@@ -46,6 +48,8 @@ public class WifiKulianApp extends Application {
                 .build();//开始构建  
 
         ImageLoader.getInstance().init(config);
+        
+        startService(new Intent(this, DownloadService.class));
     }
     public static String getPathDisk(Context context) {
         String filePath = Constants.IMAGE_LOADER_CACHE_DIR;

@@ -36,6 +36,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Process;
+import android.util.Log;
 
 import com.xiaohong.kulian.common.util.Utils;
 
@@ -197,11 +198,13 @@ public class DownloadService extends Service {
                 try {
                     DownloadInfo.Reader reader = new DownloadInfo.Reader(cursor);
                     int idColumn = cursor.getColumnIndexOrThrow(DownloadManager.Impl._ID);
+                    //Log.d("free", "DownloadService idColumn = " + idColumn);
 
                     for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                         long id = cursor.getLong(idColumn);
                         idsNoLongerInDatabase.remove(id);
                         DownloadInfo info = mDownloads.get(id);
+                        //Log.d("free", "DownloadService info = " + info);
                         if (info != null) {
                             updateDownload(reader, info, now);
                         } else {
