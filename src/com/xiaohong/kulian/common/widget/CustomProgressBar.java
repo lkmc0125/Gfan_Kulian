@@ -21,7 +21,8 @@ public class CustomProgressBar extends ProgressBar {
         INITIAL,
         PROCESSING,
         PAUSED,
-        FINISHED
+        FINISHED,
+        INSTALLED
     };
 
     private String mText;
@@ -62,6 +63,16 @@ public class CustomProgressBar extends ProgressBar {
             break;
         }
         case FINISHED:
+        {
+            this.mPaint.setColor(getResources().getColor(R.color.white));
+            int color = mContext.getResources().getColor(
+                    R.color.download_button_yellow_color);
+            ClipDrawable d = new ClipDrawable(new ColorDrawable(color), Gravity.LEFT, ClipDrawable.HORIZONTAL);
+            setProgressDrawable(d);
+            setProgress(100);
+            break;
+        }
+        case INSTALLED:
         {
             this.mPaint.setColor(getResources().getColor(R.color.white));
             int color = mContext.getResources().getColor(

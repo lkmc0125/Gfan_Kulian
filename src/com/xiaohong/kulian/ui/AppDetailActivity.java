@@ -498,7 +498,7 @@ public class AppDetailActivity extends Activity
      */
     private void showOpenView() {
         mProgressBar.setText(TEXT_OPEN);
-        mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
+        mProgressBar.setStatus(CustomProgressBar.Status.INSTALLED);
     }
 
     /**
