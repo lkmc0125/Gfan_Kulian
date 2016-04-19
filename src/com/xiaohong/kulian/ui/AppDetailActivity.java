@@ -610,3 +610,4 @@ public class AppDetailActivity extends Activity
     };
 
 }
+
