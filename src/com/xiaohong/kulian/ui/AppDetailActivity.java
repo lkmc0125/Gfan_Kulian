@@ -110,6 +110,9 @@ public class AppDetailActivity extends Activity
     private DetailInfo mDetailInfo = null;
     private long mDownloadId = -1;
     private boolean mIsDownloading = false;
+    private static String appId;
+    private static String category;
+    private RelativeLayout layout_app_action_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +123,12 @@ public class AppDetailActivity extends Activity
         initViews();
         regReceiver();
         mSession.addOnAppInstalledListener(this);
-        String appId = getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID);
-        String category = getIntent().getStringExtra(Constants.EXTRA_CATEGORY);
+//        String appId = getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID);
+//        String category = getIntent().getStringExtra(Constants.EXTRA_CATEGORY);
+        if(getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID)!=null){
+            appId = getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID);
+            category = getIntent().getStringExtra(Constants.EXTRA_CATEGORY);
+        }
         if (appId == null || category == null) {
             Log.d(TAG, "invalid appId or category");
             finish();
@@ -157,6 +164,7 @@ public class AppDetailActivity extends Activity
 
         mProgressBar.setOnClickListener(this);
         mBackImageView.setOnClickListener(this);
+        layout_app_action_layout=(RelativeLayout)findViewById(R.id.app_action_layout);
     }
 
     @Override
@@ -339,12 +347,15 @@ public class AppDetailActivity extends Activity
         if (data instanceof HashMap) {
             HashMap<String, DownloadInfo> mDownloadingTask = (HashMap<String, DownloadInfo>) data;
             DownloadInfo info = mDownloadingTask.get(mDetailInfo.getPackagename());
+            Log.d(TAG, "download progress update:" + info);
             if (info != null) {
                 Log.d(TAG, "download progress update:" + info.mProgress);
+                Log.d(TAG, "download progress update:" + info.mStatus);
                 if (info.mStatus == DownloadManager.Impl.STATUS_SUCCESS) {
                     // 已经下载成功
                     mProgressBar.setText("安装");
                     mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
+                    layout_app_action_layout.setBackgroundResource(R.drawable.custom_progressbar_bg);
                     // mProduct.setFilePath(info.mFilePath);
                 } else if (DownloadManager.Impl.isStatusError(info.mStatus)) {
                     // 下载失败
@@ -573,6 +584,20 @@ public class AppDetailActivity extends Activity
             showOpenView();
         }
     }
+/*    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        if(mProgressBarmStatus==200){
+            MarketAPI.getProductDetailWithId(getApplicationContext(),
+                    new AppDetailApiRequestListener(), appId, category);
+        }
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // TODO Auto-generated method stub
+        super.onSaveInstanceState(outState);
+    }*/
     
     private void regReceiver() {
         IntentFilter filter = new IntentFilter();
@@ -608,5 +633,7 @@ public class AppDetailActivity extends Activity
             }
         }
     };
+    
+
 
 }
