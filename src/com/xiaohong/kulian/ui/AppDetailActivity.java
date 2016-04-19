@@ -207,12 +207,10 @@ public class AppDetailActivity extends Activity
                 // 已安装 显示打开
                 mStatus = STATUS_WAITING_OPEN;
                 showOpenView();
-            } else if (new File(
-                    com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR
-                            + "/" + mDetailInfo.getAppname() + ".apk").exists()) {
+            } else if (Utils.isApkDownloaded(mDetailInfo.getAppname())) {
                 mStatus = STATUS_WAITING_INSTALL;
-                mFilePath = com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR
-                        + "/" + mDetailInfo.getAppname() + ".apk";
+                mFilePath = Utils.getDownloadedAppPath(mDetailInfo.getAppname());
+                Log.d(TAG, "downloaded mFilePath = " + mFilePath);
                 showInstallView();
 
             } else if (mSession.getDownloadingList().get(
@@ -341,6 +339,7 @@ public class AppDetailActivity extends Activity
                 } else if(info.mProgress != null){
                     // 下载中
                     showDownloadingView(info);
+                    System.out.println("info.mProgress"+info.mProgress);
                 }
             } else {
 
@@ -492,9 +491,19 @@ public class AppDetailActivity extends Activity
         String progress = "0%";
         if(downloadInfo != null) {
             progress = downloadInfo.mProgress == null ? "0%" : downloadInfo.mProgress;
-            mProgressBar.setProgress(progressStr2Int(downloadInfo.mProgress));
+            if(!"100%".equals(progress)) {
+                mProgressBar.setProgress(progressStr2Int(downloadInfo.mProgress));
+                mProgressBar.setText("正在下载（" + progress + "）");
+            }else {
+             // 已经下载成功
+                mProgressBar.setText("安装");
+                mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
+            }
+            
+        }else {
+            mProgressBar.setText("正在下载（" + progress + "）");
         }
-        mProgressBar.setText("正在下载（" + progress + "）");
+        
     }
 
     /**
@@ -544,5 +553,6 @@ public class AppDetailActivity extends Activity
         // TODO Auto-generated method stub
         
     }
+    
 
 }
