@@ -9,6 +9,12 @@ import java.util.Observer;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -31,6 +37,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.Session.OnAppInstalledListener;
 import com.xiaohong.kulian.bean.AppDetailBean;
 import com.xiaohong.kulian.bean.DetailInfo;
 import com.xiaohong.kulian.bean.ReportResultBean;
@@ -46,7 +53,7 @@ public class AppDetailActivity extends Activity
         implements
             ApiRequestListener,
             OnClickListener,
-            Observer {
+            Observer, OnAppInstalledListener {
     private static final String TAG = "AppDetailActivity";
     
     private static final String TEXT_CONTINUE = "继续";
@@ -81,6 +88,7 @@ public class AppDetailActivity extends Activity
     private String mFilePath;
     
     private int mCoinNum = 0;
+    private String mPackageName = null;
     private Session mSession;
 
     private ImageView mAppIconView;
@@ -102,6 +110,7 @@ public class AppDetailActivity extends Activity
     private DetailInfo mDetailInfo = null;
     private long mDownloadId = -1;
     private boolean mIsDownloading = false;
+    private static int mProgressBarmStatus=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +119,8 @@ public class AppDetailActivity extends Activity
         mSession = Session.get(getApplicationContext());
         //mSession.addObserver(this);
         initViews();
+        regReceiver();
+        mSession.addOnAppInstalledListener(this);
         String appId = getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID);
         String category = getIntent().getStringExtra(Constants.EXTRA_CATEGORY);
         if (appId == null || category == null) {
@@ -118,6 +129,7 @@ public class AppDetailActivity extends Activity
             return;
         }
         mCoinNum = getIntent().getIntExtra(Constants.EXTRA_COIN_NUM, 0);
+        mPackageName = getIntent().getStringExtra(Constants.EXTRA_PACKAGE_NAME);
         mImageLoader = ImageLoader.getInstance();
         MarketAPI.getProductDetailWithId(getApplicationContext(),
                 new AppDetailApiRequestListener(), appId, category);
@@ -150,7 +162,9 @@ public class AppDetailActivity extends Activity
 
     @Override
     protected void onDestroy() {
+        mSession.removeOnAppInstalledListener(this);
         mSession.deleteObserver(this);
+        unregReceiver();
         super.onDestroy();
     }
 
@@ -328,10 +342,14 @@ public class AppDetailActivity extends Activity
             DownloadInfo info = mDownloadingTask.get(mDetailInfo.getPackagename());
             if (info != null) {
                 Log.d(TAG, "download progress update:" + info.mProgress);
+                Log.d(TAG, "download progress update:" + info.mStatus);
                 if (info.mStatus == DownloadManager.Impl.STATUS_SUCCESS) {
                     // 已经下载成功
+                    Log.d(TAG, "download progress update success:" + info.mStatus);
+                    mProgressBarmStatus=200;
                     mProgressBar.setText("安装");
                     mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
+                    Log.d(TAG, "download progress update success:" + info.mStatus);
                     // mProduct.setFilePath(info.mFilePath);
                 } else if (DownloadManager.Impl.isStatusError(info.mStatus)) {
                     // 下载失败
@@ -339,9 +357,10 @@ public class AppDetailActivity extends Activity
                 } else if(info.mProgress != null){
                     // 下载中
                     showDownloadingView(info);
+                    System.out.println("mProgressBar"+info.mProgress);
                 }
             } else {
-
+                System.out.println("mProgressBar");
             }
         }
     }
@@ -536,9 +555,9 @@ public class AppDetailActivity extends Activity
         case MarketAPI.ACTION_REPORT_APP_LAUNCHED: {
             ReportResultBean result = (ReportResultBean) obj;
             if (result.getAddedCoinNum() > 0) {
-                DialogUtils.showMessage(AppDetailActivity.this, "金币奖励", "您获得了"+result.getAddedCoinNum()+"个金币");
-                mSession.setCoinNum(result.getCoinNum());
-                mSession.notifyCoinUpdated();
+                //DialogUtils.showMessage(AppDetailActivity.this, "金币奖励", "您获得了"+result.getAddedCoinNum()+"个金币");
+                //mSession.setCoinNum(result.getCoinNum());
+                mSession.notifyCoinUpdated(result.getAddedCoinNum());
             }
             break;
         }
@@ -552,6 +571,147 @@ public class AppDetailActivity extends Activity
         // TODO Auto-generated method stub
         
     }
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        System.out.println("download progress update onResume:");
+        System.out.println("download progress update onResume:"+mProgressBarmStatus);
+        if(mProgressBarmStatus==200){
+            mProgressBar.setText("安装");
+            mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
+            showInstallView();
+        }
+    }
+
+    @Override
+    public void onAppInstalled(String packageName) {
+        Log.d(TAG, "onAppInstalled packageName = " + packageName);
+        if(mPackageName != null && mPackageName.equals(packageName)) {
+            showOpenView();
+        }
+    }
+    
+    private void regReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_PACKAGE_FIRST_LAUNCH);
+        filter.addDataScheme("package");
+        registerReceiver(mAppLanchReceiver, filter);
+    }
+    
+    private void unregReceiver() {
+        unregisterReceiver(mAppLanchReceiver);
+    }
+    
+    private BroadcastReceiver mAppLanchReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String packageName = null;
+            if (intent.getAction().equals(Intent.ACTION_PACKAGE_FIRST_LAUNCH)) {
+                packageName = intent.getData().getSchemeSpecificPart();
+
+                ApplicationInfo applicationInfo = null;
+                PackageManager packageManager = null;
+                try {
+                    packageManager = context.getPackageManager();
+                    applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+                    String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
+                    Log.d(TAG, "Lanched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
+//                    Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
+                    mSession.reportAppLaunched(applicationInfo.packageName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+
+    @Override
+    public void onAppInstalled(String packageName) {
+        Log.d(TAG, "onAppInstalled packageName = " + packageName);
+        if(mPackageName != null && mPackageName.equals(packageName)) {
+            showOpenView();
+        }
+    }
+    
+    private void regReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_PACKAGE_FIRST_LAUNCH);
+        filter.addDataScheme("package");
+        registerReceiver(mAppLanchReceiver, filter);
+    }
+    
+    private void unregReceiver() {
+        unregisterReceiver(mAppLanchReceiver);
+    }
+    
+    private BroadcastReceiver mAppLanchReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String packageName = null;
+            if (intent.getAction().equals(Intent.ACTION_PACKAGE_FIRST_LAUNCH)) {
+                packageName = intent.getData().getSchemeSpecificPart();
+
+                ApplicationInfo applicationInfo = null;
+                PackageManager packageManager = null;
+                try {
+                    packageManager = context.getPackageManager();
+                    applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+                    String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
+                    Log.d(TAG, "Lanched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
+//                    Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
+                    mSession.reportAppLaunched(applicationInfo.packageName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+
+    @Override
+    public void onAppInstalled(String packageName) {
+        Log.d(TAG, "onAppInstalled packageName = " + packageName);
+        if(mPackageName != null && mPackageName.equals(packageName)) {
+            showOpenView();
+        }
+    }
+    
+    private void regReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_PACKAGE_FIRST_LAUNCH);
+        filter.addDataScheme("package");
+        registerReceiver(mAppLanchReceiver, filter);
+    }
+    
+    private void unregReceiver() {
+        unregisterReceiver(mAppLanchReceiver);
+    }
+    
+    private BroadcastReceiver mAppLanchReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String packageName = null;
+            if (intent.getAction().equals(Intent.ACTION_PACKAGE_FIRST_LAUNCH)) {
+                packageName = intent.getData().getSchemeSpecificPart();
+
+                ApplicationInfo applicationInfo = null;
+                PackageManager packageManager = null;
+                try {
+                    packageManager = context.getPackageManager();
+                    applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+                    String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
+                    Log.d(TAG, "Lanched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
+//                    Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
+                    mSession.reportAppLaunched(applicationInfo.packageName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
 
 }
 
