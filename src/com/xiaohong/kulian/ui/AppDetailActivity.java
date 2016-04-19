@@ -339,7 +339,6 @@ public class AppDetailActivity extends Activity
                 } else if(info.mProgress != null){
                     // 下载中
                     showDownloadingView(info);
-                    System.out.println("info.mProgress"+info.mProgress);
                 }
             } else {
 
@@ -553,6 +552,6 @@ public class AppDetailActivity extends Activity
         // TODO Auto-generated method stub
         
     }
-    
 
 }
+

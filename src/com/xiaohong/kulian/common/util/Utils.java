@@ -1253,6 +1253,33 @@ public class Utils {
     }
 
     /**
+     * Check if the app is downloaded
+     * @param appName App name without suffix(.apk)
+     * @return true if the app is downloaded
+     */
+    public static boolean isApkDownloaded(String appName) {
+        File file =  new File(Environment.getExternalStorageDirectory(),
+                com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR
+                        + "/" + appName + ".apk");
+        boolean downloaded = file.exists();/*
+        Log.d("free", "isApkDownloaded appName = " + appName + ", downloaded = " + downloaded
+                + ", filePath = " + file.getAbsolutePath());*/
+        return downloaded;
+    }
+    
+    /**
+     * Get the absolute path for a app name
+     * @param appName
+     * @return
+     */
+    public static String getDownloadedAppPath(String appName) {
+        File file =  new File(Environment.getExternalStorageDirectory(),
+                com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR
+                        + "/" + appName + ".apk");
+        return file.getAbsolutePath();
+    }
+    
+    /**
      * 
      * @param context
      * @param packageName
@@ -1408,6 +1435,13 @@ public class Utils {
                         if (Utils.isApkInstalled(mContext,
                                 bean.getPackageName()) == true) {
                             bean.setIsInstalled(true);
+                        }else if(Utils.isApkDownloaded(bean.getAppName())) {
+                            /**
+                             * only if the app is not installed , shall we check if it's downloaded
+                             * 
+                             */
+                            bean.setDownloaded(true);
+                            
                         }
                     }
                     Log.d(TAG, "onSuccess sAppList size = " + sAppList.size());
@@ -1704,5 +1738,23 @@ public class Utils {
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);  
   
         return (bitmap);  
-    }  
+    } 
+    
+    /**
+     * get the package name for a app
+     * @param context
+     * @param appFullName
+     * @return
+     */
+    public static String getPackageName(Context context, String appFullName) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo(appFullName, PackageManager.GET_ACTIVITIES);
+        ApplicationInfo appInfo = null;
+        String packageName = null;
+        if (info != null) {
+            appInfo = info.applicationInfo;
+            packageName = appInfo.packageName;
+        }
+        return packageName;
+    }
 }

@@ -27,6 +27,19 @@ public class AppBean {
     private boolean mIsInstalled = false;
     
     /**
+     * 标记app是否已被我们下载，默认值为false
+     */
+    private boolean mIsDownloaded = false;
+    
+    public boolean isDownloaded() {
+        return mIsDownloaded;
+    }
+    
+    public void setDownloaded(boolean mIsDownloaded) {
+        this.mIsDownloaded = mIsDownloaded;
+    }
+    
+    /**
      * @return the isInstalled
      */
     public boolean isIsInstalled() {
@@ -38,6 +51,9 @@ public class AppBean {
     public void setIsInstalled(boolean isInstalled) {
         mIsInstalled = isInstalled;
     }
+    
+    
+    
     public HashMap<String, Object> getStatusMap() {
         return mStatusMap;
     }
