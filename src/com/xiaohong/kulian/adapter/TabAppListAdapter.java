@@ -356,6 +356,8 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
         mImageLoader.displayImage(data.getAppLogo(), viewHolder.mAppIconView, Utils.sDisplayImageOptions);
         if(data.isIsInstalled()) {
             viewHolder.mActionView.setText(R.string.app_item_action_open);
+        } else {
+            viewHolder.mActionView.setText(R.string.app_item_action_view);
         }
     }
 
