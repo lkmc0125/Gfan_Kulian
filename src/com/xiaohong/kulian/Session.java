@@ -250,6 +250,8 @@ public class Session extends Observable {
     
     private final ArrayList<OnCoinUpdatedListener> mOnCoinUpdatedListener = new ArrayList<OnCoinUpdatedListener>();
     
+    private final ArrayList<OnAppInstalledListener> mOnAppInstalledListener = new ArrayList<OnAppInstalledListener>();
+    
     /**
      * default constructor
      * @param context
@@ -1043,6 +1045,7 @@ public class Session extends Observable {
         DownloadInfo info = mDownloadingList.get(packagename);
         if(info != null) {
             MarketAPI.reportAppInstalled(mContext, mReportApiRequestListener, packagename);
+            notifyAppInstalled(packagename);
         }
     }
     
@@ -1143,6 +1146,33 @@ public class Session extends Observable {
     public void notifyCoinUpdated(int added_coin) {
         for(OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
             listener.onCoinUpdate(coinNum + added_coin);
+        }
+    }
+    
+    /**
+     * 用于通知app已安装完毕
+     * @author free
+     *
+     */
+    public static interface OnAppInstalledListener {
+        /**
+         * 
+         * @param packageName App's package name
+         */
+        public void onAppInstalled(String packageName);
+    }
+    
+    public void addOnAppInstalledListener(OnAppInstalledListener listener) {
+        mOnAppInstalledListener.add(listener);
+    }
+    
+    public void removeOnAppInstalledListener(OnAppInstalledListener listener) {
+        mOnAppInstalledListener.remove(listener);
+    }
+    
+    private void notifyAppInstalled(String packageName) {
+        for(OnAppInstalledListener listener : mOnAppInstalledListener) {
+            listener.onAppInstalled(packageName);
         }
     }
 }

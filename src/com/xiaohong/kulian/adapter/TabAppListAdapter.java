@@ -59,6 +59,9 @@ import com.xiaohong.kulian.ui.RegisterActivity;
 public class TabAppListAdapter extends CommonAdapter implements Observer,
         ApiRequestListener {
 
+    public static int APP_STATUS_DOWNLOADED = 0;
+    public static int APP_STATUS_INSTALLED = 1;
+    
     private ArrayList<AppBean> mDataSource;
     private LazyloadListener mLazyloadListener;
 
@@ -356,6 +359,8 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
         mImageLoader.displayImage(data.getAppLogo(), viewHolder.mAppIconView, Utils.sDisplayImageOptions);
         if(data.isIsInstalled()) {
             viewHolder.mActionView.setText(R.string.app_item_action_open);
+        } else if(data.isDownloaded()) {
+            viewHolder.mActionView.setText(R.string.app_item_action_install);
         } else {
             viewHolder.mActionView.setText(R.string.app_item_action_view);
         }
@@ -616,5 +621,28 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
        viewHolder.mGoldView.setVisibility(View.VISIBLE);
        viewHolder.mActionView.setVisibility(View.VISIBLE); 
        viewHolder.mStatusView.setVisibility(View.GONE); 
+   }
+   
+   /**
+    * Update app's status to downladed or installed
+    * @param packageName
+    * @param status
+    */
+   public void updateAppStatus(String packageName, int status) {
+       mDataSource.get(0);
+       for(AppBean bean : mDataSource) {
+           String beanPackageName = bean.getPackageName();
+           if(beanPackageName != null && beanPackageName.equals(packageName)) {
+               if(status == APP_STATUS_DOWNLOADED) {
+                   bean.setDownloaded(true);
+                   notifyDataSetChanged();
+               }else if(status == APP_STATUS_INSTALLED) {
+                   bean.setIsInstalled(true);
+                   notifyDataSetChanged();
+               }
+               break;
+           }
+       }
+       
    }
 }

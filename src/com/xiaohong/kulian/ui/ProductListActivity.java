@@ -1,5 +1,6 @@
 package com.xiaohong.kulian.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.Session.OnAppInstalledListener;
 import com.xiaohong.kulian.SessionManager;
 import com.xiaohong.kulian.adapter.CommonAdapter;
 import com.xiaohong.kulian.adapter.TabAppListAdapter;
@@ -34,12 +36,13 @@ import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.LazyloadListActivity;
 import com.xiaohong.kulian.common.widget.LoadingDrawable;
 
 public class ProductListActivity extends LazyloadListActivity implements ApiRequestListener,
-        OnItemClickListener, OnClickListener {
+        OnItemClickListener, OnClickListener, OnAppInstalledListener {
 
     private static final String TAG = "ProductListActivity"; 
     private FrameLayout mLoading;
@@ -85,7 +88,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
         Intent intent = getIntent();
         if (intent != null) {
 
-            registerAppLanch();
+            //registerAppLanch();
             mCategory = intent.getStringExtra(Constants.EXTRA_CATEGORY);
             if (TextUtils.isEmpty(mCategory)) {
                 intent.getIntExtra(Constants.EXTRA_SORT_TYPE, 1);
@@ -159,6 +162,13 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
             if(Utils.isApkInstalled(getApplicationContext(),
                     bean.getPackageName()) ==  true) {
                 bean.setIsInstalled(true);
+            }else if(Utils.isApkDownloaded(bean.getAppName())) {
+                /**
+                 * only if the app is not installed , shall we check if it's downloaded
+                 * 
+                 */
+                bean.setDownloaded(true);
+                
             }
         }
         mAdapter.addData(list);
@@ -230,5 +240,50 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
     public void loadMore() {
         Log.d(TAG, "load more data");
         MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
+    }
+
+    @Override
+    public void onAppInstalled(String packageName) {
+        mAdapter.updateAppStatus(packageName , TabAppListAdapter.APP_STATUS_INSTALLED);
+    }
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSession.addOnAppInstalledListener(this);
+        regReceiver();
+    }
+    
+    @Override
+    protected void onDestroy() {
+        mSession.removeOnAppInstalledListener(this);
+        unregReceiver();
+        super.onDestroy();
+    }
+    
+    private BroadcastReceiver mDownloadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String filePath = intent.getStringExtra("FILENAME");
+            Log.d(TAG, "mDownloadReceiver onReceive filePath = " + filePath);
+            if (filePath != null && mAdapter != null) {
+                String packageName = Utils.getPackageName(getApplicationContext(), filePath); 
+                if(packageName != null) {
+                    mAdapter.updateAppStatus(packageName, TabAppListAdapter.APP_STATUS_DOWNLOADED);
+                }
+            }
+        }
+    };
+    
+    private void regReceiver() {
+        IntentFilter downloadFilter = new IntentFilter();
+        downloadFilter.addAction(DownloadManager.BROADCAST_DOWNLOAD_APP_SUCCESS);
+        registerReceiver(mDownloadReceiver, downloadFilter);
+        registerAppLanch();
+    }
+    
+    private void unregReceiver() {
+        unregisterReceiver(mDownloadReceiver);
+        unregisterReceiver(mAppLanchReceiver);
     }
 }
