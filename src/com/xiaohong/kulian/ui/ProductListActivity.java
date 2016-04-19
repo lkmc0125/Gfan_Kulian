@@ -28,6 +28,7 @@ import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.SessionManager;
 import com.xiaohong.kulian.adapter.CommonAdapter;
+import com.xiaohong.kulian.adapter.TabAppListAdapter;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask;
@@ -36,7 +37,6 @@ import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.LazyloadListActivity;
 import com.xiaohong.kulian.common.widget.LoadingDrawable;
-import com.xiaohong.kulian.common.widget.TabAppListAdapter;
 
 public class ProductListActivity extends LazyloadListActivity implements ApiRequestListener,
         OnItemClickListener, OnClickListener {

@@ -1,6 +1,6 @@
 package com.xiaohong.kulian.adapter;
 
-import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
+import com.xiaohong.kulian.adapter.TabAppListAdapter.LazyloadListener;
 
 import android.widget.BaseAdapter;
 

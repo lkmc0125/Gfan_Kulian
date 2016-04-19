@@ -30,7 +30,8 @@ import android.widget.TextView;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.adapter.CommonAdapter;
-import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
+import com.xiaohong.kulian.adapter.TabAppListAdapter;
+import com.xiaohong.kulian.adapter.TabAppListAdapter.LazyloadListener;
 
 /**
  * Lazyload ListView Activity

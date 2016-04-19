@@ -66,7 +66,7 @@ final class DisplayBitmapTask implements Runnable {
 			L.d(LOG_TASK_CANCELLED_IMAGEAWARE_REUSED, memoryCacheKey);
 			listener.onLoadingCancelled(imageUri, imageAware.getWrappedView());
 		} else {
-			L.d(LOG_DISPLAY_IMAGE_IN_IMAGEAWARE, loadedFrom, memoryCacheKey);
+//			L.d(LOG_DISPLAY_IMAGE_IN_IMAGEAWARE, loadedFrom, memoryCacheKey);
 			displayer.display(bitmap, imageAware, loadedFrom);
 			engine.cancelDisplayTaskFor(imageAware);
 			listener.onLoadingComplete(imageUri, imageAware.getWrappedView(), bitmap);

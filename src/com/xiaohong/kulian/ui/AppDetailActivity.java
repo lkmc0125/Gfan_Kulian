@@ -372,12 +372,12 @@ public class AppDetailActivity extends Activity
             
         }else if(mStatus == STATUS_DOWNLOADING) {
             //暂停
-            mSession.deleteObserver(this);
-            Log.d(TAG, "goto pause status");
-            mIsDownloading = false;
-            mStatus = STATUS_PAUSE;
-            showContinueView(downloadInfo);
-            mSession.getDownloadManager().pauseDownload(mDownloadId);
+//            mSession.deleteObserver(this);
+//            Log.d(TAG, "goto pause status");
+//            mIsDownloading = false;
+//            mStatus = STATUS_PAUSE;
+//            showContinueView(downloadInfo);
+//            mSession.getDownloadManager().pauseDownload(mDownloadId);
 
         }else {
             //点击后开始下载

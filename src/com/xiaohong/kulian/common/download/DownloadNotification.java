@@ -301,7 +301,9 @@ class DownloadNotification {
             caption = handleErrorMessage(download.mStatus);
             intent.putExtra(DownloadManager.Impl.COLUMN_STATUS,
                     DownloadManager.Impl.STATUS_UNKNOWN_ERROR);
-            Session.get(mContext).getDownloadingList().remove(download.mPackageName);
+            if (Session.get(mContext).getDownloadingList() != null) {
+                Session.get(mContext).getDownloadingList().remove(download.mPackageName);    
+            }
             Session.get(mContext).updateDownloading();
         } else {
             // download success

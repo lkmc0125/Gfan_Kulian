@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.adapter.TabAppListAdapter.LazyloadListener;
 import com.xiaohong.kulian.bean.MessageBean;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.common.util.Utils;
-import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

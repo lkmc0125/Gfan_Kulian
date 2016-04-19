@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xiaohong.kulian.common.widget;
+package com.xiaohong.kulian.adapter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.Session;
-import com.xiaohong.kulian.adapter.CommonAdapter;
+import com.xiaohong.kulian.adapter.TabAppListAdapter.LazyloadListener;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.download.DownloadManager;
@@ -46,7 +46,6 @@ import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.DownloadInfo;
 import com.xiaohong.kulian.common.vo.DownloadItem;
 import com.xiaohong.kulian.common.vo.UpgradeInfo;
-import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
 import com.xiaohong.kulian.ui.RegisterActivity;
 
 
@@ -81,6 +80,36 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
      */
     private ImageLoader mImageLoader = ImageLoader.getInstance();  
 
+    /**
+     * Lazyload linstener If you want use the lazyload function, must implements
+     * this interface
+     */
+    public interface LazyloadListener {
+
+        /**
+         * You should implements this method to justify whether should do
+         * lazyload
+         * 
+         * @return
+         */
+        boolean isEnd();
+
+        /**
+         * Do something that process lazyload
+         */
+        void lazyload();
+
+        /**
+         * Indicate whether the loading process is over
+         * 
+         * @return
+         */
+        boolean isLoadOver();
+        
+        void loadMore();
+    }
+
+    
     /**
      * Application list adapter<br>
      * 如果不希望这个子View显示，设置Key对应的Value为Null即可
@@ -323,6 +352,7 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
         viewHolder.mAppNameView.setText(data.getAppName());
         viewHolder.mAppDescView.setText(data.getBriefSummary());
         viewHolder.mAppSizeView.setText(data.getAppSize());
+        viewHolder.mGoldView.setText("+"+data.getGiveCoin());
         mImageLoader.displayImage(data.getAppLogo(), viewHolder.mAppIconView, Utils.sDisplayImageOptions);
         if(data.isIsInstalled()) {
             viewHolder.mActionView.setText(R.string.app_item_action_open);
@@ -585,5 +615,4 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
        viewHolder.mActionView.setVisibility(View.VISIBLE); 
        viewHolder.mStatusView.setVisibility(View.GONE); 
    }
-
 }

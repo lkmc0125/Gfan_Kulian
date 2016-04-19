@@ -25,9 +25,6 @@
         <activity android:name=".ui.ConnectionActivity" 
             android:screenOrientation="portrait" 
             android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name=".ui.HumorActivity" 
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation"/>
         
         <!-- 排行页 -->
         <activity android:name=".ui.RankTabActivity"
@@ -40,16 +37,16 @@
             android:screenOrientation="portrait" 
             android:configChanges="keyboardHidden|orientation"/>
 
-        <!--        应用详情 -->
+        <!-- 应用详情 -->
         <activity android:name=".ui.AppDetailActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation" />
-        <!--        公众号任务详情 -->
+        <!-- 公众号任务详情 -->
         <activity android:name=".ui.GzhTaskDetailActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation" />
 
-        <!--Menu 相关页面 -->
+        <!-- Menu 相关页面 -->
         <activity android:name=".ui.ClientPreferenceActivity"
             android:screenOrientation="portrait" 
             android:configChanges="keyboardHidden|orientation"

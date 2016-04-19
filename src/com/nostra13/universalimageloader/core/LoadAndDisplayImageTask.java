@@ -148,7 +148,7 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
 				}
 
 				if (bmp != null && options.isCacheInMemory()) {
-					L.d(LOG_CACHE_IMAGE_IN_MEMORY, memoryCacheKey);
+//					L.d(LOG_CACHE_IMAGE_IN_MEMORY, memoryCacheKey);
 					configuration.memoryCache.put(memoryCacheKey, bmp);
 				}
 			} else {

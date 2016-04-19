@@ -5,15 +5,12 @@ import java.util.ArrayList;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.adapter.TabAppListAdapter.LazyloadListener;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.common.util.Utils;
-import com.xiaohong.kulian.common.widget.AppListAdapter.LazyloadListener;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
