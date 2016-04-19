@@ -75,6 +75,14 @@
             android:screenOrientation="portrait" 
             android:configChanges="keyboardHidden|orientation"
             android:windowSoftInputMode="adjustResize"/>
+        
+        <!--用于显示Dialog  -->
+        <activity
+            android:name=".ui.DialogActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/CoinTipsDialog"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- webView -->
         <activity

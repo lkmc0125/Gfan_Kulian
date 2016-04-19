@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.common.widget.CustomDialog;
+import com.xiaohong.kulian.ui.DialogActivity;
 
 /**
  * <p>
@@ -31,15 +33,20 @@ import com.xiaohong.kulian.common.widget.CustomDialog;
  */
 public class DialogUtils {
     
+    public static final String KEY_DIALOG_TITLE = "title";
+    public static final String KEY_DIALOG_MESSAGE = "message";
+    
     public static void showMessage(Context context, String title, String message) {
-        CustomDialog dialog = new CustomDialog.Builder(context).setTitle(title)
+        /*CustomDialog dialog = new CustomDialog.Builder(context).setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
                     }
                 }).create();
-        dialog.show();
+        dialog.show();*/
+        Intent intent = new Intent(context, DialogActivity.class);
+        context.startActivity(intent);
     }
 
     public static interface WarningDialogListener {

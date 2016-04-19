@@ -208,6 +208,7 @@ public class ProductListActivity extends LazyloadListActivity implements ApiRequ
         detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
         detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
         detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
+        detailIntent.putExtra(Constants.EXTRA_PACKAGE_NAME, item.getPackageName());
         startActivity(detailIntent);
         /*if (item.isIsInstalled()) {
             //打开已安装应用
