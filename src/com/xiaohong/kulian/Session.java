@@ -78,6 +78,7 @@ import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.download.DownloadManager.Impl;
 import com.xiaohong.kulian.common.util.DBUtils;
+import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.MarketProvider;
 import com.xiaohong.kulian.common.util.Pair;
 import com.xiaohong.kulian.common.util.Utils;
@@ -1065,15 +1066,16 @@ public class Session extends Observable {
                 case MarketAPI.ACTION_REPORT_APP_INSTALLED:
                 {
                     ReportResultBean result = (ReportResultBean) obj;
-                    coinNum += result.getAddedCoinNum();
-                    notifyCoinUpdated();
+                    //should move add logic to notifyCoinUpdated function
+                    //coinNum += result.getAddedCoinNum();
+                    notifyCoinUpdated(result.getAddedCoinNum());
                     break;
                 }
                 case MarketAPI.ACTION_REPORT_APP_LAUNCHED:
                 {
                     ReportResultBean result = (ReportResultBean) obj;
-                    coinNum += result.getAddedCoinNum();
-                    notifyCoinUpdated();
+                    //coinNum += result.getAddedCoinNum();
+                    notifyCoinUpdated(result.getAddedCoinNum());
                     break;
                 }
             }
@@ -1137,6 +1139,9 @@ public class Session extends Observable {
         mOnCoinUpdatedListener.remove(listener);
     }
     
+    /**
+     * This function should only be called by ConnectionActivity
+     */
     public void notifyCoinUpdated() {
         for(OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
             listener.onCoinUpdate(coinNum);
@@ -1144,8 +1149,13 @@ public class Session extends Observable {
     }
     
     public void notifyCoinUpdated(int added_coin) {
+        Log.d(TAG, "notifyCoinUpdated added_coin = " + added_coin);
+        if(added_coin > 0) {
+            DialogUtils.showMessage(mContext, "金币奖励", "您获得了" + added_coin + "个金币");
+        }
+        coinNum = coinNum + added_coin;
         for(OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
-            listener.onCoinUpdate(coinNum + added_coin);
+            listener.onCoinUpdate(coinNum);
         }
     }
     

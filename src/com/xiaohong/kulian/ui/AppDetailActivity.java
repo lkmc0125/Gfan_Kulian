@@ -110,7 +110,6 @@ public class AppDetailActivity extends Activity
     private DetailInfo mDetailInfo = null;
     private long mDownloadId = -1;
     private boolean mIsDownloading = false;
-    private static int mProgressBarmStatus=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -342,14 +341,10 @@ public class AppDetailActivity extends Activity
             DownloadInfo info = mDownloadingTask.get(mDetailInfo.getPackagename());
             if (info != null) {
                 Log.d(TAG, "download progress update:" + info.mProgress);
-                Log.d(TAG, "download progress update:" + info.mStatus);
                 if (info.mStatus == DownloadManager.Impl.STATUS_SUCCESS) {
                     // 已经下载成功
-                    Log.d(TAG, "download progress update success:" + info.mStatus);
-                    mProgressBarmStatus=200;
                     mProgressBar.setText("安装");
                     mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
-                    Log.d(TAG, "download progress update success:" + info.mStatus);
                     // mProduct.setFilePath(info.mFilePath);
                 } else if (DownloadManager.Impl.isStatusError(info.mStatus)) {
                     // 下载失败
@@ -357,10 +352,9 @@ public class AppDetailActivity extends Activity
                 } else if(info.mProgress != null){
                     // 下载中
                     showDownloadingView(info);
-                    System.out.println("mProgressBar"+info.mProgress);
                 }
             } else {
-                System.out.println("mProgressBar");
+
             }
         }
     }
@@ -571,18 +565,6 @@ public class AppDetailActivity extends Activity
         // TODO Auto-generated method stub
         
     }
-    @Override
-    protected void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
-        System.out.println("download progress update onResume:");
-        System.out.println("download progress update onResume:"+mProgressBarmStatus);
-        if(mProgressBarmStatus==200){
-            mProgressBar.setText("安装");
-            mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
-            showInstallView();
-        }
-    }
 
     @Override
     public void onAppInstalled(String packageName) {
@@ -627,6 +609,4 @@ public class AppDetailActivity extends Activity
         }
     };
 
-   
 }
-
