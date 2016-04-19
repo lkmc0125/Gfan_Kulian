@@ -76,7 +76,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             textView_username.setText(mSession.getUserName());
             textView_coin_num.setText(mSession.getCoinNum().toString());
             if (mSession.getSignInToday()) {
-                textView_signIn_status.setText("今天已经签到");
+                textView_signIn_status.setText("今天已签到");
             } else {
                 textView_signIn_status.setText(R.string.person_account_sign_in_value);
             }

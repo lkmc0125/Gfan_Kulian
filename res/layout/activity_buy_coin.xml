@@ -10,13 +10,13 @@
 
     <GridView
         android:id="@+id/buycoinitemgridview"
-        android:listSelector="@android:color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="270dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
         android:horizontalSpacing="15dp"
+        android:listSelector="@android:color/transparent"
         android:numColumns="2"
         android:scrollbars="none"
         android:verticalSpacing="15dp" >
@@ -39,7 +39,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="#60AF0A"
+        android:background="@drawable/confirm_btn_bg_selector"
         android:gravity="center"
         android:text="@string/wechatpay"
         android:textColor="#FFFFFF"
