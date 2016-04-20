@@ -1043,18 +1043,18 @@ public class Session extends Observable {
     }
     
     private void reportAppInstalled(String packagename) {
-        DownloadInfo info = mDownloadingList.get(packagename);
-        if(info != null) {
+//        DownloadInfo info = mDownloadingList.get(packagename);
+//        if(info != null) {
             MarketAPI.reportAppInstalled(mContext, mReportApiRequestListener, packagename);
             notifyAppInstalled(packagename);
-        }
+//        }
     }
     
     public void reportAppLaunched(String packagename) {
-        DownloadInfo info = mDownloadingList.get(packagename);
-        if(info != null) {
+//        DownloadInfo info = mDownloadingList.get(packagename);
+//        if(info != null) {
             MarketAPI.reportAppLaunched(mContext, mReportApiRequestListener, packagename);
-        }
+//        }
     }
     
     private class ReportApiRequestListener implements ApiRequestListener {
