@@ -201,7 +201,7 @@ public class MarketAPI {
 
         final HashMap<String, Object> params = new HashMap<String, Object>(4);
         params.put("version_code", session.getVersionCode());
-
+        params.put("channel", session.getChannel());
         new ApiAsyncTask(context, ACTION_CHECK_NEW_VERSION, handler, params).execute();
     }
 

@@ -246,7 +246,9 @@ public class Session extends Observable {
      * A cookie
      */
     private String mToken;
-    
+
+    private String channel; // 分发渠道（读取manifest文件UMENG配置）
+
     private final ReportApiRequestListener mReportApiRequestListener = new ReportApiRequestListener();
     
     private final ArrayList<OnCoinUpdatedListener> mOnCoinUpdatedListener = new ArrayList<OnCoinUpdatedListener>();
@@ -313,7 +315,7 @@ public class Session extends Observable {
                 splashTime = (Long) preference.get(P_SPLASH_TIME);
 
                 mDefaultChargeType = (String) preference.get(P_DEFAULT_CHARGE_TYPE);
-
+               
                 getApplicationInfo();
             };
         }.start();
@@ -398,6 +400,8 @@ public class Session extends Observable {
             cpid = ai.metaData.get("kulian_cpid").toString();
             debugType = ai.metaData.get("kulian_debug").toString();
 
+            channel = ai.metaData.getString("UMENG_CHANNEL");
+            
             if ("1".equals(debugType)) {
                 // developer mode
                 isDebug = true;
@@ -446,6 +450,13 @@ public class Session extends Observable {
             getApplicationInfo();
         }
         return versionCode;
+    }
+
+    public String getChannel() {
+        if (TextUtils.isEmpty(channel)) {
+            getApplicationInfo();
+        }
+        return channel;
     }
 
     public String getIMEI() {
