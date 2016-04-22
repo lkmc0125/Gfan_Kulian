@@ -116,6 +116,7 @@ import com.xiaohong.kulian.common.AndroidHttpClient;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.ui.BuyCoinActivity;
+import com.xiaohong.kulian.ui.BuyingEntryActivity;
 
 /**
  * Common Utils for the application
@@ -1357,6 +1358,11 @@ public class Utils {
      */
     public static void gotoBuyCoinPage(Context context) {
         Intent intent = new Intent(context, BuyCoinActivity.class);
+        context.startActivity(intent);
+    }
+    
+    public static void gotoBuyingEntryPage(Context context) {
+        Intent intent = new Intent(context, BuyingEntryActivity.class);
         context.startActivity(intent);
     }
     

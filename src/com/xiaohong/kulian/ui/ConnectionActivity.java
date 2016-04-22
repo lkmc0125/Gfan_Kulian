@@ -332,7 +332,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         })
         .setPositiveButton("购买金币", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                Utils.gotoBuyCoinPage(ConnectionActivity.this);                                    
+                Utils.gotoBuyingEntryPage(ConnectionActivity.this);                                    
                 dialog.dismiss();
             }
         }).create();
@@ -649,7 +649,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             break;
         //购买金币点击事件
         case R.id.buy_layout:
-            Utils.gotoBuyCoinPage(ConnectionActivity.this);
+            Utils.gotoBuyingEntryPage(ConnectionActivity.this);
             break;
         //搞笑幽默点击事件
         case R.id.connection_recommend_humor_layout:

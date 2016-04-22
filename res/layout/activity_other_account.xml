@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@null"
+    android:gravity="center_horizontal" >
+
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/top_bar" />
+
+    <ScrollView
+        android:layout_below="@id/top_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:orientation="vertical">"
+
+            <TextView
+                android:id="@+id/account_title"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dip"
+                android:layout_marginTop="20dp"
+                android:gravity="left"
+                android:text="帮别人充值"
+                android:textColor="#333333"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/et_username"
+                style="@style/edit_text_style"
+                android:layout_width="fill_parent"
+                android:layout_margin="8dip"
+                android:hint="请输入对方账号"
+                android:inputType="number"
+                android:maxLength="16" />
+
+            <EditText
+                android:id="@+id/et_invite_code"
+                style="@style/edit_text_style"
+                android:layout_width="fill_parent"
+                android:layout_margin="8dip"
+                android:hint="输入备注信息"
+                android:maxLength="100" />
+
+
+            <TextView
+                android:id="@+id/license_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="请认真核对好充值账号，一旦充错，恕不退款。"
+                android:textSize="12sp" />
+            
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:layout_margin="8dip"
+                android:background="#2C78D4"
+                android:text="点击帮别人充值"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="客服咨询热线：xxxx"
+                android:textSize="12sp" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="热线服务时间：xxxxx"
+                android:textSize="12sp" />
+            
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

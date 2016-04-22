@@ -309,7 +309,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         case R.id.buy_layout:
             /*Intent PayIntent = new Intent(getApplicationContext(), PayMainActivity.class);
             startActivity(PayIntent);*/
-            Utils.gotoBuyCoinPage(PersonalAccountActivity.this);
+            Utils.gotoBuyingEntryPage(PersonalAccountActivity.this);
             break;
         default:
             break;
