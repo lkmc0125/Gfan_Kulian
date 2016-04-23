@@ -19,6 +19,7 @@ import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,11 +52,15 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     private Session mSession;
     private TextView mRetryTv;
     private boolean mIsPaySupported;
+    private String mOtherAccount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_coin);
         mSession = Session.get(getApplicationContext());
+        Intent intent = getIntent();
+        mOtherAccount = intent.getStringExtra(Utils.KEY_OTHER_ACCOUNT);
         initViews();
         initData();
     }
@@ -162,7 +167,13 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                             req.sign = json.getString("sign");
                             req.extData = "{\"goods_name\":\"" + goodsName
                                     +"\", \"goods_id\":" + goodsId
-                                    +", \"out_trade_no\":\"" + json.getString("out_trade_no") + "\"}";
+                                    +", \"out_trade_no\":\"" + json.getString("out_trade_no") + "\"";
+                            if(mOtherAccount != null) {
+                                req.extData += ", \"other_account\":\"" + mOtherAccount + "\"";
+                            }else {
+                                req.extData += ", \"other_account\":\"" + "\"";
+                            }
+                            req.extData += "}";
                             mWxApi.sendReq(req);
                         } else {
                             DialogUtils.showMessage(getApplicationContext(),

@@ -27,8 +27,19 @@ public class WeChatGoodsBean {
     public void setOut_trade_no(String out_trade_no) {
         this.out_trade_no = out_trade_no;
     }
+    
+
+    public String getOther_account() {
+        return other_account;
+    }
+
+    public void setOther_account(String other_account) {
+        this.other_account = other_account;
+    }
+
 
     private int    goods_id;
     private String goods_name;
     private String out_trade_no;
+    private String other_account;
 }

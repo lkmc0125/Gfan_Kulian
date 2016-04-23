@@ -11,6 +11,7 @@ import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -86,6 +87,7 @@ public class CustomProgressBar extends ProgressBar {
             break;
         }
         invalidate();
+        Log.d("free", "setStatus status = " + status);
     }
 
     public CustomProgressBar(Context context) {
@@ -125,9 +127,11 @@ public class CustomProgressBar extends ProgressBar {
         int x = (getWidth() / 2) - mRect.centerX();
         int y = (getHeight() / 2) - mRect.centerY();
         canvas.drawText(mText, x, y, this.mPaint);
+        Log.d("free", "CustomProgressBar onDraw progress:" + getProgress());
     }
 
     private void initText() {
+        Log.d("free", "CustomProgressBar initText");
         this.mRect = new Rect();
         this.mPaint = new Paint();
         float ratio = getFontSizeRatio();
