@@ -55,5 +55,6 @@
     <color name="buy_coin_item_selected_color">#FFFFFF</color>
     <color name="buy_coin_item_un_selected_black_color">#595959</color>
     <color name="buy_coin_item_un_selected_blue_color">#2C78D4</color>
+    <color name="green_color">#60AF0A</color>
     
 </resources>
