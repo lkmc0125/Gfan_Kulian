@@ -32,10 +32,10 @@ public class BuyingEntryActivity extends Activity implements OnClickListener {
         initTopBar("充值上网时间");
         layout_own_buy = (RelativeLayout) this.findViewById(R.id.own_buy);
         layout_buy_for_other = (RelativeLayout) this.findViewById(R.id.buy_for_other);
-        layout_ask_buy = (RelativeLayout) this.findViewById(R.id.ask_buy);
+//        layout_ask_buy = (RelativeLayout) this.findViewById(R.id.ask_buy);
         layout_own_buy.setOnClickListener((OnClickListener) this);
         layout_buy_for_other.setOnClickListener(this);
-        layout_ask_buy.setOnClickListener(this);
+//        layout_ask_buy.setOnClickListener(this);
     }
 
     private void initTopBar(String title) {
@@ -51,7 +51,7 @@ public class BuyingEntryActivity extends Activity implements OnClickListener {
             }
         });
     }
-    
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -59,13 +59,12 @@ public class BuyingEntryActivity extends Activity implements OnClickListener {
             Utils.gotoBuyCoinPage(BuyingEntryActivity.this);
             break;
         case R.id.buy_for_other:
-            Intent intent = new Intent(getApplicationContext(), OtherAccountActivity.class);
-            startActivity(intent);
+            Utils.gotoBuyCoinPageForOther(BuyingEntryActivity.this);
             break;
-        case R.id.ask_buy:
-            break;
+//        case R.id.ask_buy:
+//            break;
         default:
-                break;
+            break;
         }
     }
 }

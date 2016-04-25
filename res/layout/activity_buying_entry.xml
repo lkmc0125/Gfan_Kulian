@@ -99,7 +99,7 @@
             android:textColor="#808080"
             android:textSize="12sp" />
     </RelativeLayout>
-
+<!-- 
     <RelativeLayout
         android:id="@+id/ask_buy"
         android:layout_width="fill_parent"
@@ -144,8 +144,6 @@
             android:text="邀请别人给你充值"
             android:textColor="#808080"
             android:textSize="12sp" />
-        
-        
     </RelativeLayout>
-
+ -->
 </LinearLayout>

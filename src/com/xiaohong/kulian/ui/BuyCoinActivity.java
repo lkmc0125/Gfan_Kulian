@@ -22,13 +22,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +45,7 @@ import android.widget.Toast;
  *
  */
 public class BuyCoinActivity extends Activity implements OnClickListener, ApiRequestListener,
-    OnItemClickListener{
+    OnItemClickListener, OnFocusChangeListener {
     private static final String TAG = "BuyCoinActivity";
 
     private IWXAPI mWxApi;
@@ -53,23 +59,37 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     private TextView mRetryTv;
     private boolean mIsPaySupported;
     private String mOtherAccount;
-
+    private EditText userNameEditText;
+    private LinearLayout otherAccountLayout, otherAccountLayout2;
+    private boolean isBuyForOther = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_coin);
         mSession = Session.get(getApplicationContext());
         Intent intent = getIntent();
-        mOtherAccount = intent.getStringExtra(Utils.KEY_OTHER_ACCOUNT);
+        if (intent.hasExtra(com.xiaohong.kulian.common.util.Utils.KEY_OTHER_ACCOUNT)) {
+            isBuyForOther = true;
+        }
         initViews();
         initData();
     }
 
     private void initViews() {
         initTopBar("购买金币");
-        mWechatPayTv = (TextView) findViewById(R.id.wechatpaytv);
         mGridView = (GridView) findViewById(R.id.buycoinitemgridview);
+        if (isBuyForOther) {
+            otherAccountLayout = (LinearLayout) findViewById(R.id.other_account_layout);
+            otherAccountLayout.setVisibility(View.VISIBLE);
+            otherAccountLayout2 = (LinearLayout) findViewById(R.id.other_account_layout2);
+            otherAccountLayout2.setVisibility(View.VISIBLE);
+        }
 
+        userNameEditText = (EditText) this.findViewById(R.id.et_username);
+        userNameEditText.setOnFocusChangeListener(this);
+        userNameEditText.requestFocus();
+
+        mWechatPayTv = (TextView) findViewById(R.id.wechatpaytv);
         mWechatPayTv.setVisibility(View.INVISIBLE);
         mWechatPayTv.setEnabled(false);
         mWechatPayTv.setOnClickListener(this);
@@ -103,17 +123,20 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.back_btn :
-                finish();
-                break;
-            case R.id.wechatpaytv :
+        case R.id.back_btn:
+            finish();
+            break;
+        case R.id.wechatpaytv:
+            if ((isBuyForOther == true && checkUserName() == true)
+                    || isBuyForOther == false) {
                 doWechatPay();
-                break;
-            case R.id.no_data:
-                getGoodsList();
-                break;
-            default :
-                break;
+            }
+            break;
+        case R.id.no_data:
+            getGoodsList();
+            break;
+        default:
+            break;
         }
     }
 
@@ -239,4 +262,42 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+        case R.id.et_username:
+            if (!hasFocus) {
+                if (checkUserName()) {
+                    mOtherAccount = userNameEditText.getText().toString();
+                } else {
+                    mOtherAccount = null;
+                }
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    private boolean checkUserName() {
+        String input = userNameEditText.getText().toString();
+        if (TextUtils.isEmpty(input)) {
+            userNameEditText.setError(getDisplayText(R.string.error_username_empty));
+            return false;
+        } else {
+            userNameEditText.setError(null);
+        }
+        int length = input.length();
+        if (length != 11) {
+            userNameEditText.setError(getDisplayText(R.string.error_username_length_invalid));
+            return false;
+        } else {
+            userNameEditText.setError(null);
+        }
+        return true;
+    }
+
+    private CharSequence getDisplayText(int resId) {
+        return Html.fromHtml("<font color='#2C78D4'>"+getString(resId)+"</font>");
+    }
 }

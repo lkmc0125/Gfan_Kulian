@@ -1366,9 +1366,9 @@ public class Utils {
      * Go to BuyCoinActivity to buy coin for other
      * @param context A context which should be a Activity context
      */
-    public static void gotoBuyCoinPageForOther(Context context, String otherAccount) {
+    public static void gotoBuyCoinPageForOther(Context context) {
         Intent intent = new Intent(context, BuyCoinActivity.class);
-        intent.putExtra(KEY_OTHER_ACCOUNT, otherAccount);
+        intent.putExtra(KEY_OTHER_ACCOUNT, true);
         context.startActivity(intent);
     }
     
