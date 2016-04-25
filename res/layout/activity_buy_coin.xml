@@ -5,55 +5,124 @@
     android:background="@color/background_color"
     android:orientation="vertical" >
 
-    <include android:id="@+id/top_bar" 
+    <include
+        android:id="@+id/top_bar"
         layout="@layout/top_bar" />
 
-    <GridView
-        android:id="@+id/buycoinitemgridview"
-        android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
-        android:horizontalSpacing="15dp"
-        android:listSelector="@android:color/transparent"
-        android:numColumns="2"
-        android:scrollbars="none"
-        android:verticalSpacing="15dp" >
-
-    </GridView>
-
-    <View 
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="#E8E8E8"
-        />
-    
-    <TextView
-        android:id="@+id/wechatpaytv"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/confirm_btn_bg_selector"
-        android:gravity="center"
-        android:text="@string/wechatpay"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp" 
-        />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_bar" >
 
-    <TextView android:id="@+id/no_data" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_gravity="center"
-        android:drawableTop="@drawable/btn_retry"
-        android:drawablePadding="10dp"
-        android:text="@string/no_data" 
-        android:textColor="#595959"
-        android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/other_account_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/account_title"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginTop="20dp"
+                    android:gravity="left"
+                    android:text="帮别人充值"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/et_username"
+                    style="@style/edit_text_style"
+                    android:layout_width="fill_parent"
+                    android:layout_margin="8dip"
+                    android:hint="请输入对方账号"
+                    android:inputType="number"
+                    android:maxLength="16" />
+            </LinearLayout>
+
+            <com.xiaohong.kulian.common.widget.GridViewForScrollView
+                android:id="@+id/buycoinitemgridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="270dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:horizontalSpacing="15dp"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="2"
+                android:scrollbars="none"
+                android:verticalSpacing="15dp" >
+            </com.xiaohong.kulian.common.widget.GridViewForScrollView>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="#E8E8E8" />
+
+            <LinearLayout
+                android:id="@+id/other_account_layout2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <EditText
+                    android:id="@+id/et_memo"
+                    style="@style/edit_text_style"
+                    android:layout_width="fill_parent"
+                    android:layout_margin="8dip"
+                    android:hint="输入备注信息"
+                    android:maxLength="100" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="8dip"
+                    android:gravity="center"
+                    android:text="请认真核对好充值账号，一旦充错，恕不退款。"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/wechatpaytv"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/confirm_btn_bg_selector"
+                android:gravity="center"
+                android:text="@string/wechatpay"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/no_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="10dp"
+                android:drawableTop="@drawable/btn_retry"
+                android:text="@string/no_data"
+                android:textColor="#595959"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
