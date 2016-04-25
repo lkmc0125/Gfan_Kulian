@@ -21,15 +21,27 @@ import java.util.HashMap;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.Session.OnCoinUpdatedListener;
+import com.xiaohong.kulian.Session.PersonalCenterStatus;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.Utils;
@@ -54,6 +66,9 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             layout_sign_in;
     private Intent intent_next;
     private TextView textView_login, textView_username, textView_signIn_status, textView_coin_num;
+    private ImageView mSignIv;
+    private TextView mSignOrLeftTimeTv;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,17 +85,18 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         if (!mSession.isLogin()) {
             textView_login.setText("登录");
             textView_username.setText("未登录");
-            textView_signIn_status.setText(R.string.person_account_sign_in_value);
+            //textView_signIn_status.setText(R.string.person_account_sign_in_value);
         } else if (mSession.isLogin()) {
             textView_login.setText("账号退出");
             textView_username.setText(mSession.getUserName());
             textView_coin_num.setText(mSession.getCoinNum().toString());
-            if (mSession.getSignInToday()) {
+            /*if (mSession.getSignInToday()) {
                 textView_signIn_status.setText("今天已签到");
             } else {
                 textView_signIn_status.setText(R.string.person_account_sign_in_value);
-            }
+            }*/
         }
+        updateSignView();
         super.onResume();
     }
 
@@ -123,6 +139,11 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         }
         TextView versionTv = (TextView)this.findViewById(R.id.about_text);
         versionTv.setText("V"+mSession.getVersionName()+"Build"+mSession.getVersionCode());
+        
+        mSignIv = (ImageView) findViewById(R.id.sign_in_icon);
+        mSignOrLeftTimeTv = (TextView) findViewById(R.id.sign_in_text);
+        
+        updateSignView();
     }
 
     @Override
@@ -135,7 +156,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 mSession.setSignInToday(true);
                 mSession.setToken((String) result.get(Constants.KEY_TOKEN));
                 textView_coin_num.setText(mSession.getCoinNum().toString());
-                textView_signIn_status.setText("今天已签到");
+                //textView_signIn_status.setText(R.string.person_account_already_sign_in);
 
                 CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_success))
                         .setMessage("本次签到获得了" + result.get(Constants.KEY_ADD_COIN_NUM) + "个金币")
@@ -148,7 +169,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             } else if ((Integer) result.get("ret_code") == 3002) { // 今天已经签过到了
 
                 mSession.setSignInToday(true);
-                textView_signIn_status.setText("今天已签到");
+                //textView_signIn_status.setText(R.string.person_account_already_sign_in);
 
                 CustomDialog dialog = new CustomDialog.Builder(this).setTitle(getString(R.string.sign_in_success))
                         .setMessage("今天已经领取过金币了，明天再来哦")
@@ -169,6 +190,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                         }).create();
                 dialog.show();
             }
+            updateSignView();
             break;
         }
         case MarketAPI.ACTION_LOGIN: {
@@ -183,11 +205,12 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                     mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
                 }
                 if (mSession.getSignInToday()) {
-                    textView_signIn_status.setText("今天已签到");
+                    //textView_signIn_status.setText(R.string.person_account_already_sign_in);
                 } else {
                     MarketAPI.signIn(getApplicationContext(), this);
                 }
             }
+            updateSignView();
             break;
         }
         default:
@@ -271,13 +294,27 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.sign_in_layout:
-            if (!mSession.isLogin()) {
-                if (!autoLogin()) {
-                    intent_next = new Intent(getApplicationContext(), RegisterActivity.class);
-                    startActivityForResult(intent_next, REQUEST_CODE);
+            if(mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_LEFT_TIME) {
+                if (!mSession.isLogin()) {
+                    
+                } else {
+                    
                 }
-            } else {
-                MarketAPI.signIn(getApplicationContext(), this);
+                //TODO remove
+                //mSession.setPersonalCenterStatus(PersonalCenterStatus.SHOW_SIGN_IN);
+                //updateSignView();
+            }else if(mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
+                if (!mSession.isLogin()) {
+                    if (!autoLogin()) {
+                        intent_next = new Intent(getApplicationContext(), RegisterActivity.class);
+                        startActivityForResult(intent_next, REQUEST_CODE);
+                    }
+                } else {
+                    MarketAPI.signIn(getApplicationContext(), this);
+                }
+               //TODO remove
+                //mSession.setPersonalCenterStatus(PersonalCenterStatus.SHOW_LEFT_TIME);
+                //updateSignView();
             }
             break;
         case R.id.person_account_my_task_value_layout:
@@ -320,5 +357,57 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     public void onCoinUpdate(int newTotalCoinNum) {
         textView_coin_num.setText(newTotalCoinNum + "");
         
+    }
+    
+    private void updateSignView() {
+        Log.d("free", "updateSignView status:" + mSession.getPersonalCenterStatus());
+        Resources resouces = getResources();
+        if(mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_LEFT_TIME) {
+            mSignIv.setVisibility(View.GONE);
+            textView_signIn_status.setText(R.string.person_account_left_time_hint);
+            mSignOrLeftTimeTv.setTextColor(Color.BLACK);
+            if (!mSession.isLogin()) {
+                mSignOrLeftTimeTv.setText(Html.fromHtml(getResources().getString(R.string.person_account_left_time_default)));
+            } else {
+                //TODO read the really value form server
+                int days = 31;
+                int hours = 2;
+                int minutes = 5;
+                String str = getResources().getString(R.string.person_account_left_time);
+                str = String.format(str, days, hours, minutes);
+                int dayUnintIndex = str.indexOf('天');
+                int hourUnintIndex = str.indexOf('时');
+                int minuteUnintIndex = str.indexOf('分');
+                //方便计算时间值占几位
+                String hourStr = hours + "";
+                String minutesStr = minutes + "";
+                SpannableString sps = new SpannableString(str);
+                sps.setSpan(new AbsoluteSizeSpan(22,true), 0, dayUnintIndex, 
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
+                        0, dayUnintIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //设置前景色
+                
+                sps.setSpan(new AbsoluteSizeSpan(22,true), hourUnintIndex - hourStr.length() - 1, hourUnintIndex, 
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
+                        hourUnintIndex - hourStr.length() - 1, hourUnintIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //设置前景色
+                
+                sps.setSpan(new AbsoluteSizeSpan(22,true), minuteUnintIndex - minutesStr.length() - 1, minuteUnintIndex, 
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
+                        minuteUnintIndex - minutesStr.length() - 1, minuteUnintIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //设置前景色
+                mSignOrLeftTimeTv.setText(sps);
+                mSignOrLeftTimeTv.setGravity(Gravity.CENTER_VERTICAL);
+            }
+        }else if(mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
+            mSignIv.setVisibility(View.VISIBLE);
+            mSignOrLeftTimeTv.setTextColor(getResources().getColor(R.color.sign_txt_color));
+            mSignOrLeftTimeTv.setText(R.string.person_account_sign_in_hint);
+            if (mSession.getSignInToday()) {
+                textView_signIn_status.setText(R.string.person_account_already_sign_in);
+            } else {
+                textView_signIn_status.setText(R.string.person_account_sign_in_value);
+            }
+        }
     }
 }

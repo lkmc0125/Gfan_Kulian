@@ -123,6 +123,7 @@
     <string name="person_account_gold_coins_hint">2750</string>
     <string name="person_account_pay_gold_coins_hint">购买时间</string>
     <string name="person_account_sign_in_value">今天还没有签到哦^_^</string>
+    <string name="person_account_already_sign_in">今天已签到</string>
     <string name="person_account_my_task_value">我的任务</string>
     <string name="person_account_my_task_hint_value">您有任务正在进行中哦</string>
     <string name="person_account_message_center_value">消息中心</string>
@@ -487,5 +488,8 @@
      <string name="buy">购买金币</string>
 
      <string name="person_account_exchange_time_hint">兑换时间</string>
+     <string name="person_account_left_time_hint">剩余时间</string>
+     <string name="person_account_left_time_default"><Data><![CDATA[<font color="#A5A5A5">--</font>天      <font color="#A5A5A5">--</font>时      <font color="#A5A5A5">--</font>分]]></Data></string>
+     <string name="person_account_left_time">%1$d天    %2$d时    %3$d分</string>
 
 </resources>

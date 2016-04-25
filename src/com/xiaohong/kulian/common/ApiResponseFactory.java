@@ -212,6 +212,7 @@ public class ApiResponseFactory {
         if (body == null) {
             return null;
         }
+        Log.d("free", "parseLoginOrRegisterResult body = " + body);
         HashMap<String, Object> result = null;
         try {
             //{"ret_msg":"success","invite_code":"523851","ret_code":0,"coin_num":5572,"token":"JNGdT3H0dB7iwfr64OVRMOw7+P+0MBOFFwPGYsUUVzzh+zHeywhpjFe6L2aX6izX"}

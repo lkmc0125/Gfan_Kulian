@@ -255,6 +255,27 @@ public class Session extends Observable {
     
     private final ArrayList<OnAppInstalledListener> mOnAppInstalledListener = new ArrayList<OnAppInstalledListener>();
     
+    public static enum PersonalCenterStatus {
+        SHOW_SIGN_IN,
+        SHOW_LEFT_TIME
+    }
+    
+    private PersonalCenterStatus mPersonalCenterStatus = PersonalCenterStatus.SHOW_LEFT_TIME;
+    
+
+    public PersonalCenterStatus getPersonalCenterStatus() {
+        return mPersonalCenterStatus;
+    }
+
+    /**
+     * Set the status indicate what show, if status is PersonalCenterStatus.SHOW_SIGN_IN
+     * then show sign in
+     * @param personalCenterStatus
+     */
+    public void setPersonalCenterStatus(PersonalCenterStatus personalCenterStatus) {
+        this.mPersonalCenterStatus = personalCenterStatus;
+    }
+
     /**
      * default constructor
      * @param context

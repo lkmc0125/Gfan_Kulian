@@ -63,7 +63,7 @@
                 android:layout_toRightOf="@id/sign_in_icon"
                 android:gravity="center"
                 android:text="@string/person_account_sign_in_hint"
-                android:textColor="#2C78D4"
+                android:textColor="@color/sign_txt_color"
                 android:textSize="13sp" />
         </RelativeLayout>
     </RelativeLayout>
