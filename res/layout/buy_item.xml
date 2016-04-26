@@ -1,47 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/coinlayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginTop="15dp"
+    android:layout_weight="1"
+    android:background="@drawable/buy_money_item_background"
+    android:orientation="vertical" >
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/coinlayout"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/cointv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/buy_money_item_background"
-            android:orientation="vertical" >
-            <TextView 
-                android:id="@+id/cointv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="500"
-                android:textColor="#595959"
-                android:textSize="18sp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                />
-            <TextView 
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="500金币"
+            android:textColor="#595959"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+
+            <TextView
                 android:id="@+id/moneytv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/five"
                 android:textColor="#2C78D4"
-                android:textSize="18sp"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/moneyunittv"
-                />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/moneyunittv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="23dp"
-                android:layout_marginRight="10dp"
-                android:gravity="bottom"
                 android:text="@string/moneyunit"
                 android:textColor="#595959"
                 android:textSize="12sp" />
-                <!-- android:layout_centerVertical="true" -->
-        </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/givecointv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="赠送金币"
+            android:textColor="#CDCDCD"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/givecoinnumtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableRight="@drawable/goldcoin_small"
+                android:gravity="center"
+                android:text="500"
+                android:textColor="#FF4C00"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- android:layout_centerVertical="true" -->
+
+</LinearLayout>

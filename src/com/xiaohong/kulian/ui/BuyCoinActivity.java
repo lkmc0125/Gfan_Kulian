@@ -233,7 +233,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                     mAdapter = new BuyItemGridViewAdapter(getApplicationContext(), mGoodsList.getGoodsList());
                     mGridView.setAdapter(mAdapter);
                     if (mIsPaySupported) {
-                        mWechatPayTv.setEnabled(true);                        
+                        mWechatPayTv.setEnabled(true);
                     }
                     mGridView.setOnItemClickListener(BuyCoinActivity.this);
                     mWechatPayTv.setVisibility(View.VISIBLE);

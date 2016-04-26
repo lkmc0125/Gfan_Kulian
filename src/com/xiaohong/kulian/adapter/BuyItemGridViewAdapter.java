@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -80,10 +81,12 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
             convertView = mInfalter.inflate(R.layout.buy_item, null);
             
             holder = new ViewHolder();
-            holder.mCoinLayout = (RelativeLayout) convertView.findViewById(R.id.coinlayout);
+            holder.mCoinLayout = (LinearLayout) convertView.findViewById(R.id.coinlayout);
             holder.mCoinTv = (TextView) convertView.findViewById(R.id.cointv);
             holder.mMoneyTv = (TextView) convertView.findViewById(R.id.moneytv);
             holder.mMoneyUnitTv = (TextView) convertView.findViewById(R.id.moneyunittv);
+            holder.mGiveCoinTv = (TextView) convertView.findViewById(R.id.givecointv);
+            holder.mGiveCoinNumTv = (TextView) convertView.findViewById(R.id.givecoinnumtv);
             convertView.setTag(holder);
             
         }else {
@@ -95,14 +98,18 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
             holder.mCoinTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color));
             holder.mMoneyTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color));
             holder.mMoneyUnitTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color));
+            holder.mGiveCoinTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_dark_white_color));
         }else {
             holder.mCoinLayout
             .setBackgroundResource(R.drawable.coindefaultbg);
             holder.mCoinTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
             holder.mMoneyTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
             holder.mMoneyUnitTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
+            holder.mGiveCoinTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_un_selected_gray_color));
+            
         }
         GoodsBean item = mData.get(position);
+        holder.mGiveCoinNumTv.setText(item.getGiftCoin() + "");
         holder.mCoinTv.setText(item.getName());
         if (item.getPrice() % 100 == 0) {
             holder.mMoneyTv.setText(item.getPrice()/100+"");
@@ -114,10 +121,12 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
     }
     
     private static class ViewHolder {
-        private RelativeLayout mCoinLayout;
+        private LinearLayout mCoinLayout;
         private TextView mCoinTv;
         private TextView mMoneyTv;
         private TextView mMoneyUnitTv;
+        private TextView mGiveCoinTv;//赠送金币文本框需要修改字体颜色
+        private TextView mGiveCoinNumTv;//显示赠送的金币数目的文本框
     }
 
 }

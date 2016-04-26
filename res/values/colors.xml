@@ -55,10 +55,13 @@
     <color name="buy_coin_item_selected_color">#FFFFFF</color>
     <color name="buy_coin_item_un_selected_black_color">#595959</color>
     <color name="buy_coin_item_un_selected_blue_color">#2C78D4</color>
+    <color name="buy_coin_item_un_selected_gray_color">#CDCDCD</color>
+    <color name="buy_coin_item_selected_dark_white_color">#C8E1FF</color>
     <color name="green_color">#60AF0A</color>
     <!-- 每日签到字体颜色 -->
     <color name="sign_txt_color">#2c78d4</color> <!-- todo tmp -->
     <!-- 倒计时时间值的颜色：3天2时9分 指3,2,9的颜色 -->
     <color name="left_time_txt_color">#367ed6</color> <!-- todo tmp -->
+    
     
 </resources>

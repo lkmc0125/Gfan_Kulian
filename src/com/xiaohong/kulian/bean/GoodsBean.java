@@ -4,6 +4,7 @@ public class GoodsBean {
     private int goods_id;
     private String name;
     private int price; // cent
+    private int gift_coin;//奖励的金币
 
     public void setGoodsId(Integer goodsId) {
         this.goods_id = goodsId;
@@ -23,4 +24,12 @@ public class GoodsBean {
     public int getPrice() {
         return price;
     }
+    public int getGiftCoin() {
+        return gift_coin;
+    }
+    public void setGiftCoin(int gift_coin) {
+        this.gift_coin = gift_coin;
+    }
+    
+    
 }
