@@ -29,7 +29,7 @@ public class BuyingEntryActivity extends Activity implements OnClickListener {
     }
 
     private void initViews() {
-        initTopBar("充值上网时间");
+        initTopBar("购买上网时间");
         layout_own_buy = (RelativeLayout) this.findViewById(R.id.own_buy);
         layout_buy_for_other = (RelativeLayout) this.findViewById(R.id.buy_for_other);
 //        layout_ask_buy = (RelativeLayout) this.findViewById(R.id.ask_buy);

@@ -62,6 +62,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     private EditText userNameEditText;
     private LinearLayout otherAccountLayout, otherAccountLayout2;
     private boolean isBuyForOther = false;
+    private String TopBarTextValue="购买上网时间";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,13 +71,14 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         Intent intent = getIntent();
         if (intent.hasExtra(com.xiaohong.kulian.common.util.Utils.KEY_OTHER_ACCOUNT)) {
             isBuyForOther = true;
+            TopBarTextValue="帮人充值";
         }
         initViews();
         initData();
     }
 
     private void initViews() {
-        initTopBar("购买金币");
+        initTopBar(TopBarTextValue);
         mGridView = (GridView) findViewById(R.id.buycoinitemgridview);
         if (isBuyForOther) {
             otherAccountLayout = (LinearLayout) findViewById(R.id.other_account_layout);
