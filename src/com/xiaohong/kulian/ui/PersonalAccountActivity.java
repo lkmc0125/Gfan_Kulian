@@ -227,6 +227,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 // mAdapter.changeDataSource(data);
                 textView_login.setText("登录");
                 textView_username.setText("未登录");
+                updateSignView();
                 break;
             }
         };
@@ -351,6 +352,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         default:
             break;
         }
+        updateSignView();
     }
 
     @Override
