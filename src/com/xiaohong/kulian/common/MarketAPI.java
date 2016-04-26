@@ -125,11 +125,13 @@ public class MarketAPI {
     public static void register(Context context, ApiRequestListener handler, String username, String password,
             String verifyCode, String inviteCode) {
 
+        Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(3);
 
         params.put("phone_number", username);
         params.put("passwd", Utils.getMD5(password));
         params.put("verify_code", verifyCode);
+        params.put("ver", String.valueOf(session.getVersionCode()));
         if (inviteCode != null && inviteCode.length() > 0) {
             params.put("invite_code", inviteCode);
         }
@@ -146,11 +148,11 @@ public class MarketAPI {
      */
     public static void login(Context context, ApiRequestListener handler, String username, String password) {
 
+        Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(2);
-
         params.put("phone_number", username);
         params.put("passwd", Utils.getMD5(password));
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_LOGIN, handler, params).execute();
     }
 
@@ -170,7 +172,7 @@ public class MarketAPI {
         params.put("apptype", categoryMap.get(category));
         params.put("page", page);
         params.put("phone_number", session.getUserName());
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_GET_APP_LIST, handler, params).execute();
     }
 
@@ -189,6 +191,7 @@ public class MarketAPI {
         params.put("appid", pId);
         params.put("apptype", categoryMap.get(category));
         params.put("phone_number", session.getUserName());
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_GET_PRODUCT_DETAIL, handler, params).execute();
     }
 
@@ -217,7 +220,7 @@ public class MarketAPI {
         params.put("version_code", session.getVersionCode());
         params.put("sdk_id", session.getCpid());
         params.put("time", session.getSplashTime());
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_CHECK_NEW_SPLASH, handler, params).execute();
     }
 
@@ -228,7 +231,7 @@ public class MarketAPI {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
         params.put("phone_number", session.getUserName());
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_GET_SSID_LIST, handler, params).execute();
     }
 
@@ -244,7 +247,7 @@ public class MarketAPI {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
         params.put("phone_number", session.getUserName());
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_GET_TASK_LIST, handler, params).execute();
     }
 
@@ -264,6 +267,7 @@ public class MarketAPI {
             phoneNumber = "18980928189";
         }
         params.put("phone_number", phoneNumber);
+        params.put("ver", String.valueOf(session.getVersionCode()));
         Log.d("free", "getGzhTaskList");
         new ApiAsyncTask(context, ACTION_GET_GZH_TASK_LIST, handler, params).execute();
     }
@@ -274,6 +278,7 @@ public class MarketAPI {
         String phoneNumber = session.getUserName();
         params.put("phone_number", phoneNumber);
         params.put("task_id", String.valueOf(taskId));
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_ACCEPT_GZH_TASK, handler, params).execute();
     }
 
@@ -281,7 +286,7 @@ public class MarketAPI {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
         params.put("phone_number", session.getUserName());
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_GET_MESSAGES, handler, params).execute();
     }
 
@@ -292,7 +297,7 @@ public class MarketAPI {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
         params.put("phone_number", session.getUserName());
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_SIGN_IN, handler, params).execute();
     }
     
@@ -303,7 +308,7 @@ public class MarketAPI {
         Session session = Session.get(context);
         final HashMap<String, Object> params = new HashMap<String, Object>(1);
         params.put("phone_number", session.getUserName());
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_GET_GOODS_LIST, handler, params).execute();
     }
     
@@ -318,7 +323,7 @@ public class MarketAPI {
         params.put("appid", appId + "");
         params.put("phone_number", session.getUserName());
         params.put("imei", session.getIMEI());
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_REPORT_APP_INSTALLED, handler, params).execute();
     }
     
@@ -333,7 +338,7 @@ public class MarketAPI {
         params.put("pkgname", packageName);
         params.put("phone_number", session.getUserName());
         params.put("imei", session.getIMEI());
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_REPORT_APP_INSTALLED, handler, params).execute();
     }
     
@@ -348,7 +353,7 @@ public class MarketAPI {
         params.put("phone_number", session.getUserName());
         params.put("imei", session.getIMEI());
         params.put("pkgname", packageName);
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_REPORT_APP_LAUNCHED, handler, params).execute();
     }
     
@@ -363,7 +368,7 @@ public class MarketAPI {
         params.put("phone_number", session.getUserName());
         params.put("imei", session.getIMEI());
         params.put("appid", appId + "");
-
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_REPORT_APP_LAUNCHED, handler, params).execute();
     }
 
@@ -379,6 +384,7 @@ public class MarketAPI {
         params.put("out_trade_no", outTradeNo);
         params.put("goods_id", Integer.toString(goodsId));
         params.put("imei", session.getIMEI());
+        params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_REPORT_ORDER_PAY, handler, params).execute();
     }
 }

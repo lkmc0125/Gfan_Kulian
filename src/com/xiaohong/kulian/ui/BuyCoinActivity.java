@@ -85,11 +85,10 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
             otherAccountLayout.setVisibility(View.VISIBLE);
             otherAccountLayout2 = (LinearLayout) findViewById(R.id.other_account_layout2);
             otherAccountLayout2.setVisibility(View.VISIBLE);
+            userNameEditText = (EditText) this.findViewById(R.id.et_username);
+            userNameEditText.setOnFocusChangeListener(this);
+            userNameEditText.requestFocus();
         }
-
-        userNameEditText = (EditText) this.findViewById(R.id.et_username);
-        userNameEditText.setOnFocusChangeListener(this);
-        userNameEditText.requestFocus();
 
         mWechatPayTv = (TextView) findViewById(R.id.wechatpaytv);
         mWechatPayTv.setVisibility(View.INVISIBLE);
