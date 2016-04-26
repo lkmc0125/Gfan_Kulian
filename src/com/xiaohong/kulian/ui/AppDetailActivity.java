@@ -112,7 +112,6 @@ public class AppDetailActivity extends Activity
     private boolean mIsDownloading = false;
     private static String appId;
     private static String category;
-    private RelativeLayout layout_app_action_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +163,6 @@ public class AppDetailActivity extends Activity
 
         mProgressBar.setOnClickListener(this);
         mBackImageView.setOnClickListener(this);
-        layout_app_action_layout=(RelativeLayout)findViewById(R.id.app_action_layout);
     }
 
     @Override
@@ -257,7 +255,7 @@ public class AppDetailActivity extends Activity
                     showDownloadingView(downloadInfo);
                 }/* else {
                     mStatus = STATUS_PAUSE;
-                    showContinueView(downloadInfo);
+                    showContinueView();
                 }*/
             } else {
                 // do download
@@ -355,7 +353,6 @@ public class AppDetailActivity extends Activity
                     // 已经下载成功
                     mProgressBar.setText("安装");
                     mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
-                    layout_app_action_layout.setBackgroundResource(R.drawable.custom_progressbar_bg);
                     // mProduct.setFilePath(info.mFilePath);
                 } else if (DownloadManager.Impl.isStatusError(info.mStatus)) {
                     // 下载失败
@@ -394,12 +391,12 @@ public class AppDetailActivity extends Activity
             
         }else if(mStatus == STATUS_DOWNLOADING) {
             //暂停
-//            mSession.deleteObserver(this);
-//            Log.d(TAG, "goto pause status");
-//            mIsDownloading = false;
-//            mStatus = STATUS_PAUSE;
-//            showContinueView(downloadInfo);
-//            mSession.getDownloadManager().pauseDownload(mDownloadId);
+            mSession.deleteObserver(this);
+            Log.d(TAG, "goto pause status");
+            mIsDownloading = false;
+            mStatus = STATUS_PAUSE;
+            showContinueView();
+            mSession.getDownloadManager().pauseDownload(mDownloadId);
 
         }else {
             //点击后开始下载
@@ -454,7 +451,7 @@ public class AppDetailActivity extends Activity
             }else if (mIsDownloading == true) {
                 mIsDownloading = false;
                 mSession.getDownloadManager().pauseDownload(mDownloadId);
-                showContinueView(downloadInfo);
+                showContinueView();
             } else {
                 mIsDownloading = true;
                 mSession.getDownloadManager().resumeDownload(mDownloadId);
@@ -533,6 +530,7 @@ public class AppDetailActivity extends Activity
      * 已安装，显示打开
      */
     private void showOpenView() {
+        mProgressBar.setProgress(0);
         mProgressBar.setText(TEXT_OPEN);
         mProgressBar.setStatus(CustomProgressBar.Status.INSTALLED);
     }
@@ -540,8 +538,9 @@ public class AppDetailActivity extends Activity
     /**
      * 下载被暂停，显示继续
      */
-    private void showContinueView(DownloadInfo downloadInfo) {
+    private void showContinueView() {
         Log.d(TAG, "showContinueView");
+        mProgressBar.setProgress(0);
         mProgressBar.setText(TEXT_CONTINUE);
         mProgressBar.setStatus(CustomProgressBar.Status.PAUSED);
     }
@@ -550,6 +549,7 @@ public class AppDetailActivity extends Activity
      * 下载已完成等待安装
      */
     private void showInstallView() {
+        mProgressBar.setProgress(0);
         mProgressBar.setText(TEXT_INSTALL);
         mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
     }
