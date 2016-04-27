@@ -121,8 +121,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
-                    android:layout_marginLeft="8dip"
-                    android:layout_marginRight="8dip"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
                     android:gravity="center|left"
                     android:text="@string/person_account_other_account_prompt_hint"
                     android:textColor="#a5a5a5"
@@ -130,7 +130,7 @@
             </LinearLayout>
             <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="30dip"
                     android:layout_marginRight="30dip"
                     android:gravity="center|left"
@@ -138,7 +138,20 @@
                     android:text="@string/person_account_other_account_buy_prompt_hint"
                     android:textColor="#a5a5a5"
                     android:textSize="12sp" />
-
+			<TextView
+			    	android:id="@+id/person_account_other_account_remark_prompt_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
+                    android:gravity="center|left"
+                    android:lineSpacingMultiplier="1.5"
+                    android:text="@string/person_account_other_account_remark_prompt_hint"
+                    android:textColor="#ff4c00"
+                    android:textSize="12sp" 
+                    android:visibility="gone"
+                    />
             <TextView
                 android:id="@+id/wechatpaytv"
                 android:layout_width="match_parent"

@@ -499,6 +499,7 @@
      <string name="person_account_other_account_memo_hint">输入备注信息</string>
      <string name="person_account_other_account_prompt_hint">请认真核对好充值账号，一旦充错，恕不退款。</string>
      <string name="person_account_other_account_buy_prompt_hint">上网时间将在充值后即刻生效。若当前的上网时间尚未到期，我们将为您自动累加。</string>
+     <string name="person_account_other_account_remark_prompt_hint">注：金币将发放至付款方账号内</string>
      
      
 

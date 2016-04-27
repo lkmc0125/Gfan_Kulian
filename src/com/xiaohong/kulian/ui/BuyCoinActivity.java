@@ -63,6 +63,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     private LinearLayout otherAccountLayout, otherAccountLayout2;
     private boolean isBuyForOther = false;
     private String TopBarTextValue="购买上网时间";
+    private TextView textView_remark;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +89,8 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
             userNameEditText = (EditText) this.findViewById(R.id.et_username);
             userNameEditText.setOnFocusChangeListener(this);
             userNameEditText.requestFocus();
+            textView_remark=(TextView)this.findViewById(R.id.person_account_other_account_remark_prompt_text);
+            textView_remark.setVisibility(View.VISIBLE);
         }
 
         mWechatPayTv = (TextView) findViewById(R.id.wechatpaytv);
