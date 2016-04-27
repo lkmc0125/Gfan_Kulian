@@ -487,6 +487,7 @@
     <string name="thirty">30</string>
     <string name="moneyunit">元</string>
      <string name="buy">购买金币</string>
+     <string name="buy_message_push_coin">充值送金币 即日起购买上网时间送金币活动开启，买得越多赠送金币越多，惊喜送不停</string>
 
      <string name="person_account_exchange_time_hint">兑换时间</string>
      <string name="person_account_left_time_hint">剩余时间</string>
