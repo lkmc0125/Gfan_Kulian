@@ -160,6 +160,7 @@
     <string name="account_remind">提醒</string>
     <string name="account_binding">云推送绑定中</string>
     <string name="account_bind_success">云推送绑定成功</string>
+    <string name="person_account_pay_gold_coins_hint1">充值送金币</string>
     
     <!-- Menu -->
     <string name="menu_account">个人中心</string>
