@@ -10,9 +10,9 @@
         layout="@layout/top_bar" />
 
     <ScrollView
+        android:id="@+id/content_scroll_view"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-         >
+        android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -44,19 +44,21 @@
                     style="@style/edit_text_style"
                     android:layout_width="fill_parent"
                     android:layout_margin="8dip"
-                    android:hint="@string/person_account_other_account_username_hint"
-                    android:drawableStart="@drawable/idicon"
-                    android:paddingLeft="10dip"
                     android:drawablePadding="10dip"
+                    android:drawableStart="@drawable/idicon"
+                    android:hint="@string/person_account_other_account_username_hint"
                     android:inputType="number"
-                    android:maxLength="16" />
+                    android:maxLength="16"
+                    android:paddingLeft="10dip" />
+
                 <View
-	                android:layout_width="fill_parent"
-	                android:layout_height="1dp"
-	                android:layout_marginLeft="10dp"
-	                android:layout_marginRight="10dp"
-	                android:layout_marginTop="20dp"
-	                android:background="#E8E8E8" />
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#E8E8E8" />
+
                 <TextView
                     android:id="@+id/account_buytime_title"
                     android:layout_width="wrap_content"
@@ -67,7 +69,6 @@
                     android:text="@string/person_account_other_account_pay_time_hint"
                     android:textColor="#333333"
                     android:textSize="14sp" />
-                
             </LinearLayout>
 
             <com.xiaohong.kulian.common.widget.GridViewForScrollView
@@ -87,10 +88,10 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
+                android:layout_marginBottom="10dip"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dip"
                 android:background="#E8E8E8" />
 
             <LinearLayout
@@ -105,18 +106,19 @@
                     android:id="@+id/et_memo"
                     style="@style/edit_text_style"
                     android:layout_width="fill_parent"
-                    android:drawableStart="@drawable/markicon"
                     android:layout_margin="8dip"
                     android:drawablePadding="10dip"
-                    android:paddingLeft="10dip"
+                    android:drawableStart="@drawable/markicon"
                     android:hint="@string/person_account_other_account_memo_hint"
-                    android:maxLength="100" />
-                 <View
-	                android:layout_width="fill_parent"
-	                android:layout_height="1dp"
-	                android:layout_marginLeft="10dp"
-	                android:layout_marginRight="10dp"
-	                android:background="#E8E8E8" />
+                    android:maxLength="100"
+                    android:paddingLeft="10dip" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#E8E8E8" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -128,56 +130,57 @@
                     android:textColor="#a5a5a5"
                     android:textSize="12sp" />
             </LinearLayout>
+
             <TextView
-                	android:id="@+id/buy_message_push_coin_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="30dip"
-                    android:layout_marginRight="30dip"
-                    android:gravity="center|left"
-                    android:lineSpacingMultiplier="1.5"
-                    android:text="@string/buy_message_push_coin"
-                    android:textColor="#595959"
-                    android:textSize="12sp" />
-			<TextView
-			    	android:id="@+id/person_account_other_account_remark_prompt_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dip"
-                    android:layout_marginLeft="30dip"
-                    android:layout_marginRight="30dip"
-                    android:gravity="center|left"
-                    android:lineSpacingMultiplier="1.5"
-                    android:text="@string/person_account_other_account_remark_prompt_hint"
-                    android:textColor="#ff4c00"
-                    android:textSize="12sp" 
-                    android:visibility="gone"
-                    />
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dip"
+                android:layout_marginRight="30dip"
+                android:gravity="center|left"
+                android:lineSpacingMultiplier="1.5"
+                android:text="@string/person_account_other_account_buy_prompt_hint"
+                android:textColor="#a5a5a5"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/person_account_other_account_remark_prompt_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dip"
+                android:layout_marginRight="30dip"
+                android:layout_marginTop="5dip"
+                android:gravity="center|left"
+                android:lineSpacingMultiplier="1.5"
+                android:text="@string/person_account_other_account_remark_prompt_hint"
+                android:textColor="#ff4c00"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/wechatpaytv"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/confirm_btn_bg_selector"
                 android:gravity="center"
                 android:text="@string/wechatpay"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/no_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="10dp"
-                android:drawableTop="@drawable/btn_retry"
-                android:text="@string/no_data"
-                android:textColor="#595959"
-                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawablePadding="10dp"
+        android:drawableTop="@drawable/btn_retry"
+        android:text="@string/no_data"
+        android:textColor="#595959"
+        android:visibility="gone" />
 
 </LinearLayout>
