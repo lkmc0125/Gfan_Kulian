@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     private boolean isBuyForOther = false;
     private String TopBarTextValue="购买上网时间";
     private TextView textView_remark;
+    private ScrollView mContentScrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +107,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
             mWechatPayTv.setText("仅支持微信支付");
         }
 
+        mContentScrollView = (ScrollView) findViewById(R.id.content_scroll_view);
         mRetryTv = (TextView) findViewById(R.id.no_data);
         mRetryTv.setOnClickListener(this);
     }
@@ -233,6 +236,8 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                 mGoodsList = (GoodsListBean) obj;
                 if (mGoodsList.getGoodsList() != null) {
                     mRetryTv.setVisibility(View.GONE);
+                    mContentScrollView.setVisibility(View.VISIBLE);
+
                     mAdapter = new BuyItemGridViewAdapter(getApplicationContext(), mGoodsList.getGoodsList());
                     mGridView.setAdapter(mAdapter);
                     if (mIsPaySupported) {
@@ -242,6 +247,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                     mWechatPayTv.setVisibility(View.VISIBLE);
                 } else {
                     mRetryTv.setVisibility(View.VISIBLE);
+                    mContentScrollView.setVisibility(View.GONE);
                 }
                 break;
             default:
@@ -252,6 +258,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     @Override
     public void onError(int method, int statusCode) {
         mRetryTv.setVisibility(View.VISIBLE);
+        mContentScrollView.setVisibility(View.GONE);
     }
     
     private void getGoodsList() {

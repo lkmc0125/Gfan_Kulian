@@ -66,8 +66,8 @@
             android:layout_weight="3"
             android:gravity="center"
             android:text="赠送金币"
-            android:textColor="#CDCDCD"
-            android:textSize="18sp" />
+            android:textColor="#C8E1FF"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
                 android:gravity="center"
                 android:text="500"
                 android:textColor="#FF4C00"
-                android:textSize="18sp" />
+                android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>
 
