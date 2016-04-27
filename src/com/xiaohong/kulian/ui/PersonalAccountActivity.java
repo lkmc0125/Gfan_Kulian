@@ -29,6 +29,7 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
@@ -60,6 +61,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     private static final int ACCOUNT_REGIST = 0;
     private static final int REQUEST_CODE = 20;
     public static final int REGIST = 1;
+    private static final int UPDATE_LEFTITIME_VIEW = 2;
 
     // 个人中心功能界面
     private RelativeLayout layout_task, layout_message, layout_question, layout_feedback, layout_account, layout_buy,
@@ -68,7 +70,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     private TextView textView_login, textView_username, textView_signIn_status, textView_coin_num;
     private ImageView mSignIv;
     private TextView mSignOrLeftTimeTv;
-    
+    private LeftTime mLeftTime = new LeftTime();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,8 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
 
         initView();
         mSession.addOnCoinUpdateListener(this);
+        //TODO parse left time from server result
+        mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
     }
 
     @Override
@@ -150,6 +154,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     public void onSuccess(int method, Object obj) {
         switch (method) {
         case MarketAPI.ACTION_SIGN_IN: {
+            Log.d("free", "ACTION_SIGN_IN");
             HashMap<String, Object> result = (HashMap<String, Object>) obj;
             if ((Integer) result.get("ret_code") == 0) {
                 mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
@@ -194,6 +199,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             break;
         }
         case MarketAPI.ACTION_LOGIN: {
+            Log.d("free", "ACTION_LOGIN");
             HashMap<String, Object> result = (HashMap<String, Object>) obj;
             if ((Integer) result.get("ret_code") == 0) {
                 textView_login.setText("账号退出");
@@ -228,6 +234,11 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 textView_login.setText("登录");
                 textView_username.setText("未登录");
                 updateSignView();
+                break;
+            case UPDATE_LEFTITIME_VIEW:
+                mLeftTime.decOneMinutes();
+                updateSignView();
+                mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
                 break;
             }
         };
@@ -301,9 +312,6 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 } else {
                     
                 }
-                //TODO remove
-                //mSession.setPersonalCenterStatus(PersonalCenterStatus.SHOW_SIGN_IN);
-                //updateSignView();
             }else if(mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
                 if (!mSession.isLogin()) {
                     if (!autoLogin()) {
@@ -313,9 +321,6 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 } else {
                     MarketAPI.signIn(getApplicationContext(), this);
                 }
-               //TODO remove
-                //mSession.setPersonalCenterStatus(PersonalCenterStatus.SHOW_LEFT_TIME);
-                //updateSignView();
             }
             break;
         case R.id.person_account_my_task_value_layout:
@@ -357,6 +362,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
 
     @Override
     public void onCoinUpdate(int newTotalCoinNum) {
+        Log.d("free", "onCoinUpdate - " + newTotalCoinNum);
         textView_coin_num.setText(newTotalCoinNum + "");
         
     }
@@ -371,10 +377,9 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             if (!mSession.isLogin()) {
                 mSignOrLeftTimeTv.setText(Html.fromHtml(getResources().getString(R.string.person_account_left_time_default)));
             } else {
-                //TODO read the really value form server
-                int days = 31;
-                int hours = 2;
-                int minutes = 5;
+                int days = mLeftTime.getDays();
+                int hours = mLeftTime.getHours();
+                int minutes = mLeftTime.getMinutes();
                 String str = getResources().getString(R.string.person_account_left_time);
                 str = String.format(str, days, hours, minutes);
                 int dayUnintIndex = str.indexOf('天');
@@ -411,5 +416,55 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 textView_signIn_status.setText(R.string.person_account_sign_in_value);
             }
         }
+        //mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
+    }
+    
+    private static class LeftTime {
+        private int mDays = 31;//剩余天数
+        private int mHours = 2;//剩余小时数
+        private int mMinutes = 5;//剩余分钟数
+
+        public int getDays() {
+            return mDays;
+        }
+        public void setDays(int days) {
+            mDays = days;
+        }
+        public int getHours() {
+            return mHours;
+        }
+        public void setHours(int hours) {
+            mHours = hours;
+        }
+        public int getMinutes() {
+            return mMinutes;
+        }
+        public void setMinutes(int minutes) {
+            mMinutes = minutes;
+        }
+
+        /**
+         * 剩余时间减少一分钟
+         * 如果当前剩余时间为0，则返回false，其余情况return true
+         */
+        public boolean decOneMinutes() {
+            if(mMinutes > 0) {
+                --mMinutes;
+                return true;
+            }else if(mHours > 0) {
+                --mHours;
+                mMinutes = 59;
+                return true;
+            }else if(mDays > 0) {
+                //eg. 3天0小时0分 减去1分钟
+                //结果是2天23小时59分
+                --mDays;
+                mHours = 23;
+                mMinutes = 59;
+                return true;
+            }
+            return false;
+        }
+        
     }
 }
