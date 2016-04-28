@@ -337,7 +337,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 dialog.dismiss();
             }
         })
-        .setPositiveButton("购买金币", new DialogInterface.OnClickListener() {
+        .setPositiveButton("购买上网时间", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 Utils.gotoBuyingEntryPage(ConnectionActivity.this);                                    
                 dialog.dismiss();
@@ -415,6 +415,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         {
             Log.d(TAG, "login success");
             Utils.doPreloadAppAndTask(getApplicationContext());
+
             LoginResultBean result = (LoginResultBean) obj;
             if (result.getRetCode() == 0) {
                 mSession.setLogin(true);
@@ -425,7 +426,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 mSession.setIsCountDown(result.getShowCountdown());
                 mSession.setRemainTime(result.getRemainTime());
                 if (mSession.getSignInToday()) {
-                    textView_signIn_status.setText("今天已签到");                    
+                    textView_signIn_status.setText("今天已签到");
                 }
                 if (mSession.getMessages() == null) {
                     MarketAPI.getMessages(getApplicationContext(), this);
@@ -476,9 +477,9 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                         }).create();
                 dialog.show();
             } else if (ret_code == 3002) { // 今天已经签到领取过了
-                textView_signIn_status.setText("今天已签到");
+                mSession.setSignInToday(true);
                 Log.d(TAG, "Already sign in today, ret_code 3002");
-                DialogUtils.showMessage(this, getString(R.string.sign_in_success), "今天已经领取过金币了，明天再来哦");
+                DialogUtils.showMessage(this, getString(R.string.sign_in_success), "今天已经签过到了，明天记得再来签到哦");
             } else {
                 DialogUtils.showMessage(this, getString(R.string.sign_in_fail), result.get("ret_msg").toString());
             }

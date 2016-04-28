@@ -93,13 +93,14 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             textView_username.setText(mSession.getUserName());
             textView_coin_num.setText(mSession.getCoinNum().toString());
 
-            if (mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN
-                    && mSession.getRemainTime() > 0) {
-                mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_LEFT_TIME);
-                mLeftTime.setRemainTime(mSession.getRemainTime());
-                if (mSession.getIsCountdown()) {
-                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);                    
+            if (mSession.getRemainTime() > 0) {
+                if (mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
+                    if (mSession.getIsCountdown()) {
+                        mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);                    
+                    }
                 }
+                mLeftTime.setRemainTime(mSession.getRemainTime());
+                mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_LEFT_TIME);
             }
         }
         updateSignView();
@@ -249,8 +250,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             case UPDATE_LEFTITIME_VIEW:
                 if (mLeftTime.decOneMinutes()) {
                     mSession.setRemainTime(mLeftTime.getRemainTime());
-//                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
-                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 1 * 1000);
+                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
                     updateSignView();
                 }
                 break;

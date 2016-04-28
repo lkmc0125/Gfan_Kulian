@@ -19,7 +19,6 @@ import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.TopBar;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -114,11 +113,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
                 // report pay success
                 if (resp.errCode == 0) {
                     Session session = Session.get(this);
-                    if(bean.getOther_account() != null && !bean.getOther_account().equals("")) {
+                    if (bean.getOther_account() != null && !bean.getOther_account().equals("")) {
                         //this case is that buy coin for other
                         MarketAPI.reportOrderPay(getApplicationContext(), this, bean.getGoodsId(), 
                                 bean.getOutTradeNo(), bean.getOther_account());
-                    }else {
+                    } else {
                         //this case is that buy coin for self
                         MarketAPI.reportOrderPay(getApplicationContext(), this, bean.getGoodsId(), 
                                 bean.getOutTradeNo(), session.getUserName());
@@ -150,7 +149,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
         case MarketAPI.ACTION_REPORT_ORDER_PAY:
             ReportResultBean bean = (ReportResultBean)obj;
             if (bean.getRetCode() == 0) {
-                DialogUtils.showMessage(this, "购买成功", "您获得了"+String.valueOf(bean.getAddedCoinNum())+"个金币");
+
+//                DialogUtils.showMessage(this, "购买成功", "上网时长总计"+String.valueOf(bean.getRemainTime())+"秒");
                 Session session = Session.get(getApplicationContext()); 
                 session.setRemainTime(bean.getRemainTime());
                 session.notifyCoinUpdated(bean.getAddedCoinNum());
