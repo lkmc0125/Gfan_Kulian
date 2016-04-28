@@ -50,6 +50,7 @@ import android.widget.TextView;
 
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.DialogUtils;
@@ -310,18 +311,14 @@ public class RegisterActivity extends BaseActivity
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
                     Constants.LOGIN_SUCCESS);
 
-            HashMap<String, Object> result = (HashMap<String, Object>) obj;
+            LoginResultBean result = (LoginResultBean) obj;
             String userName = etUsername.getText().toString();
             String password = etUsername.getText().toString().substring(5,11);
             mSession.setUserName(userName);
             mSession.setPassword(password);
-            mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
-            mSession.setToken((String) result.get(Constants.KEY_TOKEN));
-            if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
-                mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).toString().equals("true"));    
-            } else {
-                mSession.setSignInToday(false);
-            }
+            mSession.setCoinNum(result.getCoinNum());
+            mSession.setToken(result.getToken());
+            mSession.setSignInToday(result.getIsSign());
             mSession.setLogin(true);
             // 隐藏登录框
             try{

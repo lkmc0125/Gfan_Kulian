@@ -101,7 +101,7 @@ public class ApiResponseFactory {
 
                 // 注册
                 requestMethod = "ACTION_REGISTER";
-                result = parseLoginOrRegisterResult(context, inputBody);
+                result = gson.fromJson(inputBody, LoginResultBean.class);
                 break;
 
             case MarketAPI.ACTION_LOGIN:
@@ -189,7 +189,7 @@ public class ApiResponseFactory {
             Utils.D(requestMethod + " has Exception", e);
         }
         if (result != null) {
-            Utils.D(requestMethod + "'s Response is : " + result.toString());            
+            Utils.D(requestMethod + "'s Response is : " + result.toString());
         }
         return result;
     }
