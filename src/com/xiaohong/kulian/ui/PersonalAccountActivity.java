@@ -43,6 +43,7 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.Session.OnCoinUpdatedListener;
 import com.xiaohong.kulian.Session.PersonalCenterStatus;
+import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.Utils;
@@ -79,8 +80,6 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
 
         initView();
         mSession.addOnCoinUpdateListener(this);
-        //TODO parse left time from server result
-        mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
     }
 
     @Override
@@ -89,16 +88,19 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         if (!mSession.isLogin()) {
             textView_login.setText("登录");
             textView_username.setText("未登录");
-            //textView_signIn_status.setText(R.string.person_account_sign_in_value);
         } else if (mSession.isLogin()) {
             textView_login.setText("账号退出");
             textView_username.setText(mSession.getUserName());
             textView_coin_num.setText(mSession.getCoinNum().toString());
-            /*if (mSession.getSignInToday()) {
-                textView_signIn_status.setText("今天已签到");
-            } else {
-                textView_signIn_status.setText(R.string.person_account_sign_in_value);
-            }*/
+
+            if (mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN
+                    && mSession.getRemainTime() > 0) {
+                mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_LEFT_TIME);
+                mLeftTime.setRemainTime(mSession.getRemainTime());
+                if (mSession.getIsCountdown()) {
+                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);                    
+                }
+            }
         }
         updateSignView();
         super.onResume();
@@ -200,18 +202,27 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         }
         case MarketAPI.ACTION_LOGIN: {
             Log.d("free", "ACTION_LOGIN");
-            HashMap<String, Object> result = (HashMap<String, Object>) obj;
-            if ((Integer) result.get("ret_code") == 0) {
+            LoginResultBean result = (LoginResultBean) obj;
+            if (result.getRetCode() == 0) {
                 textView_login.setText("账号退出");
                 textView_username.setText(mSession.getUserName());
                 mSession.setLogin(true);
-                mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
-                textView_coin_num.setText(mSession.getCoinNum().toString());
-                if (result.containsKey(Constants.KEY_SIGN_IN_TODAY)) {
-                    mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
+                mSession.setCoinNum(result.getCoinNum());
+                textView_coin_num.setText(String.valueOf(result.getCoinNum()));
+                mSession.setSignInToday(result.getIsSign());
+                mSession.setIsCountDown(result.getShowCountdown());
+                if (result.getRemainTime() > 0) {
+                    mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_LEFT_TIME);
+                    mSession.setRemainTime(result.getRemainTime());
+                    mLeftTime.setRemainTime(result.getRemainTime());
+                    if (mSession.getIsCountdown()) {
+                        mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);    
+                    }
+                } else {
+                    mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_SIGN_IN);
                 }
-                if (mSession.getSignInToday()) {
-                    //textView_signIn_status.setText(R.string.person_account_already_sign_in);
+                if (result.getIsSign()) {
+//                    textView_signIn_status.setText(R.string.person_account_already_sign_in);
                 } else {
                     MarketAPI.signIn(getApplicationContext(), this);
                 }
@@ -236,9 +247,12 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 updateSignView();
                 break;
             case UPDATE_LEFTITIME_VIEW:
-                mLeftTime.decOneMinutes();
-                updateSignView();
-                mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
+                if (mLeftTime.decOneMinutes()) {
+                    mSession.setRemainTime(mLeftTime.getRemainTime());
+//                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
+                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 1 * 1000);
+                    updateSignView();
+                }
                 break;
             }
         };
@@ -416,55 +430,36 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 textView_signIn_status.setText(R.string.person_account_sign_in_value);
             }
         }
-        //mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
     }
-    
-    private static class LeftTime {
-        private int mDays = 31;//剩余天数
-        private int mHours = 2;//剩余小时数
-        private int mMinutes = 5;//剩余分钟数
 
-        public int getDays() {
-            return mDays;
+    private static class LeftTime {
+        private int mRemainTime = 0;
+
+        public void setRemainTime(int remainTime) {
+            mRemainTime = remainTime;
         }
-        public void setDays(int days) {
-            mDays = days;
+        public int getRemainTime() {
+            return mRemainTime;
+        }
+        public int getDays() {
+            return mRemainTime / (3600 * 24);
         }
         public int getHours() {
-            return mHours;
-        }
-        public void setHours(int hours) {
-            mHours = hours;
+            return (mRemainTime % (3600 * 24)) / 3600;
         }
         public int getMinutes() {
-            return mMinutes;
+            return ((mRemainTime % 3600) / 60);
         }
-        public void setMinutes(int minutes) {
-            mMinutes = minutes;
-        }
-
-        /**
-         * 剩余时间减少一分钟
-         * 如果当前剩余时间为0，则返回false，其余情况return true
-         */
         public boolean decOneMinutes() {
-            if(mMinutes > 0) {
-                --mMinutes;
+            if (mRemainTime > 60) {
+                mRemainTime -= 60;
                 return true;
-            }else if(mHours > 0) {
-                --mHours;
-                mMinutes = 59;
+            } else if (mRemainTime > 0) {
+                mRemainTime = 0;
                 return true;
-            }else if(mDays > 0) {
-                //eg. 3天0小时0分 减去1分钟
-                //结果是2天23小时59分
-                --mDays;
-                mHours = 23;
-                mMinutes = 59;
-                return true;
+            } else {
+                return false;
             }
-            return false;
         }
-        
     }
 }

@@ -68,6 +68,7 @@ public class ApiRequestFactory {
             Session session) throws IOException {
 
         String requestString = url+"?"+EntityUtils.toString(entity);
+        Utils.D("requestUrl: " + requestString);
         HttpGet request = new HttpGet(requestString);
         if (action == MarketAPI.ACTION_REPORT_APP_INSTALLED
                 || action == MarketAPI.ACTION_REPORT_APP_LAUNCHED

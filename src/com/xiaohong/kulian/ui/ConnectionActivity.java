@@ -43,6 +43,7 @@ import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.adapter.ConnectionAppGridAdapter;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.AppListBean;
+import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.bean.MessageBean;
 import com.xiaohong.kulian.bean.MessageListBean;
 import com.xiaohong.kulian.bean.TaskBean;
@@ -218,17 +219,23 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 JSONObject obj = new JSONObject(ret);
                 if (obj.getInt("ret_code") == 0) {
                     DialogUtils.showMessage(this, "认证成功", "使用金币" + obj.getString("dec_coin_num") + "枚");
-                    mSession.setCoinNum(Integer.valueOf("coin_num").intValue());
+                    mSession.setCoinNum(obj.getInt("dec_coin_num"));
                     mSession.notifyCoinUpdated();
                 } else if (obj.getInt("ret_code") == 3001) { // 3001 means already deduction coin today
                     Utils.makeEventToast(getApplicationContext(), obj.getString("ret_msg"), false);
+                } else if (obj.getInt("ret_code") == 3002) { // 3002 means 使用上网时间包
+                    int remainTime = obj.getInt("remain_time");
+                    mSession.setRemainTime(remainTime);
+                    mSession.setIsCountDown(true);
+                    String leftTime = remainTime/(3600*24)+"天"+(remainTime%(3600*24))/3600+"时"+((remainTime%3600)/60)+"分";
+                    DialogUtils.showMessage(this, "认证成功", "上网时间还有" + leftTime);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
-    
+
     private boolean isHongWifi(String ssid) {
         if (ssid == null) {
             return false;
@@ -408,13 +415,16 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         {
             Log.d(TAG, "login success");
             Utils.doPreloadAppAndTask(getApplicationContext());
-            HashMap<String, Object> result = (HashMap<String, Object>) obj;
-            if ((Integer) result.get("ret_code") == 0) {
+            LoginResultBean result = (LoginResultBean) obj;
+            if (result.getRetCode() == 0) {
                 mSession.setLogin(true);
-                mSession.setCoinNum((Integer) result.get(Constants.KEY_COIN_NUM));
-                mSession.setToken((String) result.get(Constants.KEY_TOKEN));
-                textView_coin_num.setText(mSession.getCoinNum().toString());
-                mSession.setSignInToday(result.get(Constants.KEY_SIGN_IN_TODAY).equals("true"));
+                mSession.setCoinNum(result.getCoinNum());
+                mSession.setToken(result.getToken());
+                textView_coin_num.setText(String.valueOf(result.getCoinNum()));
+                mSession.setSignInToday(result.getIsSign());
+                mSession.setIsCountDown(result.getShowCountdown());
+                mSession.setRemainTime(result.getRemainTime());
+                mSession.setRemainTime(60*60*24);  // for test
                 if (mSession.getSignInToday()) {
                     textView_signIn_status.setText("今天已签到");                    
                 }
@@ -507,24 +517,15 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             if(result.getTasklist() != null) {
                 Log.d(TAG, "size = " + result.getTasklist().size());
                 TaskBean bean = new TaskBean();
-                /*bean.setType(TaskBean.ITEM_TYPE_TITLE);
-                bean.setTitle(getResources().getString(R.string.title_task_todo));
-                for(TaskBean item : result.getTasklist()) {
-                    //set remain num to 1 for normal task
-                    item.setRemain_tasknum(1);
-                    item.setTaskType(TaskListAdapter.TYPE_NORMAL_TASK);
-                }
-                result.getTasklist().add(0, bean);*/
-                bean=result.getTasklist().get(0);
-                taskBean=bean;
-                TaskImgUrl=bean.getLogo_url();
+                bean       = result.getTasklist().get(0);
+                taskBean   = bean;
+                TaskImgUrl = bean.getLogo_url();
                 System.out.println("TaskImgUrl"+TaskImgUrl);
-                TaskName=bean.getName();
-                TaskDsb=bean.getDesc();
-                TaskCoin="+"+String.valueOf(bean.getCoin_num());
+                TaskName   = bean.getName();
+                TaskDsb    = bean.getDesc();
+                TaskCoin   = "+" + String.valueOf(bean.getCoin_num());
                 updateTaskLayout();
-                
-            }else {
+            } else {
                 Log.d(TAG, "no data from server");
             }
             break;

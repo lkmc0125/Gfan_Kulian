@@ -119,7 +119,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
                         MarketAPI.reportOrderPay(getApplicationContext(), this, bean.getGoodsId(), 
                                 bean.getOutTradeNo(), bean.getOther_account());
                     }else {
-                      //this case is that buy coin for self
+                        //this case is that buy coin for self
                         MarketAPI.reportOrderPay(getApplicationContext(), this, bean.getGoodsId(), 
                                 bean.getOutTradeNo(), session.getUserName());
                     }

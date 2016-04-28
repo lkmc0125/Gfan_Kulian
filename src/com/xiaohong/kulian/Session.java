@@ -241,6 +241,12 @@ public class Session extends Observable {
 
     /** 今天是否已经签到过 */
     private boolean signInToday;
+
+    /** 上网时长剩余时间 */
+    private int remainTime;
+
+    /** 是否正在使用上网时长，是则开始倒计时 */
+    private boolean isCountDown;
     
     /**
      * A cookie
@@ -260,7 +266,7 @@ public class Session extends Observable {
         SHOW_LEFT_TIME
     }
     
-    private PersonalCenterStatus mPersonalCenterStatus = PersonalCenterStatus.SHOW_LEFT_TIME;
+    private PersonalCenterStatus mPersonalCenterStatus = PersonalCenterStatus.SHOW_SIGN_IN;
     
 
     public PersonalCenterStatus getPersonalCenterStatus() {
@@ -361,6 +367,22 @@ public class Session extends Observable {
         this.uid = uid;
         super.setChanged();
         super.notifyObservers(new Pair<String, Object>(P_UID, uid));
+    }
+
+    public void setRemainTime(int remainTime) {
+        this.remainTime = remainTime;
+    }
+
+    public int getRemainTime() {
+        return remainTime;
+    }
+
+    public void setIsCountDown(boolean isCountDown) {
+        this.isCountDown = isCountDown;
+    }
+    
+    public  boolean getIsCountdown() {
+        return isCountDown;
     }
 
     public MessageListBean getMessages() {

@@ -121,7 +121,7 @@ public class ApiAsyncTask extends AsyncTask<Void, Void, Object> {
             response = mClient.execute(request);
             
             final int statusCode = response.getStatusLine().getStatusCode();
-            Utils.D("requestUrl " + requestUrl + " statusCode: " + statusCode);
+//            Utils.D("requestUrl " + requestUrl + " statusCode: " + statusCode);
 
             if (HttpStatus.SC_OK != statusCode) {
                 // 非正常返回

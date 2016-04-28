@@ -42,6 +42,7 @@ import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.bean.AppDetailBean;
 import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.bean.GoodsListBean;
+import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.bean.MessageListBean;
 import com.xiaohong.kulian.bean.ReportResultBean;
 import com.xiaohong.kulian.bean.TaskListBean;
@@ -107,7 +108,7 @@ public class ApiResponseFactory {
 
                 // 登录
                 requestMethod = "ACTION_LOGIN";
-                result = parseLoginOrRegisterResult(context, inputBody);
+                result = gson.fromJson(inputBody, LoginResultBean.class);
                 break;
 
             case MarketAPI.ACTION_GET_PRODUCT_DETAIL:
@@ -118,15 +119,13 @@ public class ApiResponseFactory {
                 break;
 
             case MarketAPI.ACTION_GET_APP_LIST:
-            {
                 // 获取app列表
                 requestMethod = "ACTION_GET_APP_LIST";
                 result = gson.fromJson(inputBody, AppListBean.class);
                 break;
-            }
 
             case MarketAPI.ACTION_CHECK_NEW_VERSION:
-                
+
                 // 检查应用版本
                 requestMethod = "ACTION_CHECK_NEW_VERSION";
                 result = parseCheckNewVersion(context, inputBody);
@@ -165,30 +164,22 @@ public class ApiResponseFactory {
                 
             case MarketAPI.ACTION_REPORT_APP_INSTALLED:
                 requestMethod = "ACTION_REPORT_APP_INSTALLED";
-                Log.d("free", "installed report  result str = " + inputBody);
                 result = gson.fromJson(inputBody, ReportResultBean.class);
-                Log.d("free", "installed report result = " + result);
                 break;
                 
             case MarketAPI.ACTION_REPORT_APP_LAUNCHED:
                 requestMethod = "ACTION_REPORT_APP_LAUNCHED";
-                Log.d("free", "launched result str = " + inputBody);
                 result = gson.fromJson(inputBody, ReportResultBean.class);
-                Log.d("free", "launched result = " + result);
                 break;
 
             case MarketAPI.ACTION_REPORT_ORDER_PAY:
                 requestMethod = "ACTION_REPORT_ORDER_PAY";
-                Log.d("free", "report result str = " + inputBody);
                 result = gson.fromJson(inputBody, ReportResultBean.class);
-                Log.d("free", "report result = " + result);
                 break;
 
             case MarketAPI.ACTION_ACCEPT_GZH_TASK:
                 requestMethod = "ACTION_ACCEPT_GZH_TASK";
-                Log.d("free", "accept task result str = " + inputBody);
 //                result = gson.fromJson(inputBody, ReportResultBean.class);
-//                Log.d("free", "report result = " + result);
                 break;
             default:
                 break;
@@ -198,9 +189,7 @@ public class ApiResponseFactory {
             Utils.D(requestMethod + " has Exception", e);
         }
         if (result != null) {
-            Utils.D(requestMethod + "'s Response is : " + result.toString());
-        } else {
-            Utils.D(requestMethod + "'s Response is null");
+            Utils.D(requestMethod + "'s Response is : " + result.toString());            
         }
         return result;
     }
