@@ -290,5 +290,5 @@
     <uses-permission android:name="com.xiaohong.kulian.permission.C2D_MESSAGE" />
 
     <supports-screens android:anyDensity="true" />
-    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="9" />
+    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="9" />
 </manifest> 
