@@ -37,15 +37,11 @@ public class DialogUtils {
     public static final String KEY_DIALOG_MESSAGE = "message";
     
     public static void showMessage(Context context, String title, String message) {
-        /*CustomDialog dialog = new CustomDialog.Builder(context).setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                    }
-                }).create();
-        dialog.show();*/
+
         Intent intent = new Intent(context, DialogActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(DialogUtils.KEY_DIALOG_TITLE, title);
+        intent.putExtra(DialogUtils.KEY_DIALOG_MESSAGE, message);
         context.startActivity(intent);
     }
 

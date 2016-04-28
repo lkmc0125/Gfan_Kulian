@@ -424,7 +424,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 mSession.setSignInToday(result.getIsSign());
                 mSession.setIsCountDown(result.getShowCountdown());
                 mSession.setRemainTime(result.getRemainTime());
-                mSession.setRemainTime(60*60*24);  // for test
                 if (mSession.getSignInToday()) {
                     textView_signIn_status.setText("今天已签到");                    
                 }
