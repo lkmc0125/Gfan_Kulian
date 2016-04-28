@@ -134,8 +134,10 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
             finish();
             break;
         case R.id.wechatpaytv:
-            if ((isBuyForOther == true && checkUserName() == true)
-                    || isBuyForOther == false) {
+            if (isBuyForOther == true && checkUserName() == true) {
+                mOtherAccount = userNameEditText.getText().toString();
+                doWechatPay();
+            } else if (isBuyForOther == false) {
                 doWechatPay();
             }
             break;
