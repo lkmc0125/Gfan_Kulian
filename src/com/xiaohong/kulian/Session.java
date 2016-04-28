@@ -378,7 +378,7 @@ public class Session extends Observable {
     public void setRemainTime(int remainTime) {
         Log.d(TAG, "setRemainTime remainTime = " + remainTime);
         //debug set remainTime to a fixed value
-        remainTime = 50000;
+        //remainTime = 50000;
         this.remainTime = remainTime;
         mLeftTime.setRemainTime(remainTime);
     }
