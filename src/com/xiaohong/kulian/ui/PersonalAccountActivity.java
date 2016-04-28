@@ -25,6 +25,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -41,7 +42,9 @@ import android.widget.TextView;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.Session.LeftTime;
 import com.xiaohong.kulian.Session.OnCoinUpdatedListener;
+import com.xiaohong.kulian.Session.OnLeftTimeUpdateListener;
 import com.xiaohong.kulian.Session.PersonalCenterStatus;
 import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.common.MarketAPI;
@@ -71,7 +74,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     private TextView textView_login, textView_username, textView_signIn_status, textView_coin_num;
     private ImageView mSignIv;
     private TextView mSignOrLeftTimeTv;
-    private LeftTime mLeftTime = new LeftTime();
+    private LeftTimeListener mLeftTimeListener = new LeftTimeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,20 +99,22 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             if (mSession.getRemainTime() > 0) {
                 if (mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
                     if (mSession.getIsCountdown()) {
-                        mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);                    
+                        //mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);                    
                     }
                 }
-                mLeftTime.setRemainTime(mSession.getRemainTime());
+                //mLeftTime.setRemainTime(mSession.getRemainTime());
                 mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_LEFT_TIME);
             }
         }
-        updateSignView();
+        updateSignView(mSession.getLeftTime());
+        mSession.registerOnLeftTimeUpdateListener(mLeftTimeListener);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
         mSession.removeOnCoinUpdateListener(this);
+        mSession.removeOnLeftTimeUpdateListener(mLeftTimeListener);
         super.onPause();
     }
 
@@ -150,7 +155,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         mSignIv = (ImageView) findViewById(R.id.sign_in_icon);
         mSignOrLeftTimeTv = (TextView) findViewById(R.id.sign_in_text);
         
-        updateSignView();
+        updateSignView(mSession.getLeftTime());
     }
 
     @Override
@@ -198,7 +203,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                         }).create();
                 dialog.show();
             }
-            updateSignView();
+            updateSignView(mSession.getLeftTime());
             break;
         }
         case MarketAPI.ACTION_LOGIN: {
@@ -215,7 +220,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 if (result.getRemainTime() > 0) {
                     mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_LEFT_TIME);
                     mSession.setRemainTime(result.getRemainTime());
-                    mLeftTime.setRemainTime(result.getRemainTime());
+                    //mLeftTime.setRemainTime(result.getRemainTime());
                     if (mSession.getIsCountdown()) {
                         mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);    
                     }
@@ -228,7 +233,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                     MarketAPI.signIn(getApplicationContext(), this);
                 }
             }
-            updateSignView();
+            updateSignView(mSession.getLeftTime());
             break;
         }
         default:
@@ -245,15 +250,9 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 // mAdapter.changeDataSource(data);
                 textView_login.setText("登录");
                 textView_username.setText("未登录");
-                updateSignView();
+                updateSignView(mSession.getLeftTime());
                 break;
-            case UPDATE_LEFTITIME_VIEW:
-                if (mLeftTime.decOneMinutes()) {
-                    mSession.setRemainTime(mLeftTime.getRemainTime());
-                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);
-                    updateSignView();
-                }
-                break;
+            
             }
         };
     };
@@ -371,7 +370,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         default:
             break;
         }
-        updateSignView();
+        updateSignView(mSession.getLeftTime());
     }
 
     @Override
@@ -381,7 +380,21 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         
     }
     
-    private void updateSignView() {
+    private void updateSignView(final LeftTime leftTime) {
+        if(isInMainThread()) {
+            updateSignViewLogic(leftTime);
+        }else {
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    updateSignViewLogic(leftTime);
+                }
+                
+            });
+        }
+    }
+    private void updateSignViewLogic(LeftTime leftTime) {
         Log.d("free", "updateSignView status:" + mSession.getPersonalCenterStatus());
         Resources resouces = getResources();
         if(mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_LEFT_TIME) {
@@ -391,9 +404,9 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             if (!mSession.isLogin()) {
                 mSignOrLeftTimeTv.setText(Html.fromHtml(getResources().getString(R.string.person_account_left_time_default)));
             } else {
-                int days = mLeftTime.getDays();
-                int hours = mLeftTime.getHours();
-                int minutes = mLeftTime.getMinutes();
+                int days = leftTime.getDays();
+                int hours = leftTime.getHours();
+                int minutes = leftTime.getMinutes();
                 String str = getResources().getString(R.string.person_account_left_time);
                 str = String.format(str, days, hours, minutes);
                 int dayUnintIndex = str.indexOf('天');
@@ -432,34 +445,17 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         }
     }
 
-    private static class LeftTime {
-        private int mRemainTime = 0;
+    private class LeftTimeListener implements OnLeftTimeUpdateListener {
 
-        public void setRemainTime(int remainTime) {
-            mRemainTime = remainTime;
+        @Override
+        public void onLeftTimeUpdate(LeftTime leftTime) {
+            updateSignView(leftTime);
+
         }
-        public int getRemainTime() {
-            return mRemainTime;
-        }
-        public int getDays() {
-            return mRemainTime / (3600 * 24);
-        }
-        public int getHours() {
-            return (mRemainTime % (3600 * 24)) / 3600;
-        }
-        public int getMinutes() {
-            return ((mRemainTime % 3600) / 60);
-        }
-        public boolean decOneMinutes() {
-            if (mRemainTime > 60) {
-                mRemainTime -= 60;
-                return true;
-            } else if (mRemainTime > 0) {
-                mRemainTime = 0;
-                return true;
-            } else {
-                return false;
-            }
-        }
+
+    }
+
+    public static boolean isInMainThread() {
+        return Looper.myLooper() == Looper.getMainLooper();
     }
 }

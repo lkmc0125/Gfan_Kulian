@@ -244,6 +244,8 @@ public class Session extends Observable {
 
     /** 上网时长剩余时间 */
     private int remainTime;
+    
+    private LeftTime mLeftTime = new LeftTime();
 
     /** 是否正在使用上网时长，是则开始倒计时 */
     private boolean isCountDown;
@@ -260,6 +262,10 @@ public class Session extends Observable {
     private final ArrayList<OnCoinUpdatedListener> mOnCoinUpdatedListener = new ArrayList<OnCoinUpdatedListener>();
     
     private final ArrayList<OnAppInstalledListener> mOnAppInstalledListener = new ArrayList<OnAppInstalledListener>();
+    
+    
+    private ArrayList<OnLeftTimeUpdateListener> mOnLeftTimeUpdateListeners 
+        = new ArrayList<OnLeftTimeUpdateListener>();
     
     public static enum PersonalCenterStatus {
         SHOW_SIGN_IN,
@@ -370,11 +376,23 @@ public class Session extends Observable {
     }
 
     public void setRemainTime(int remainTime) {
+        Log.d(TAG, "setRemainTime remainTime = " + remainTime);
+        //debug set remainTime to a fixed value
+        remainTime = 50000;
         this.remainTime = remainTime;
+        mLeftTime.setRemainTime(remainTime);
     }
 
     public int getRemainTime() {
         return remainTime;
+    }
+    
+    /**
+     * 获取格式化的剩余时间
+     * @return
+     */
+    public LeftTime getLeftTime() {
+        return mLeftTime;
     }
 
     public void setIsCountDown(boolean isCountDown) {
@@ -1237,6 +1255,72 @@ public class Session extends Observable {
     private void notifyAppInstalled(String packageName) {
         for(OnAppInstalledListener listener : mOnAppInstalledListener) {
             listener.onAppInstalled(packageName);
+        }
+    }
+
+    /**
+     * 注册倒计时更新listener
+     * @param listener
+     */
+    public void registerOnLeftTimeUpdateListener(OnLeftTimeUpdateListener listener) {
+        mOnLeftTimeUpdateListeners.add(listener);
+    }
+    
+    /**
+     * 
+     * @param listener
+     */
+    public void removeOnLeftTimeUpdateListener(OnLeftTimeUpdateListener listener) {
+        mOnLeftTimeUpdateListeners.remove(listener);
+    }
+    
+    /**
+     * 通知倒计时更新
+     * @param leftTime
+     */
+    public void updateLeftTime(LeftTime leftTime) {
+        for(OnLeftTimeUpdateListener listener : mOnLeftTimeUpdateListeners) {
+            listener.onLeftTimeUpdate(leftTime);
+        }
+    }
+    
+    /**
+     * 用于倒计时
+     * @author free
+     *
+     */
+    public static interface OnLeftTimeUpdateListener {
+        public void onLeftTimeUpdate(LeftTime leftTime);
+    }
+    
+    public static class LeftTime {
+        private int mRemainTime = 0;
+
+        public void setRemainTime(int remainTime) {
+            mRemainTime = remainTime;
+        }
+        public int getRemainTime() {
+            return mRemainTime;
+        }
+        public int getDays() {
+            return mRemainTime / (3600 * 24);
+        }
+        public int getHours() {
+            return (mRemainTime % (3600 * 24)) / 3600;
+        }
+        public int getMinutes() {
+            return ((mRemainTime % 3600) / 60);
+        }
+        public boolean decOneMinutes() {
+            if (mRemainTime > 60) {
+                mRemainTime -= 60;
+                return true;
+            } else if (mRemainTime > 0) {
+                mRemainTime = 0;
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

@@ -40,6 +40,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.Session.LeftTime;
 import com.xiaohong.kulian.adapter.ConnectionAppGridAdapter;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.AppListBean;
@@ -434,6 +435,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
                 if (appBeans == null) {
                     queryAppList();
                 }
+                new UpdateLeftTimeThread().start();
             }
             break;
         }
@@ -739,5 +741,21 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         }
         
         super.onResume();
+    }
+    
+    private class UpdateLeftTimeThread extends Thread {
+        @Override
+        public void run() {
+            while(true) {
+                mSession.updateLeftTime(mSession.getLeftTime());
+                try {
+                    Thread.sleep(60 * 1000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                mSession.getLeftTime().decOneMinutes();
+            }
+        }
     }
 }
