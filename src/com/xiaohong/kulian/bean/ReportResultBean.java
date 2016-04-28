@@ -4,6 +4,7 @@ public class ReportResultBean {
 
     private int coin_num;
     private int added_coin;
+    private int remain_time;
     private int ret_code;
     private String ret_msg;
 
@@ -24,6 +25,7 @@ public class ReportResultBean {
     public void setRetCode(int retCode) {
         this.ret_code = retCode;
     }
+
     public int getRetCode() {
         return ret_code;
     }
@@ -31,10 +33,15 @@ public class ReportResultBean {
     public void setRetMsg(String retMsg) {
         this.ret_msg = retMsg;
     }
+
     public String getRetMsg() {
         return ret_msg;
     }
-    
+
+    public int getRemainTime() {
+        return remain_time;
+    }
+
     public String toString() {
         return "ReportResultBean[coin_num=" + coin_num + ", added_coin = "
                 + added_coin + ", ret_code = " + ret_code + ", ret_msg = " + ret_msg + "]";

@@ -152,7 +152,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
             if (bean.getRetCode() == 0) {
                 DialogUtils.showMessage(this, "购买成功", "您获得了"+String.valueOf(bean.getAddedCoinNum())+"个金币");
                 Session session = Session.get(getApplicationContext()); 
-                //session.setCoinNum(bean.getCoinNum());
+                session.setRemainTime(bean.getRemainTime());
                 session.notifyCoinUpdated(bean.getAddedCoinNum());
             }
             confirmBtn.setEnabled(true);
