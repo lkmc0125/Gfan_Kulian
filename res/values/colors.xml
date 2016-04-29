@@ -8,7 +8,7 @@
     <color name="gray_3">#787878</color>
     <color name="gray_4">#A5A5A5</color>
     <color name="orange">#FFB400</color>
-    <color name="list_view_bg_color">#00000000</color>
+    <color name="list_view_bg_color">#F3F3F3</color>
     <color name="splash_notification_bg">#7FFF</color>
     <color name="splash_color">#7FFF</color>
     <color name="background_color">#F3F3F3</color>

@@ -298,7 +298,7 @@ public class Helper {
         // Split filename between base and extension
         // Add an extension if filename does not have one
         String extension = null;
-        int dotIndex = filename.indexOf('.');
+        int dotIndex = filename.toLowerCase().lastIndexOf(".apk");
         if (dotIndex < 0) {
             extension = chooseExtensionFromMimeType(mimeType, true);
         } else {

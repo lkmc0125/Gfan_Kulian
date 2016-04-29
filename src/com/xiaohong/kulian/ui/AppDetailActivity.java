@@ -57,8 +57,8 @@ public class AppDetailActivity extends Activity
     private static final String TAG = "AppDetailActivity";
     
     private static final String TEXT_CONTINUE = "继续";
-    private static final String TEXT_OPEN = "打开";
-    private static final String TEXT_INSTALL = "安装";
+    private static final String TEXT_OPEN     = "打开";
+    private static final String TEXT_INSTALL  = "安装";
     
     /**
      * 已安装等待打开
@@ -226,11 +226,6 @@ public class AppDetailActivity extends Activity
                 // 已安装 显示打开
                 mStatus = STATUS_WAITING_OPEN;
                 showOpenView();
-            } else if (Utils.isApkDownloaded(mDetailInfo.getAppname())) {
-                mStatus = STATUS_WAITING_INSTALL;
-                mFilePath = Utils.getDownloadedAppPath(mDetailInfo.getAppname());
-                Log.d(TAG, "downloaded mFilePath = " + mFilePath);
-                showInstallView();
 
             } else if (mSession.getDownloadingList().get(
                     mDetailInfo.getPackagename()) != null) {
@@ -257,6 +252,11 @@ public class AppDetailActivity extends Activity
                     mStatus = STATUS_PAUSE;
                     showContinueView();
                 }*/
+            } else if (Utils.isApkDownloaded(mDetailInfo.getAppname())) {
+                mStatus = STATUS_WAITING_INSTALL;
+                mFilePath = Utils.getDownloadedAppPath(mDetailInfo.getAppname());
+                Log.d(TAG, "downloaded mFilePath = " + mFilePath);
+                showInstallView();
             } else {
                 // do download
                 mStatus = STATUS_WAITING_DOWNLOAD;

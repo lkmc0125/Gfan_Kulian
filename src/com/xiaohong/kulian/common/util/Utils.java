@@ -1259,13 +1259,12 @@ public class Utils {
      * @return true if the app is downloaded
      */
     public static boolean isApkDownloaded(String appName) {
-        File file =  new File(Environment.getExternalStorageDirectory(),
-                com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR
-                        + "/" + appName + ".apk");
-        boolean downloaded = file.exists();/*
-        Log.d("free", "isApkDownloaded appName = " + appName + ", downloaded = " + downloaded
-                + ", filePath = " + file.getAbsolutePath());*/
-        return downloaded;
+//        File file =  new File(Environment.getExternalStorageDirectory(),
+//                com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR
+//                        + "/" + appName + ".apk");
+//        boolean downloaded = file.exists();
+//        return downloaded;
+        return false; // todo 需要先解决下载到一半，重启后不能检测安装包是否完整的问题
     }
     
     /**
