@@ -394,6 +394,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             });
         }
     }
+
     private void updateSignViewLogic(LeftTime leftTime) {
         Log.d("free", "updateSignView status:" + mSession.getPersonalCenterStatus());
         Resources resouces = getResources();
@@ -407,33 +408,55 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 int days = leftTime.getDays();
                 int hours = leftTime.getHours();
                 int minutes = leftTime.getMinutes();
-                String str = getResources().getString(R.string.person_account_left_time);
-                str = String.format(str, days, hours, minutes);
-                int dayUnintIndex = str.indexOf('天');
-                int hourUnintIndex = str.indexOf('时');
-                int minuteUnintIndex = str.indexOf('分');
-                //方便计算时间值占几位
-                String hourStr = hours + "";
-                String minutesStr = minutes + "";
-                SpannableString sps = new SpannableString(str);
-                sps.setSpan(new AbsoluteSizeSpan(22,true), 0, dayUnintIndex, 
+                String str = null;
+
+                if (days == 0) {
+                    str = getResources().getString(R.string.person_account_left_time_minutes);
+                    str = String.format(str, hours, minutes);
+
+                    int hourUnintIndex = str.indexOf('时');
+                    int minuteUnintIndex = str.indexOf('分');
+
+                    // 方便计算时间值占几位
+                    String hourStr = hours + "";
+                    String minutesStr = minutes + "";
+                    SpannableString sps = new SpannableString(str);
+                    sps.setSpan(new AbsoluteSizeSpan(22,true), 0, hourUnintIndex, 
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
+                            0, hourUnintIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //设置前景色
+
+                    sps.setSpan(new AbsoluteSizeSpan(22,true), minuteUnintIndex - minutesStr.length() - 1, minuteUnintIndex, 
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
-                        0, dayUnintIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //设置前景色
-                
-                sps.setSpan(new AbsoluteSizeSpan(22,true), hourUnintIndex - hourStr.length() - 1, hourUnintIndex, 
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
-                        hourUnintIndex - hourStr.length() - 1, hourUnintIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //设置前景色
-                
-                sps.setSpan(new AbsoluteSizeSpan(22,true), minuteUnintIndex - minutesStr.length() - 1, minuteUnintIndex, 
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
+                    sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
                         minuteUnintIndex - minutesStr.length() - 1, minuteUnintIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //设置前景色
-                mSignOrLeftTimeTv.setText(sps);
+                    mSignOrLeftTimeTv.setText(sps);
+                } else {
+
+                    str = getResources().getString(R.string.person_account_left_time_days);
+                    str = String.format(str, days, hours);
+
+                    int dayUnintIndex = str.indexOf('天');
+                    int hourUnintIndex = str.indexOf('时');
+
+                    // 方便计算时间值占几位
+                    String hourStr = hours + "";
+                    SpannableString sps = new SpannableString(str);
+                    sps.setSpan(new AbsoluteSizeSpan(22,true), 0, dayUnintIndex, 
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
+                            0, dayUnintIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //设置前景色
+                    
+                    sps.setSpan(new AbsoluteSizeSpan(22,true), hourUnintIndex - hourStr.length() - 1, hourUnintIndex, 
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    sps.setSpan(new ForegroundColorSpan(resouces.getColor(R.color.left_time_txt_color)), 
+                            hourUnintIndex - hourStr.length() - 1, hourUnintIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //设置前景色
+                    mSignOrLeftTimeTv.setText(sps);
+                }
+
                 mSignOrLeftTimeTv.setGravity(Gravity.CENTER_VERTICAL);
             }
-        }else if(mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
+        } else if (mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
             mSignIv.setVisibility(View.VISIBLE);
             mSignOrLeftTimeTv.setTextColor(getResources().getColor(R.color.sign_txt_color));
             mSignOrLeftTimeTv.setText(R.string.person_account_sign_in_hint);
