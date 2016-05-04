@@ -124,6 +124,7 @@ public class AutoScrollTextViewH extends TextView {
         public boolean isStarting = false ;
         public float mStepFirstLine = 0.0f ;
         public float mXCoordinateFirstLine = 0.0f ;
+        private String mText = "" ;
         
         SavedState(Parcelable superState) {
             super(superState) ;
@@ -135,6 +136,7 @@ public class AutoScrollTextViewH extends TextView {
             out.writeBooleanArray(new boolean[] { isStarting }) ;
             out.writeFloat(mStepFirstLine) ;
             out.writeFloat(mXCoordinateFirstLine) ;
+            out.writeString(mText);
         }
         
         public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
@@ -157,6 +159,7 @@ public class AutoScrollTextViewH extends TextView {
                 isStarting = b[0] ;
             mStepFirstLine = in.readFloat() ;
             mXCoordinateFirstLine = in.readFloat() ;
+            mText = in.readString();
         }
     }
     
@@ -184,6 +187,16 @@ public class AutoScrollTextViewH extends TextView {
 
     private void drawFirstLine(Canvas canvas) {
         mXCoordinateFirstLine = mXCoordinateFirstLine - mStepFirstLine ;
+        if(mText == null) {
+            mText = "";
+        }
+        if(mPaint == null) {
+            mPaint = getPaint();
+        }
+        if(mPaint == null) {
+            Log.w(TAG, "So strange!!! mPaint is still null");
+            return;
+        }
         canvas.drawText(mText, mXCoordinateFirstLine, mYCoordinate,
                 mPaint) ;
         //mStepFirstLine += 0.3 ;
