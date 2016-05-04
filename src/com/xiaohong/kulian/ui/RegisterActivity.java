@@ -15,7 +15,6 @@
  */
 package com.xiaohong.kulian.ui;
 
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +44,6 @@ import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.xiaohong.kulian.Constants;
@@ -134,7 +132,13 @@ public class RegisterActivity extends BaseActivity
                 String res = match.substring(12, 16);// 获取短信中的验证码
 
                 System.out.println(res);
-                etVerifyCode.setText(res);
+                if(etVerifyCode == null) {
+                    etVerifyCode = (EditText) findViewById(R.id.et_verify_code);
+                    etVerifyCode.setOnFocusChangeListener(this);
+                }
+                if(etVerifyCode != null && res != null) {
+                    etVerifyCode.setText(res);
+                }
                 // stop observer
                 getContentResolver().unregisterContentObserver(mSmsObserver);
             }
@@ -151,10 +155,11 @@ public class RegisterActivity extends BaseActivity
     
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        getContentResolver().unregisterContentObserver(mSmsObserver);
         etUsername = null;
         etVerifyCode = null;
         etInviteCode = null;
+        super.onDestroy();
     }
 
     @Override
