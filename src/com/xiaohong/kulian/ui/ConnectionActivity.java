@@ -123,7 +123,7 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         initView();
 
         mWifiAdmin = new WifiAdmin(getApplicationContext());
-        mAuth = new WifiAuthentication();
+        mAuth = new WifiAuthentication(ConnectionActivity.this);
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
 
         registerConnection();
@@ -383,7 +383,6 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String ssid = wifiInfo.getSSID();
-            Log.d("SSID", ssid);
             wifiStatusChanged(ssid);
         }
     }
@@ -626,17 +625,19 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
             break;
         //查看点击事件
         case R.id.tv_action:
-            String clickUrl = taskBean.getClick_url();
-            if (clickUrl != null && !clickUrl.equals("")) {
-                Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
-                detailIntent.putExtra("extra.url", clickUrl);
-                detailIntent.putExtra("extra.title", taskBean.getName());
-                startActivity(detailIntent);
-            } else {
-                Log.w(TAG, "no click url");
-                Intent intent = new Intent(getApplicationContext(), GzhTaskDetailActivity.class);
-                intent.putExtra(Constants.EXTRA_TASK_BEAN, taskBean);
-                startActivity(intent);
+            if (taskBean != null) {
+                String clickUrl = taskBean.getClick_url();
+                if (clickUrl != null && !clickUrl.equals("")) {
+                    Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
+                    detailIntent.putExtra("extra.url", clickUrl);
+                    detailIntent.putExtra("extra.title", taskBean.getName());
+                    startActivity(detailIntent);
+                } else {
+                    Log.w(TAG, "no click url");
+                    Intent intent = new Intent(getApplicationContext(), GzhTaskDetailActivity.class);
+                    intent.putExtra(Constants.EXTRA_TASK_BEAN, taskBean);
+                    startActivity(intent);
+                }
             }
             break;
         //签到点击事件

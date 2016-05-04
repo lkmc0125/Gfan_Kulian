@@ -81,9 +81,6 @@ public class BaseHelper {
 		dialog.setMessage(message);
 		dialog.setIndeterminate(indeterminate);
 		dialog.setCancelable(false);
-		// dialog.setDefaultButton(false);
-//		dialog.setOnCancelListener(new PayMainActivity.AlixOnCancelListener((Activity) context));
-
 		dialog.show();
 		return dialog;
 	}

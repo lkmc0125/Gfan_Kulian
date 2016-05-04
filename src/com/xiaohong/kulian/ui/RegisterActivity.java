@@ -26,6 +26,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -55,12 +56,12 @@ import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
+import com.xiaohong.kulian.common.widget.CustomDialog;
 public class RegisterActivity extends BaseActivity 
     implements OnClickListener, OnFocusChangeListener, ApiRequestListener {
 
     private static final String TAG = "RegisterActivity";
     private static final int DIALOG_PROGRESS = 0;
-
     // 用户不存在（用户名错误）
     private static final int ERROR_CODE_USERNAME_NOT_EXIST = 211;
     // 用户密码错误
@@ -152,13 +153,10 @@ public class RegisterActivity extends BaseActivity
         initView();
         mSmsObserver = new SmsObserver(this, smsHandler);
     }
-    
+
     @Override
     protected void onDestroy() {
         getContentResolver().unregisterContentObserver(mSmsObserver);
-        etUsername = null;
-        etVerifyCode = null;
-        etInviteCode = null;
         super.onDestroy();
     }
 
@@ -215,9 +213,11 @@ public class RegisterActivity extends BaseActivity
             register();
             break;
         case R.id.btn_verify_code:
-            onClickVerifyCodeBtn();
-            time = new TimeCount(time_default, 1000);
-            time.start();
+            if (checkUserName()) {
+                onClickVerifyCodeBtn();
+                time = new TimeCount(time_default, 1000);
+                time.start();
+            }
             break;
         case R.id.license_tv:
             Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
@@ -254,31 +254,29 @@ public class RegisterActivity extends BaseActivity
     }
 
     private void onClickVerifyCodeBtn() {
-        if (checkUserName()) {
-            // start observe sms
-            getContentResolver().registerContentObserver(SMS_INBOX, true, mSmsObserver);
+        // start observe sms
+        getContentResolver().registerContentObserver(SMS_INBOX, true, mSmsObserver);
 
-            String url = MarketAPI.API_BASE_URL+"/appverifycode?phone_number="+etUsername.getText().toString();
-            if (Utils.isLeShiMobile()) {
-                url += "&leshi=1";
-            }
-            String ret = Utils.httpGet(url);
-            if (ret != null) {
-                try {
-                    JSONObject obj = new JSONObject(ret);
-                    if (obj.getInt("ret_code") == 0) {
-                        DialogUtils.showMessage(this, null, "验证码已通过短信发送");
-                    } else {
-                        DialogUtils.showMessage(this, "错误", obj.getString("ret_msg"));
-                    }
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }                    
-                Log.d(TAG, ret);
-            } else {
-                DialogUtils.showMessage(this, "网络错误", "请检查网络连接");
-            }
+        String url = MarketAPI.API_BASE_URL+"/appverifycode?phone_number="+etUsername.getText().toString();
+        if (Utils.isLeShiMobile()) {
+            url += "&leshi=1";
+        }
+        String ret = Utils.httpGet(url);
+        if (ret != null) {
+            try {
+                JSONObject obj = new JSONObject(ret);
+                if (obj.getInt("ret_code") == 0) {
+                    DialogUtils.showMessage(this, null, "验证码已通过短信发送");
+                } else {
+                    DialogUtils.showMessage(this, "错误", obj.getString("ret_msg"));
+                }
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }                    
+            Log.d(TAG, ret);
+        } else {
+            DialogUtils.showMessage(this, "网络错误", "请检查网络连接");
         }
     }
 
@@ -300,7 +298,6 @@ public class RegisterActivity extends BaseActivity
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mProgressDialog.setMessage(getString(R.string.singin));
             return mProgressDialog;
-
         default:
             return super.onCreateDialog(id);
         }
@@ -312,26 +309,30 @@ public class RegisterActivity extends BaseActivity
         
         switch (method) {
         case MarketAPI.ACTION_REGISTER:
-            
-            Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
-                    Constants.LOGIN_SUCCESS);
+            if (etUsername != null) {
+                Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
+                        Constants.LOGIN_SUCCESS);
 
-            LoginResultBean result = (LoginResultBean) obj;
-            String userName = etUsername.getText().toString();
-            String password = etUsername.getText().toString().substring(5,11);
-            mSession.setUserName(userName);
-            mSession.setPassword(password);
-            mSession.setCoinNum(result.getCoinNum());
-            mSession.setToken(result.getToken());
-            mSession.setSignInToday(result.getIsSign());
-            mSession.setLogin(true);
-            // 隐藏登录框
-            try{
-                dismissDialog(DIALOG_PROGRESS);
-            }catch (IllegalArgumentException e) {
+                LoginResultBean result = (LoginResultBean) obj;
+                String userName = etUsername.getText().toString();
+                String password = etUsername.getText().toString().substring(5,11);
+                mSession.setUserName(userName);
+                mSession.setPassword(password);
+                mSession.setCoinNum(result.getCoinNum());
+                mSession.setToken(result.getToken());
+                mSession.setSignInToday(result.getIsSign());
+                mSession.setLogin(true);
+                // 隐藏登录框
+                try{
+                    dismissDialog(DIALOG_PROGRESS);
+                }catch (IllegalArgumentException e) {
+                }
+                hideKeyBoard();
+                finish();
+            } else {
+                // activity 已经在得到查询结果前销毁
+                Log.d(TAG, "activity already destroied before got query result");
             }
-            hideKeyBoard();
-            finish();
             break;
             
         default:

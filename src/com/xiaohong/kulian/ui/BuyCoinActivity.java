@@ -219,8 +219,6 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
 
                 } else {
                     Log.d(TAG, "connect server failed");
-                    // Toast.makeText(PayMainActivity.this, "无法连接到服务器，请稍后再试",
-                    // Toast.LENGTH_SHORT).show();
                 }
                 return null;
             }

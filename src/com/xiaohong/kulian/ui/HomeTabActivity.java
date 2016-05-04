@@ -678,8 +678,10 @@ public class HomeTabActivity extends BaseTabActivity implements
         if (method == MarketAPI.ACTION_CHECK_NEW_VERSION) {
             handleUpdate((UpdateInfo) obj);
         } else if (method == MarketAPI.ACTION_GET_SSID_LIST) {
-            ArrayList<String> ssidList = (ArrayList<String>) obj;
-            mSession.setSSIDList(ssidList);
+            if (obj != null) {
+                ArrayList<String> ssidList = (ArrayList<String>) obj;
+                mSession.setSSIDList(ssidList);
+            }
         }
     }
 
@@ -760,9 +762,11 @@ public class HomeTabActivity extends BaseTabActivity implements
         // 清除所有图片缓存
         CacheManager.getInstance().clearFromMemory();
         // 清除所有观察者
-        mSession.deleteObservers();
-        if (mSession.isAutoClearCache()) {
-            Utils.clearCache(getApplicationContext());
+        if (mSession != null) {
+            mSession.deleteObservers();
+            if (mSession.isAutoClearCache()) {
+                Utils.clearCache(getApplicationContext());
+            }
         }
         // 关闭HTTP资源
         HttpClientFactory.get().close();

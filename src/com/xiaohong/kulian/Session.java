@@ -799,7 +799,9 @@ public class Session extends Observable {
         if (mInstalledApps == null) {
             Utils.getAllInstalledApps(mContext);
         }
-        mInstalledApps.remove(packageName);
+        if (mInstalledApps != null) {
+            mInstalledApps.remove(packageName);           
+        }
         mHandler.sendEmptyMessage(CURSOR_UPDATE);
     }
 

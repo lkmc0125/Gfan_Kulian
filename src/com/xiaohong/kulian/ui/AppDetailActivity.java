@@ -20,6 +20,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -143,7 +144,12 @@ public class AppDetailActivity extends Activity
    @SuppressLint("NewApi")
     private void initViews() {
         mAppIconView = (ImageView) findViewById(R.id.app_icon);
-        mAppIconView.setBackground(null);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mAppIconView.setBackground(null);
+        } else {
+            mAppIconView.setBackgroundDrawable(null);
+        }
         mHeaderViewLayout = (RelativeLayout) findViewById(R.id.header_blur_layout);
         mBackImageView = (LinearLayout) findViewById(R.id.back_layout);
         mAppNameTv = (TextView) findViewById(R.id.app_name_tv);
@@ -193,7 +199,12 @@ public class AppDetailActivity extends Activity
         @Override
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
-            mDstView.setBackground(new BitmapDrawable(result));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mDstView.setBackground(new BitmapDrawable(result));
+            } else {
+                mDstView.setBackgroundDrawable(new BitmapDrawable(result));
+            }
         }
     }
 

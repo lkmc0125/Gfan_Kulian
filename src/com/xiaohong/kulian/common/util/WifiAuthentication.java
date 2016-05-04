@@ -15,10 +15,19 @@ import java.util.regex.Pattern;
 import com.ruijie.wmc.open.ClientHelper;
 import com.ruijie.wmc.open.JsonUtil;
 
+import android.content.Context;
 import android.util.Log;
 
 public class WifiAuthentication {
     private final String TAG = "WifiAuthentication";
+    private Context mContext;
+
+    private WifiAuthentication() {
+    }
+
+    public WifiAuthentication(Context context) {
+        mContext = context;
+    }
 
     public void appAuth() {
         new Thread(authTask).start();
