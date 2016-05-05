@@ -49,6 +49,8 @@ import com.xiaohong.kulian.Session.PersonalCenterStatus;
 import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.util.ApkInfo;
+import com.xiaohong.kulian.common.util.ApkUtil;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.CustomDialog;
@@ -62,6 +64,7 @@ import com.xiaohong.kulian.common.widget.CustomDialog;
 public class PersonalAccountActivity extends BaseActivity implements android.view.View.OnClickListener,
         ApiRequestListener , OnCoinUpdatedListener{
 
+    private static final String TAG = "PersonalAccountActivity";
     private static final int ACCOUNT_REGIST = 0;
     private static final int REQUEST_CODE = 20;
     public static final int REGIST = 1;

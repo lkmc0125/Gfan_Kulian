@@ -85,6 +85,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -102,6 +103,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.igexin.a.a.a.a;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.xiaohong.kulian.R;
@@ -1773,4 +1775,41 @@ public class Utils {
         }
         return packageName;
     }
+    
+    /**
+     * This function will run in a background thread
+     * @param packageName
+     */
+    public static void removeInstalledApkByPackageName(final String packageName) {
+        if(packageName == null || packageName.equals("")) {
+            Log.w(TAG, "removeInstalledApkByPackageName bad package name:" + packageName);
+            return;
+        }
+        new AsyncTask<Void,Void,Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                //scan apk dir
+                File file =  new File(Environment.getExternalStorageDirectory(),
+                        com.xiaohong.kulian.common.download.Constants.DEFAULT_MARKET_SUBDIR);
+                if(!file.exists()) {
+                    Log.w(TAG, file.getAbsolutePath() + " doesnot exist");
+                    return null;
+                }
+                File apkList [] = file.listFiles();
+                for(File apk : apkList) {
+                    ApkInfo apkInfo = ApkUtil.getApkInfo(apk.getAbsolutePath());
+                    if(packageName.equals(apkInfo.getApkPackage())) {
+                        Log.d(TAG, apkInfo.getApkName() + "removed");
+                        deleteFile(apkInfo.getApkName());
+                        return null;
+                    }
+                }
+                return null;
+            }
+            
+        }.execute();
+    }
+    
+    
 }

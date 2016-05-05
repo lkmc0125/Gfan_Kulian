@@ -1121,6 +1121,7 @@ public class Session extends Observable {
 //        if(info != null) {
             MarketAPI.reportAppInstalled(mContext, mReportApiRequestListener, packagename);
             notifyAppInstalled(packagename);
+            Utils.removeInstalledApkByPackageName(packagename);
 //        }
     }
     

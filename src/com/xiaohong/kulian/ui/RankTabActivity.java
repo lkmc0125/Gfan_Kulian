@@ -76,6 +76,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 //        getWindow().setBackgroundDrawableResource(android.R.color.darker_gray);
         initView();
 //        initAdPager();  // banner
+        Log.d(TAG, "onCreate");
 
     }
 
