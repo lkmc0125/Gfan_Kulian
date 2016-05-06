@@ -21,6 +21,8 @@ import java.util.HashMap;
 
 import org.apache.http.HttpHost;
 
+import aga.fdf.grd.AdManager;
+import aga.fdf.grd.os.df.DiyOfferWallManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -68,7 +70,8 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_layout);
-
+        AdManager.getInstance(getApplicationContext()).init("12531462dbec51f1", "03a64201b437bf63", true); // true means test mode
+        DiyOfferWallManager.getInstance(getApplicationContext()).onAppLaunch();
         // 从H5版本启动native版本时，可以带上登录信息
         Intent intent = getIntent();
         String userName = intent.getStringExtra("user");
@@ -98,6 +101,7 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener, 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        DiyOfferWallManager.getInstance(getApplicationContext()).onAppExit();
     }
     
     /*

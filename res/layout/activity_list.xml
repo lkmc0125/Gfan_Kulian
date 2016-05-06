@@ -1,0 +1,14 @@
+<com.xiaohong.kulian.common.widget.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sr_ad_list"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+
+    <ListView
+        android:id="@+id/lv_addata"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </ListView>
+
+</com.xiaohong.kulian.common.widget.RefreshLayout>

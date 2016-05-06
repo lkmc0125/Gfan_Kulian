@@ -1,90 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xiaohong.kulian" android:versionCode="91"
-    android:versionName="2.1">
+    package="com.xiaohong.kulian"
+    android:versionCode="91"
+    android:versionName="2.1"
+    xmlns:tools="http://schemas.android.com/tools" >
 
-    <application android:label="@string/app_name"
-        android:icon="@drawable/push" 
-        android:theme="@android:style/Theme.Light.NoTitleBar"
-        android:name=".WifiKulianApp" >
+    <application
+        android:name=".WifiKulianApp"
+        android:icon="@drawable/push"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Light.NoTitleBar" >
 
         <!-- Splash页 -->
-        <activity android:name=".ui.SplashActivity"
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation">
+        <activity
+            android:name=".ui.SplashActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <!-- 首页 -->
-        <activity android:name=".ui.HomeTabActivity" 
-            android:screenOrientation="portrait" 
-            android:windowSoftInputMode="stateUnchanged"/>
-        <activity android:name=".ui.ConnectionActivity" 
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation"/>
-        
-        <!-- 排行页 -->
-        <activity android:name=".ui.RankTabActivity"
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name=".ui.ProductListActivity"
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name=".ui.TaskListActivity"
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation"/>
+        <activity
+            android:name=".ui.HomeTabActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateUnchanged" />
+        <activity
+            android:name=".ui.ConnectionActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
 
+        <!-- 排行页 -->
+        <activity
+            android:name=".ui.RankTabActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ProductListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.TaskListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.OfferWallAdListActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".ui.OfferWallAdDetailActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:exported="false" >
+        </activity>
         <!-- 应用详情 -->
-        <activity android:name=".ui.AppDetailActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation" />
+        <activity
+            android:name=".ui.AppDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
         <!-- 公众号任务详情 -->
-        <activity android:name=".ui.GzhTaskDetailActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation" />
+        <activity
+            android:name=".ui.GzhTaskDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
 
         <!-- Menu 相关页面 -->
-        <activity android:name=".ui.ClientPreferenceActivity"
-            android:screenOrientation="portrait" 
+        <activity
+            android:name=".ui.ClientPreferenceActivity"
             android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light" />
-        <activity android:name=".ui.FeedBackActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:configChanges="keyboardHidden|orientation" />
-            
-        <!-- 个人中心页 -->
-        <activity android:name=".ui.PersonalAccountActivity"
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation" />
-        <activity android:name=".ui.PayMainActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation" />
-        <activity android:name=".ui.MessageListActivity"
-            android:screenOrientation="portrait" 
-            android:configChanges="keyboardHidden|orientation" />
-        <!--  购买金币 -->
-        <activity android:name=".ui.BuyingEntryActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation" />
-
-        <activity android:name=".ui.OtherAccountActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation" />
-
-        <activity android:name=".ui.BuyCoinActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation" />
-        <!-- 注册页 -->
-        <activity android:name=".ui.RegisterActivity"
-            android:screenOrientation="portrait" 
+        <activity
+            android:name=".ui.FeedBackActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="adjustResize"/>
-        
-        <!--用于显示Dialog  -->
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <!-- 个人中心页 -->
+        <activity
+            android:name=".ui.PersonalAccountActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PayMainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MessageListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <!-- 购买金币 -->
+        <activity
+            android:name=".ui.BuyingEntryActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.OtherAccountActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.BuyCoinActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <!-- 注册页 -->
+        <activity
+            android:name=".ui.RegisterActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 用于显示Dialog -->
         <activity
             android:name=".ui.DialogActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -97,41 +125,69 @@
             android:name=".ui.WebviewActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 微信pay  -->
+        <!-- 微信pay -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"/>
-        
-        
+            android:launchMode="singleTop" />
+
+        <!-- youmi -->
+        <service
+            android:name="aga.fdf.grd.SIO"
+            android:exported="false" >
+        </service>
+        <service
+            android:name="aga.fdf.grd.YUU"
+            android:exported="false" >
+        </service>
+
+        <receiver android:name="aga.fdf.grd.DDW" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
         <!-- Content Provider -->
-        <provider android:name=".common.util.MarketProvider"
+        <provider
+            android:name=".common.util.MarketProvider"
             android:authorities="kulian" />
 
         <!-- Download Service -->
-        <provider android:name=".common.download.DownloadProvider"
+        <provider
+            android:name=".common.download.DownloadProvider"
             android:authorities="kulian_downloads" />
+
         <service android:name=".common.download.DownloadService" />
-        <receiver android:name=".common.download.DownloadReceiver"
-            android:exported="false">
+
+        <receiver
+            android:name=".common.download.DownloadReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        
+
         <!-- Splash Receiver -->
-        <receiver android:name=".common.util.CheckSplashUpdateReceiver">
+        <receiver android:name=".common.util.CheckSplashUpdateReceiver" >
             <intent-filter>
                 <action android:name="com.xiaohong.market.broadcast.splash.CHECK_UPGRADE" />
             </intent-filter>
         </receiver>
-        
-        <meta-data android:name="kulian_cpid" android:value="WIFI酷连" />
+
+        <meta-data
+            android:name="kulian_cpid"
+            android:value="WIFI酷连" />
         <!-- content ID -->
-        <meta-data android:name="kulian_cid" android:value="9" />
+        <meta-data
+            android:name="kulian_cid"
+            android:value="9" />
         <!-- upgrade uses -->
-        <meta-data android:name="kulian_debug" android:value="1" />
+        <meta-data
+            android:name="kulian_debug"
+            android:value="1" />
 
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
@@ -152,11 +208,10 @@
             android:label="NotificationCenter"
             android:process=":pushservice" >
         </service>
-
         <service
-	        android:name="com.igexin.sdk.PushServiceUser"
-	        android:exported="true"
-	        android:label="NotificationCenterUser" />
+            android:name="com.igexin.sdk.PushServiceUser"
+            android:exported="true"
+            android:label="NotificationCenterUser" />
 
         <receiver android:name="com.igexin.sdk.PushReceiver" >
             <intent-filter>
@@ -170,7 +225,6 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name="com.igexin.sdk.PushManagerReceiver"
             android:exported="false" >
@@ -187,15 +241,14 @@
             android:taskAffinity="com.igexin.sdk.PushActivityTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-
         <activity
-	        android:name="com.igexin.sdk.GActivity"
-	        android:excludeFromRecents="true"
-	        android:exported="true"
-	        android:process=":pushservice"
-	        android:taskAffinity="com.igexin.sdk.PushActivityTask"
-	        android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        
+            android:name="com.igexin.sdk.GActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:process=":pushservice"
+            android:taskAffinity="com.igexin.sdk.PushActivityTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <service
             android:name="com.igexin.download.DownloadService"
             android:process=":pushservice" />
@@ -208,8 +261,8 @@
 
         <provider
             android:name="com.igexin.download.DownloadProvider"
-            android:exported="true"
             android:authorities="downloads.com.xiaohong.kulian"
+            android:exported="true"
             android:process=":pushservice" />
 
         <activity
@@ -236,23 +289,37 @@
         <service
             android:name="com.igexin.getuiext.service.GetuiExtService"
             android:process=":pushservice" />
-        <!-- 个推SDK配置结束 -->   
+        <!-- 个推SDK配置结束 -->
+
 
         <!-- 广点通SDK配置 -->
-        <service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>
-        <activity android:name="com.qq.e.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+        <service
+            android:name="com.qq.e.comm.DownloadService"
+            android:exported="false" >
+        </service>
+
+        <activity
+            android:name="com.qq.e.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" >
         </activity>
         <!-- 广点通SDK配置结束 -->
-        
-        <!-- 友盟  -->
-        <meta-data android:value="55877b8067e58e1674004760" android:name="UMENG_APPKEY"></meta-data>
-        <!-- Channel value: anhui01  or  wen_zhou  -->
-        <meta-data android:value="wen_zhou" android:name="UMENG_CHANNEL"></meta-data>
 
+
+        <!-- 友盟 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="55877b8067e58e1674004760" >
+        </meta-data>
+        <!-- Channel value: anhui01  or  wen_zhou -->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="wen_zhou" >
+        </meta-data>
     </application>
 
     <!-- Only this application can receive the messages and registration result -->
-    <permission android:name="com.xiaohong.kulian.permission.C2D_MESSAGE"
+    <permission
+        android:name="com.xiaohong.kulian.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <!-- Permission Group -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
@@ -275,12 +342,18 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" /> 
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<!-- 积分墙广告 -->
+	<uses-permission android:name="android.permission.GET_TASKS" />
+	<uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
+    <!-- 以下为可选权限 -->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+
     <permission
         android:name="getui.permission.GetuiService.com.xiaohong.kulian"
         android:protectionLevel="normal" >
@@ -290,5 +363,9 @@
     <uses-permission android:name="com.xiaohong.kulian.permission.C2D_MESSAGE" />
 
     <supports-screens android:anyDensity="true" />
-    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="9" />
-</manifest> 
+
+    <uses-sdk
+        android:minSdkVersion="5"
+        android:targetSdkVersion="9" />
+
+</manifest>

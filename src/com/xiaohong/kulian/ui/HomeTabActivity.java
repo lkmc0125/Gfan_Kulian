@@ -27,6 +27,7 @@ import java.util.Observer;
 
 import org.apache.http.HttpHost;
 
+import aga.fdf.grd.os.df.DiyOfferWallManager;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -229,7 +230,6 @@ public class HomeTabActivity extends BaseTabActivity implements
         // 接受更新提醒
         mSession.addObserver(this);
         registerReceivers();
-
         setContentView(R.layout.activity_home_tab_main);
 
         @SuppressWarnings("unchecked")
