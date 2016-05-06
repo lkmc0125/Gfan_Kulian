@@ -39,8 +39,7 @@ public class WifiAuthentication {
             try {
                 sendKangKaiAuthRequest();
                 sendShenZhouAuthRequest();
-                sendHuanChuangAuthRequest();
-                sendHillStoneAuthRequest();
+//                sendHillStoneAuthRequest();
                 sendRuijieAuthRequest();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -82,34 +81,7 @@ public class WifiAuthentication {
             e.printStackTrace();
         }
     }
-
-    private void sendHuanChuangAuthRequest() throws Exception {
-        try {
-            Log.d(TAG, "sendHuanChuangAuthRequest");
-            String url = "http://www.baidu.com";
-            String redictURL = getRedirectUrl(url);
-            if (redictURL == null) {
-                Log.d(TAG, "url not redirected");
-                return;
-            }
-
-            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMdd");       
-            String date = sDateFormat.format(new java.util.Date());   
-            String appfauth = stringToMD5(date);
-            String authUrl = "http://www.wifiopenapiauth.com/?appfauth="+appfauth+"&suburl=http://www.baidu.com";
-            HttpURLConnection conn = (HttpURLConnection) new URL(authUrl).openConnection();
-            conn.setInstanceFollowRedirects(false);
-            conn.setConnectTimeout(5000);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+/*  山石未用
     private void sendHillStoneAuthRequest() throws Exception {
         Log.d(TAG, "sendHillStoneAuthRequest");
         try {
@@ -126,7 +98,7 @@ public class WifiAuthentication {
             e.printStackTrace();
         }
     }
-
+*/
     private void sendRuijieAuthRequest() throws Exception {
         Log.d(TAG, "sendRuijieAuthRequest");
         try {
