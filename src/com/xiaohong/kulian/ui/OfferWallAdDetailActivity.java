@@ -149,6 +149,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
 //				.setColorScheme(Color.parseColor("#ff00ddff"), Color.parseColor("#ff99cc00"), Color.parseColor
 //								("#ffffbb33"),
 //						Color.parseColor("#ffff4444"));
+		mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+		         android.R.color.holo_orange_light, android.R.color.holo_red_light);
 
 		appIcon = (ImageView) findViewById(R.id.iv_detailpage_appicon);
 		appName = (TextView) findViewById(R.id.tv_detailpage_appname);

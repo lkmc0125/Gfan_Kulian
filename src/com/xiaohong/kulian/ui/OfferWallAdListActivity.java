@@ -127,14 +127,14 @@ public class OfferWallAdListActivity extends BaseActivity
 			}
 		});
 
-//		mSwipeRefreshLayout.setProgressViewOffset(false, 0,
-//				(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
-//		mSwipeRefreshLayout
-//				.setColorScheme(Color.parseColor("#ff00ddff"), Color.parseColor("#ff99cc00"), Color.parseColor
-//								("#ffffbb33"),
-//						Color.parseColor("#ffff4444"));
-		// swipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
-		// android.R.color.holo_orange_light, android.R.color.holo_red_light);
+		mSwipeRefreshLayout.setProgressViewOffset(false, 0,
+				(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+		/*mSwipeRefreshLayout
+				.setColorScheme(Color.parseColor("#ff00ddff"), Color.parseColor("#ff99cc00"), Color.parseColor
+								("#ffffbb33"),
+						Color.parseColor("#ffff4444"));*/
+		mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+		 android.R.color.holo_orange_light, android.R.color.holo_red_light);
 
 		ListView listView = (ListView) findViewById(R.id.lv_addata);
 		mLvAdapter = new ListViewAdapter(this, null); // 这里先让列表为空，待加载到数据再显示出来
