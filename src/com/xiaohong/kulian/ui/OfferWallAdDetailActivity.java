@@ -1,12 +1,19 @@
 package com.xiaohong.kulian.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,11 +21,14 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.adapter.GridViewAdapter;
 import com.xiaohong.kulian.adapter.ListViewAdapter_TaskDesc;
@@ -27,9 +37,11 @@ import com.xiaohong.kulian.common.util.BitmapLoaderManager;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.TaskDescObject;
 import com.xiaohong.kulian.common.widget.BaseActivity;
+import com.xiaohong.kulian.common.widget.CustomProgressBar;
 
 import aga.fdf.grd.os.PointsChangeNotify;
 import aga.fdf.grd.os.PointsManager;
+import aga.fdf.grd.os.df.AdDownloadStatus;
 import aga.fdf.grd.os.df.DiyAppNotify;
 import aga.fdf.grd.os.df.AdExtraTaskStatus;
 import aga.fdf.grd.os.df.AdTaskStatus;
@@ -41,6 +53,7 @@ import aga.fdf.grd.os.df.AppSummaryObject;
 import aga.fdf.grd.os.df.DiyOfferWallManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class OfferWallAdDetailActivity extends BaseActivity
@@ -59,6 +72,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
     private TextView appName;
 
     private TextView appVersion;
+    
+    private TextView appCoinNumTv;
 
     private TextView appSize;
 
@@ -92,12 +107,26 @@ public class OfferWallAdDetailActivity extends BaseActivity
     private boolean isPackageExist = false;
 
     private final static Handler handler = new Handler();
+    
+    /**
+     * 应用详情图片
+     */
+    
+    private ArrayList<ImageView> mAppPicViews = new ArrayList<ImageView>();
+    private ImageLoader mImageLoader;
+    private RelativeLayout mHeaderViewLayout;
+    /**
+     * 下载条
+     */
+    private CustomProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+//        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_app_detail);
 
+        mImageLoader = ImageLoader.getInstance();
         // 检查传入的Intent是否合法，不合法就直接finish
         Object obj = getIntent().getSerializableExtra("ad");
         if (obj == null || !(obj instanceof AppSummaryObject)) {
@@ -121,6 +150,11 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
         // 获取广告的详细数据
         requestDetailData();
+        if (appDetailObject != null) {
+
+            DiyOfferWallManager.getInstance(this).openOrDownloadApp(
+                    this, appDetailObject);
+        }
 
     }
 
@@ -138,46 +172,22 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
     private void initView() {
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_ad_detail);
-        mSwipeRefreshLayout
-                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mHeaderViewLayout = (RelativeLayout) findViewById(R.id.header_blur_layout);
 
-                    @Override
-                    public void onRefresh() {
-                        // 重新刷新页面
-                        requestDetailData();
-                    }
-                });
-        // mSwipeRefreshLayout
-        // .setColorScheme(Color.parseColor("#ff00ddff"),
-        // Color.parseColor("#ff99cc00"), Color.parseColor
-        // ("#ffffbb33"),
-        // Color.parseColor("#ffff4444"));
-        mSwipeRefreshLayout.setColorSchemeResources(
-                android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
-        appIcon = (ImageView) findViewById(R.id.iv_detailpage_appicon);
-        appName = (TextView) findViewById(R.id.tv_detailpage_appname);
-        appVersion = (TextView) findViewById(R.id.tv_detailpage_apppvn);
-        appSize = (TextView) findViewById(R.id.tv_detailpage_appsize);
-        appStyle = (TextView) findViewById(R.id.tv_detailpage_appstyle);
-        appDesc = (TextView) findViewById(R.id.tv_detailpage_appdesc);
-        rewardCount = (TextView) findViewById(R.id.tv_detailpage_rewards_count);
-
-        downlaodProgressBar = (ProgressBar) findViewById(R.id.pb_download);
-        downlaodProgressBar.setVisibility(View.GONE);
-
-        openOrDownloadBtn = (Button) findViewById(R.id.btn_detailpage_open_or_install);
-        openOrDownloadBtn.setVisibility(View.INVISIBLE);
-        openOrDownloadBtn.setOnClickListener(this);
-        updateOpenOrDownloadButtonStatus(appSumObject.getAdTaskStatus());
-
+        /**
+         * modifyed by albert 2016/5/7 
+         */
+        mProgressBar = (CustomProgressBar) findViewById(R.id.download_progress_bar);
+        mProgressBar.setOnClickListener(this);
+        appIcon = (ImageView) findViewById(R.id.app_icon);
+        appName = (TextView) findViewById(R.id.app_name_tv);
+        appVersion = (TextView) findViewById(R.id.app_version_tv);
+        appCoinNumTv = (TextView) findViewById(R.id.app_coin_num_tv);
+        appDesc = (TextView) findViewById(R.id.app_desc_tv);
         gridView = (GridView) findViewById(R.id.detailpage_gridView);
         gvAdapter = new GridViewAdapter(OfferWallAdDetailActivity.this, null);
         gridView.setAdapter(gvAdapter);
+        gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
 
         listView = (ListView) findViewById(R.id.detailpage_listview);
         listView.setEnabled(false);
@@ -191,7 +201,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
      */
     private void requestDetailData() {
 
-        mSwipeRefreshLayout.setRefreshing(true);
+//        mSwipeRefreshLayout.setRefreshing(true);
         // 异步加载方式
         DiyOfferWallManager.getInstance(this).loadAppDetailData(appSumObject,
                 new AppDetailDataInterface() {
@@ -249,7 +259,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
             @Override
             public void run() {
-                mSwipeRefreshLayout.setRefreshing(false);
+//                mSwipeRefreshLayout.setRefreshing(false);
                 new AlertDialog.Builder(OfferWallAdDetailActivity.this)
                         .setTitle("请求失败")
                         .setMessage(String.format(format, args)).create()
@@ -261,13 +271,64 @@ public class OfferWallAdDetailActivity extends BaseActivity
     /**
      * 更新按钮状态
      */
-    private void updateOpenOrDownloadButtonStatus(int status) {
+    private void updateOpenOrDownloadButtonStatus(int status,int status1) {
+        System.out.println("updateOpenOrDownloadButtonStatus"+status);
+        switch (status1) {
+        case AdDownloadStatus.NOT_DOWNLOAD:
+            try {
+                if (appDetailObject == null) {
+                    return;
+                }
+                this.mProgressBar.setProgress(0);
+                this.mProgressBar.setVisibility(View.VISIBLE);
+                this.mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
+                this.mProgressBar.setText("下载安装赚金币(" + appSumObject.getAppSize() + ")");
+            } catch (Throwable e) {
+                Log.d("Youmi", "", e);
+            }
+            return;
+        case AdDownloadStatus.ALERADY_DOWNLOAD:
+            try {
+                if (appDetailObject == null) {
+                    return;
+                }
+                this.mProgressBar.setProgress(0);
+                this.mProgressBar.setVisibility(View.VISIBLE);
+                this.mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
+                this.mProgressBar.setText("安装");
+            } catch (Throwable e) {
+                Log.d("Youmi", "", e);
+            }
+        return;
+        case AdDownloadStatus.DOWNLOADING:
+            try {
+                if (appDetailObject == null) {
+                    return;
+                }
+
+                this.mProgressBar.setVisibility(View.VISIBLE);
+//                this.mProgressBar.setProgress(appDetailObject.get);
+                mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
+                this.mProgressBar.setText(
+                        "正在下载");
+            } catch (Throwable e) {
+                Log.d("Youmi", "", e);
+            }
+        return;
+
+        default:
+            break;
+        }
         switch (status) {
+            
             case AdTaskStatus.NOT_COMPLETE : // 未完成
-                openOrDownloadBtn.setEnabled(true);
-                openOrDownloadBtn.setText(isPackageExist
-                        ? "任务未完成，打开体验"
-                        : "下载安装");
+                
+                mProgressBar.setText("下载安装赚金币(" + appSumObject.getAppSize() + ")");
+                mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
+//                openOrDownloadBtn.setEnabled(true);
+//                openOrDownloadBtn.setText(isPackageExist
+//                        ? "任务未完成，打开体验"
+//                        : "下载安装");
                 break;
             case AdTaskStatus.HAS_EXTRA_TASK : // 有追加任务
                 openOrDownloadBtn.setEnabled(true);
@@ -285,7 +346,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
                 break;
             case AdTaskStatus.ALREADY_COMPLETE : // 已完成
                 openOrDownloadBtn.setEnabled(true);
-                openOrDownloadBtn.setText(isPackageExist ? "任务已完成，打开" : "重新安装");
+                openOrDownloadBtn.setText(isPackageExist ? "打开" : "重新安装");
                 break;
             default :
                 break;
@@ -295,7 +356,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_detailpage_open_or_install :
+            case R.id.download_progress_bar:
                 if (appDetailObject != null) {
 
                     DiyOfferWallManager.getInstance(this).openOrDownloadApp(
@@ -351,6 +412,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
      * @param appDetailObject
      */
     private void updateView(final AppDetailObject detailData) {
+        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.getAdDownloadStatus());
         if (detailData != null) {
 
             this.appDetailObject = detailData;
@@ -370,20 +432,19 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
                 @Override
                 public void run() {
-                    openOrDownloadBtn.setVisibility(View.VISIBLE);
+                    update_image();
                     appName.setText(appDetailObject.getAppName());
+                    appCoinNumTv.setText("+" + appSumObject.getPoints());
                     appVersion.setText("版本号："
-                            + appDetailObject.getVersionName());
-                    appSize.setText("大小：" + appDetailObject.getAppSize());
-                    appStyle.setText(appDetailObject.getAppCategory());
+                            + appDetailObject.getVersionName());;
                     appDesc.setText(appDetailObject.getDescription());
                     updateOpenOrDownloadButtonStatus(appDetailObject
-                            .getAdTaskStatus());
+                            .getAdTaskStatus(),appDetailObject.getAdDownloadStatus());
                     updateGridView(bmLists);
                     updateListView(mTaskDescList);
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    rewardCount.setText("今天已有 "
-                            + appDetailObject.getRewardsCount() + " 个用户获得奖励");
+//                    mSwipeRefreshLayout.setRefreshing(false);
+//                    rewardCount.setText("今天已有 "
+//                            + appDetailObject.getRewardsCount() + " 个用户获得奖励");
                 }
             });
 
@@ -401,6 +462,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
             // 线程池异步加载图片
             BitmapLoaderManager.loadBitmap(this, this, imageUrlArray);
+            
         }
     }
 
@@ -477,7 +539,21 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
     @Override
     public void onDownloadStart(int id) {
+        try {
+            if (appDetailObject == null) {
+                return;
+            }
 
+            if (appDetailObject.getAdId() != id) {
+                return;
+            }
+            this.mProgressBar.setProgress(0);
+            this.mProgressBar.setVisibility(View.VISIBLE);
+            this.mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
+            this.mProgressBar.setText("下载安装赚金币(" + appSumObject.getAppSize() + ")");
+        } catch (Throwable e) {
+            Log.d("Youmi", "", e);
+        }
     }
 
     @Override
@@ -490,10 +566,10 @@ public class OfferWallAdDetailActivity extends BaseActivity
             if (appDetailObject.getAdId() != id) {
                 return;
             }
-            this.downlaodProgressBar.setProgress(0);
-            this.downlaodProgressBar.setVisibility(View.GONE);
-            this.openOrDownloadBtn.setEnabled(true);
-            this.openOrDownloadBtn.setText("下载失败,请稍候重试!");
+            this.mProgressBar.setProgress(0);
+            this.mProgressBar.setVisibility(View.VISIBLE);
+            this.mProgressBar.setEnabled(true);
+            this.mProgressBar.setText("下载失败,请稍候重试!");
         } catch (Throwable e) {
             Log.d("Youmi", "", e);
         }
@@ -509,10 +585,10 @@ public class OfferWallAdDetailActivity extends BaseActivity
             if (appDetailObject.getAdId() != id) {
                 return;
             }
-            this.downlaodProgressBar.setProgress(0);
-            this.downlaodProgressBar.setVisibility(View.GONE);
-            this.openOrDownloadBtn.setEnabled(true);
-            this.openOrDownloadBtn.setText("下载成功,请安装!");
+            this.mProgressBar.setProgress(0);
+            this.mProgressBar.setVisibility(View.VISIBLE);
+            this.mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
+            this.mProgressBar.setText("安装");
         } catch (Throwable e) {
             Log.d("Youmi", "", e);
         }
@@ -529,16 +605,20 @@ public class OfferWallAdDetailActivity extends BaseActivity
             if (appDetailObject.getAdId() != id) {
                 return;
             }
-            this.downlaodProgressBar.setVisibility(View.VISIBLE);
-            this.downlaodProgressBar.setProgress(percent);
-            this.openOrDownloadBtn.setEnabled(false);
-            this.openOrDownloadBtn.setText(String.format(
+            this.mProgressBar.setVisibility(View.VISIBLE);
+            this.mProgressBar.setProgress(percent);
+            this.mProgressBar.setText(getDisplayText(String.format(
                     "正在下载,已完成%d%% ,下载速度: %dKB/s", percent,
-                    (speedBytesPerS / 1024)));
+                    (speedBytesPerS / 1024))).toString());
+            mProgressBar.setBackgroundColor(Color.parseColor("802f83e9"));
+            mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
         } catch (Throwable e) {
             Log.d("Youmi", "", e);
         }
 
+    }
+    private CharSequence getDisplayText(String str) {
+        return Html.fromHtml("<font color='#2C78D4'>"+str+"</font>");
     }
 
     @Override
@@ -551,10 +631,10 @@ public class OfferWallAdDetailActivity extends BaseActivity
             if (appDetailObject.getAdId() != id) {
                 return;
             }
-            this.downlaodProgressBar.setProgress(0);
-            this.downlaodProgressBar.setVisibility(View.GONE);
-            this.openOrDownloadBtn.setEnabled(true);
-            this.openOrDownloadBtn.setText("已安装成功,打开");
+            this.mProgressBar.setVisibility(View.VISIBLE);
+            this.mProgressBar.setProgress(0);
+            this.mProgressBar.setText("打开");
+            this.mProgressBar.setStatus(CustomProgressBar.Status.INSTALLED);
         } catch (Throwable e) {
             Log.d("Youmi", "", e);
         }
@@ -564,6 +644,87 @@ public class OfferWallAdDetailActivity extends BaseActivity
     public void onPointBalanceChange(float arg0) {
         // TODO Auto-generated method stub
 
+    }
+    
+    public void update_image(){
+        mImageLoader.displayImage(appDetailObject.getIconUrl(), appIcon,
+                Utils.sDisplayImageOptions, new ImageLoadingListener() {
+
+                    @Override
+                    public void onLoadingStarted(String arg0, View arg1) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String arg0, View arg1,
+                            FailReason arg2) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String arg0, View arg1,
+                            Bitmap arg2) {
+                        appIcon.setImageBitmap(arg2);
+
+                        new GaussBlurTask(getImageTopPart(arg2), mHeaderViewLayout)
+                                .execute();
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String arg0, View arg1) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
+        /*String[] pics = appDetailObject.getScreenShotUrls();
+        int size = pics.length;
+        // 最多显示5张
+        if (size > 5) {
+            size = 5;
+        }
+        System.out.println("appDetailObject.getScreenShotUrls()"+Arrays.toString(appDetailObject.getScreenShotUrls()));
+        for (int i = 0; i < size; i++) {
+            mImageLoader.displayImage(pics[i], mAppPicViews.get(i),
+                    Utils.sDisplayImageOptions);
+            mAppPicViews.get(i).setVisibility(View.VISIBLE);
+        }*/
+    }
+    
+    public static Bitmap getImageTopPart(Bitmap bitmap) {
+        int w = bitmap.getWidth();
+        int h = w/5;
+        return Bitmap.createBitmap(bitmap, w/4, 0, w/2, h, null, false);
+    }
+    
+    private class GaussBlurTask extends AsyncTask<Void, Void, Bitmap> {
+
+        private Bitmap mBitmap;
+        private View mDstView;
+
+        public GaussBlurTask(Bitmap bitmap, View dstView) {
+            mBitmap = bitmap;
+            mDstView = dstView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            return Utils.doFastBlur(mBitmap, 25, false);
+            //return Utils.blurBitmap(getApplicationContext(), mBitmap);
+        }
+
+        @SuppressLint("NewApi")
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mDstView.setBackground(new BitmapDrawable(result));
+            } else {
+                mDstView.setBackgroundDrawable(new BitmapDrawable(result));
+            }
+        }
     }
 
 }

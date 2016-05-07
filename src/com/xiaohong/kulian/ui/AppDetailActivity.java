@@ -156,11 +156,11 @@ public class AppDetailActivity extends Activity
         mAppVersionTv = (TextView) findViewById(R.id.app_version_tv);
         mAppCoinNumTv = (TextView) findViewById(R.id.app_coin_num_tv);
         mAppDescView = (TextView) findViewById(R.id.app_desc_tv);
-        mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic1));
+       /* mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic1));
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic2));
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic3));
         mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic4));
-        mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic5));
+        mAppPicViews.add((ImageView) findViewById(R.id.app_desc_pic5));*/
         
         mProgressBar = (CustomProgressBar) findViewById(R.id.download_progress_bar);
 
