@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 public interface BitmapDownloadListener {
 
-	void onLoadBitmap(String url, Bitmap bm);
+    void onLoadBitmap(String url, Bitmap bm);
 
-	// void onLoadBitmapFailed(String url, Bitmap defaultBm);
+    // void onLoadBitmapFailed(String url, Bitmap defaultBm);
 }
