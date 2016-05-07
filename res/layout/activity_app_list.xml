@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.xiaohong.kulian.common.widget.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sr_ad_list"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/background_color" >
 
-    <com.xiaohong.kulian.common.widget.RefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/sr_ad_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
-        <ListView
-            android:id="@+id/lv_addata"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-        </ListView>
-    </com.xiaohong.kulian.common.widget.RefreshLayout>
-    <!-- Loading -->
-
-    <include
+    <ListView
+        android:id="@+id/lv_addata"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        layout="@layout/loading" />
+        android:background="@color/background_color"
+        android:cacheColorHint="@color/list_view_bg_color"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:scrollbars="none" >
+    </ListView>
 
-</FrameLayout>
+</com.xiaohong.kulian.common.widget.RefreshLayout>

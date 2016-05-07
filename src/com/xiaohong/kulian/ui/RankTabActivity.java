@@ -126,7 +126,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
         mTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
         mTabHost.setup();
-/*
+
         Intent gameIntent = new Intent(getApplicationContext(),
                 ProductListActivity.class);
         gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
@@ -138,8 +138,8 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
                                 getString(R.string.rank_tab_app)))
                 .setContent(gameIntent);
         mTabHost.addTab(tab2);
-*/
-        Intent offerWallIntent = new Intent(getApplicationContext(),
+
+       /* Intent offerWallIntent = new Intent(getApplicationContext(),
                 OfferWallAdListActivity.class);
         TabSpec tab2 = mTabHost
                 .newTabSpec(Constants.CATEGORY_APP)
@@ -148,7 +148,7 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
                                 getString(R.string.rank_tab_app)))
                 .setContent(offerWallIntent);
         mTabHost.addTab(tab2);
-
+*/
         Intent growIntent = new Intent(getApplicationContext(),
                 TaskListActivity.class);
         growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);

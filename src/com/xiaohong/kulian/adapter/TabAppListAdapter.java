@@ -188,6 +188,10 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
         mDownloadExtraInfo = new HashMap<String, AppBean>();
     }
 
+    public void reset() {
+        mDataSource = null;
+    }
+    
     /*
      * How many items are in the data set represented by this Adapter.
      */
@@ -304,40 +308,6 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
 
         bindView(position, viewHolder);
         showAllViews(viewHolder);
-        /*if (mIsProductList && mDownloadingTask != null) {
-
-            // 列表中存在下载列表的任务，更新状态
-            AppBean item = mDataSource.get(position);
-            String packageName = (String) item.getPackageName();
-            if (mDownloadingTask.containsKey(packageName)) {
-                DownloadInfo info = mDownloadingTask.get(packageName);
-                // 下载过程中，刷新进度
-                item.getStatusMap().put(Constants.KEY_PRODUCT_INFO, info.mProgress);
-                item.getStatusMap().put(Constants.KEY_PRODUCT_DOWNLOAD, info.mProgressLevel);
-            } else if (mInstalledList.contains(packageName)) {
-                // 已经安装的应用
-                if (mUpdateList.containsKey(packageName)) {
-                    // 可以更新
-                    item.getStatusMap().put(Constants.KEY_PRODUCT_DOWNLOAD,
-                            Constants.STATUS_UPDATE);
-                } else {
-                    item.getStatusMap().put(Constants.KEY_PRODUCT_DOWNLOAD,
-                            Constants.STATUS_INSTALLED);
-                }
-            } else {
-                Object result = item.getStatusMap().get(Constants.KEY_PRODUCT_DOWNLOAD);
-                if (result != null) {
-                    int status = (Integer) result;
-                    if (status == Constants.STATUS_PENDING) {
-                        // 准备开始下载，无需处理
-                    } else if (status != Constants.STATUS_DOWNLOADED) {
-                        // 默认的状态是未安装
-                        item.getStatusMap().put(Constants.KEY_PRODUCT_DOWNLOAD,
-                                Constants.STATUS_NORMAL);
-                    }
-                }
-            }
-        }*/
 
         return convertView;
     }
@@ -366,108 +336,6 @@ public class TabAppListAdapter extends CommonAdapter implements Observer,
         }
     }
 
-    /*protected void setViewResource(View v, int position, int[] bitmaps) {
-        if (v instanceof ImageView) {
-            ImageView view = (ImageView) v;
-            HashMap<String, Object> map = mDataSource.get(position);
-
-            int flag = (Integer) map.get(String.valueOf(position));
-            view.setImageResource(bitmaps[flag]);
-        }
-    }
-
-    
-     * Set the value for RatingBar
-     
-    private void setViewRating(RatingBar v, Object rating) {
-        if (rating instanceof Integer) {
-            float ratingLevel = ((Integer) rating) / (float) 10;
-            v.setRating(ratingLevel);
-        }
-    }*/
-
-    /*
-     * Set text value for TextView
-     */
-    /*private void setViewText(int position, TextView v, Object text) {
-
-        if (text instanceof byte[]) {
-
-            v.setText(Utils.getUTF8String((byte[]) text));
-
-        } else if (text instanceof CharSequence) {
-
-            v.setText((CharSequence) text);
-
-        } else if (text instanceof Integer) {
-
-            // 应用状态指示器
-            v.setTag(position);
-            final int level = (Integer) text;
-            Drawable indicatorDrawble = v.getCompoundDrawables()[1];
-            indicatorDrawble.setLevel(level);
-            if (Constants.STATUS_NORMAL == level) {
-                // 未下载
-                v.setText(mDataSource.get(position).getGiveCoin()+ "");
-
-            } else if (Constants.STATUS_PENDING == level) {
-                // 准备开始下载
-                v.setText(mContext
-                        .getString(R.string.download_status_downloading));
-
-            } else if (Constants.STATUS_DOWNLOADED == level) {
-                // 已经下载，未安装
-                v.setText(mContext
-                        .getString(R.string.download_status_downloaded));
-
-            } else if (Constants.STATUS_INSTALLED == level) {
-                // 已经安装
-                v.setText(mContext
-                        .getString(R.string.download_status_installed));
-
-            } else if (Constants.STATUS_UPDATE == level) {
-
-                // 有更新
-                v.setText(mContext.getString(R.string.operation_update));
-
-            } else {
-                // 下载中
-                v.setText((String) mDataSource.get(position).getPackageName());
-
-            }
-            // 为下载按钮绑定事件
-            v.setOnClickListener(mDownloadListener);
-        }
-    }
-
-    
-     * Set drawable value for ImageView
-     
-    private void setViewImage(int position, ImageView v, Object obj) {
-
-        Drawable oldDrawable = v.getDrawable();
-        if (oldDrawable != null) {
-            // clear the CALLBACK reference to prevent of OOM error
-            oldDrawable.setCallback(null);
-        }
-
-        if (obj instanceof Drawable) {
-            // here is one drawable object
-            v.setImageDrawable((Drawable) obj);
-
-        } else if (obj instanceof String) {
-            // here is one remote object (URL)
-            ImageUtils.download(mContext, (String) obj, v);
-        } else if (obj instanceof Boolean) {
-
-            if ((Boolean) obj) {
-                v.setVisibility(View.VISIBLE);
-            } else {
-                v.setVisibility(View.INVISIBLE);
-            }
-        }
-    }
-*/
     private OnClickListener mDownloadListener = new OnClickListener() {
 
         @Override

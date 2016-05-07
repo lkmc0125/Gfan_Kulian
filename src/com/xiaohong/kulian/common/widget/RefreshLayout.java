@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AbsListView;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
 /**
@@ -172,7 +173,10 @@ public class RefreshLayout extends SwipeRefreshLayout
         if (isLoading) {
             mListView.addFooterView(mListViewFooter);
         } else {
-            mListView.removeFooterView(mListViewFooter);
+            if(mListView.getAdapter() instanceof HeaderViewListAdapter) {
+                mListView.removeFooterView(mListViewFooter);
+            }
+            
             mYDown = 0;
             mLastY = 0;
         }
