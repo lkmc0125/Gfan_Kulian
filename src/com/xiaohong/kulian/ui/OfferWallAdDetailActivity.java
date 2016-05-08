@@ -119,6 +119,10 @@ public class OfferWallAdDetailActivity extends BaseActivity
      * 下载条
      */
     private CustomProgressBar mProgressBar;
+    /**
+     * 返回
+     */
+    private LinearLayout back_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +177,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
     private void initView() {
 
         mHeaderViewLayout = (RelativeLayout) findViewById(R.id.header_blur_layout);
+        back_layout=(LinearLayout)findViewById(R.id.back_layout);
+        back_layout.setOnClickListener(this);
 
         /**
          * modifyed by albert 2016/5/7 
@@ -363,6 +369,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
                             this, appDetailObject);
                 }
                 break;
+            case R.id.back_layout:
+                OfferWallAdDetailActivity.this.finish();
 
             default :
                 break;
@@ -413,6 +421,11 @@ public class OfferWallAdDetailActivity extends BaseActivity
      */
     private void updateView(final AppDetailObject detailData) {
         System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.getAdDownloadStatus());
+        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+appSumObject.getPoints());
+        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.getPoints());
+        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.getAppSize().equals(""));
+        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.getVersionName().equals(""));
+        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.toString());
         if (detailData != null) {
 
             this.appDetailObject = detailData;
