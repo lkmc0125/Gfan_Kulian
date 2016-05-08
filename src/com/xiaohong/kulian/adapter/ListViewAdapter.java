@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import aga.fdf.grd.os.df.DiyAppNotify;
 import aga.fdf.grd.os.df.AdExtraTaskStatus;
@@ -317,6 +318,7 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
         viewHolder.mGoldView = (TextView) view.findViewById(R.id.tv_gold);
         viewHolder.mActionView = (TextView) view.findViewById(R.id.tv_action);
         viewHolder.mStatusView = (TextView) view.findViewById(R.id.tv_status);
+        viewHolder.mDownloadProgressView = (ProgressBar) view.findViewById(R.id.lvitem_pb_download);
         view.setTag(viewHolder);
         return view;
     }
@@ -329,6 +331,7 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
        private TextView mGoldView;
        private TextView mActionView;
        private TextView mStatusView;
+       private ProgressBar mDownloadProgressView;
        private int mId; // an id to mark an item
    }
    
@@ -340,6 +343,7 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
        viewHolder.mGoldView.setVisibility(View.VISIBLE);
        viewHolder.mActionView.setVisibility(View.VISIBLE); 
        viewHolder.mStatusView.setVisibility(View.GONE); 
+       viewHolder.mDownloadProgressView.setVisibility(View.GONE);
    }
 
     /**
@@ -376,6 +380,8 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
             /*viewHolder.app_download_progress.setProgress(percent);
             viewHolder.app_download_progress.setVisibility(View.VISIBLE);*/
 
+            viewHolder.mDownloadProgressView.setProgress(percent);
+            viewHolder.mDownloadProgressView.setVisibility(View.VISIBLE);
             viewHolder.mActionView.setEnabled(false);
             viewHolder.mActionView.setText("正在下载");
 
@@ -395,6 +401,8 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
             viewHolder.app_download_progress.setVisibility(View.GONE);
             viewHolder.app_status.setText("下载成功,请安装!");*/
 
+            viewHolder.mDownloadProgressView.setProgress(0);
+            viewHolder.mDownloadProgressView.setVisibility(View.GONE);
             viewHolder.mActionView.setEnabled(true);
             viewHolder.mActionView.setText("安装");
         } catch (Throwable e) {
@@ -413,6 +421,8 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
             viewHolder.app_download_progress.setVisibility(View.GONE);
             viewHolder.app_status.setText("下载失败,请重试!");*/
 
+            viewHolder.mDownloadProgressView.setProgress(0);
+            viewHolder.mDownloadProgressView.setVisibility(View.GONE);
             viewHolder.mActionView.setEnabled(true);
             viewHolder.mActionView.setText("下载安装");
         } catch (Throwable e) {
@@ -431,6 +441,8 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
             viewHolder.app_download_progress.setVisibility(View.GONE);
             viewHolder.app_status.setText("安装成功!");*/
 
+            viewHolder.mDownloadProgressView.setProgress(0);
+            viewHolder.mDownloadProgressView.setVisibility(View.GONE);
             viewHolder.mActionView.setEnabled(true);
             viewHolder.mActionView.setText("打开");
         } catch (Throwable e) {
