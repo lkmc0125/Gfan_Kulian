@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import aga.fdf.grd.os.PointsChangeNotify;
 import aga.fdf.grd.os.PointsManager;
 import aga.fdf.grd.os.df.AdExtraTaskStatus;
+import aga.fdf.grd.os.df.AdForm;
 import aga.fdf.grd.os.df.AppExtraTaskObject;
 import aga.fdf.grd.os.df.AppExtraTaskObjectList;
 import aga.fdf.grd.os.df.AppSummaryDataInterface;
@@ -294,6 +295,7 @@ public class ProductListActivity extends BaseActivity implements
      * 上拉更新广告列表
      */
     private void push2Refresh4RequestList() {
+        Log.d(TAG, "push2Refresh4RequestList");
         ++mPageIndex;
         mSwipeRefreshLayout.setPushRefreshing(true);
         requestList();
@@ -420,6 +422,9 @@ public class ProductListActivity extends BaseActivity implements
             ArrayList<CustomObject> customObjectArrayList = new ArrayList<CustomObject>();
             for (int k = 0; k < adList.size(); ++k) {
 
+                if(adList.get(k).getAdForm() == AdForm.GO2WEB) {
+                    continue;
+                }
                 // 如果请求的是追加任务的列表，demo将会把所有的追加任务独立为一个item项，因此需要把同一个appSummaryObject多次加入到列表中
                 if (mRequestType == DiyOfferWallManager.REQUEST_EXTRA_TASK) {
                     // 下面是判断是否追加任务，如果是的话就会在写入一次列表

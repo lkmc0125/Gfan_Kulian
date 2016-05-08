@@ -251,59 +251,6 @@ public class OfferWallAdListActivity extends BaseActivity
                         });
                     }
                 });
-
-        // // 同步加载方式
-        // new Thread(new Runnable() {
-        // @Override
-        // public void run() {
-        // AppSummaryObjectList adList = null;
-        // try {
-        // adList =
-        // DiyOfferWallManager.getInstance(OfferWallAdListActivity.this)
-        // .getOfferWallAdList(mRequestType, mPageIndex, AD_PER_NUMBER);
-        // updateListView(adList);
-        // if (adList != null) {
-        // updateLimitInfo(adList.getInstallLimit(), adList.getInstallTimes());
-        // }
-        // } catch (NetworkException e) {
-        // Log.e("YoumiSdk", "", e);
-        // runOnUiThread(new Runnable() {
-        // @Override
-        // public void run() {
-        // // 如果是请求第一页的时候，请求失败，就致列表为空
-        // if (mPageIndex == 1) {
-        // mLvAdapter.reset();
-        // mLvAdapter.notifyDataSetChanged();
-        // }
-        // mSwipeRefreshLayout.setRefreshing(false);
-        // mSwipeRefreshLayout.setPushRefreshing(false);
-        // Toast.makeText(OfferWallAdListActivity.this, "请求失败，请检查网络～",
-        // Toast.LENGTH_LONG).show();
-        // }
-        // });
-        // } catch (final ErrorCodeException e) {
-        // Log.e("YoumiSdk", "", e);
-        // runOnUiThread(new Runnable() {
-        // @Override
-        // public void run() {
-        // // 如果是请求第一页的时候，请求失败，就致列表为空
-        // if (mPageIndex == 1) {
-        // mLvAdapter.reset();
-        // mLvAdapter.notifyDataSetChanged();
-        // }
-        //
-        // mSwipeRefreshLayout.setRefreshing(false);
-        // mSwipeRefreshLayout.setPushRefreshing(false);
-        // Toast.makeText(OfferWallAdListActivity.this,
-        // String.format("请求错误，错误代码 ： %d， 请联系客服", e
-        // .getErrCode()),
-        // Toast.LENGTH_LONG).show();
-        // }
-        // });
-        // }
-        // }
-        // }).start();
-
     }
 
     /**

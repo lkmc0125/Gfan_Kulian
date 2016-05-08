@@ -5,6 +5,7 @@ import com.xiaohong.kulian.R;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +20,8 @@ import android.widget.ListView;
 public class RefreshLayout extends SwipeRefreshLayout
         implements
             AbsListView.OnScrollListener {
+    
+    private static final String TAG = "RefreshLayout";
 
     /**
      * 滑动到最下面时的上拉操作
@@ -171,8 +174,10 @@ public class RefreshLayout extends SwipeRefreshLayout
     public void setPushRefreshing(boolean loading) {
         isLoading = loading;
         if (isLoading) {
+            Log.d(TAG, "setPushRefreshing add footer view");
             mListView.addFooterView(mListViewFooter);
         } else {
+            Log.d(TAG, "setPushRefreshing remove footer view");
             if(mListView != null && mListView.getAdapter() instanceof HeaderViewListAdapter) {
                 mListView.removeFooterView(mListViewFooter);
             }

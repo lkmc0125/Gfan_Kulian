@@ -97,37 +97,14 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-           /* convertView = LayoutInflater.from(mContext).inflate(
-                    R.layout.lv_item_normal_task, null);*/
             holder = new ViewHolder();
             convertView = newView(holder);
-           /* holder.app_icon = (ImageView) convertView
-                    .findViewById(R.id.lvitem_iv_appicon);
-            holder.app_name = (TextView) convertView
-                    .findViewById(R.id.lvitem_tv_appname);
-            holder.app_adSlogan = (TextView) convertView
-                    .findViewById(R.id.lvitem_tv_appslogan);
-            holder.app_adpoints = (TextView) convertView
-                    .findViewById(R.id.lvitem_tv_adpoints);
-            holder.app_status = (TextView) convertView
-                    .findViewById(R.id.lvitem_tv_appstatus);
-            holder.app_download_progress = (ProgressBar) convertView
-                    .findViewById(R.id.lvitem_pb_download);
-            holder.app_download_btn = (Button) convertView
-                    .findViewById(R.id.lvitem_btn_download);*/
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         bindView(position, holder);
         showAllViews(holder);
-        
-        /*CustomObject item = getItem(position);
-        final AppSummaryObject appSummaryObject = item.getAppSummaryObject();
-        holder.id = appSummaryObject.getAdId();
-        holder.app_download_progress.setVisibility(View.GONE);
-        mViewHolderList.put(appSummaryObject.getAdId(), holder);*/
 
         return convertView;
 
@@ -169,22 +146,8 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
         }
         holder.mId = appSummaryObject.getAdId();
         mViewHolderList.put(appSummaryObject.getAdId(), holder);
-        
-        //////////
-        /*viewHolder.mAppNameView.setText(data.getAppName());
-        viewHolder.mAppDescView.setText(data.getBriefSummary());
-        viewHolder.mAppSizeView.setText(data.getAppSize());
-        viewHolder.mGoldView.setText("+"+data.getGiveCoin());
-        mImageLoader.displayImage(data.getAppLogo(), viewHolder.mAppIconView, Utils.sDisplayImageOptions);
-        if(data.isIsInstalled()) {
-            viewHolder.mActionView.setText(R.string.app_item_action_open);
-        } else if(data.isDownloaded()) {
-            viewHolder.mActionView.setText(R.string.app_item_action_install);
-        } else {
-            viewHolder.mActionView.setText(R.string.app_item_action_view);
-        }*/
-        ///////
-     // 设置广告图标
+
+        // 设置广告图标
         if (item.getAppicon() == null) {
             ImageLoader.getInstance().displayImage(item.getAppSummaryObject().getIconUrl(),
                     holder.mAppIconView, Utils.sDisplayImageOptions);
@@ -204,6 +167,13 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
         
         //设置app大小
         holder.mAppSizeView.setText(appSummaryObject.getAppSize());
+        if(appSummaryObject.getAppSize() == null || appSummaryObject.getAppSize().equals("")) {
+            Log.d(TAG, "######################");
+            Log.d(TAG, "ad form:" + appSummaryObject.getAdForm());
+            Log.d(TAG, "ad name:" + appSummaryObject.getAppName());
+            Log.d(TAG, "ad url:" + appSummaryObject.getUrl());
+            Log.d(TAG, "######################");
+        }
 
         String action_type = "";
 
