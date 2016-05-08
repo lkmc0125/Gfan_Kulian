@@ -71,6 +71,9 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import aga.fdf.grd.os.df.AppSummaryDataInterface;
+import aga.fdf.grd.os.df.AppSummaryObjectList;
+import aga.fdf.grd.os.df.DiyOfferWallManager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -119,6 +122,7 @@ import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.ui.BuyCoinActivity;
 import com.xiaohong.kulian.ui.BuyingEntryActivity;
+import com.xiaohong.kulian.ui.ProductListActivity;
 
 /**
  * Common Utils for the application
@@ -1393,7 +1397,8 @@ public class Utils {
             return;
         }
         sIsLoaded = true;
-        loadApp(context);
+        //loadApp(context);
+        loadYoumiData(context);
         loadTask(context);
     }
     
@@ -1403,6 +1408,51 @@ public class Utils {
                     new LoadAppAndTaskApiResponseListener(context);
         }
         MarketAPI.getAppList(context, sLoadAppAndTaskApiResponseListener, sStartPage, Constants.CATEGORY_RCMD);
+    }
+    
+    public final static int AD_PER_NUMBER = 10;
+    
+    /**
+     * 预加载有米数据
+     */
+    private static void loadYoumiData(Context context) {
+
+        // 异步加载方式
+        // 请求类型，页码，请求数量，回调接口
+        
+        DiyOfferWallManager.getInstance(context).loadOfferWallAdList(DiyOfferWallManager.REQUEST_ALL,
+                1, AD_PER_NUMBER, new AppSummaryDataInterface() {
+
+                    /**
+                     * 当成功获取到积分墙列表数据的时候，会回调这个方法（注意:本接口不在UI线程中执行，
+                     * 所以请不要在本接口中进行UI线程方面的操作）
+                     * 注意：列表数据有可能为空（比如：没有广告的时候），开发者处理之前，请先判断列表是否为空，大小是否大与0
+                     */
+                    @Override
+                    public void onLoadAppSumDataSuccess(Context context,
+                            AppSummaryObjectList adList) {
+                        sYoumiData = adList;
+                    }
+
+                    /**
+                     * 因为网络问题而导致请求失败时，会回调这个接口（注意:本接口不在UI线程中执行，
+                     * 所以请不要在本接口中进行UI线程方面的操作）
+                     */
+                    @Override
+                    public void onLoadAppSumDataFailed() {
+                        
+                    }
+
+                    /**
+                     * 请求成功，但是返回有米错误代码时候，会回调这个接口（注意:本接口不在UI线程中执行，
+                     * 所以请不要在本接口中进行UI线程方面的操作）
+                     */
+                    @Override
+                    public void onLoadAppSumDataFailedWithErrorCode(
+                            final int code) {
+                       
+                    }
+                });
     }
     
     private synchronized static void loadTask(Context context) {
@@ -1415,11 +1465,17 @@ public class Utils {
                 sLoadAppAndTaskApiResponseListener);
     }
     
+    private static AppSummaryObjectList sYoumiData = null;
+    
     private static final ArrayList<AppBean> sAppList = new ArrayList<AppBean>(); 
     
     private static final ArrayList<TaskBean> sTaskList = new ArrayList<TaskBean>(); 
     
     private static final ArrayList<TaskBean> sGzhTaskList = new ArrayList<TaskBean>(); 
+    
+    public static AppSummaryObjectList getPredloadedYoumiData() {
+        return sYoumiData;
+    }
     
     public static ArrayList<AppBean> getPreloadedAppList() {
         return sAppList;

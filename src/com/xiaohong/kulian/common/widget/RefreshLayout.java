@@ -173,7 +173,7 @@ public class RefreshLayout extends SwipeRefreshLayout
         if (isLoading) {
             mListView.addFooterView(mListViewFooter);
         } else {
-            if(mListView.getAdapter() instanceof HeaderViewListAdapter) {
+            if(mListView != null && mListView.getAdapter() instanceof HeaderViewListAdapter) {
                 mListView.removeFooterView(mListViewFooter);
             }
             

@@ -35,6 +35,7 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.adapter.ListViewAdapter;
 import com.xiaohong.kulian.common.download.DownloadManager;
+import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.CustomObject;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.RefreshLayout;
@@ -168,83 +169,21 @@ public class ProductListActivity extends BaseActivity implements
             // （可选）注册广告下载安装监听-随时随地获得应用下载安装状态的变动情况
             DiyOfferWallManager.getInstance(this).registerListener(mLvAdapter);
 
-            // 发起列表请求
-            pull2Refresh4RequestList();
-        } else {
-        }
-    }
-
-    /*@Override
-    public void doLazyload() {
-        ArrayList<AppBean> appList = Utils.getPreloadedAppList();
-        if(appList != null && appList.size() > 0) {
-            Log.d(TAG,"app preloaded size = " + appList.size());
-            mIsEnd = appList.size() < 10;
-            //mAdapter.clearData();
-            //mAdapter.addData(appList);
-            //mAdapter.notifyDataSetChanged();
-            setLoadResult(true);
-            return;
-        }
-        try {
-            throw new Exception("test");
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG,"no preloaded");
-        //MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
-    }
-
-    @Override
-    public CommonAdapter doInitListAdapter() {
-        
-        //mLvAdapter.setProductList();
-        return mLvAdapter;
-    }
-    
-    @Override
-    public boolean isEnd() {
-        return mIsEnd;
-    }*/
-    
-    /*@SuppressWarnings("unchecked")
-    @Override
-    public void onSuccess(int method, Object obj) {
-        Log.d(TAG, "onSuccess product");
- 
-        //HashMap<String, Object> result = (HashMap<String, Object>) obj;
-
-        AppListBean appList = (AppListBean) obj;
-        ArrayList<AppBean> list = appList.getApplist();
-        mIsEnd = list.size() < 10;
-        for(AppBean bean : list) {
-            if(Utils.isApkInstalled(getApplicationContext(),
-                    bean.getPackageName()) ==  true) {
-                bean.setIsInstalled(true);
-            }else if(Utils.isApkDownloaded(bean.getAppName())) {
-                *//**
-                 * only if the app is not installed , shall we check if it's downloaded
-                 * 
-                 *//*
-                bean.setDownloaded(true);
-                
+            AppSummaryObjectList adList = Utils.getPredloadedYoumiData();
+            if(adList == null) {
+             // 发起列表请求
+                pull2Refresh4RequestList();
+            }else {
+                mPageIndex = 2;
+                updateListView(adList);
+                updateLimitInfo(adList.getInstallLimit(),
+                        adList.getInstallTimes());
             }
+            
+        } else {
         }
-        //mAdapter.addData(list);
-        setLoadResult(true);
     }
 
-    @Override
-    public void onError(int method, int statusCode) {
-        if(statusCode == ApiAsyncTask.BUSSINESS_ERROR) {
-            // 没有数据
-        } else {
-            // 超时
-            //mNoData.setVisibility(View.VISIBLE);
-            //mProgress.setVisibility(View.GONE);
-        }
-        setLoadResult(false);
-    }*/
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -299,18 +238,6 @@ public class ProductListActivity extends BaseActivity implements
         //doLazyload();
     }
 
-
-   /* @Override
-    public void loadMore() {
-        Log.d(TAG, "load more data");
-        MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
-    }*/
-
-    /*@Override
-    public void onAppInstalled(String packageName) {
-        //mAdapter.updateAppStatus(packageName , TabAppListAdapter.APP_STATUS_INSTALLED);
-    }*/
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
