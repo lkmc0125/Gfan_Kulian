@@ -83,8 +83,6 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
     private Button openOrDownloadBtn;
 
-    private ProgressBar downlaodProgressBar;
-
     private SwipeRefreshLayout mSwipeRefreshLayout; // 下拉刷新组件
 
     private GridView gridView;
@@ -288,7 +286,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
                 this.mProgressBar.setProgress(0);
                 this.mProgressBar.setVisibility(View.VISIBLE);
                 this.mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
-                this.mProgressBar.setText("下载安装赚金币(" + appSumObject.getAppSize() + ")");
+                this.mProgressBar.setText("下载安装(" + appSumObject.getAppSize() + ")");
             } catch (Throwable e) {
                 Log.d("Youmi", "", e);
             }
@@ -328,13 +326,15 @@ public class OfferWallAdDetailActivity extends BaseActivity
         switch (status) {
             
             case AdTaskStatus.NOT_COMPLETE : // 未完成
-                
-                mProgressBar.setText("下载安装赚金币(" + appSumObject.getAppSize() + ")");
-                mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
-//                openOrDownloadBtn.setEnabled(true);
-//                openOrDownloadBtn.setText(isPackageExist
-//                        ? "任务未完成，打开体验"
-//                        : "下载安装");
+
+                if (isPackageExist) {
+                    mProgressBar.setText("打开");
+                    mProgressBar.setStatus(CustomProgressBar.Status.INSTALLED);
+                } else {
+                    mProgressBar.setText("下载安装(" + appSumObject.getAppSize() + ")");
+                    mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
+                }
+
                 break;
             case AdTaskStatus.HAS_EXTRA_TASK : // 有追加任务
                 openOrDownloadBtn.setEnabled(true);
@@ -346,13 +346,25 @@ public class OfferWallAdDetailActivity extends BaseActivity
                         break;
                     }
                 }
-                openOrDownloadBtn.setText(isPackageExist ? (isExtraTaskCanDo
-                        ? "任务未完成，打开体验"
-                        : "任务等待中") : "下载安装");
+
+                if (isPackageExist) {
+                    mProgressBar.setText(isExtraTaskCanDo
+                            ? "任务未完成，打开体验"
+                                    : "任务等待中");
+                    mProgressBar.setStatus(CustomProgressBar.Status.INSTALLED);
+                } else {
+                    mProgressBar.setText("下载安装(" + appSumObject.getAppSize() + ")");
+                    mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
+                }                
                 break;
             case AdTaskStatus.ALREADY_COMPLETE : // 已完成
-                openOrDownloadBtn.setEnabled(true);
-                openOrDownloadBtn.setText(isPackageExist ? "打开" : "重新安装");
+                if (isPackageExist) {
+                    mProgressBar.setText("打开");
+                    mProgressBar.setStatus(CustomProgressBar.Status.INSTALLED);
+                } else {
+                    mProgressBar.setText("重新安装");
+                    mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
+                }                
                 break;
             default :
                 break;
@@ -562,7 +574,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
             this.mProgressBar.setProgress(0);
             this.mProgressBar.setVisibility(View.VISIBLE);
             this.mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
-            this.mProgressBar.setText("下载安装赚金币(" + appSumObject.getAppSize() + ")");
+            this.mProgressBar.setText("下载安装(" + appSumObject.getAppSize() + ")");
         } catch (Throwable e) {
             Log.d("Youmi", "", e);
         }
@@ -620,8 +632,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
             this.mProgressBar.setVisibility(View.VISIBLE);
             this.mProgressBar.setProgress(percent);
             this.mProgressBar.setText(getDisplayText(String.format(
-                    "正在下载,已完成%d%% ,下载速度: %dKB/s", percent,
-                    (speedBytesPerS / 1024))).toString());
+                    "正在下载（%d%%）", percent)).toString());
             mProgressBar.setBackgroundColor(Color.parseColor("802f83e9"));
             mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
         } catch (Throwable e) {

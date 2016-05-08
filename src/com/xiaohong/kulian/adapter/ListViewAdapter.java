@@ -192,10 +192,10 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
                /* holder.app_status.setText("未完成");
                 holder.app_status.setTextColor(mContext.getResources()
                         .getColor(R.color.black));*/
-                holder.mStatusView.setVisibility(View.VISIBLE);
+                holder.mStatusView.setVisibility(View.INVISIBLE);
                 holder.mStatusView.setText("未完成");
-                holder.mStatusView.setTextColor(mContext.getResources()
-                        .getColor(R.color.black));
+//                holder.mStatusView.setTextColor(mContext.getResources()
+//                        .getColor(R.color.black));
 
                 // 这里将演示将正常任务的积分和追加任务的积分加起来，然后展示给用户，开发者可以参考这里使用
                 String textformat = "<html><body>"
@@ -217,8 +217,8 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
                         .getColor(R.color.green_color));*/
                 holder.mStatusView.setVisibility(View.VISIBLE);
                 holder.mStatusView.setText("已完成");
-                holder.mStatusView.setTextColor(mContext.getResources()
-                        .getColor(R.color.green_color));
+//                holder.mStatusView.setTextColor(mContext.getResources()
+//                        .getColor(R.color.green_color));
 
                 holder.mGoldView.setVisibility(View.GONE);
 
@@ -239,8 +239,8 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
                                     .parseColor("#BFBFBF"));*/
                             holder.mStatusView.setVisibility(View.VISIBLE);
                             holder.mStatusView.setText("任务等待中");
-                            holder.mStatusView.setTextColor(Color
-                                    .parseColor("#BFBFBF"));
+//                            holder.mStatusView.setTextColor(Color
+//                                    .parseColor("#BFBFBF"));
 
                             holder.mGoldView.setText("完成+"
                                     + extraTaskObject.getPoints() + "积分");
@@ -253,8 +253,8 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
                                     .parseColor("#8256D9"));*/
                             holder.mStatusView.setVisibility(View.VISIBLE);
                             holder.mStatusView.setText("任务进行中");
-                            holder.mStatusView.setTextColor(Color
-                                    .parseColor("#8256D9"));
+//                            holder.mStatusView.setTextColor(Color
+//                                    .parseColor("#8256D9"));
 
                             holder.mGoldView.setTextColor(Color
                                     .parseColor("#399A00"));
@@ -291,8 +291,8 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
                                                 .getColor(R.color.black));*/
                                 holder.mStatusView.setVisibility(View.VISIBLE);
                                 holder.mStatusView.setText("追加奖励");
-                                holder.mStatusView.setTextColor(mContext.getResources()
-                                        .getColor(R.color.black));
+//                                holder.mStatusView.setTextColor(mContext.getResources()
+//                                        .getColor(R.color.black));
 
                                 String textformat1 = "<html><body>+<b><font color=\"#BE0028\">"
                                         + extraTaskObject.getPoints()

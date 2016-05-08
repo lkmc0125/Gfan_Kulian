@@ -413,8 +413,8 @@ public class ProductListActivity extends BaseActivity implements
                 public void run() {
                     mSwipeRefreshLayout.setRefreshing(false);
                     mSwipeRefreshLayout.setPushRefreshing(false);
-                    Toast.makeText(ProductListActivity.this,
-                            "没有获取到更多的任务，晚点在来吧~", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(ProductListActivity.this,
+//                            "没有获取到更多的任务，晚点在来吧~", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -460,15 +460,15 @@ public class ProductListActivity extends BaseActivity implements
                     mSwipeRefreshLayout.setRefreshing(false);
                     mSwipeRefreshLayout.setPushRefreshing(false);
                     mLvAdapter.notifyDataSetChanged();
-                    Toast.makeText(
-                            ProductListActivity.this,
-                            String.format(
-                                    "请求成功\n请求页码：%s\n请求数量：%s\n实际返回数量:%s\n当天新任务限制:%s\n已安装的新任务数:%s",
-                                    adList.getPageIndex(),
-                                    adList.getPerPageNumber(), adList.size(),
-                                    adList.getInstallLimit(),
-                                    adList.getInstallTimes()),
-                            Toast.LENGTH_LONG).show();
+//                    Toast.makeText(
+//                            ProductListActivity.this,
+//                            String.format(
+//                                    "请求成功\n请求页码：%s\n请求数量：%s\n实际返回数量:%s\n当天新任务限制:%s\n已安装的新任务数:%s",
+//                                    adList.getPageIndex(),
+//                                    adList.getPerPageNumber(), adList.size(),
+//                                    adList.getInstallLimit(),
+//                                    adList.getInstallTimes()),
+//                            Toast.LENGTH_LONG).show();
                 }
             });
         }

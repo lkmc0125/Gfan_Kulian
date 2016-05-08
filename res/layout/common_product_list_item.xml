@@ -39,20 +39,6 @@
             android:text="taobao"
             android:textAppearance="@style/app_text_style1" />
 
-        <!-- 如果任务已完成则显示此控件 -->
-
-        <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="12dp"
-            android:layout_toRightOf="@id/tv_name"
-            android:singleLine="true" />
-        <!-- 
-            android:drawableStart="@drawable/status_done" -->
-
         <!-- 应用的描述 -->
 
         <TextView
@@ -115,6 +101,23 @@
             android:text="1MB"
             android:textAppearance="@style/app_text_style2" />
 
+        <!-- 如果任务已完成则显示此控件 -->
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_description"
+            android:layout_toRightOf="@id/tv_size"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/layout_status"
+            android:gravity="right"
+            android:text="未完成"
+            android:textAppearance="@style/app_text_style2"
+            android:singleLine="true" />
+        <!-- 
+            android:drawableStart="@drawable/status_done" -->
+        
         <ProgressBar
             android:id="@+id/lvitem_pb_download"
             style="?android:attr/progressBarStyleHorizontal"
@@ -123,6 +126,7 @@
             android:layout_gravity="bottom"
             android:layout_below="@id/tv_size"
             android:layout_toRightOf="@id/iv_logo"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/layout_status" />
     </RelativeLayout>
 
