@@ -23,6 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:drawableEnd="@drawable/goldcoin_right"
+        android:drawablePadding="2dp"
         android:layout_marginLeft="10dp"
         android:padding="10dp"
         android:textSize="14sp" />

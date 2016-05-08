@@ -447,9 +447,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
                 public void run() {
                     update_image();
                     appName.setText(appDetailObject.getAppName());
-                    appCoinNumTv.setText("+" + appSumObject.getPoints());
-                    appVersion.setText("版本号："
-                            + appDetailObject.getVersionName());;
+                    appCoinNumTv.setText("+" + getTotalPoints(appSumObject));
+                    appVersion.setText(appDetailObject.getVersionName());;
                     appDesc.setText(appDetailObject.getDescription());
                     updateOpenOrDownloadButtonStatus(appDetailObject
                             .getAdTaskStatus(),appDetailObject.getAdDownloadStatus());
@@ -657,6 +656,21 @@ public class OfferWallAdDetailActivity extends BaseActivity
     public void onPointBalanceChange(float arg0) {
         // TODO Auto-generated method stub
 
+    }
+    
+    private int getTotalPoints(AppSummaryObject appSummaryObject) {
+        int totalpoints = appSummaryObject.getPoints();
+        AppExtraTaskObjectList tempList = appSummaryObject.getExtraTaskList();
+        if (tempList != null && tempList.size() > 0) {
+            for (int i = 0; i < tempList.size(); ++i) {
+                AppExtraTaskObject extraTaskObject = tempList.get(i);
+                if (extraTaskObject.getStatus() == AdExtraTaskStatus.NOT_START
+                        || extraTaskObject.getStatus() == AdExtraTaskStatus.IN_PROGRESS) {
+                    totalpoints += extraTaskObject.getPoints();
+                }
+            }
+        }
+        return totalpoints;
     }
     
     public void update_image(){
