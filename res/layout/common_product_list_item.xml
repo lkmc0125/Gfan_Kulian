@@ -49,8 +49,9 @@
             android:layout_marginLeft="2dp"
             android:layout_marginTop="12dp"
             android:layout_toRightOf="@id/tv_name"
-            android:drawableStart="@drawable/status_done"
             android:singleLine="true" />
+        <!-- 
+            android:drawableStart="@drawable/status_done" -->
 
         <!-- 应用的描述 -->
 
