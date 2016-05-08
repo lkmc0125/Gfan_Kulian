@@ -201,6 +201,9 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
 
         // 设置广告语
         holder.mAppDescView.setText(appSummaryObject.getAdSlogan());
+        
+        //设置app大小
+        holder.mAppSizeView.setText(appSummaryObject.getAppSize());
 
         String action_type = "";
 
