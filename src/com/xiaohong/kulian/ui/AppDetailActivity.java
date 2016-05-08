@@ -511,7 +511,7 @@ public class AppDetailActivity extends Activity
      * 之前从来没有下载过，提示下载
      */
     private void showDownloadView() {
-        mProgressBar.setText("下载安装赚金币(" + mDetailInfo.getAppsize() + ")");
+        mProgressBar.setText("下载安装(" + mDetailInfo.getAppsize() + ")");
         mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
     }
 
