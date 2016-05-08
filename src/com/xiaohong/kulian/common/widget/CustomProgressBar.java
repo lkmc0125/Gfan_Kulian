@@ -92,6 +92,7 @@ public class CustomProgressBar extends ProgressBar {
 
     public CustomProgressBar(Context context) {
         super(context);
+        if (isInEditMode()) { return; }
         mContext = context;
         System.out.println("1");
         initText();
@@ -99,6 +100,7 @@ public class CustomProgressBar extends ProgressBar {
 
     public CustomProgressBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        if (isInEditMode()) { return; }
         mContext = context;
         System.out.println("2");
         initText();
@@ -106,6 +108,7 @@ public class CustomProgressBar extends ProgressBar {
 
     public CustomProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if (isInEditMode()) { return; }
         mContext = context;
         System.out.println("3");
         initText();
@@ -123,6 +126,7 @@ public class CustomProgressBar extends ProgressBar {
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (isInEditMode()) { return; }
         this.mPaint.getTextBounds(mText, 0, mText.length(), mRect);
         int x = (getWidth() / 2) - mRect.centerX();
         int y = (getHeight() / 2) - mRect.centerY();

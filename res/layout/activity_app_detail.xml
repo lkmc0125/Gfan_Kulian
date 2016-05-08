@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
     <!-- header -->
 
     <FrameLayout
@@ -35,7 +34,8 @@
                 </ImageView>
             </LinearLayout>
 
-<!--             <ImageView
+            <!--
+                 <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -43,7 +43,8 @@
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/tasklisticon" >
-            </ImageView> -->
+            </ImageView>
+            -->
         </RelativeLayout>
 
         <ImageView
@@ -142,59 +143,33 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <!-- images scroller -->
-
-                <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="15dp"
-                    android:scrollbars="none" >
-                    <LinearLayout
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal"
-					>
-
-					<com.xiaohong.kulian.common.widget.NoScrollGridView
-						android:id="@+id/detailpage_gridView"
-						android:layout_width="wrap_content"
-						android:layout_height="215dip"
-						android:horizontalSpacing="5dip"
-						android:verticalSpacing="5dip"
-						android:columnWidth="143dip"
-						android:gravity="center"
-                		android:numColumns="auto_fit"
-                		android:listSelector="@null"
-                		android:stretchMode="columnWidth"
-						android:visibility="gone"
-						>
-					</com.xiaohong.kulian.common.widget.NoScrollGridView >
-				</LinearLayout >
-
-                    
-                </HorizontalScrollView>
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
+                    android:id="@+id/text_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/horizontalScrollView1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_margin="10dp"
                     android:background="#ffffff"
                     android:padding="8dp" >
 
+                    <!-- task steps -->
+
+                    <com.xiaohong.kulian.common.widget.NoScrollListView
+                        android:id="@+id/detailpage_listview"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone" >
+                    </com.xiaohong.kulian.common.widget.NoScrollListView>
                     <!-- app introduce title -->
 
                     <TextView
                         android:id="@+id/intro_title"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
+                        android:layout_below="@id/detailpage_listview"
                         android:layout_marginLeft="8dp"
                         android:text="应用介绍"
                         android:textColor="#333333"
@@ -223,20 +198,43 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
                         android:lineSpacingMultiplier="1.7"
-                        android:text="应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容，应用介绍内容。"
+                        android:text="应用介绍"
                         android:textColor="#595959"
                         android:textSize="12sp" />
-                    <com.xiaohong.kulian.common.widget.NoScrollListView
-						android:id="@+id/detailpage_listview"
-						android:layout_below="@id/app_desc_tv"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:layout_marginBottom="8dp"
-						android:layout_marginTop="8dp"
-						android:visibility="gone"
-						>
-			</com.xiaohong.kulian.common.widget.NoScrollListView >
                 </RelativeLayout>
+                <!-- images scroller -->
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_layout"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp" 
+                    android:scrollbars="none" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <com.xiaohong.kulian.common.widget.NoScrollGridView
+                            android:id="@+id/detailpage_gridView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="215dip"
+                            android:columnWidth="143dip"
+                            android:gravity="center"
+                            android:horizontalSpacing="5dip"
+                            android:listSelector="@null"
+                            android:numColumns="auto_fit"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="5dip"
+                            android:visibility="gone" >
+                        </com.xiaohong.kulian.common.widget.NoScrollGridView>
+                    </LinearLayout>
+                </HorizontalScrollView>
             </RelativeLayout>
         </ScrollView>
 
@@ -263,11 +261,12 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
+                android:background="#802f83e9"
                 android:max="100"
                 android:progressDrawable="@drawable/custom_progressbar"
-                android:background="#802f83e9"
                 android:visibility="visible" />
             <!-- android:background="@drawable/custom_progressbar_bg" -->
         </RelativeLayout>
     </RelativeLayout>
+
 </RelativeLayout>
