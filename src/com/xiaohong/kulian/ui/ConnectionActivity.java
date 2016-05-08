@@ -173,7 +173,8 @@ public class ConnectionActivity extends BaseActivity implements ApiRequestListen
         textViewTaskName=(TextView)findViewById(R.id.connection_recommend_task_name_text);
         textViewTaskDsb=(TextView)findViewById(R.id.tv_description);
         textViewTaskCoin=(TextView)findViewById(R.id.connection_recommend_task_coin_text);
-        textViewTaskCheck=(TextView)findViewById(R.id.tv_action);
+        textViewTaskCheck=(TextView)findViewById(R.id.connection_recommend_task_tv_action);
+        System.out.println("textViewTaskCheck"+textViewTaskCheck);
         textViewTaskCheck.setOnClickListener(this);
         textViewAllTask=(TextView)findViewById(R.id.connection_recommend_all_task_text);
         textViewAllTask.setOnClickListener(this);

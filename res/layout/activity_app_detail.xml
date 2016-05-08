@@ -114,11 +114,41 @@
     </FrameLayout>
 
     <!-- images ,text view, download button -->
+    <RelativeLayout
+            android:id="@+id/app_action_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:background="#ffffff" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E8E8E8" >
+            </View>
+
+            <com.xiaohong.kulian.common.widget.CustomProgressBar
+                android:id="@+id/download_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="#802f83e9"
+                android:max="100"
+                android:progressDrawable="@drawable/custom_progressbar"
+                android:visibility="visible" />
+            <!-- android:background="@drawable/custom_progressbar_bg" -->
+        </RelativeLayout>
+    
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/app_detail_app_name" >
+        android:layout_below="@id/app_detail_app_name"
+        android:layout_above="@id/app_action_layout"
+         >
 
         <!-- images and text view -->
 
@@ -126,8 +156,8 @@
             android:id="@+id/verticalScrollView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@+id/app_action_layout"
             android:background="@color/background_color"
+            android:paddingBottom="10dip"
             android:scrollbars="none" >
 
             <RelativeLayout
@@ -237,34 +267,8 @@
         </ScrollView>
 
         <!-- download button -->
-
-        <RelativeLayout
-            android:id="@+id/app_action_layout"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_alignParentBottom="true"
-            android:background="#ffffff" >
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E8E8E8" >
-            </View>
-
-            <com.xiaohong.kulian.common.widget.CustomProgressBar
-                android:id="@+id/download_progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:background="#802f83e9"
-                android:max="100"
-                android:progressDrawable="@drawable/custom_progressbar"
-                android:visibility="visible" />
-            <!-- android:background="@drawable/custom_progressbar_bg" -->
         </RelativeLayout>
-    </RelativeLayout>
+
+        
 
 </RelativeLayout>
