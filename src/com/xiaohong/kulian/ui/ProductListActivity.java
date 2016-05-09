@@ -42,13 +42,12 @@ import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.RefreshLayout;
 
 public class ProductListActivity extends BaseActivity implements 
-        OnItemClickListener, OnClickListener, PointsChangeNotify {
+        OnItemClickListener, OnClickListener {
 
     private static final String TAG = "ProductListActivity"; 
     //private FrameLayout mLoading;
     //private ProgressBar mProgress;
     //private TextView mNoData;
-    //private TabAppListAdapter mAdapter;
     private String mCategory;
     
     protected ListView mList;
@@ -78,43 +77,10 @@ public class ProductListActivity extends BaseActivity implements
 
     private RefreshLayout mSwipeRefreshLayout; // 上下拉刷新组件
 
-    private BroadcastReceiver mAppLanchReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            String packageName = null;
-            if (intent.getAction().equals(Intent.ACTION_PACKAGE_FIRST_LAUNCH)) {
-                packageName = intent.getData().getSchemeSpecificPart();
-
-                ApplicationInfo applicationInfo = null;
-                PackageManager packageManager = null;
-                try {
-                    packageManager = context.getPackageManager();
-                    applicationInfo = packageManager.getApplicationInfo(packageName, 0);
-                    String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
-                    Log.d(TAG, "Lanched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
-//                    Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
-                    mSession.reportAppLaunched(applicationInfo.packageName);
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
-
-    private void registerAppLanch() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_PACKAGE_FIRST_LAUNCH);
-        filter.addDataScheme("package");
-        registerReceiver(mAppLanchReceiver, filter);
-    }
-
-
     public void initViews() {
         Intent intent = getIntent();
         if (intent != null) {
 
-            //registerAppLanch();
             mCategory = intent.getStringExtra(Constants.EXTRA_CATEGORY);
             // 获取广告的类型，由其他Activity传入值
             // 如果获取失败就默认加载的广告的类型为所有，即不限
@@ -164,8 +130,11 @@ public class ProductListActivity extends BaseActivity implements
             mList.setAdapter(mLvAdapter);
             mList.setOnItemClickListener(this);
             
-           // （可选）注册积分余额变动监听-随时随地获得积分的变动情况
-            PointsManager.getInstance(this).registerNotify(this);
+            
+            // 关闭积分到账通知栏提示功能
+            PointsManager.setEnableEarnPointsNotification(false);
+            // 关闭积分到账悬浮框提示功能
+            PointsManager.setEnableEarnPointsToastTips(false);
 
             // （可选）注册广告下载安装监听-随时随地获得应用下载安装状态的变动情况
             DiyOfferWallManager.getInstance(this).registerListener(mLvAdapter);
@@ -185,7 +154,6 @@ public class ProductListActivity extends BaseActivity implements
         }
     }
 
-    
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Activity parent = getParent();
@@ -199,32 +167,6 @@ public class ProductListActivity extends BaseActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-       /* AppBean item = (AppBean) mAdapter.getItem(position);
-        // 去产品详细页
-        String pid = item.getAppId() + "";
-        Intent detailIntent = new Intent(getApplicationContext(),
-                AppDetailActivity.class);
-        detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
-        detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
-        detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
-        detailIntent.putExtra(Constants.EXTRA_PACKAGE_NAME, item.getPackageName());
-        startActivity(detailIntent);*/
-        /*if (item.isIsInstalled()) {
-            //打开已安装应用
-            Utils.openApkByPackageName(getApplicationContext(),
-                    item.getPackageName());
-        } else {
-            // 去产品详细页
-            String pid = item.getAppId() + "";
-            Intent detailIntent = new Intent(getApplicationContext(),
-                    PreloadActivity.class);
-            Intent detailIntent = new Intent(getApplicationContext(),
-                    AppDetailActivity.class);
-            detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
-            detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
-            detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
-            startActivity(detailIntent);
-        }*/
         Intent intent = new Intent(this, OfferWallAdDetailActivity.class);
         intent.putExtra("ad", mLvAdapter.getItem(position)
                 .getAppSummaryObject());
@@ -233,54 +175,20 @@ public class ProductListActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        // 重试
-        //mProgress.setVisibility(View.VISIBLE);
-        //mNoData.setVisibility(View.GONE);
-        //doLazyload();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //mSession.addOnAppInstalledListener(this);
-        regReceiver();
         setContentView(R.layout.activity_app_list);
         initViews();
     }
     
     @Override
     protected void onDestroy() {
-        //mSession.removeOnAppInstalledListener(this);
-        unregReceiver();
         super.onDestroy();
     }
-    
-    private BroadcastReceiver mDownloadReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String filePath = intent.getStringExtra("FILENAME");
-            Log.d(TAG, "mDownloadReceiver onReceive filePath = " + filePath);
-            /*if (filePath != null && mAdapter != null) {
-                String packageName = Utils.getPackageName(getApplicationContext(), filePath); 
-                if(packageName != null) {
-                    mAdapter.updateAppStatus(packageName, TabAppListAdapter.APP_STATUS_DOWNLOADED);
-                }
-            }*/
-        }
-    };
-    
-    private void regReceiver() {
-        IntentFilter downloadFilter = new IntentFilter();
-        downloadFilter.addAction(DownloadManager.BROADCAST_DOWNLOAD_APP_SUCCESS);
-        registerReceiver(mDownloadReceiver, downloadFilter);
-        registerAppLanch();
-    }
-    
-    private void unregReceiver() {
-        unregisterReceiver(mDownloadReceiver);
-        unregisterReceiver(mAppLanchReceiver);
-    }
-    
+
     /**
      * 下拉更新广告列表
      */
@@ -422,7 +330,7 @@ public class ProductListActivity extends BaseActivity implements
             ArrayList<CustomObject> customObjectArrayList = new ArrayList<CustomObject>();
             for (int k = 0; k < adList.size(); ++k) {
 
-                if(adList.get(k).getAdForm() == AdForm.GO2WEB) {
+                if (adList.get(k).getAdForm() == AdForm.GO2WEB) {
                     continue;
                 }
                 // 如果请求的是追加任务的列表，demo将会把所有的追加任务独立为一个item项，因此需要把同一个appSummaryObject多次加入到列表中
@@ -473,12 +381,4 @@ public class ProductListActivity extends BaseActivity implements
             });
         }
     }
-
-    //implemetns PointsChangeNotify
-    @Override
-    public void onPointBalanceChange(float arg0) {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

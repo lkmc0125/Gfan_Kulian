@@ -1116,6 +1116,10 @@ public class Session extends Observable {
         return mToken;
     }
     
+    public void requestAddCoin(int coinNum) {
+        MarketAPI.requestAddCoin(mContext, mReportApiRequestListener, coinNum);
+    }
+    
     private void reportAppInstalled(String packagename) {
 //        DownloadInfo info = mDownloadingList.get(packagename);
 //        if(info != null) {
@@ -1150,6 +1154,12 @@ public class Session extends Observable {
                 {
                     ReportResultBean result = (ReportResultBean) obj;
                     //coinNum += result.getAddedCoinNum();
+                    notifyCoinUpdated(result.getAddedCoinNum());
+                    break;
+                }
+                case MarketAPI.ACTION_REQ_ADD_COIN:
+                {
+                    ReportResultBean result = (ReportResultBean) obj;
                     notifyCoinUpdated(result.getAddedCoinNum());
                     break;
                 }

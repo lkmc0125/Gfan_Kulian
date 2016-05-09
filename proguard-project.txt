@@ -69,7 +69,10 @@
 -keep class com.ruijie.wmc.** { *; }
 -keep class com.igexin.sdk.** { *; }
 -keep class com.qq.e.ads.** { *; }
-   
+
+-dontwarn net.youmi.android.**
+-keep class net.youmi.android.** { *; }
+
 -keep class com.umeng.** { *; }    
 -keep class com.umeng.analytics.** { *; }    
 -keep class com.umeng.common.** { *; }    

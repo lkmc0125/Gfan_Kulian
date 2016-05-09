@@ -117,7 +117,10 @@ public class MarketAPI {
     public static final int ACTION_REPORT_ORDER_PAY = 14;
     /** 领取公众号任务 */
     public static final int ACTION_ACCEPT_GZH_TASK = 15;
+    /** 加金币 */
+    public static final int ACTION_REQ_ADD_COIN = 16;
 
+    
     /**
      * Register API<br>
      * Do the register process, UserName, Password, Email must be provided.<br>
@@ -386,5 +389,15 @@ public class MarketAPI {
         params.put("imei", session.getIMEI());
         params.put("ver", String.valueOf(session.getVersionCode()));
         new ApiAsyncTask(context, ACTION_REPORT_ORDER_PAY, handler, params).execute();
+    }
+    
+    public static void requestAddCoin(Context context, ApiRequestListener handler, int coinNum) {
+        Session session = Session.get(context);
+        final HashMap<String, Object> params = new HashMap<String, Object>(1);
+        params.put("phone_number", session.getUserName());
+        params.put("imei", session.getIMEI());
+        params.put("add_coin", Integer.toString(coinNum));
+        params.put("ver", String.valueOf(session.getVersionCode()));
+        new ApiAsyncTask(context, ACTION_REQ_ADD_COIN, handler, params).execute();
     }
 }

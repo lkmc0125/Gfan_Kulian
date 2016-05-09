@@ -331,14 +331,14 @@ public class HomeTabActivity extends BaseTabActivity implements
                 .setContent(new Intent(this, RankTabActivity.class));
         mTabHost.addTab(tab2);
 
-        TabSpec tab4 = mTabHost
+        TabSpec tab3 = mTabHost
                 .newTabSpec(TAB_MINE)
                 .setIndicator(
                         createTabView(getApplicationContext(),
                                 getString(R.string.main_tab_mine),
                                 R.drawable.main_tab_mine_selector))
                 .setContent(new Intent(this, PersonalAccountActivity.class));
-        mTabHost.addTab(tab4);
+        mTabHost.addTab(tab3);
 
         mTabHost.getViewTreeObserver().addOnPreDrawListener(
                 new OnPreDrawListener() {

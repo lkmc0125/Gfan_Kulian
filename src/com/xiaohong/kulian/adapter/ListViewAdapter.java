@@ -168,25 +168,28 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
         
         //设置app大小
         holder.mAppSizeView.setText(appSummaryObject.getAppSize());
-        if(appSummaryObject.getAppSize() == null || appSummaryObject.getAppSize().equals("")) {
-            Log.d(TAG, "######################");
-            Log.d(TAG, "ad form:" + appSummaryObject.getAdForm());
-            Log.d(TAG, "ad name:" + appSummaryObject.getAppName());
-            Log.d(TAG, "ad url:" + appSummaryObject.getUrl());
-            Log.d(TAG, "######################");
-        }
+//        if(appSummaryObject.getAppSize() == null || appSummaryObject.getAppSize().equals("")) {
+//            Log.d(TAG, "######################");
+//            Log.d(TAG, "ad form:" + appSummaryObject.getAdForm());
+//            Log.d(TAG, "ad name:" + appSummaryObject.getAppName());
+//            Log.d(TAG, "ad url:" + appSummaryObject.getUrl());
+//            Log.d(TAG, "######################");
+//        }
 
-        String action_type = "";
+//        String action_type = "";
 
-        // 设置按钮是"打开"还是"下载安装"
-        final boolean isPackageExist = Utils.isApkInstalled(mContext,
-                appSummaryObject.getPackageName());
-        holder.mActionView.setText(isPackageExist ? R.string.app_item_action_open : R.string.app_item_action_view);
+//        // 设置按钮是"打开"还是"下载安装"
+//        final boolean isPackageExist = Utils.isApkInstalled(mContext,
+//                appSummaryObject.getPackageName());
+//        holder.mActionView.setText(isPackageExist ? R.string.app_item_action_open : R.string.app_item_action_view);
+        holder.mActionView.setText(R.string.app_item_action_view);
+        holder.mGoldView.setText("+" + getTotalPoints(getItem(position).getAppSummaryObject()));
+        holder.mGoldView.setVisibility(View.VISIBLE);
 
         // 设置广告的状态、广告语
         switch (appSummaryObject.getAdTaskStatus()) {
 
-        // 未完成
+            // 未完成
             case AdTaskStatus.NOT_COMPLETE :
                 //now we do not have status view
                /* holder.app_status.setText("未完成");
@@ -196,17 +199,6 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
                 holder.mStatusView.setText("未完成");
 //                holder.mStatusView.setTextColor(mContext.getResources()
 //                        .getColor(R.color.black));
-
-                // 这里将演示将正常任务的积分和追加任务的积分加起来，然后展示给用户，开发者可以参考这里使用
-                String textformat = "<html><body>"
-                        + action_type
-                        + "+<b><font color=\"#FF9F05\">"
-                        + getTotalPoints(getItem(position)
-                                .getAppSummaryObject())
-                        + "</b>积分</body></html>";
-                holder.mGoldView.setText("+" + getTotalPoints(getItem(position)
-                        .getAppSummaryObject()));
-                holder.mGoldView.setVisibility(View.VISIBLE);
 
                 break;
 
@@ -219,9 +211,6 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
                 holder.mStatusView.setText("已完成");
 //                holder.mStatusView.setTextColor(mContext.getResources()
 //                        .getColor(R.color.green_color));
-
-                holder.mGoldView.setVisibility(View.GONE);
-
                 break;
 
             // 有追加任务
@@ -242,11 +231,6 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
 //                            holder.mStatusView.setTextColor(Color
 //                                    .parseColor("#BFBFBF"));
 
-                            holder.mGoldView.setText("完成+"
-                                    + extraTaskObject.getPoints() + "积分");
-                            holder.mGoldView.setTextColor(Color
-                                    .parseColor("#C0C0C0"));
-
                         } else if (extraTaskObject.getStatus() == AdExtraTaskStatus.IN_PROGRESS) {
                            /* holder.app_status.setText("任务进行中");
                             holder.app_status.setTextColor(Color
@@ -255,16 +239,6 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
                             holder.mStatusView.setText("任务进行中");
 //                            holder.mStatusView.setTextColor(Color
 //                                    .parseColor("#8256D9"));
-
-                            holder.mGoldView.setTextColor(Color
-                                    .parseColor("#399A00"));
-                            String textformat1 = "<html><body>+<b><font color=\"#BE0028\">"
-                                    + extraTaskObject.getPoints()
-                                    + "</b>积分</body></html>";
-                            holder.mGoldView.setText(Html
-                                    .fromHtml(textformat1));
-                            holder.mGoldView.setVisibility(View.VISIBLE);
-
                         }
                         holder.mAppDescView
                                 .setText(extraTaskObject.getAdText());
@@ -294,13 +268,6 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
 //                                holder.mStatusView.setTextColor(mContext.getResources()
 //                                        .getColor(R.color.black));
 
-                                String textformat1 = "<html><body>+<b><font color=\"#BE0028\">"
-                                        + extraTaskObject.getPoints()
-                                        + "</b>积分</body></html>";
-                                holder.mGoldView.setText(Html
-                                        .fromHtml(textformat1));
-                                holder.mGoldView.setVisibility(View.VISIBLE);
-
                                 holder.mAppDescView.setText(extraTaskObject
                                         .getAdText());
                                 break;
@@ -314,15 +281,15 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
                 break;
         }
 
-        holder.mActionView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                DiyOfferWallManager.getInstance(mContext).openOrDownloadApp(
-                        (Activity) mContext, appSummaryObject);
-            }
-        });
+//        holder.mActionView.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//
+//                DiyOfferWallManager.getInstance(mContext).openOrDownloadApp(
+//                        (Activity) mContext, appSummaryObject);
+//            }
+//        });
     }
     /**
      * Init viewholder
@@ -384,11 +351,13 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
         return totalpoints;
     }
 
+    // DiyAppNotify
     @Override
     public void onDownloadStart(int id) {
 
     }
 
+    // DiyAppNotify
     @Override
     public void onDownloadProgressUpdate(int id, long contentLength,
             long completeLength, int percent, long speedBytesPerS) {
@@ -408,6 +377,7 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
         }
     }
 
+    // DiyAppNotify
     @Override
     public void onDownloadSuccess(int id) {
         try {
@@ -428,6 +398,7 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
         }
     }
 
+    // DiyAppNotify
     @Override
     public void onDownloadFailed(int id) {
         try {
@@ -448,6 +419,7 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
         }
     }
 
+    // DiyAppNotify
     @Override
     public void onInstallSuccess(int id) {
         try {
@@ -462,7 +434,7 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
             viewHolder.mDownloadProgressView.setProgress(0);
             viewHolder.mDownloadProgressView.setVisibility(View.GONE);
             viewHolder.mActionView.setEnabled(true);
-            viewHolder.mActionView.setText("打开");
+//            viewHolder.mActionView.setText("打开");
         } catch (Throwable e) {
             e.printStackTrace();
         }

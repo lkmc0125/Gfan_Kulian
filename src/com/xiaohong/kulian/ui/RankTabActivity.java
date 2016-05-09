@@ -139,16 +139,6 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
                 .setContent(gameIntent);
         mTabHost.addTab(tab2);
 
-       /* Intent offerWallIntent = new Intent(getApplicationContext(),
-                OfferWallAdListActivity.class);
-        TabSpec tab2 = mTabHost
-                .newTabSpec(Constants.CATEGORY_APP)
-                .setIndicator(
-                        Utils.createMakeMoneyPageTabView(getApplicationContext(),
-                                getString(R.string.rank_tab_app)))
-                .setContent(offerWallIntent);
-        mTabHost.addTab(tab2);
-*/
         Intent growIntent = new Intent(getApplicationContext(),
                 TaskListActivity.class);
         growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);

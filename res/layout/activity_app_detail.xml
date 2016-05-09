@@ -33,7 +33,6 @@
                     android:contentDescription="@null" >
                 </ImageView>
             </LinearLayout>
-
         </RelativeLayout>
 
         <ImageView
@@ -50,7 +49,7 @@
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:background="@drawable/push" >
+            android:background="@drawable/icon_default" >
         </ImageView>
     </FrameLayout>
 
@@ -74,7 +73,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="app name"
                 android:textColor="#333333"
                 android:textSize="17sp" />
 
@@ -84,7 +82,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="app version"
                 android:textColor="#A5A5A5"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -114,41 +111,40 @@
     </FrameLayout>
 
     <!-- images ,text view, download button -->
+
     <RelativeLayout
-            android:id="@+id/app_action_layout"
+        android:id="@+id/app_action_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff" >
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_alignParentBottom="true"
-            android:background="#ffffff" >
+            android:layout_height="1dp"
+            android:background="#E8E8E8" >
+        </View>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E8E8E8" >
-            </View>
-
-            <com.xiaohong.kulian.common.widget.CustomProgressBar
-                android:id="@+id/download_progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:background="#802f83e9"
-                android:max="100"
-                android:progressDrawable="@drawable/custom_progressbar"
-                android:visibility="visible" />
-            <!-- android:background="@drawable/custom_progressbar_bg" -->
-        </RelativeLayout>
-    
+        <com.xiaohong.kulian.common.widget.CustomProgressBar
+            android:id="@+id/download_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="#802f83e9"
+            android:max="100"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:visibility="visible" />
+        <!-- android:background="@drawable/custom_progressbar_bg" -->
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/app_detail_app_name"
         android:layout_above="@id/app_action_layout"
-         >
+        android:layout_below="@id/app_detail_app_name" >
 
         <!-- images and text view -->
 
@@ -162,7 +158,7 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" >
 
                 <RelativeLayout
                     android:id="@+id/steps_layout"
@@ -182,9 +178,9 @@
                         android:layout_marginTop="8dp"
                         android:visibility="gone" >
                     </com.xiaohong.kulian.common.widget.NoScrollListView>
-                    
-                    </RelativeLayout>
-                    <RelativeLayout
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/desc_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -192,14 +188,15 @@
                     android:layout_margin="10dp"
                     android:background="#ffffff"
                     android:padding="8dp" >
+
                     <!-- app introduce title -->
 
                     <TextView
                         android:id="@+id/intro_title"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_marginLeft="8dp"
                         android:text="应用介绍"
+                        android:layout_marginLeft="8dp"
                         android:textColor="#333333"
                         android:textSize="14sp" />
 
@@ -226,7 +223,6 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
                         android:lineSpacingMultiplier="1.7"
-                        android:text="应用介绍"
                         android:textColor="#595959"
                         android:textSize="12sp" />
                 </RelativeLayout>
@@ -237,10 +233,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/desc_layout"
+                    android:layout_marginBottom="15dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp" 
                     android:scrollbars="none" >
 
                     <LinearLayout
@@ -267,8 +263,6 @@
         </ScrollView>
 
         <!-- download button -->
-        </RelativeLayout>
-
-        
+    </RelativeLayout>
 
 </RelativeLayout>

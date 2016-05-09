@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.xiaohong.kulian"
     android:versionCode="91"
-    android:versionName="2.1"
-    xmlns:tools="http://schemas.android.com/tools" >
+    android:versionName="2.1" >
 
     <application
         android:name=".WifiKulianApp"
@@ -146,6 +146,15 @@
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
 
                 <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="YoumiPointsReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="ep_12531462dbec51f1" />
+                <action android:name="vp_12531462dbec51f1" />
             </intent-filter>
         </receiver>
 
@@ -348,9 +357,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<!-- 积分墙广告 -->
-	<uses-permission android:name="android.permission.GET_TASKS" />
-	<uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
+    <!-- 积分墙广告 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
     <!-- 以下为可选权限 -->
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 

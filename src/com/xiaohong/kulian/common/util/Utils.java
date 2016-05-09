@@ -75,6 +75,7 @@ import aga.fdf.grd.os.df.AppSummaryDataInterface;
 import aga.fdf.grd.os.df.AppSummaryObjectList;
 import aga.fdf.grd.os.df.DiyOfferWallManager;
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -90,6 +91,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Message;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -1383,7 +1385,8 @@ public class Utils {
     }
     
     //do preload for make money page - app and task
-    private static boolean sIsLoaded = false;
+    private static boolean sIsAppLoaded = false;
+    private static boolean sIsTaskLoaded = false;
     private static int sStartPage = 1;
     private static LoadAppAndTaskApiResponseListener sLoadAppAndTaskApiResponseListener =
             null;
@@ -1391,31 +1394,30 @@ public class Utils {
     /*
      * 预加载赚金币页面的数据
      */
-    public static void doPreloadAppAndTask(Context context) {
-        if(sIsLoaded == true) {
+    public static void doPreloadApp(Context context, AppSummaryDataInterface handler) {
+        if (sIsAppLoaded == true) {
             Log.d(TAG, "already loaded");
             return;
         }
-        sIsLoaded = true;
-        //loadApp(context);
-        loadYoumiData(context);
-        loadTask(context);
+        sIsAppLoaded = true;
+        loadYoumiData(context, handler);
     }
-    
-    private synchronized static void loadApp(Context context) {
-        if(sLoadAppAndTaskApiResponseListener == null) {
-            sLoadAppAndTaskApiResponseListener =
-                    new LoadAppAndTaskApiResponseListener(context);
+
+    public static void doPreloadTask(Context context, ApiRequestListener handler) {
+        if (sIsTaskLoaded == true) {
+            Log.d(TAG, "already loaded");
+            return;
         }
-        MarketAPI.getAppList(context, sLoadAppAndTaskApiResponseListener, sStartPage, Constants.CATEGORY_RCMD);
+        sIsTaskLoaded = true;
+        loadTask(context, handler);
     }
-    
+
     public final static int AD_PER_NUMBER = 10;
     
     /**
      * 预加载有米数据
      */
-    private static void loadYoumiData(Context context) {
+    private static void loadYoumiData(Context context, final AppSummaryDataInterface handler) {
 
         // 异步加载方式
         // 请求类型，页码，请求数量，回调接口
@@ -1432,6 +1434,7 @@ public class Utils {
                     public void onLoadAppSumDataSuccess(Context context,
                             AppSummaryObjectList adList) {
                         sYoumiData = adList;
+                        handler.onLoadAppSumDataSuccess(context, adList);
                     }
 
                     /**
@@ -1455,16 +1458,15 @@ public class Utils {
                 });
     }
     
-    private synchronized static void loadTask(Context context) {
+    private synchronized static void loadTask(Context context, ApiRequestListener handler) {
         if(sLoadAppAndTaskApiResponseListener == null) {
             sLoadAppAndTaskApiResponseListener =
-                    new LoadAppAndTaskApiResponseListener(context);
+                    new LoadAppAndTaskApiResponseListener(context, handler);
         }
         MarketAPI.getTaskList(context, sLoadAppAndTaskApiResponseListener);
-        MarketAPI.getGzhTaskList(context, 
-                sLoadAppAndTaskApiResponseListener);
+        MarketAPI.getGzhTaskList(context, sLoadAppAndTaskApiResponseListener);
     }
-    
+
     private static AppSummaryObjectList sYoumiData = null;
     
     private static final ArrayList<AppBean> sAppList = new ArrayList<AppBean>(); 
@@ -1489,37 +1491,17 @@ public class Utils {
         return sGzhTaskList;
     }
     
-    private static class LoadAppAndTaskApiResponseListener
-            implements
-                ApiRequestListener {
+    private static class LoadAppAndTaskApiResponseListener implements ApiRequestListener {
         private Context mContext;
-
-        public LoadAppAndTaskApiResponseListener(Context context) {
+        private ApiRequestListener mHandler;
+        public LoadAppAndTaskApiResponseListener(Context context, ApiRequestListener handler) {
             mContext = context;
+            mHandler = handler;
         }
 
         @Override
         public void onSuccess(int method, Object obj) {
             switch (method) {
-                case MarketAPI.ACTION_GET_APP_LIST :
-                    AppListBean appList = (AppListBean) obj;
-                    sAppList.clear();
-                    sAppList.addAll(appList.getApplist());
-                    for (AppBean bean : sAppList) {
-                        if (Utils.isApkInstalled(mContext,
-                                bean.getPackageName()) == true) {
-                            bean.setIsInstalled(true);
-                        }else if(Utils.isApkDownloaded(bean.getAppName())) {
-                            /**
-                             * only if the app is not installed , shall we check if it's downloaded
-                             * 
-                             */
-                            bean.setDownloaded(true);
-                            
-                        }
-                    }
-                    Log.d(TAG, "onSuccess sAppList size = " + sAppList.size());
-                    break;
                 case MarketAPI.ACTION_GET_TASK_LIST : {
                     TaskListBean result = (TaskListBean) obj;
                     if (result.getTasklist() != null) {
@@ -1535,6 +1517,7 @@ public class Utils {
                     sTaskList.clear();
                     sTaskList.addAll(result.getTasklist());
                     Log.d(TAG, "onSuccess sTaskList size = " + sTaskList.size());
+                    mHandler.onSuccess(method, obj);
                     break;
                 }
                 case MarketAPI.ACTION_GET_GZH_TASK_LIST :
@@ -1560,19 +1543,17 @@ public class Utils {
                     sGzhTaskList.clear();
                     sGzhTaskList.addAll(availableList);
                     Log.d(TAG, "onSuccess sGzhTaskList size = " + sGzhTaskList.size());
+                    mHandler.onSuccess(method, obj);
                     break;
                 default :
                     break;
             }
-
         }
-
         @Override
         public void onError(int method, int statusCode) {
             // TODO Auto-generated method stub
-
+            
         }
-
     }
     
     /**

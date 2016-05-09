@@ -75,15 +75,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
     
     private TextView appCoinNumTv;
 
-    private TextView appSize;
-
-    private TextView appStyle;
-
     private TextView appDesc;
-
-    private Button openOrDownloadBtn;
-
-    private SwipeRefreshLayout mSwipeRefreshLayout; // 下拉刷新组件
 
     private GridView gridView;
 
@@ -275,54 +267,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
     /**
      * 更新按钮状态
      */
-    private void updateOpenOrDownloadButtonStatus(int status,int status1) {
+    private void updateOpenOrDownloadButtonStatus(int status) {
         System.out.println("updateOpenOrDownloadButtonStatus"+status);
-        switch (status1) {
-        case AdDownloadStatus.NOT_DOWNLOAD:
-            try {
-                if (appDetailObject == null) {
-                    return;
-                }
-                this.mProgressBar.setProgress(0);
-                this.mProgressBar.setVisibility(View.VISIBLE);
-                this.mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
-                this.mProgressBar.setText("下载安装(" + appSumObject.getAppSize() + ")");
-            } catch (Throwable e) {
-                Log.d("Youmi", "", e);
-            }
-            return;
-        case AdDownloadStatus.ALERADY_DOWNLOAD:
-            try {
-                if (appDetailObject == null) {
-                    return;
-                }
-                this.mProgressBar.setProgress(0);
-                this.mProgressBar.setVisibility(View.VISIBLE);
-                this.mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
-                this.mProgressBar.setText("安装");
-            } catch (Throwable e) {
-                Log.d("Youmi", "", e);
-            }
-        return;
-        case AdDownloadStatus.DOWNLOADING:
-            try {
-                if (appDetailObject == null) {
-                    return;
-                }
-
-                this.mProgressBar.setVisibility(View.VISIBLE);
-//                this.mProgressBar.setProgress(appDetailObject.get);
-                mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
-                this.mProgressBar.setText(
-                        "正在下载");
-            } catch (Throwable e) {
-                Log.d("Youmi", "", e);
-            }
-        return;
-
-        default:
-            break;
-        }
         switch (status) {
             
             case AdTaskStatus.NOT_COMPLETE : // 未完成
@@ -337,7 +283,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
                 break;
             case AdTaskStatus.HAS_EXTRA_TASK : // 有追加任务
-                openOrDownloadBtn.setEnabled(true);
+
                 boolean isExtraTaskCanDo = false; // 标记追加任务现在是否可以进行
                 for (int i = 0; i < appSumObject.getExtraTaskList().size(); ++i) {
                     if (AdExtraTaskStatus.IN_PROGRESS == appSumObject
@@ -432,14 +378,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
      * @param appDetailObject
      */
     private void updateView(final AppDetailObject detailData) {
-        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.getAdDownloadStatus());
-        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+appSumObject.getPoints());
-        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.getPoints());
-        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.getAppSize().equals(""));
-        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.getVersionName().equals(""));
-        System.out.println("updateOpenOrDownloadButtonStatus AppDetailObject"+detailData.toString());
-        if (detailData != null) {
 
+        if (detailData != null) {
             this.appDetailObject = detailData;
 
             // 这里生成一下描述列表
@@ -462,8 +402,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
                     appCoinNumTv.setText("+" + getTotalPoints(appSumObject));
                     appVersion.setText(appDetailObject.getVersionName());;
                     appDesc.setText(appDetailObject.getDescription());
-                    updateOpenOrDownloadButtonStatus(appDetailObject
-                            .getAdTaskStatus(),appDetailObject.getAdDownloadStatus());
+                    updateOpenOrDownloadButtonStatus(appDetailObject.getAdTaskStatus());
                     updateGridView(bmLists);
                     updateListView(mTaskDescList);
 //                    mSwipeRefreshLayout.setRefreshing(false);
@@ -486,7 +425,6 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
             // 线程池异步加载图片
             BitmapLoaderManager.loadBitmap(this, this, imageUrlArray);
-            
         }
     }
 
