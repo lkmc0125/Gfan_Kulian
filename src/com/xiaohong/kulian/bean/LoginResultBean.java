@@ -19,7 +19,8 @@ public class LoginResultBean {
     private String token;
     private String show_countdown;
     private String is_sign; // 今天是否已签到
-
+    private String phone_number;
+    
     public int getCoinNum() {
         return coin_num;
     }
@@ -30,6 +31,10 @@ public class LoginResultBean {
 
     public String getRetMsg() {
         return ret_msg;
+    }
+
+    public String getPhoneNumber() {
+        return phone_number;
     }
 
     public String getInviteCode() {

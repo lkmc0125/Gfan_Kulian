@@ -309,29 +309,30 @@ public class RegisterActivity extends BaseActivity
         
         switch (method) {
         case MarketAPI.ACTION_REGISTER:
-            if (etUsername != null) {
-                Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
-                        Constants.LOGIN_SUCCESS);
 
-                LoginResultBean result = (LoginResultBean) obj;
-                String userName = etUsername.getText().toString();
-                String password = etUsername.getText().toString().substring(5,11);
-                mSession.setUserName(userName);
-                mSession.setPassword(password);
+            Utils.trackEvent(getApplicationContext(), Constants.GROUP_9,
+                    Constants.LOGIN_SUCCESS);
+
+            // 隐藏登录框
+            try{
+                dismissDialog(DIALOG_PROGRESS);
+            }catch (IllegalArgumentException e) {
+            }
+            hideKeyBoard();
+
+            LoginResultBean result = (LoginResultBean) obj;
+            if (result.getRetCode() == 0) {
+                mSession.setUserName(result.getPhoneNumber());
+                mSession.setPassword(result.getPhoneNumber().substring(5,11));
                 mSession.setCoinNum(result.getCoinNum());
                 mSession.setToken(result.getToken());
                 mSession.setSignInToday(result.getIsSign());
+                mSession.setIsCountDown(result.getShowCountdown());
+                mSession.setRemainTime(result.getRemainTime());
                 mSession.setLogin(true);
-                // 隐藏登录框
-                try{
-                    dismissDialog(DIALOG_PROGRESS);
-                }catch (IllegalArgumentException e) {
-                }
-                hideKeyBoard();
                 finish();
             } else {
-                // activity 已经在得到查询结果前销毁
-                Log.d(TAG, "activity already destroied before got query result");
+                DialogUtils.showMessage(RegisterActivity.this, "出错啦", result.getRetMsg());
             }
             break;
             
@@ -346,21 +347,6 @@ public class RegisterActivity extends BaseActivity
         switch (method) {
         case MarketAPI.ACTION_REGISTER:
             
-            // 隐藏登录框
-            try{
-                dismissDialog(DIALOG_PROGRESS);
-            }catch (IllegalArgumentException e) {
-            }
-            
-            String msg = null;
-            if(statusCode == ERROR_CODE_USERNAME_NOT_EXIST) {
-                msg = getString(R.string.error_login_username);
-            } else if(statusCode == ERROR_CODE_PASSWORD_INVALID) {
-                msg = getString(R.string.error_login_password);
-            } else {
-                msg = getString(R.string.error_login_other);
-            }
-            Utils.makeEventToast(getApplicationContext(), msg, false);
             break;
             
         default:

@@ -102,6 +102,8 @@ public class ConnectionActivity extends BaseActivity implements
     private RelativeLayout viewAllTask;
     private TaskBean taskBean;
 
+    private UpdateLeftTimeThread mCountDownThread;
+    
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -443,7 +445,8 @@ public class ConnectionActivity extends BaseActivity implements
                     MarketAPI.getMessages(getApplicationContext(), this);
                 }
                 if (result.getShowCountdown()) {
-                    new UpdateLeftTimeThread().start();
+                    mCountDownThread = new UpdateLeftTimeThread();
+                    mCountDownThread.start();
                 }
             }
             break;
@@ -742,6 +745,10 @@ public class ConnectionActivity extends BaseActivity implements
             }
             if (taskBean == null) {
                 Utils.doPreloadTask(getApplicationContext(), this);
+            }
+            if (mSession.getIsCountdown() && mCountDownThread == null) {
+                mCountDownThread = new UpdateLeftTimeThread();
+                mCountDownThread.start();
             }
         }
 

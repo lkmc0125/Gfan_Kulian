@@ -94,6 +94,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         if (!mSession.isLogin()) {
             textView_login.setText("登录");
             textView_username.setText("未登录");
+            textView_coin_num.setText("0");
         } else if (mSession.isLogin()) {
             textView_login.setText("账号退出");
             textView_username.setText(mSession.getUserName());
@@ -253,6 +254,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 // mAdapter.changeDataSource(data);
                 textView_login.setText("登录");
                 textView_username.setText("未登录");
+                textView_coin_num.setText("0");
                 updateSignView(mSession.getLeftTime());
                 break;
             
