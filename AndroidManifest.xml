@@ -157,14 +157,6 @@
             </intent-filter>
         </receiver>
 
-        <receiver
-            android:name="TestReceiver"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="ep_123" />
-            </intent-filter>
-        </receiver>
-        
         <!-- Content Provider -->
         <provider
             android:name=".common.util.MarketProvider"

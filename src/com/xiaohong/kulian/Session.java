@@ -913,11 +913,6 @@ public class Session extends Observable {
                 notifyObservers(mDownloadingList);
                 break;
 
-            case ADD_COIN:
-                if (msg.arg1 > 0) { // add coin num
-                    sendAddCoinRequest(msg.arg1);
-                }
-                break;
             default:
                 break;
             }
@@ -1122,15 +1117,8 @@ public class Session extends Observable {
     public String getToken() {
         return mToken;
     }
-    
-    public void requestAddCoin(int coinNum) {
-        Message msg = new Message();
-        msg.what = ADD_COIN;
-        msg.arg1 = coinNum;
-        mHandler.sendMessage(msg);
-    }
-    
-    private void sendAddCoinRequest(int coinNum) {
+
+    public void sendAddCoinRequest(int coinNum) {
         MarketAPI.requestAddCoin(mContext, mReportApiRequestListener, coinNum);
     }
     

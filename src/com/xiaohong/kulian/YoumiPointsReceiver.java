@@ -19,7 +19,7 @@ public class YoumiPointsReceiver extends PointsReceiver {
             coinNum += order.getPoints();
         }
         if (coinNum > 0) {
-            Session.get(context).requestAddCoin(coinNum);
+            Session.get(context).sendAddCoinRequest(coinNum);
         }
     }
 

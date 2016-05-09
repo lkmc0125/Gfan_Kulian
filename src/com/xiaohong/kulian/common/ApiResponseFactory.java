@@ -181,6 +181,11 @@ public class ApiResponseFactory {
                 requestMethod = "ACTION_ACCEPT_GZH_TASK";
 //                result = gson.fromJson(inputBody, ReportResultBean.class);
                 break;
+                
+            case MarketAPI.ACTION_REQ_ADD_COIN:
+                requestMethod = "ACTION_REQ_ADD_COIN";
+                result = gson.fromJson(inputBody, ReportResultBean.class);
+                break;
             default:
                 break;
             }
