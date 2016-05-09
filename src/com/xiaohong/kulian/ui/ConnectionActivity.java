@@ -736,6 +736,13 @@ public class ConnectionActivity extends BaseActivity implements
                 textView_signIn_status
                         .setText(R.string.person_account_sign_in_value);
             }
+            
+            if (mAdList == null) {
+                Utils.doPreloadApp(getApplicationContext(), this);
+            }
+            if (taskBean == null) {
+                Utils.doPreloadTask(getApplicationContext(), this);
+            }
         }
 
         if (mAutoScroolView.getMessageBeans() == null
