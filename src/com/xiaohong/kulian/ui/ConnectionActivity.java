@@ -101,8 +101,6 @@ public class ConnectionActivity extends BaseActivity implements
     private String TaskImgUrl, TaskName, TaskDsb, TaskCoin;
     private RelativeLayout viewAllTask;
     private TaskBean taskBean;
-    private final int APP_DATA_LOADED = 0;
-    private final int TASK_DATA_LOADED = 1;
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -111,22 +109,6 @@ public class ConnectionActivity extends BaseActivity implements
             checkWifiConnection();
         }
     }
-
-    private Handler mMessageHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-            case APP_DATA_LOADED: {
-                // Log.i(TAG, "download progress:"+msg.arg1);
-                break;
-            }
-            case TASK_DATA_LOADED: {
-                break;
-            }
-            default:
-                break;
-            }
-        };
-    };
 
     private enum ConnectionStatus {
         DISCONNECTED, CONNECTED, HONGWIFI, HONGWIFI_AUTHED
@@ -139,7 +121,7 @@ public class ConnectionActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_main_layout);
         initView();
-        Utils.doPreloadApp(getApplicationContext(), this);
+
         mWifiAdmin = new WifiAdmin(getApplicationContext());
         mAuth = new WifiAuthentication(ConnectionActivity.this);
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
@@ -443,6 +425,7 @@ public class ConnectionActivity extends BaseActivity implements
         switch (method) {
         case MarketAPI.ACTION_LOGIN: {
             Log.d(TAG, "login success");
+            Utils.doPreloadApp(getApplicationContext(), this);
             Utils.doPreloadTask(getApplicationContext(), this);
             LoginResultBean result = (LoginResultBean) obj;
             if (result.getRetCode() == 0) {
