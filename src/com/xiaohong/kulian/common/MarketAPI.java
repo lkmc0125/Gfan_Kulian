@@ -82,7 +82,9 @@ public class MarketAPI {
             // ACTION_REPORT_ORDER_PAY
             API_BASE_URL + "/pay_report",
             // ACTION_ACCEPT_GZH_TASK
-            API_BASE_URL + "/accept_gzh_task"
+            API_BASE_URL + "/accept_gzh_task",
+            // ACTION_REQ_ADD_COIN
+            API_BASE_URL + "/req_add_coin",
             };
 
     /** 检查更新 */
