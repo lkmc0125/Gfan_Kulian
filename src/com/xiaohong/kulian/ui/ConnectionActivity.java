@@ -606,9 +606,14 @@ public class ConnectionActivity extends BaseActivity implements
         }
         // 查看全部推荐应用
         case R.id.connection_recommend_all_app_text:
-            Intent gameIntent = new Intent();
-            gameIntent.setAction(Constants.BROADCAST_CATEGORY_RCMD);
-            sendBroadcast(gameIntent);
+            
+            Intent intentw=new Intent("ep_123");
+            intentw.putExtra("data", "hello");
+            sendBroadcast(intentw);
+            
+//            Intent gameIntent = new Intent();
+//            gameIntent.setAction(Constants.BROADCAST_CATEGORY_RCMD);
+//            sendBroadcast(gameIntent);
             break;
         // 查看全部推荐任务
         case R.id.connection_recommend_task_layout:

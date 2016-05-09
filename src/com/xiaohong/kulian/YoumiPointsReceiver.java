@@ -9,6 +9,7 @@ import android.util.Log;
 
 public class YoumiPointsReceiver extends PointsReceiver {
     private final static String TAG = "YoumiPointsReceiver";
+
     @Override
     protected void onEarnPoints(Context context, EarnPointsOrderList orderList) {
         Log.d(TAG, "onEarnPoints");
@@ -18,7 +19,7 @@ public class YoumiPointsReceiver extends PointsReceiver {
             coinNum += order.getPoints();
         }
         if (coinNum > 0) {
-            Session.get(context).requestAddCoin(coinNum);    
+            Session.get(context).requestAddCoin(coinNum);
         }
     }
 
@@ -29,3 +30,4 @@ public class YoumiPointsReceiver extends PointsReceiver {
     }
 
 }
+

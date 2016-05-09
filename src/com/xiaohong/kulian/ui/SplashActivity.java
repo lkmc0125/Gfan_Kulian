@@ -73,9 +73,7 @@ public class SplashActivity extends BaseActivity implements ApiRequestListener, 
         setContentView(R.layout.activity_splash_layout);
         AdManager.getInstance(getApplicationContext()).init("12531462dbec51f1", "03a64201b437bf63", false); // true means test mode
         DiyOfferWallManager.getInstance(getApplicationContext()).onAppLaunch();
-        // 积分墙配置检查（使用“通过Receiver来获取积分订单”功能）：
-//        boolean isSuccess = OffersManager.getInstance(getApplicationContext()).checkOffersAdConfig(true);
-        
+
         // 从H5版本启动native版本时，可以带上登录信息
         Intent intent = getIntent();
         String userName = intent.getStringExtra("user");

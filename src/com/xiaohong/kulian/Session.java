@@ -875,6 +875,8 @@ public class Session extends Observable {
 	/** 下载列表更新 */
 	private static final int UPDATE_LIST = 3;
 	
+	private static final int ADD_COIN = 4;
+	
     private Handler mHandler = new Handler() {
 
         @Override
@@ -911,6 +913,11 @@ public class Session extends Observable {
                 notifyObservers(mDownloadingList);
                 break;
 
+            case ADD_COIN:
+                if (msg.arg1 > 0) { // add coin num
+                    sendAddCoinRequest(msg.arg1);
+                }
+                break;
             default:
                 break;
             }
@@ -1117,6 +1124,13 @@ public class Session extends Observable {
     }
     
     public void requestAddCoin(int coinNum) {
+        Message msg = new Message();
+        msg.what = ADD_COIN;
+        msg.arg1 = coinNum;
+        mHandler.sendMessage(msg);
+    }
+    
+    private void sendAddCoinRequest(int coinNum) {
         MarketAPI.requestAddCoin(mContext, mReportApiRequestListener, coinNum);
     }
     
