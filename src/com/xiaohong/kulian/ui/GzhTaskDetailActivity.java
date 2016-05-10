@@ -42,6 +42,10 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener, 
         setContentView(R.layout.activity_gzh_task_detail);
         Intent intent = getIntent();
         mTaskBean = intent.getParcelableExtra(Constants.EXTRA_TASK_BEAN);
+        if (mTaskBean == null) {
+            Log.d(TAG, "task bean not found.");
+            finish();
+        }
         initViews();
     }
 
