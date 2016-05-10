@@ -773,6 +773,8 @@ public class HomeTabActivity extends BaseTabActivity implements
         // 回收Session
         mSession.close();
         mSession = null;
+        Utils.clearPreloadedYoumiData();
+        Utils.clearPreloadedTaskData();
         finish();
     }
 

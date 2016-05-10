@@ -846,12 +846,13 @@ public class ConnectionActivity extends BaseActivity implements
                 textView_signIn_status.setText(R.string.person_account_sign_in_value);
             }
 
+            Log.d(TAG, "mAdList = " + mAdList);
+            Log.d(TAG, "Utils.getPredloadedYoumiData() = " + Utils.getPredloadedYoumiData());
             if (mAdList == null) {
                 if (Utils.getPredloadedYoumiData() == null) {
-                    Utils.doPreloadApp(getApplicationContext(), this);                    
-                } else {
+                    Utils.doPreloadApp(getApplicationContext(), this);
+                }else {
                     mAdList = Utils.getPredloadedYoumiData();
-                    onLoadAppSumDataSuccess(getApplicationContext(), mAdList);
                 }
             }
             if (taskBean == null) {

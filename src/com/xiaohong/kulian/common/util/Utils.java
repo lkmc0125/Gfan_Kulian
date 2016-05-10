@@ -1399,6 +1399,7 @@ public class Utils {
      * 预加载赚金币页面的数据
      */
     public static void doPreloadApp(Context context, AppSummaryDataInterface handler) {
+        Log.d(TAG,"doPreloadApp sIsAppLoading = " + sIsAppLoading);
         if (sIsAppLoading == true) {
             return;
         }
@@ -1487,6 +1488,17 @@ public class Utils {
     
     public static AppSummaryObjectList getPredloadedYoumiData() {
         return sYoumiData;
+    }
+    
+    public static void clearPreloadedYoumiData() {
+        sIsAppLoading = false;
+        sYoumiData = null;
+    }
+    
+    public static void clearPreloadedTaskData() {
+        sIsTaskLoading = false;
+        sTaskList.clear();
+        sGzhTaskList.clear();
     }
     
     public static ArrayList<AppBean> getPreloadedAppList() {
