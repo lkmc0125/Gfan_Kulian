@@ -39,15 +39,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
-import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.Session.OnLoginListener;
 import com.xiaohong.kulian.adapter.ConnectionAppGridAdapter;
-import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.bean.MessageBean;
 import com.xiaohong.kulian.bean.MessageListBean;
 import com.xiaohong.kulian.bean.TaskBean;
@@ -127,12 +123,11 @@ public class ConnectionActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_main_layout);
         initView();
-
+        registerConnection();
         mWifiAdmin = new WifiAdmin(getApplicationContext());
         mAuth = new WifiAuthentication(ConnectionActivity.this);
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
 
-        registerConnection();
         mSession.addLoginListener(this);
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -500,12 +495,7 @@ public class ConnectionActivity extends BaseActivity implements
                 TaskBean bean = new TaskBean();
                 bean = result.getTasklist().get(0);
                 taskBean = bean;
-                TaskImgUrl = bean.getLogo_url();
-                System.out.println("TaskImgUrl" + TaskImgUrl);
-                TaskName = bean.getName();
-                TaskDsb = bean.getDesc();
-                TaskCoin = "+" + String.valueOf(bean.getCoin_num());
-                updateTaskLayout();
+                updateTaskLayout(bean);
             } else {
                 Log.d(TAG, "no data from server");
             }
@@ -537,7 +527,6 @@ public class ConnectionActivity extends BaseActivity implements
     }
 
     private void showAppData(List<Map<String, Object>> data_list) {
-        Toast.makeText(ConnectionActivity.this, "显示推荐app", Toast.LENGTH_SHORT).show();
         connectionAppGridAdapter = new ConnectionAppGridAdapter(this, data_list);
         mGridView.setAdapter(connectionAppGridAdapter);
         mGridView.setOnItemClickListener(new ConnectAppOnItemClick());
@@ -686,7 +675,12 @@ public class ConnectionActivity extends BaseActivity implements
     /**
      * 更新推荐任务界面
      */
-    public void updateTaskLayout() {
+    public void updateTaskLayout(TaskBean bean) {
+        TaskImgUrl = bean.getLogo_url();
+        TaskName = bean.getName();
+        TaskDsb = bean.getDesc();
+        TaskCoin = "+" + String.valueOf(bean.getCoin_num());
+
         if (TaskImgUrl != null) {
             ImageLoader.getInstance()
                     .displayImage(TaskImgUrl, imageViewTaskImg);
@@ -715,7 +709,7 @@ public class ConnectionActivity extends BaseActivity implements
     @Override
     protected void onResume() {
 
-        onLoginStatusChanged();
+//        onLoginStatusChanged();
 
         if (mAutoScroolView.getMessageBeans() == null
                 && mSession.getMessages() != null) {
@@ -755,16 +749,19 @@ public class ConnectionActivity extends BaseActivity implements
 
     @Override
     public void onLoadAppSumDataFailed() {
+        Log.d(TAG, "onLoadAppSumDataFailed");
     }
 
     @Override
-    public void onLoadAppSumDataFailedWithErrorCode(int arg0) {
+    public void onLoadAppSumDataFailedWithErrorCode(int code) {
+        Log.d(TAG, "onLoadAppSumDataFailedWithErrorCode");
     }
 
     @Override
     public void onLoadAppSumDataSuccess(Context arg0,
             final AppSummaryObjectList adList) {
 
+        Log.d(TAG, "onLoadAppSumDataSuccess");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -805,9 +802,23 @@ public class ConnectionActivity extends BaseActivity implements
                 textView_signIn_status.setText(R.string.person_account_sign_in_value);
             }
 
-            Utils.doPreloadApp(getApplicationContext(), this);
-            Toast.makeText(getCurrentActivity(), "请求应用列表", Toast.LENGTH_SHORT);
-            Utils.doPreloadTask(getApplicationContext(), this);
+            if (mAdList == null) {
+                if (Utils.getPredloadedYoumiData() == null) {
+                    Utils.doPreloadApp(getApplicationContext(), this);                    
+                } else {
+                    mAdList = Utils.getPredloadedYoumiData();
+                    onLoadAppSumDataSuccess(getApplicationContext(), mAdList);
+                }
+            }
+            if (taskBean == null) {
+                if (Utils.getPreloadedTaskList() == null || Utils.getPreloadedTaskList().size() == 0) {
+                    Utils.doPreloadTask(getApplicationContext(), this);
+                } else {
+                    ArrayList<TaskBean> taskList = Utils.getPreloadedTaskList();
+                    taskBean = taskList.get(0);
+                    updateTaskLayout(taskBean);
+                }
+            }
             if (mSession.getMessages() == null) {
                 MarketAPI.getMessages(getApplicationContext(), this);
             }

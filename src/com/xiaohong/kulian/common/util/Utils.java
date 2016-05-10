@@ -1385,8 +1385,8 @@ public class Utils {
     }
     
     //do preload for make money page - app and task
-    private static boolean sIsAppLoaded = false;
-    private static boolean sIsTaskLoaded = false;
+    private static boolean sIsAppLoading = false;
+    private static boolean sIsTaskLoading = false;
     private static int sStartPage = 1;
     private static LoadAppAndTaskApiResponseListener sLoadAppAndTaskApiResponseListener =
             null;
@@ -1395,21 +1395,24 @@ public class Utils {
      * 预加载赚金币页面的数据
      */
     public static void doPreloadApp(Context context, AppSummaryDataInterface handler) {
-        if (sIsAppLoaded == true) {
-            Log.d(TAG, "already loaded");
+        if (sIsAppLoading == true) {
             return;
         }
-        sIsAppLoaded = true;
-        loadYoumiData(context, handler);
+        if (sYoumiData == null) {
+            sIsAppLoading = true;
+            loadYoumiData(context, handler);
+        }
     }
 
     public static void doPreloadTask(Context context, ApiRequestListener handler) {
-        if (sIsTaskLoaded == true) {
+        if (sIsTaskLoading == true) {
             Log.d(TAG, "already loaded");
             return;
         }
-        sIsTaskLoaded = true;
-        loadTask(context, handler);
+        if (sTaskList == null || sTaskList.size() == 0) {
+            sIsTaskLoading = true;
+            loadTask(context, handler);
+        }
     }
 
     public final static int AD_PER_NUMBER = 10;
@@ -1434,6 +1437,7 @@ public class Utils {
                     public void onLoadAppSumDataSuccess(Context context,
                             AppSummaryObjectList adList) {
                         sYoumiData = adList;
+                        sIsAppLoading = false;
                         handler.onLoadAppSumDataSuccess(context, adList);
                     }
 
@@ -1443,7 +1447,8 @@ public class Utils {
                      */
                     @Override
                     public void onLoadAppSumDataFailed() {
-                        
+                        handler.onLoadAppSumDataFailed();
+                        sIsAppLoading = false;
                     }
 
                     /**
@@ -1453,7 +1458,8 @@ public class Utils {
                     @Override
                     public void onLoadAppSumDataFailedWithErrorCode(
                             final int code) {
-                       
+                        handler.onLoadAppSumDataFailedWithErrorCode(code);
+                        sIsAppLoading = false;
                     }
                 });
     }
@@ -1516,6 +1522,7 @@ public class Utils {
                     }
                     sTaskList.clear();
                     sTaskList.addAll(result.getTasklist());
+                    sIsTaskLoading = false;
                     Log.d(TAG, "onSuccess sTaskList size = " + sTaskList.size());
                     mHandler.onSuccess(method, obj);
                     break;
@@ -1551,8 +1558,13 @@ public class Utils {
         }
         @Override
         public void onError(int method, int statusCode) {
-            // TODO Auto-generated method stub
-            
+            switch (method) {
+            case MarketAPI.ACTION_GET_TASK_LIST :
+            case MarketAPI.ACTION_GET_GZH_TASK_LIST :
+                sIsTaskLoading = false;
+            default:
+                break;
+            }
         }
     }
     
