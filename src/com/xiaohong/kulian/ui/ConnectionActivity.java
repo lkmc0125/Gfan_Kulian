@@ -786,7 +786,7 @@ public class ConnectionActivity extends BaseActivity implements
                 // 只显示金币数最多的3个app
                 Comparator comp = new Comparator() {  
                     public int compare(Object o1, Object o2) {  
-                        Map<String, Object> p1 = (Map<String, Object>) o1;  
+                        Map<String, Object> p1 = (Map<String, Object>) o1;
                         Map<String, Object> p2 = (Map<String, Object>) o2;
                         int p1num = Integer.parseInt((String) p1.get("GiveCoin"));
                         int p2num = Integer.parseInt((String) p2.get("GiveCoin"));
