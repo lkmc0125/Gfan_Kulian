@@ -788,8 +788,32 @@ public class ConnectionActivity extends BaseActivity implements
                     public int compare(Object o1, Object o2) {  
                         Map<String, Object> p1 = (Map<String, Object>) o1;  
                         Map<String, Object> p2 = (Map<String, Object>) o2;
-                        int p1num = Integer.parseInt((String) p1.get("GiveCoin"));
-                        int p2num = Integer.parseInt((String) p2.get("GiveCoin"));
+                        String coinStr1 = (String) p1.get("GiveCoin");
+                        String coinStr2 = (String) p2.get("GiveCoin");
+                        //Log.d(TAG, "coinStr1 = " + coinStr1);
+                        //Log.d(TAG, "coinStr2 = " + coinStr2);
+                        int p1num = 0;
+                        try {
+                            p1num = Integer.parseInt(coinStr1);
+                        }catch(NumberFormatException e) {
+                            //Log.w(TAG, "NumberFormatException1:" + e.getMessage());
+                            if(coinStr1.startsWith("+")) {
+                                p1num = Integer.parseInt(coinStr1.substring(1));
+                            }else if(coinStr1.startsWith("-")) {
+                                p1num = -Integer.parseInt(coinStr1.substring(1));
+                            }
+                        }
+                        int p2num = 0;
+                        try {
+                            p2num = Integer.parseInt(coinStr2);
+                        }catch(NumberFormatException e) {
+                            //Log.w(TAG, "NumberFormatException2:" + e.getMessage());
+                            if(coinStr2.startsWith("+")) {
+                                p2num = Integer.parseInt(coinStr2.substring(1));
+                            }else if(coinStr2.startsWith("-")) {
+                                p2num = -Integer.parseInt(coinStr2.substring(1));
+                            }
+                        }
                         if (p1num < p2num)
                             return 1;  
                         else if (p1num == p2num)  
