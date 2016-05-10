@@ -1,6 +1,8 @@
 package com.xiaohong.kulian.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -701,7 +703,8 @@ public class ConnectionActivity extends BaseActivity implements
                 long arg3) {
             Intent intent = new Intent(getApplicationContext(),
                     OfferWallAdDetailActivity.class);
-            intent.putExtra("ad", mAdList.get(pos));
+            AppSummaryObject obj = (AppSummaryObject)((HashMap<String, Object>)connectionAppGridAdapter.getItem(pos)).get("AppSummaryObject");
+            intent.putExtra("ad", obj);
             startActivity(intent);
         }
     }
@@ -765,7 +768,7 @@ public class ConnectionActivity extends BaseActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mAdList = new AppSummaryObjectList();
+                mAdList = adList;
                 List<Map<String, Object>> data_list = new ArrayList<Map<String, Object>>();
                 for (int i = 0; i < adList.size(); i++) {
                     AppSummaryObject appObj = adList.get(i);
@@ -776,12 +779,29 @@ public class ConnectionActivity extends BaseActivity implements
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("logo_url", appObj.getIconUrl());
                     map.put("name", appObj.getAppName());
-                    map.put("GiveCoin", "+" + appObj.getPoints());
+                    map.put("GiveCoin", "+" + Utils.getTotalPoints(appObj));
+                    map.put("AppSummaryObject", appObj);
                     data_list.add(map);
-                    mAdList.add(appObj);
-                    if (data_list.size() >= 3) {
-                        break;
+                }
+                // 只显示金币数最多的3个app
+                Comparator comp = new Comparator() {  
+                    public int compare(Object o1, Object o2) {  
+                        Map<String, Object> p1 = (Map<String, Object>) o1;  
+                        Map<String, Object> p2 = (Map<String, Object>) o2;
+                        int p1num = Integer.parseInt((String) p1.get("GiveCoin"));
+                        int p2num = Integer.parseInt((String) p2.get("GiveCoin"));
+                        if (p1num < p2num)
+                            return 1;  
+                        else if (p1num == p2num)  
+                            return 0;
+                        else if (p1num > p2num)  
+                            return -1;  
+                        return 0;  
                     }
+                };
+                Collections.sort(data_list, comp);
+                for (int i = data_list.size(); i > 3; i--) {
+                    data_list.remove(i-1);
                 }
                 showAppData(data_list);
             }

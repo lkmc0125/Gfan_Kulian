@@ -183,7 +183,7 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
 //                appSummaryObject.getPackageName());
 //        holder.mActionView.setText(isPackageExist ? R.string.app_item_action_open : R.string.app_item_action_view);
         holder.mActionView.setText(R.string.app_item_action_view);
-        holder.mGoldView.setText("+" + getTotalPoints(getItem(position).getAppSummaryObject()));
+        holder.mGoldView.setText("+" + Utils.getTotalPoints(getItem(position).getAppSummaryObject()));
         holder.mGoldView.setVisibility(View.VISIBLE);
 
         // 设置广告的状态、广告语
@@ -332,24 +332,6 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
        //viewHolder.mStatusView.setVisibility(View.GONE); 
        viewHolder.mDownloadProgressView.setVisibility(View.GONE);
    }
-
-    /**
-     * 如果任务未完成就获取指定广告的所有积分（正常完成的积分+可完成的追加任务积分）
-     */
-    private int getTotalPoints(AppSummaryObject appSummaryObject) {
-        int totalpoints = appSummaryObject.getPoints();
-        AppExtraTaskObjectList tempList = appSummaryObject.getExtraTaskList();
-        if (tempList != null && tempList.size() > 0) {
-            for (int i = 0; i < tempList.size(); ++i) {
-                AppExtraTaskObject extraTaskObject = tempList.get(i);
-                if (extraTaskObject.getStatus() == AdExtraTaskStatus.NOT_START
-                        || extraTaskObject.getStatus() == AdExtraTaskStatus.IN_PROGRESS) {
-                    totalpoints += extraTaskObject.getPoints();
-                }
-            }
-        }
-        return totalpoints;
-    }
 
     // DiyAppNotify
     @Override

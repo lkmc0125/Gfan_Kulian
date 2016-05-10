@@ -71,7 +71,11 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import aga.fdf.grd.os.df.AdExtraTaskStatus;
+import aga.fdf.grd.os.df.AppExtraTaskObject;
+import aga.fdf.grd.os.df.AppExtraTaskObjectList;
 import aga.fdf.grd.os.df.AppSummaryDataInterface;
+import aga.fdf.grd.os.df.AppSummaryObject;
 import aga.fdf.grd.os.df.AppSummaryObjectList;
 import aga.fdf.grd.os.df.DiyOfferWallManager;
 import android.annotation.SuppressLint;
@@ -1860,5 +1864,21 @@ public class Utils {
         }.execute();
     }
     
-    
+    /**
+     * 获取指定广告的所有积分（正常完成的积分+可完成的追加任务积分）
+     */
+    public static int getTotalPoints(AppSummaryObject appSummaryObject) {
+        int totalpoints = appSummaryObject.getPoints();
+        AppExtraTaskObjectList tempList = appSummaryObject.getExtraTaskList();
+        if (tempList != null && tempList.size() > 0) {
+            for (int i = 0; i < tempList.size(); ++i) {
+                AppExtraTaskObject extraTaskObject = tempList.get(i);
+                if (extraTaskObject.getStatus() == AdExtraTaskStatus.NOT_START
+                        || extraTaskObject.getStatus() == AdExtraTaskStatus.IN_PROGRESS) {
+                    totalpoints += extraTaskObject.getPoints();
+                }
+            }
+        }
+        return totalpoints;
+    }
 }
