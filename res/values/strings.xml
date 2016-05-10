@@ -494,11 +494,11 @@
     <string name="person_account_left_time_default"><Data><![CDATA[<font color="#A5A5A5">--</font>天      <font color="#A5A5A5">--</font>时      <font color="#A5A5A5">--</font>分]]></Data></string>
     <string name="person_account_left_time_days">%1$d天 %2$d时</string>
     <string name="person_account_left_time_minutes">%1$d时 %2$d分</string>
-    <string name="person_account_other_account_hint">请输入你要充值的对方账号:</string>
-    <string name="person_account_other_account_username_hint">请输入对方账号</string>
+    <string name="person_account_other_account_hint">请输入你要充值的对方手机号:</string>
+    <string name="person_account_other_account_username_hint">请输入对方手机号</string>
     <string name="person_account_other_account_pay_time_hint">请选择您需要的上网时间:</string>
     <string name="person_account_other_account_memo_hint">输入备注信息</string>
-    <string name="person_account_other_account_prompt_hint">请认真核对好充值账号，一旦充错，恕不退款。</string>
+    <string name="person_account_other_account_prompt_hint">请认真核对好充值手机号，一旦充错，恕不退款。</string>
     <string name="person_account_other_account_buy_prompt_hint">上网时间将在充值后即刻生效。若当前的上网时间尚未到期，我们将为您自动累加。</string>
     <string name="person_account_other_account_remark_prompt_hint">注：金币将发放至付款方账号内</string>
 

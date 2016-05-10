@@ -90,7 +90,7 @@ public class ProductListActivity extends BaseActivity implements
                 intent.getIntExtra(Constants.EXTRA_SORT_TYPE, 1);
                 intent.getStringExtra(Constants.EXTRA_CATEGORY_ID);
             }
-           
+
             mSwipeRefreshLayout = (RefreshLayout) findViewById(R.id.sr_ad_list);
             mSwipeRefreshLayout
                     .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

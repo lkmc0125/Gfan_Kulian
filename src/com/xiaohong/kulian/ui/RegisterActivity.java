@@ -330,6 +330,7 @@ public class RegisterActivity extends BaseActivity
                 mSession.setIsCountDown(result.getShowCountdown());
                 mSession.setRemainTime(result.getRemainTime());
                 mSession.setLogin(true);
+                mSession.notifyLoginStatusChanged();
                 finish();
             } else {
                 DialogUtils.showMessage(RegisterActivity.this, "出错啦", result.getRetMsg());

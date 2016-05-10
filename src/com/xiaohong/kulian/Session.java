@@ -71,6 +71,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.bean.MessageListBean;
 import com.xiaohong.kulian.bean.ReportResultBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
@@ -263,7 +264,8 @@ public class Session extends Observable {
     
     private final ArrayList<OnAppInstalledListener> mOnAppInstalledListener = new ArrayList<OnAppInstalledListener>();
     
-    
+    private final ArrayList<OnLoginListener> mOnLoginListener = new ArrayList<OnLoginListener>();    
+
     private ArrayList<OnLeftTimeUpdateListener> mOnLeftTimeUpdateListeners 
         = new ArrayList<OnLeftTimeUpdateListener>();
     
@@ -1142,38 +1144,61 @@ public class Session extends Observable {
 
         @Override
         public void onSuccess(int method, Object obj) {
-            
-            switch(method) {
-                case MarketAPI.ACTION_REPORT_APP_INSTALLED:
-                {
-                    ReportResultBean result = (ReportResultBean) obj;
-                    //should move add logic to notifyCoinUpdated function
-                    //coinNum += result.getAddedCoinNum();
-                    notifyCoinUpdated(result.getAddedCoinNum());
-                    break;
+
+            switch (method) {
+            case MarketAPI.ACTION_LOGIN: {
+
+                LoginResultBean result = (LoginResultBean) obj;
+                if (result.getRetCode() == 0) {
+                    setLogin(true);
+                    setCoinNum(result.getCoinNum());
+                    setSignInToday(result.getIsSign());
+                    setIsCountDown(result.getShowCountdown());
+                    if (result.getRemainTime() > 0) {
+                        setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_LEFT_TIME);
+                        setRemainTime(result.getRemainTime());
+                    } else {
+                        setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_SIGN_IN);
+                    }
+                    notifyLoginStatusChanged();
+                } else {
+                    notifyLoginFailed(result.getRetCode(), result.getRetMsg());
                 }
-                case MarketAPI.ACTION_REPORT_APP_LAUNCHED:
-                {
-                    ReportResultBean result = (ReportResultBean) obj;
-                    //coinNum += result.getAddedCoinNum();
-                    notifyCoinUpdated(result.getAddedCoinNum());
-                    break;
-                }
-                case MarketAPI.ACTION_REQ_ADD_COIN:
-                {
-                    ReportResultBean result = (ReportResultBean) obj;
-                    notifyCoinUpdated(result.getAddedCoinNum());
-                    break;
-                }
+
+                break;
+            }
+            case MarketAPI.ACTION_REPORT_APP_INSTALLED: {
+                ReportResultBean result = (ReportResultBean) obj;
+                // should move add logic to notifyCoinUpdated function
+                // coinNum += result.getAddedCoinNum();
+                notifyCoinUpdated(result.getAddedCoinNum());
+                break;
+            }
+            case MarketAPI.ACTION_REPORT_APP_LAUNCHED: {
+                ReportResultBean result = (ReportResultBean) obj;
+                // coinNum += result.getAddedCoinNum();
+                notifyCoinUpdated(result.getAddedCoinNum());
+                break;
+            }
+            case MarketAPI.ACTION_REQ_ADD_COIN: {
+                ReportResultBean result = (ReportResultBean) obj;
+                notifyCoinUpdated(result.getAddedCoinNum());
+                break;
+            }
             }
         }
 
         @Override
         public void onError(int method, int statusCode) {
-            // TODO Auto-generated method stub
-            
+            switch (method) {
+            case MarketAPI.ACTION_LOGIN: {
+                notifyLoginFailed(statusCode, "网络错误");
+                break;
+            }
+            default:
+                break;
+            }
         }
-        
     }
 
     // 正在运行的
@@ -1225,7 +1250,7 @@ public class Session extends Observable {
     public void removeOnCoinUpdateListener(OnCoinUpdatedListener listener) {
         mOnCoinUpdatedListener.remove(listener);
     }
-    
+
     /**
      * This function should only be called by ConnectionActivity
      */
@@ -1245,7 +1270,51 @@ public class Session extends Observable {
             listener.onCoinUpdate(coinNum);
         }
     }
+
+    /**
+     * 用于通知登录或注销
+     *
+     */
+    public static interface OnLoginListener {
+        public void onLoginStatusChanged();
+        public void onLoginFailed(int retCode, String msg);
+    }
+
+    public boolean login() {
+        if (getUserName() != null && getUserName().length() > 0 && getPassword() != null
+                && getPassword().length() > 0) {
+            MarketAPI.login(mContext, mReportApiRequestListener, getUserName(), getPassword());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void logout() {
+        setLogin(false);
+        notifyLoginStatusChanged();
+    }
+
+    public void addLoginListener(OnLoginListener listener) {
+        mOnLoginListener.add(listener);
+    }
     
+    public void removeLoginListener(OnLoginListener listener) {
+        mOnLoginListener.remove(listener);
+    }
+
+    public void notifyLoginStatusChanged() {
+        for (OnLoginListener listener : mOnLoginListener) {
+            listener.onLoginStatusChanged();
+        }
+    }
+
+    private void notifyLoginFailed(int retCode, String msg) {
+        for (OnLoginListener listener : mOnLoginListener) {
+            listener.onLoginFailed(retCode, msg);
+        }
+    }
+
     /**
      * 用于通知app已安装完毕
      * @author free

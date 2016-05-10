@@ -39,9 +39,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.Session;
+import com.xiaohong.kulian.Session.OnLoginListener;
 import com.xiaohong.kulian.adapter.ConnectionAppGridAdapter;
 import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.bean.MessageBean;
@@ -60,7 +64,7 @@ import com.xiaohong.kulian.common.widget.CustomDialog;
 import com.xiaohong.kulian.common.widget.RoundImageView;
 
 public class ConnectionActivity extends BaseActivity implements
-        ApiRequestListener, OnClickListener, AppSummaryDataInterface {
+        ApiRequestListener, OnClickListener, AppSummaryDataInterface, OnLoginListener {
     private static final String TAG = "ConnectionActivity";
 
     private WifiAuthentication mAuth;
@@ -129,7 +133,7 @@ public class ConnectionActivity extends BaseActivity implements
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
 
         registerConnection();
-
+        mSession.addLoginListener(this);
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 boolean open = mWifiAdmin.openWifi();
@@ -139,6 +143,12 @@ public class ConnectionActivity extends BaseActivity implements
         }, 500);
     }
 
+    @Override
+    protected void onDestroy() {
+        mSession.removeLoginListener(this);
+        super.onDestroy();
+    }
+    
     private void initView() {
         /**
          * 连接界面
@@ -370,10 +380,9 @@ public class ConnectionActivity extends BaseActivity implements
     }
 
     private void checkLogin() {
-        if (mSession.getUserName().length() > 0
+        if (mSession.isLogin() == false && mSession.getUserName().length() > 0
                 && mSession.getPassword().length() > 0) {
-            MarketAPI.login(getApplicationContext(), this,
-                    mSession.getUserName(), mSession.getPassword());
+            mSession.login();
         } else if (mSession.isLogin() == false) {
             Intent intent = new Intent(getApplicationContext(),
                     RegisterActivity.class);
@@ -425,32 +434,7 @@ public class ConnectionActivity extends BaseActivity implements
     @Override
     public void onSuccess(int method, Object obj) {
         switch (method) {
-        case MarketAPI.ACTION_LOGIN: {
-            Log.d(TAG, "login success");
-            Utils.doPreloadApp(getApplicationContext(), this);
-            Utils.doPreloadTask(getApplicationContext(), this);
-            LoginResultBean result = (LoginResultBean) obj;
-            if (result.getRetCode() == 0) {
-                mSession.setLogin(true);
-                mSession.setCoinNum(result.getCoinNum());
-                mSession.setToken(result.getToken());
-                textView_coin_num.setText(String.valueOf(result.getCoinNum()));
-                mSession.setSignInToday(result.getIsSign());
-                mSession.setIsCountDown(result.getShowCountdown());
-                mSession.setRemainTime(result.getRemainTime());
-                if (mSession.getSignInToday()) {
-                    textView_signIn_status.setText("今天已签到");
-                }
-                if (mSession.getMessages() == null) {
-                    MarketAPI.getMessages(getApplicationContext(), this);
-                }
-                if (result.getShowCountdown()) {
-                    mCountDownThread = new UpdateLeftTimeThread();
-                    mCountDownThread.start();
-                }
-            }
-            break;
-        }
+
         case MarketAPI.ACTION_GET_MESSAGES: {
             Log.d(TAG, "ACTION_GET_MESSAGES");
             MessageListBean messages = (MessageListBean) obj;
@@ -553,6 +537,7 @@ public class ConnectionActivity extends BaseActivity implements
     }
 
     private void showAppData(List<Map<String, Object>> data_list) {
+        Toast.makeText(ConnectionActivity.this, "显示推荐app", Toast.LENGTH_SHORT).show();
         connectionAppGridAdapter = new ConnectionAppGridAdapter(this, data_list);
         mGridView.setAdapter(connectionAppGridAdapter);
         mGridView.setOnItemClickListener(new ConnectAppOnItemClick());
@@ -685,16 +670,17 @@ public class ConnectionActivity extends BaseActivity implements
     }
 
     private boolean autoLogin() {
-        if (mSession.getUserName() != null
-                && mSession.getUserName().length() > 0
-                && mSession.getPassword() != null
-                && mSession.getPassword().length() > 0) {
-            MarketAPI.login(getApplicationContext(), this,
-                    mSession.getUserName(), mSession.getPassword());
-            return true;
-        } else {
-            return false;
-        }
+//        if (mSession.getUserName() != null
+//                && mSession.getUserName().length() > 0
+//                && mSession.getPassword() != null
+//                && mSession.getPassword().length() > 0) {
+//            MarketAPI.login(getApplicationContext(), this,
+//                    mSession.getUserName(), mSession.getPassword());
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return mSession.login();
     }
 
     /**
@@ -728,29 +714,8 @@ public class ConnectionActivity extends BaseActivity implements
 
     @Override
     protected void onResume() {
-        if (!mSession.isLogin()) {
-            textView_signIn_status
-                    .setText(R.string.person_account_sign_in_value);
-        } else if (mSession.isLogin()) {
-            textView_coin_num.setText(mSession.getCoinNum().toString());
-            if (mSession.getSignInToday()) {
-                textView_signIn_status.setText("今天已签到");
-            } else {
-                textView_signIn_status
-                        .setText(R.string.person_account_sign_in_value);
-            }
-            
-            if (mAdList == null) {
-                Utils.doPreloadApp(getApplicationContext(), this);
-            }
-            if (taskBean == null) {
-                Utils.doPreloadTask(getApplicationContext(), this);
-            }
-            if (mSession.getIsCountdown() && mCountDownThread == null) {
-                mCountDownThread = new UpdateLeftTimeThread();
-                mCountDownThread.start();
-            }
-        }
+
+        onLoginStatusChanged();
 
         if (mAutoScroolView.getMessageBeans() == null
                 && mSession.getMessages() != null) {
@@ -824,5 +789,38 @@ public class ConnectionActivity extends BaseActivity implements
                 showAppData(data_list);
             }
         });
+    }
+
+    @Override
+    public void onLoginStatusChanged() {
+
+        if (!mSession.isLogin()) {
+            textView_signIn_status.setText(R.string.person_account_sign_in_value);
+            textView_coin_num.setText("0");
+        } else {
+            textView_coin_num.setText(mSession.getCoinNum().toString());
+            if (mSession.getSignInToday()) {
+                textView_signIn_status.setText("今天已签到");
+            } else {
+                textView_signIn_status.setText(R.string.person_account_sign_in_value);
+            }
+
+            Utils.doPreloadApp(getApplicationContext(), this);
+            Toast.makeText(getCurrentActivity(), "请求应用列表", Toast.LENGTH_SHORT);
+            Utils.doPreloadTask(getApplicationContext(), this);
+            if (mSession.getMessages() == null) {
+                MarketAPI.getMessages(getApplicationContext(), this);
+            }
+            if (mSession.getIsCountdown() && mCountDownThread == null) {
+                mCountDownThread = new UpdateLeftTimeThread();
+                mCountDownThread.start();
+            }
+        }
+    }
+
+    @Override
+    public void onLoginFailed(int retCode, String retMsg) {
+        // TODO Auto-generated method stub
+        
     }
 }

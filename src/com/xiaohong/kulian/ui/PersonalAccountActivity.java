@@ -45,6 +45,7 @@ import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.Session.LeftTime;
 import com.xiaohong.kulian.Session.OnCoinUpdatedListener;
 import com.xiaohong.kulian.Session.OnLeftTimeUpdateListener;
+import com.xiaohong.kulian.Session.OnLoginListener;
 import com.xiaohong.kulian.Session.PersonalCenterStatus;
 import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.common.MarketAPI;
@@ -62,12 +63,12 @@ import com.xiaohong.kulian.common.widget.CustomDialog;
  * @date 2011-5-17
  */
 public class PersonalAccountActivity extends BaseActivity implements android.view.View.OnClickListener,
-        ApiRequestListener , OnCoinUpdatedListener{
+        ApiRequestListener , OnCoinUpdatedListener, OnLoginListener{
 
     private static final String TAG = "PersonalAccountActivity";
     private static final int ACCOUNT_REGIST = 0;
     private static final int REQUEST_CODE = 20;
-    public static final int REGIST = 1;
+    public static final int LOGOUT_MSG = 1;
     private static final int UPDATE_LEFTITIME_VIEW = 2;
 
     // 个人中心功能界面
@@ -86,31 +87,11 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
 
         initView();
         mSession.addOnCoinUpdateListener(this);
+        mSession.addLoginListener(this);
     }
 
     @Override
     protected void onResume() {
-
-        if (!mSession.isLogin()) {
-            textView_login.setText("登录");
-            textView_username.setText("未登录");
-            textView_coin_num.setText("0");
-        } else if (mSession.isLogin()) {
-            textView_login.setText("账号退出");
-            textView_username.setText(mSession.getUserName());
-            textView_coin_num.setText(mSession.getCoinNum().toString());
-
-            if (mSession.getRemainTime() > 0) {
-                if (mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
-                    if (mSession.getIsCountdown()) {
-                        //mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);                    
-                    }
-                }
-                //mLeftTime.setRemainTime(mSession.getRemainTime());
-                mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_LEFT_TIME);
-            }
-        }
-        updateSignView(mSession.getLeftTime());
         mSession.registerOnLeftTimeUpdateListener(mLeftTimeListener);
         super.onResume();
     }
@@ -159,7 +140,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         mSignIv = (ImageView) findViewById(R.id.sign_in_icon);
         mSignOrLeftTimeTv = (TextView) findViewById(R.id.sign_in_text);
         
-        updateSignView(mSession.getLeftTime());
+        onLoginStatusChanged();
     }
 
     @Override
@@ -249,7 +230,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
             // 注销
-            case REGIST:
+            case LOGOUT_MSG:
                 // ArrayList<HashMap<String, Object>> data = doInitFuncData();
                 // mAdapter.changeDataSource(data);
                 textView_login.setText("登录");
@@ -288,9 +269,8 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             return new CustomDialog.Builder(this).setMessage(getString(R.string.sure_to_regist))
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            mSession.setLogin(false);
-                            mSession.setUid(null);
-                            mHandler.sendEmptyMessage(REGIST);
+                            mSession.logout();
+                            mHandler.sendEmptyMessage(LOGOUT_MSG); // update UI
                             dialog.dismiss();
                         }
                     }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -483,5 +463,36 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
 
     public static boolean isInMainThread() {
         return Looper.myLooper() == Looper.getMainLooper();
+    }
+
+    @Override
+    public void onLoginStatusChanged() {
+        if (!mSession.isLogin()) {
+            textView_login.setText("登录");
+            textView_username.setText("未登录");
+            textView_coin_num.setText("0");
+        } else if (mSession.isLogin()) {
+            
+            textView_login.setText("账号退出");
+            textView_username.setText(mSession.getUserName());
+            textView_coin_num.setText(String.valueOf(mSession.getCoinNum()));
+            if (mSession.getRemainTime() > 0) {
+                if (mSession.getIsCountdown()) {
+                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);    
+                }
+            }
+            if (mSession.getSignInToday()) {
+                textView_signIn_status.setText(R.string.person_account_already_sign_in);
+            } else {
+                MarketAPI.signIn(getApplicationContext(), this);
+            }
+        }
+        updateSignView(mSession.getLeftTime());
+    }
+
+    @Override
+    public void onLoginFailed(int retCode, String retMsg) {
+        // TODO Auto-generated method stub
+        
     }
 }
