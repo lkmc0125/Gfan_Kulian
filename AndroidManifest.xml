@@ -316,7 +316,7 @@
         <!-- Channel value: anhui01  or  wen_zhou -->
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="wen_zhou" >
+            android:value="anhui01" >
         </meta-data>
     </application>
 

@@ -742,7 +742,6 @@ public class ConnectionActivity extends BaseActivity implements
                 try {
                     Thread.sleep(60 * 1000);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 mSession.getLeftTime().decOneMinutes();

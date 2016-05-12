@@ -69,7 +69,6 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     private static final int ACCOUNT_REGIST = 0;
     private static final int REQUEST_CODE = 20;
     public static final int LOGOUT_MSG = 1;
-    private static final int UPDATE_LEFTITIME_VIEW = 2;
 
     // 个人中心功能界面
     private RelativeLayout layout_task, layout_message, layout_question, layout_feedback, layout_account, layout_buy,
@@ -113,7 +112,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         layout_sign_in = (RelativeLayout) this.findViewById(R.id.sign_in_layout);
         layout_task = (RelativeLayout) this.findViewById(R.id.person_account_my_task_value_layout);
         layout_message = (RelativeLayout) this.findViewById(R.id.person_account_message_center_value_layout);
-        layout_question = (RelativeLayout) this.findViewById(R.id.person_account_normol_question_layout);
+        layout_question = (RelativeLayout) this.findViewById(R.id.person_account_normal_question_layout);
         layout_feedback = (RelativeLayout) this.findViewById(R.id.person_account_feedback_value_layout);
         layout_account = (RelativeLayout) this.findViewById(R.id.person_account_logout_value_layout);
         layout_buy = (RelativeLayout) this.findViewById(R.id.buy_layout);
@@ -191,36 +190,6 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             updateSignView(mSession.getLeftTime());
             break;
         }
-        case MarketAPI.ACTION_LOGIN: {
-            Log.d("free", "ACTION_LOGIN");
-            LoginResultBean result = (LoginResultBean) obj;
-            if (result.getRetCode() == 0) {
-                textView_login.setText("账号退出");
-                textView_username.setText(mSession.getUserName());
-                mSession.setLogin(true);
-                mSession.setCoinNum(result.getCoinNum());
-                textView_coin_num.setText(String.valueOf(result.getCoinNum()));
-                mSession.setSignInToday(result.getIsSign());
-                mSession.setIsCountDown(result.getShowCountdown());
-                if (result.getRemainTime() > 0) {
-                    mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_LEFT_TIME);
-                    mSession.setRemainTime(result.getRemainTime());
-                    //mLeftTime.setRemainTime(result.getRemainTime());
-                    if (mSession.getIsCountdown()) {
-                        mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);    
-                    }
-                } else {
-                    mSession.setPersonalCenterStatus(Session.PersonalCenterStatus.SHOW_SIGN_IN);
-                }
-                if (result.getIsSign()) {
-//                    textView_signIn_status.setText(R.string.person_account_already_sign_in);
-                } else {
-                    MarketAPI.signIn(getApplicationContext(), this);
-                }
-            }
-            updateSignView(mSession.getLeftTime());
-            break;
-        }
         default:
             break;
         }
@@ -285,16 +254,6 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         return super.onCreateDialog(id);
     }
 
-    private boolean autoLogin() {
-        if (mSession.getUserName() != null && mSession.getUserName().length() > 0 && mSession.getPassword() != null
-                && mSession.getPassword().length() > 0) {
-            MarketAPI.login(getApplicationContext(), this, mSession.getUserName(), mSession.getPassword());
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     @Override
     /**
      * 个人中心点击事件按钮
@@ -304,20 +263,16 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.sign_in_layout:
-            if(mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_LEFT_TIME) {
-                if (!mSession.isLogin()) {
-                    
+            if (mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
+                if (mSession.isLogin()) {
+                    MarketAPI.signIn(getApplicationContext(), this);
                 } else {
-                    
-                }
-            }else if(mSession.getPersonalCenterStatus() == Session.PersonalCenterStatus.SHOW_SIGN_IN) {
-                if (!mSession.isLogin()) {
-                    if (!autoLogin()) {
+                    if (!mSession.login()) {
                         intent_next = new Intent(getApplicationContext(), RegisterActivity.class);
                         startActivityForResult(intent_next, REQUEST_CODE);
+                    } else {
+                        MarketAPI.signIn(getApplicationContext(), this);
                     }
-                } else {
-                    MarketAPI.signIn(getApplicationContext(), this);
                 }
             }
             break;
@@ -328,7 +283,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             Intent MessagesIntent = new Intent(getApplicationContext(), MessageListActivity.class);
             startActivityForResult(MessagesIntent, REQUEST_CODE);
             break;
-        case R.id.person_account_normol_question_layout:
+        case R.id.person_account_normal_question_layout:
             Intent detailIntent = new Intent(getApplicationContext(), WebviewActivity.class);
             detailIntent.putExtra("extra.url", "file:///android_asset/FAQ.html");
             detailIntent.putExtra("extra.title", "常见问题");
@@ -392,6 +347,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                 int hours = leftTime.getHours();
                 int minutes = leftTime.getMinutes();
                 String str = null;
+//                mSignOrLeftTimeTv.setText(""+minutes);  for test
 
                 if (days == 0) {
                     str = getResources().getString(R.string.person_account_left_time_minutes);
@@ -456,9 +412,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         @Override
         public void onLeftTimeUpdate(LeftTime leftTime) {
             updateSignView(leftTime);
-
         }
-
     }
 
     public static boolean isInMainThread() {
@@ -472,20 +426,10 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             textView_username.setText("未登录");
             textView_coin_num.setText("0");
         } else if (mSession.isLogin()) {
-            
+
             textView_login.setText("账号退出");
             textView_username.setText(mSession.getUserName());
             textView_coin_num.setText(String.valueOf(mSession.getCoinNum()));
-            if (mSession.getRemainTime() > 0) {
-                if (mSession.getIsCountdown()) {
-                    mHandler.sendEmptyMessageDelayed(UPDATE_LEFTITIME_VIEW, 60 * 1000);    
-                }
-            }
-            if (mSession.getSignInToday()) {
-                textView_signIn_status.setText(R.string.person_account_already_sign_in);
-            } else {
-                MarketAPI.signIn(getApplicationContext(), this);
-            }
         }
         updateSignView(mSession.getLeftTime());
     }

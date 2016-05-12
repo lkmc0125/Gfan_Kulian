@@ -87,7 +87,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/person_account_normol_question_layout"
+        android:id="@+id/person_account_normal_question_layout"
         android:layout_width="fill_parent"
         android:layout_height="48dip"
         android:layout_marginLeft="10dip"
