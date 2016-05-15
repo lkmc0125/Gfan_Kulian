@@ -853,7 +853,10 @@ public class ConnectionActivity extends BaseActivity implements
 
     @Override
     public void onLoginStatusChanged() {
-
+        if(mSession == null) {
+            Log.w(TAG, "onLoginStatusChanged mSession is null");
+            return;
+        }
         if (!mSession.isLogin()) {
             textView_signIn_status.setText(R.string.person_account_sign_in_value);
             textView_coin_num.setText("0");

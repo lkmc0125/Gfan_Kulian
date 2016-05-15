@@ -1,5 +1,6 @@
 package com.xiaohong.kulian.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -13,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.TaskBean;
@@ -112,6 +112,7 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener, 
         }
     }
 
+    @SuppressLint("NewApi")
     private void copyWeixinId() {
         Log.d(TAG, "copy to clipboard");
         ClipboardManager cbm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
@@ -122,7 +123,9 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener, 
                         dialog.dismiss();
                     }
                 }).create();
-        dialog.show();
+        if(dialog != null) {
+            dialog.show();
+        }
     }
 
     private String getTaskName() {

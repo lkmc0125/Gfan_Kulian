@@ -223,6 +223,10 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
                             dialog.dismiss();
                         }
                     }).create();
+            if(PersonalAccountActivity.this.isFinishing()) {
+                Log.w(TAG, "PersonalAccountActivity is not running");
+                break;
+            }
             dialog.show();
             break;
         default:
