@@ -641,12 +641,24 @@ public class ConnectionActivity extends BaseActivity implements
             break;
         // 广播消息点击事件
         case R.id.connection_current_activity_info_text:
+            if(mAutoScroolView == null) {
+                Log.w(TAG, "mAutoScroolView is null");
+                break;
+            }
             int positon = mAutoScroolView.getPosition();
             System.out.println("getTextWidth_First()" + positon);
-            String url = mAutoScroolView.getMessageBeans().get(positon)
-                    .getClickUrl();
-            String Message = mAutoScroolView.getMessageBeans().get(positon)
-                    .getMessageText();
+            ArrayList<MessageBean> messageBeanList = mAutoScroolView.getMessageBeans();
+            if(messageBeanList == null) {
+                Log.w(TAG, "messageBeanList is null");
+                break;
+            }
+            MessageBean messageBean = messageBeanList.get(positon);
+            if(messageBean == null) {
+                Log.w(TAG, "messageBean is null");
+                break;
+            }
+            String url = messageBean.getClickUrl();
+            String Message = messageBean.getMessageText();
             if (url != null) {
                 Intent MessageIntent = new Intent(getApplicationContext(),
                         WebviewActivity.class);
@@ -768,9 +780,17 @@ public class ConnectionActivity extends BaseActivity implements
             @Override
             public void run() {
                 mAdList = adList;
+                int size = 0;
+                if(mAdList != null) {
+                    size = mAdList.size();
+                }
                 List<Map<String, Object>> data_list = new ArrayList<Map<String, Object>>();
-                for (int i = 0; i < adList.size(); i++) {
-                    AppSummaryObject appObj = adList.get(i);
+                for (int i = 0; i < size; i++) {
+                    if(mAdList == null) {
+                        Log.w(TAG, "So strange mAdList is null");
+                        break;
+                    }
+                    AppSummaryObject appObj = mAdList.get(i);
                     if (appObj.getAdTaskStatus() == AdTaskStatus.ALREADY_COMPLETE
                             || appObj.getAdForm() == AdForm.GO2WEB) {
                         continue;
