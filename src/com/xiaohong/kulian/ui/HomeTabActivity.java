@@ -697,6 +697,10 @@ public class HomeTabActivity extends BaseTabActivity implements
      */
     private void handleUpdate(UpdateInfo info) {
         int updateVersionCode = info.getVersionCode();
+        if(mSession == null) {
+            Log.w(TAG, "handleUpdate mSession is null");
+            return;
+        }
         int currentVersionCode = mSession.getVersionCode();
         if (currentVersionCode >= updateVersionCode) {
             // no update here
