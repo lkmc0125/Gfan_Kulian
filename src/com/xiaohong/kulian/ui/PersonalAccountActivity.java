@@ -92,6 +92,8 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     @Override
     protected void onResume() {
         mSession.registerOnLeftTimeUpdateListener(mLeftTimeListener);
+        mSession.addOnCoinUpdateListener(this);
+        mSession.addLoginListener(this);
         super.onResume();
     }
 
@@ -99,6 +101,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     protected void onPause() {
         mSession.removeOnCoinUpdateListener(this);
         mSession.removeOnLeftTimeUpdateListener(mLeftTimeListener);
+        mSession.removeLoginListener(this);
         super.onPause();
     }
 

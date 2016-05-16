@@ -30,7 +30,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +40,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
@@ -53,6 +53,7 @@ import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.DialogUtils;
+import com.xiaohong.kulian.common.util.MySharedpreference;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.util.WifiAdmin;
 import com.xiaohong.kulian.common.util.WifiAuthentication;
@@ -60,7 +61,6 @@ import com.xiaohong.kulian.common.widget.AutoScrollTextViewH;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.CustomDialog;
 import com.xiaohong.kulian.common.widget.RoundImageView;
-
 public class ConnectionActivity extends BaseActivity implements
         ApiRequestListener, OnClickListener, AppSummaryDataInterface, OnLoginListener {
     private static final String TAG = "ConnectionActivity";
@@ -585,13 +585,19 @@ public class ConnectionActivity extends BaseActivity implements
         }
         // 查看全部推荐应用
         case R.id.connection_recommend_all_app_text:
-
+            MySharedpreference mySharedpreference = new MySharedpreference
+            (this);
+            mySharedpreference.saveRankTabActivity_FLAG(Constants.BROADCAST_CATEGORY_RCMD);
             Intent gameIntent = new Intent();
             gameIntent.setAction(Constants.BROADCAST_CATEGORY_RCMD);
             sendBroadcast(gameIntent);
             break;
         // 查看全部推荐任务
         case R.id.connection_recommend_task_layout:
+            MySharedpreference mySharedpreference1 = new MySharedpreference
+            (this);
+            mySharedpreference1.saveRankTabActivity_FLAG(Constants.BROADCAST_CATEGORY_TASK);
+            
             Intent growIntent = new Intent();
             growIntent.setAction(Constants.BROADCAST_CATEGORY_TASK);
             sendBroadcast(growIntent);

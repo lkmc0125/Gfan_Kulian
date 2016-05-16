@@ -15,39 +15,25 @@
  */
 package com.xiaohong.kulian.ui;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
-import android.widget.TextView;
 
-import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
-import com.xiaohong.kulian.common.util.TopBar;
+import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.common.util.MySharedpreference;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseTabActivity;
 
@@ -66,13 +52,15 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
     /** 排行榜100 */
     private static final int MAX_ITEMS = 100;
     private TabHost mTabHost;
+    private String action="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //注册一个广播接收器，用于初始化tab的选取页
-        registerReceivers();
+//        registerReceivers();
         setContentView(R.layout.activity_rank);
+        registerReceivers();
 //        getWindow().setBackgroundDrawableResource(android.R.color.darker_gray);
         initView();
 //        initAdPager();  // banner
@@ -114,7 +102,8 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
+            action = intent.getAction();
+            System.out.println("mCheckAllReceiver"+intent.getAction());
             if (action.equals(Constants.BROADCAST_CATEGORY_TASK)) {
                 mTabHost.setCurrentTab(1);
             } else if (action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
@@ -152,6 +141,16 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
         mTabHost.addTab(tab4);
         mTabHost.setOnTabChangedListener(this);
         changeTabStyle();
+        MySharedpreference mySharedpreference = new MySharedpreference
+                (this);
+Map<String, Object> user=new HashMap<String, Object>();
+user=mySharedpreference.getMessage();
+action=user.get("type").toString();
+        if (action.equals(Constants.BROADCAST_CATEGORY_TASK)) {
+            mTabHost.setCurrentTab(1);
+        } else if (action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
+            mTabHost.setCurrentTab(0);
+        } 
     }
 
     private void changeTabStyle() {
