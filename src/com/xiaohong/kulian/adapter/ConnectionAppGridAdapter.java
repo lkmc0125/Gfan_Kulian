@@ -5,6 +5,8 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.RoundImageView;
 
 /**
@@ -49,17 +55,34 @@ public class ConnectionAppGridAdapter extends BaseAdapter
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView=inflater.inflate(R.layout.connect_third_part_grid_item, null);
-//          System.out.println("activity_main_content_item"+list_data_main_push);
-        RoundImageView iv=(RoundImageView)convertView.findViewById(R.id.connection_recommend_app_image); 
-        TextView tv_name=(TextView)convertView.findViewById(R.id.connection_recommend_app_name_hint_text); 
-        TextView tv_coin=(TextView)convertView.findViewById(R.id.connection_recommend_app_coin_text); 
+        ViewHolder holder = null;
+        if(convertView == null) {
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.connect_third_part_grid_item, null);
+            holder.mRoundImageView = (RoundImageView)
+                    convertView.findViewById(R.id.connection_recommend_app_image); 
+            holder.mNameTv = (TextView)
+                    convertView.findViewById(R.id.connection_recommend_app_name_hint_text); 
+            holder.mCoinTv = (TextView)
+                    convertView.findViewById(R.id.connection_recommend_app_coin_text); 
+            convertView.setTag(holder);
+        }else {
+            holder = (ViewHolder) convertView.getTag();
+        }
         String path=list_result.get(position).get("logo_url").toString();
         String name=list_result.get(position).get("name").toString();
         String GiveCoin=list_result.get(position).get("GiveCoin").toString();
-        ImageLoader.getInstance().displayImage(path, iv);
-        tv_name.setText(name);
-        tv_coin.setText(GiveCoin);
+        ImageLoader.getInstance().displayImage(path, 
+                new ImageViewAware(holder.mRoundImageView),
+                Utils.sDisplayRoundImageOptions);
+        holder.mNameTv.setText(name);
+        holder.mCoinTv.setText(GiveCoin);
         return convertView;
+    }
+    
+    private static class ViewHolder {
+        RoundImageView mRoundImageView;
+        TextView mNameTv;
+        TextView mCoinTv;
     }
 }

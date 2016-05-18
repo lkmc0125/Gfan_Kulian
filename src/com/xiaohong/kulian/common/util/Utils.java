@@ -1362,6 +1362,15 @@ public class Utils {
             .considerExifParams(true) // 启用EXIF和JPEG图像格式
             .displayer(new RoundedBitmapDisplayer(20)) // 设置显示风格这里是圆角矩形
             .build();
+    
+    /**
+     * A display option for ImageLoader
+     */
+    public static final  DisplayImageOptions sDisplayRoundImageOptions = new DisplayImageOptions.Builder()
+            .cacheInMemory(true) // 启用内存缓存
+            .cacheOnDisk(true) // 启用外存缓存
+            .considerExifParams(true) // 启用EXIF和JPEG图像格式
+            .build();
 
     /**
      * Go to BuyCoinActivity 
