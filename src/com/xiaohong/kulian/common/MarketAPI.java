@@ -26,6 +26,8 @@ import android.R.integer;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.xiaohong.kulian.Constants;
@@ -143,7 +145,18 @@ public class MarketAPI {
         if (Utils.isLeShiMobile()) {
             params.put("leshi", 1);
         }
+        params.put("channel", session.getChannel());
 
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager != null) {
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            if (wifiInfo != null) {
+                String ssid = wifiInfo.getBSSID();
+                if (ssid != null) {
+                    params.put("ssid", ssid);
+                }
+            }
+        }
         new ApiAsyncTask(context, ACTION_REGISTER, handler, params).execute();
     }
 
@@ -158,6 +171,19 @@ public class MarketAPI {
         params.put("phone_number", username);
         params.put("passwd", Utils.getMD5(password));
         params.put("ver", String.valueOf(session.getVersionCode()));
+        params.put("channel", session.getChannel());
+
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager != null) {
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            if (wifiInfo != null) {
+                String ssid = wifiInfo.getBSSID();
+                if (ssid != null) {
+                    params.put("ssid", ssid);
+                }
+            }
+        }
+
         new ApiAsyncTask(context, ACTION_LOGIN, handler, params).execute();
     }
 
