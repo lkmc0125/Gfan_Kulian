@@ -89,7 +89,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             for (int i = 0; i < appList.size(); i++) {
                 array.add((Object)appList.get(i));
             }
-            mAdapter.setData(TaskBean.ITEM_TYPE_APP_TASK, array);
+            mAdapter.setAppData(array);
         } else {
             MarketAPI.getAppList(getApplicationContext(), this, getStartPage(),
                     Constants.CATEGORY_APP);
@@ -103,7 +103,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             for (int i = 0; i < taskList.size(); i++) {
                 array.add((Object)taskList.get(i));
             }
-            mAdapter.setData(TaskBean.ITEM_TYPE_WEB_TASK, array);
+            mAdapter.setTaskData(TaskBean.ITEM_TYPE_WEB_TASK, array);
             isLoaded = true;
         }
         ArrayList<TaskBean> gzhTaskList = Utils.getPreloadedGzhTaskList();
@@ -113,7 +113,7 @@ public class TaskListActivity extends LazyloadListActivity implements
             for (int i = 0; i < gzhTaskList.size(); i++) {
                 array.add((Object)gzhTaskList.get(i));
             }
-            mAdapter.setData(TaskBean.ITEM_TYPE_GZH_TASK, array);
+            mAdapter.setTaskData(TaskBean.ITEM_TYPE_GZH_TASK, array);
             isLoaded = true;
         }
         if (isLoaded == true) {
@@ -159,7 +159,7 @@ public class TaskListActivity extends LazyloadListActivity implements
                 }
                 array.add((Object)bean);
             }
-            mAdapter.setData(TaskBean.ITEM_TYPE_APP_TASK, array);
+            mAdapter.setAppData(array);
             mAdapter.notifyDataSetChanged();
             break;
         }
@@ -178,7 +178,7 @@ public class TaskListActivity extends LazyloadListActivity implements
                 for (int i = 0; i < result.getTasklist().size(); i++) {
                     array.add((Object)(result.getTasklist().get(i)));
                 }
-                mAdapter.setData(TaskBean.ITEM_TYPE_WEB_TASK, array);
+                mAdapter.setTaskData(TaskBean.ITEM_TYPE_WEB_TASK, array);
                 mAdapter.notifyDataSetChanged();
             } else {
                 Log.d(TAG, "no data from server");
@@ -308,7 +308,7 @@ public class TaskListActivity extends LazyloadListActivity implements
                     for (int i = 0; i < availableList.size(); i++) {
                         array.add((Object)availableList.get(i));
                     }
-                    mAdapter.setData(TaskBean.ITEM_TYPE_GZH_TASK, array);
+                    mAdapter.setTaskData(TaskBean.ITEM_TYPE_GZH_TASK, array);
                     mAdapter.notifyDataSetChanged();
                 } else {
                     Log.d(TAG, "no data from server");

@@ -23,6 +23,8 @@ public class TaskListAdapter extends CommonAdapter {
     private static final String TAG = "TaskListAdapter";
     private Context mContext;
     private ArrayList<Object> mData;
+    //用于标记列表中有多少个APP item
+    private int mAppListSize = 0;
     /**
      * A ImageLoader instance to load image from cache or network
      */
@@ -33,13 +35,23 @@ public class TaskListAdapter extends CommonAdapter {
         mData = new ArrayList<Object>();
     }
 
-    public synchronized void setData(int type, ArrayList<Object> data) {
-        Log.d(TAG, "setData:" + data);
-        if (type == TaskBean.ITEM_TYPE_APP_TASK) {
-            mData.addAll(0, data);
+    public synchronized void setTaskData(int type, ArrayList<Object> data) {
+        Log.d(TAG, "setTaskData:" + data);
+        if (type == TaskBean.ITEM_TYPE_WEB_TASK) {
+            mData.addAll(mAppListSize, data);
         } else {
             mData.addAll(data);
         }
+    }
+    
+    /**
+     * Add app list at the begining position
+     * @param data
+     */
+    public synchronized void setAppData(ArrayList<Object> data) {
+        Log.d(TAG, "setAppData:" + data);
+        mData.addAll(0, data);
+        mAppListSize = data.size();
     }
 
     @Override
