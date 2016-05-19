@@ -117,8 +117,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_detail);
-        setContentView(R.layout.activity_app_detail);
+
+        setContentView(R.layout.activity_offerwall_detail);
 
         mImageLoader = ImageLoader.getInstance();
         // 检查传入的Intent是否合法，不合法就直接finish

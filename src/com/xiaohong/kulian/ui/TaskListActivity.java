@@ -22,6 +22,7 @@ import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.adapter.CommonAdapter;
 import com.xiaohong.kulian.adapter.TaskListAdapter;
 import com.xiaohong.kulian.bean.AppBean;
+import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.ApiAsyncTask;
@@ -80,36 +81,38 @@ public class TaskListActivity extends LazyloadListActivity implements
     @Override
     public void doLazyload() {
 
-//        ArrayList<AppBean> appList = Utils.getPreloadedAppList();
-//        if (appList != null && appList.size() > 0) {
-//            Log.d(TAG,"app preloaded size = " + appList.size());
-//            mIsEnd = appList.size() < 10;
-//            mAdapter.clearData();
-//            mAdapter.addData(appList);
-//            mAdapter.notifyDataSetChanged();
-//            setLoadResult(true);
-//            return;
-//        }
-//        try {
-//            throw new Exception("test");
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//        }
-//        Log.d(TAG,"no preloaded");
-//        MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
-
+        ArrayList<AppBean> appList = Utils.getPreloadedAppList();
+        if (appList != null && appList.size() > 0) {
+            Log.d(TAG,"app preloaded size = " + appList.size());
+            mIsEnd = appList.size() < 10;
+            ArrayList<Object> array = new ArrayList<Object>();
+            for (int i = 0; i < appList.size(); i++) {
+                array.add((Object)appList.get(i));
+            }
+            mAdapter.setData(TaskBean.ITEM_TYPE_APP_TASK, array);
+        } else {
+            MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
+        }
+        
         ArrayList<TaskBean> taskList = Utils.getPreloadedTaskList();
         boolean isLoaded = false;
         if (taskList != null && taskList.size() > 0) {
             Log.d(TAG,"preloaded task size = " + taskList.size());
-            mAdapter.setData(TaskBean.ITEM_TYPE_TASK, taskList);
+            ArrayList<Object> array = new ArrayList<Object>();
+            for (int i = 0; i < taskList.size(); i++) {
+                array.add((Object)taskList.get(i));
+            }
+            mAdapter.setData(TaskBean.ITEM_TYPE_WEB_TASK, array);
             isLoaded = true;
         }
         ArrayList<TaskBean> gzhTaskList = Utils.getPreloadedGzhTaskList();
         if (gzhTaskList != null && gzhTaskList.size() > 0) {
             Log.d(TAG,"preloaded gzh task size: " + gzhTaskList.size());
-            mAdapter.setData(TaskBean.ITEM_TYPE_GZHTASK, gzhTaskList);
-            
+            ArrayList<Object> array = new ArrayList<Object>();
+            for (int i = 0; i < gzhTaskList.size(); i++) {
+                array.add((Object)gzhTaskList.get(i));
+            }
+            mAdapter.setData(TaskBean.ITEM_TYPE_GZH_TASK, array);
             isLoaded = true;
         }
         if (isLoaded == true) {
@@ -122,7 +125,6 @@ public class TaskListActivity extends LazyloadListActivity implements
         MarketAPI.getTaskList(getApplicationContext(), this);
         MarketAPI.getGzhTaskList(getApplicationContext(), 
                 new GzhTaskListApiRequestListener());
-
     }
 
     @Override
@@ -139,22 +141,54 @@ public class TaskListActivity extends LazyloadListActivity implements
     @SuppressWarnings("unchecked")
     @Override
     public void onSuccess(int method, Object obj) {
-        Log.d(TAG, obj.toString());
-        TaskListBean result = (TaskListBean) obj;
-        if(result.getTasklist() != null) {
-            Log.d(TAG, "size = " + result.getTasklist().size());
-            for (TaskBean item : result.getTasklist()) {
-                //set remain num to 1 for normal task
-                item.setRemain_tasknum(1);
-                item.setTaskType(TaskBean.ITEM_TYPE_TASK);
+        switch (method) {
+        case MarketAPI.ACTION_GET_APP_LIST :
+        {
+            AppListBean appList = (AppListBean) obj;
+            ArrayList<Object> array = new ArrayList<Object>();
+            for (AppBean bean : appList.getApplist()) {
+                if (Utils.isApkInstalled(getApplicationContext(), bean.getPackageName()) == true) {
+                    bean.setIsInstalled(true);
+                } else if (Utils.isApkDownloaded(bean.getAppName())) {
+                    /**
+                     * only if the app is not installed , shall we check if it's downloaded
+                     * 
+                     */
+                    bean.setDownloaded(true);
+                }
+                array.add((Object)bean);
             }
-            mAdapter.setData(TaskBean.ITEM_TYPE_TASK, result.getTasklist());
+            mAdapter.setData(TaskBean.ITEM_TYPE_APP_TASK, array);
             mAdapter.notifyDataSetChanged();
-        }else {
-            Log.d(TAG, "no data from server");
+            break;
         }
-        mIsEnd = true;
-        setLoadResult(true);
+        case MarketAPI.ACTION_GET_TASK_LIST:
+        {
+            Log.d(TAG, obj.toString());
+            TaskListBean result = (TaskListBean) obj;
+            if (result.getTasklist() != null) {
+                Log.d(TAG, "size = " + result.getTasklist().size());
+                for (TaskBean item : result.getTasklist()) {
+                    //set remain num to 1 for normal task
+                    item.setRemain_tasknum(1);
+                    item.setTaskType(TaskBean.ITEM_TYPE_WEB_TASK);
+                }
+                ArrayList<Object> array = new ArrayList<Object>();
+                for (int i = 0; i < result.getTasklist().size(); i++) {
+                    array.add((Object)(result.getTasklist().get(i)));
+                }
+                mAdapter.setData(TaskBean.ITEM_TYPE_WEB_TASK, array);
+                mAdapter.notifyDataSetChanged();
+            } else {
+                Log.d(TAG, "no data from server");
+            }
+            mIsEnd = true;
+            setLoadResult(true);
+            break;
+        }
+        default:
+            break;
+        }
     }
 
     @Override
@@ -183,21 +217,35 @@ public class TaskListActivity extends LazyloadListActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         
-        ArrayList<TaskBean> list = mAdapter.getData();
-        if(list != null) {
-            TaskBean item = list.get(position);
-            String clickUrl = item.getClick_url();
-            if(clickUrl != null && !clickUrl.equals("")) {
-                openWebView(clickUrl, item.getName());
-            }else {
-                if (!mSession.isLogin()) {
-                    Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(TaskListActivity.this, GzhTaskDetailActivity.class);
-                    intent.putExtra(Constants.EXTRA_TASK_BEAN, item);
-                    startActivity(intent);
+        ArrayList<Object> list = mAdapter.getData();
+        if (list != null) {
+            Object obj = list.get(position);
+            if (obj instanceof TaskBean) {
+                TaskBean item = (TaskBean)obj; 
+                String clickUrl = item.getClick_url();
+                if(clickUrl != null && !clickUrl.equals("")) {
+                    openWebView(clickUrl, item.getName());
+                }else {
+                    if (!mSession.isLogin()) {
+                        Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(TaskListActivity.this, GzhTaskDetailActivity.class);
+                        intent.putExtra(Constants.EXTRA_TASK_BEAN, item);
+                        startActivity(intent);
+                    }
                 }
+            } else if (obj instanceof AppBean) {
+                AppBean item = (AppBean) mAdapter.getItem(position);
+                // 去产品详细页
+                String pid = item.getAppId() + "";
+                Intent detailIntent = new Intent(getApplicationContext(),
+                        AppDetailActivity.class);
+                detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
+                detailIntent.putExtra(Constants.EXTRA_CATEGORY, mCategory);
+                detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
+                detailIntent.putExtra(Constants.EXTRA_PACKAGE_NAME, item.getPackageName());
+                startActivity(detailIntent);
             }
             
         }else {
@@ -230,38 +278,46 @@ public class TaskListActivity extends LazyloadListActivity implements
         startActivity(detailIntent);
     }
 
-    private class GzhTaskListApiRequestListener 
-        implements ApiRequestListener {
+    private class GzhTaskListApiRequestListener implements ApiRequestListener {
 
         @Override
         public void onSuccess(int method, Object obj) {
-            Log.d(TAG, obj.toString());
-            TaskListBean result = (TaskListBean) obj;
-            ArrayList<TaskBean> availableList = new ArrayList<TaskBean>();;
-            ArrayList<TaskBean> finishedList = new ArrayList<TaskBean>();
-            int titlePos = 0;
-            if(result.getTasklist() != null) {
-                Log.d(TAG, "ApiRequestListener size = " + result.getTasklist().size());
-                for(int i = 0; i< result.getTasklist().size(); i++) {
-                    TaskBean bean = result.getTasklist().get(i);
-                    bean.setTaskType(TaskBean.ITEM_TYPE_GZHTASK);
-                    if (bean.getRemain_tasknum() == 0) {
-                        finishedList.add(bean);                        
-                    } else {
-                        availableList.add(bean);
+            switch (method) {
+            case MarketAPI.ACTION_GET_GZH_TASK_LIST:
+                Log.d(TAG, obj.toString());
+                TaskListBean result = (TaskListBean) obj;
+                ArrayList<TaskBean> availableList = new ArrayList<TaskBean>();;
+                ArrayList<TaskBean> finishedList = new ArrayList<TaskBean>();
+                if (result.getTasklist() != null) {
+                    Log.d(TAG, "ApiRequestListener size = " + result.getTasklist().size());
+                    for (int i = 0; i< result.getTasklist().size(); i++) {
+                        TaskBean bean = result.getTasklist().get(i);
+                        bean.setTaskType(TaskBean.ITEM_TYPE_GZH_TASK);
+                        if (bean.getRemain_tasknum() == 0) {
+                            finishedList.add(bean);                        
+                        } else {
+                            availableList.add(bean);
+                        }
                     }
+                    if (finishedList.size() > 0) {
+                        availableList.addAll(finishedList);
+                    }
+                    Log.d(TAG, "onSuccess done");
+                    ArrayList<Object> array = new ArrayList<Object>();
+                    for (int i = 0; i < availableList.size(); i++) {
+                        array.add((Object)availableList.get(i));
+                    }
+                    mAdapter.setData(TaskBean.ITEM_TYPE_GZH_TASK, array);
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    Log.d(TAG, "no data from server");
                 }
-                if (finishedList.size() > 0) {
-                    availableList.addAll(finishedList);
-                }
-                Log.d(TAG, "onSuccess done");
-                mAdapter.setData(TaskBean.ITEM_TYPE_GZHTASK, availableList);
-                mAdapter.notifyDataSetChanged();
-            }else {
-                Log.d(TAG, "no data from server");
+                mIsEnd = true;
+                setLoadResult(true);
+                break;
+            default:
+                break;
             }
-            mIsEnd = true;
-            setLoadResult(true);
         }
 
         @Override

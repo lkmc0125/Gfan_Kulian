@@ -10,10 +10,10 @@ public class TaskBean implements Parcelable {
     /**
      * 标记当前对象表示一个task
      */
-    public static int ITEM_TYPE_APP = 1;
-    public static int ITEM_TYPE_TASK = 2;
-    public static int ITEM_TYPE_GZHTASK = 3;
-    private int mType = ITEM_TYPE_TASK;
+    public static int ITEM_TYPE_APP_TASK = 1;
+    public static int ITEM_TYPE_WEB_TASK = 2;
+    public static int ITEM_TYPE_GZH_TASK = 3;
+    private int mType = ITEM_TYPE_WEB_TASK;
 
     /**
      * 用于区分是公众号任务还是普通任务

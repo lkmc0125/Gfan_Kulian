@@ -44,7 +44,8 @@
 	        android:singleLine="true"
 	        android:layout_marginTop="12dp"
 	        android:layout_marginLeft="2dp"
-	        android:drawableStart="@drawable/status_done"/>
+	        android:drawableStart="@drawable/status_done"
+	        android:visibility="gone"/>
 	
 	    <!-- 应用的描述 -->
 	    <TextView android:id="@+id/tv_description"
