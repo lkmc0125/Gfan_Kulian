@@ -1416,6 +1416,9 @@ public class Utils {
             sIsAppLoading = true;
             loadYoumiData(context, handler);
         }
+        if (sAppList == null) {
+            loadApp(context);
+        }
     }
 
     public static void doPreloadTask(Context context, ApiRequestListener handler) {

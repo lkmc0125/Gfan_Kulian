@@ -79,33 +79,50 @@ public class TaskListActivity extends LazyloadListActivity implements
 
     @Override
     public void doLazyload() {
-        Log.d(TAG, "doInitView:mCategory=" + mCategory);
-        if (Constants.CATEGORY_TASK.equals(mCategory)) {
-            ArrayList<TaskBean> taskList = Utils.getPreloadedTaskList();
-            boolean isLoaded = false;
-            if(taskList != null && taskList.size() > 0) {
-                Log.d(TAG,"preloaded task size = " + taskList.size());
-                mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK, taskList);
-                isLoaded = true;
-            }
-            ArrayList<TaskBean> gzhTaskList = Utils.getPreloadedGzhTaskList();
-            if(gzhTaskList != null && gzhTaskList.size() > 0) {
-                Log.d(TAG,"preloaded gzh task size: " + gzhTaskList.size());
-                mAdapter.setData(TaskListAdapter.TYPE_GZH_TAK, gzhTaskList);
-                
-                isLoaded = true;;
-            }
-            if(isLoaded == true) {
-                Log.d(TAG,"set mIsEnd to true");
-                mIsEnd = true;
-                setLoadResult(true);
-                return;
-            }
-            Log.d(TAG,"not preloaded task");
-            MarketAPI.getTaskList(getApplicationContext(), this);
-            MarketAPI.getGzhTaskList(getApplicationContext(), 
-                    new GzhTaskListApiRequestListener());
+
+//        ArrayList<AppBean> appList = Utils.getPreloadedAppList();
+//        if (appList != null && appList.size() > 0) {
+//            Log.d(TAG,"app preloaded size = " + appList.size());
+//            mIsEnd = appList.size() < 10;
+//            mAdapter.clearData();
+//            mAdapter.addData(appList);
+//            mAdapter.notifyDataSetChanged();
+//            setLoadResult(true);
+//            return;
+//        }
+//        try {
+//            throw new Exception("test");
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//        }
+//        Log.d(TAG,"no preloaded");
+//        MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), mCategory);
+
+        ArrayList<TaskBean> taskList = Utils.getPreloadedTaskList();
+        boolean isLoaded = false;
+        if (taskList != null && taskList.size() > 0) {
+            Log.d(TAG,"preloaded task size = " + taskList.size());
+            mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK, taskList);
+            isLoaded = true;
         }
+        ArrayList<TaskBean> gzhTaskList = Utils.getPreloadedGzhTaskList();
+        if (gzhTaskList != null && gzhTaskList.size() > 0) {
+            Log.d(TAG,"preloaded gzh task size: " + gzhTaskList.size());
+            mAdapter.setData(TaskListAdapter.TYPE_GZH_TASK, gzhTaskList);
+            
+            isLoaded = true;
+        }
+        if (isLoaded == true) {
+            Log.d(TAG,"set mIsEnd to true");
+            mIsEnd = true;
+            setLoadResult(true);
+            return;
+        }
+        Log.d(TAG,"not preloaded task");
+        MarketAPI.getTaskList(getApplicationContext(), this);
+        MarketAPI.getGzhTaskList(getApplicationContext(), 
+                new GzhTaskListApiRequestListener());
+
     }
 
     @Override
@@ -231,6 +248,7 @@ public class TaskListActivity extends LazyloadListActivity implements
                 Log.d(TAG, "ApiRequestListener size = " + result.getTasklist().size());
                 for(int i = 0; i< result.getTasklist().size(); i++) {
                     TaskBean bean = result.getTasklist().get(i);
+                    bean.setTaskType(TaskBean.ITEM_TYPE_GZHTASK);
                     if (bean.getRemain_tasknum() == 0) {
                         finishedList.add(bean);                        
                     } else {
@@ -241,7 +259,7 @@ public class TaskListActivity extends LazyloadListActivity implements
                     availableList.addAll(finishedList);
                 }
                 Log.d(TAG, "onSuccess done");
-                mAdapter.setData(TaskListAdapter.TYPE_GZH_TAK, availableList);
+                mAdapter.setData(TaskListAdapter.TYPE_GZH_TASK, availableList);
                 mAdapter.notifyDataSetChanged();
             }else {
                 Log.d(TAG, "no data from server");

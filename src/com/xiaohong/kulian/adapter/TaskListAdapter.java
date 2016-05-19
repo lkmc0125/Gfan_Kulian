@@ -21,8 +21,8 @@ import android.widget.TextView;
 public class TaskListAdapter extends CommonAdapter {
     private static final String TAG = "TaskListAdapter";
     public static final int TYPE_NORMAL_TASK = 1;
-    public static final int TYPE_GZH_TAK = 2;
-
+    public static final int TYPE_GZH_TASK = 2;
+    public static final int TYPE_APP_TASK = 3;
     private Context mContext;
     private ArrayList<TaskBean> mData;
     /**
@@ -68,10 +68,10 @@ public class TaskListAdapter extends CommonAdapter {
         ViewHolder holder = null;
         // Log.d(TAG, "getView pos = " + position);
         if (convertView == null
-                || mData.get(position).getType() != ((ViewHolder) convertView
+                || mData.get(position).getTaskType() != ((ViewHolder) convertView
                         .getTag()).type) {
             holder = new ViewHolder();
-            convertView = newView(holder, mData.get(position).getType());
+            convertView = newView(holder, mData.get(position).getTaskType());
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -92,9 +92,6 @@ public class TaskListAdapter extends CommonAdapter {
         private TextView mActionView; //显示打开查看的view
         private TextView mStatusView;
         private TextView mAppTitleView;
-        /**
-         * 用于判断item是title还是一个task
-         */
         private int type;
     }
 
@@ -160,13 +157,8 @@ public class TaskListAdapter extends CommonAdapter {
             viewHolder.type = TaskBean.ITEM_TYPE_TASK;
             view.setTag(viewHolder);
             return view;
-        } else {
-            View view = inflater.inflate(R.layout.task_list_item_title, null);
-            viewHolder.mAppDescView = (TextView) view.findViewById(R.id.title);
-            viewHolder.type = TaskBean.ITEM_TYPE_TITLE;
-            view.setTag(viewHolder);
-            return view;
         }
+        return null;
     }
 
     /**
@@ -194,10 +186,6 @@ public class TaskListAdapter extends CommonAdapter {
             }else {
                 showActioViews(holder);
             }
-
-        } else {
-            holder.mAppDescView.setText(item.getTitle());
-            
         }
     }
 

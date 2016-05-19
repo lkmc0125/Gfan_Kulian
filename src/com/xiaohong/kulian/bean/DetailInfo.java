@@ -34,7 +34,7 @@ public class DetailInfo {
     @JsonProperty("PackageName")
     private String PackageName;
 
-    private ArrayList<AppTaskInfo> task_list;
+//    private ArrayList<AppTaskInfo> task_list;
 
     public void setAppcategory(int appcategory) {
         this.AppCategory = appcategory;
@@ -148,7 +148,7 @@ public class DetailInfo {
         return PackageName;
     }
 
-    public ArrayList<AppTaskInfo> getTaskList() {
-        return task_list;
-    }
+//    public ArrayList<AppTaskInfo> getTaskList() {
+//        return task_list;
+//    }
 }

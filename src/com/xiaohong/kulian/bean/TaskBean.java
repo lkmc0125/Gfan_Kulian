@@ -8,19 +8,23 @@ import android.os.Parcelable;
  */
 public class TaskBean implements Parcelable {
     /**
-     * 标记当前对象表示一个title
+     * 标记当前对象表示一个app
      */
-    public static int ITEM_TYPE_TITLE = 1;
+    public static int ITEM_TYPE_APP = 1;
     /**
-     * 标记当前对象表示一个task
+     * 标记当前对象表示一个web任务
      */
     public static int ITEM_TYPE_TASK = 2;
-
-    private int mType = ITEM_TYPE_TASK;
     /**
-     * title有两个可选的字符串 做任务赚金币 已结束任务
+     * 标记当前对象表示一个web任务
      */
-    private String mTitle = "";
+    public static int ITEM_TYPE_GZHTASK = 3;
+    
+    public enum TaskType {
+        APP_TASK, // 下载app任务
+        WEB_TASK, // web页任务
+        WX_TASK   // 微信公众号任务
+    }
 
     /**
      * 用于区分是公众号任务还是普通任务
@@ -114,18 +118,6 @@ public class TaskBean implements Parcelable {
     public String getWeixin_id() {
         return weixin_id;
     }
-    public String getTitle() {
-        return mTitle;
-    }
-    public void setTitle(String title) {
-        mTitle = title;
-    }
-    public int getType() {
-        return mType;
-    }
-    public void setType(int type) {
-        this.mType = type;
-    }
 
     @Override
     public int describeContents() {
@@ -135,7 +127,6 @@ public class TaskBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mType);
         dest.writeInt(mTaskType);
         dest.writeInt(coin_num);
         dest.writeInt(task_id);
@@ -143,7 +134,6 @@ public class TaskBean implements Parcelable {
         dest.writeInt(remain_tasknum);
         dest.writeInt(remain_time);
         dest.writeInt(task_status);
-        dest.writeString(mTitle);
         dest.writeString(click_url);
         dest.writeString(desc);
         dest.writeString(logo_url);
@@ -157,7 +147,6 @@ public class TaskBean implements Parcelable {
         @Override
         public TaskBean createFromParcel(Parcel source) {
             TaskBean bean = new TaskBean();
-            bean.mType = source.readInt();
             bean.mTaskType = source.readInt();
             bean.coin_num = source.readInt();
             bean.task_id = source.readInt();
@@ -165,7 +154,6 @@ public class TaskBean implements Parcelable {
             bean.remain_tasknum = source.readInt();
             bean.remain_time = source.readInt();
             bean.task_status = source.readInt();
-            bean.mTitle = source.readString();
             bean.click_url = source.readString();
             bean.desc = source.readString();
             bean.logo_url = source.readString();
