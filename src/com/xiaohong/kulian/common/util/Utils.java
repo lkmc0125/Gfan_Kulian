@@ -1429,6 +1429,14 @@ public class Utils {
         }
     }
 
+    private synchronized static void loadApp(Context context) {
+        if(sLoadAppAndTaskApiResponseListener == null) {
+            sLoadAppAndTaskApiResponseListener =
+                    new LoadAppAndTaskApiResponseListener(context, sLoadAppAndTaskApiResponseListener);
+        }
+        MarketAPI.getAppList(context, sLoadAppAndTaskApiResponseListener, sStartPage, Constants.CATEGORY_RCMD);
+    }
+
     public final static int AD_PER_NUMBER = 10;
     
     /**
@@ -1533,6 +1541,23 @@ public class Utils {
         @Override
         public void onSuccess(int method, Object obj) {
             switch (method) {
+                case MarketAPI.ACTION_GET_APP_LIST :
+                    AppListBean appList = (AppListBean) obj;
+                    sAppList.clear();
+                    sAppList.addAll(appList.getApplist());
+                    for (AppBean bean : sAppList) {
+                        if (Utils.isApkInstalled(mContext, bean.getPackageName()) == true) {
+                            bean.setIsInstalled(true);
+                        } else if (Utils.isApkDownloaded(bean.getAppName())) {
+                            /**
+                             * only if the app is not installed , shall we check if it's downloaded
+                             * 
+                             */
+                            bean.setDownloaded(true);
+                        }
+                    }
+                    Log.d(TAG, "onSuccess sAppList size = " + sAppList.size());
+                    break;
                 case MarketAPI.ACTION_GET_TASK_LIST : {
                     TaskListBean result = (TaskListBean) obj;
                     if (result.getTasklist() != null) {
