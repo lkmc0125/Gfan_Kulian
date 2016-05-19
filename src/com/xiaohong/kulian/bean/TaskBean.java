@@ -8,23 +8,12 @@ import android.os.Parcelable;
  */
 public class TaskBean implements Parcelable {
     /**
-     * 标记当前对象表示一个app
+     * 标记当前对象表示一个task
      */
     public static int ITEM_TYPE_APP = 1;
-    /**
-     * 标记当前对象表示一个web任务
-     */
     public static int ITEM_TYPE_TASK = 2;
-    /**
-     * 标记当前对象表示一个web任务
-     */
     public static int ITEM_TYPE_GZHTASK = 3;
-    
-    public enum TaskType {
-        APP_TASK, // 下载app任务
-        WEB_TASK, // web页任务
-        WX_TASK   // 微信公众号任务
-    }
+    private int mType = ITEM_TYPE_TASK;
 
     /**
      * 用于区分是公众号任务还是普通任务
@@ -118,6 +107,12 @@ public class TaskBean implements Parcelable {
     public String getWeixin_id() {
         return weixin_id;
     }
+    public int getType() {
+        return mType;
+    }
+    public void setType(int type) {
+        this.mType = type;
+    }
 
     @Override
     public int describeContents() {
@@ -127,6 +122,7 @@ public class TaskBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mType);
         dest.writeInt(mTaskType);
         dest.writeInt(coin_num);
         dest.writeInt(task_id);
@@ -147,6 +143,7 @@ public class TaskBean implements Parcelable {
         @Override
         public TaskBean createFromParcel(Parcel source) {
             TaskBean bean = new TaskBean();
+            bean.mType = source.readInt();
             bean.mTaskType = source.readInt();
             bean.coin_num = source.readInt();
             bean.task_id = source.readInt();

@@ -20,9 +20,9 @@ import android.widget.TextView;
 
 public class TaskListAdapter extends CommonAdapter {
     private static final String TAG = "TaskListAdapter";
-    public static final int TYPE_NORMAL_TASK = 1;
-    public static final int TYPE_GZH_TASK = 2;
-    public static final int TYPE_APP_TASK = 3;
+//    public static final int TYPE_NORMAL_TASK = 1;
+//    public static final int TYPE_GZH_TASK = 2;
+//    public static final int TYPE_APP_TASK = 3;
     private Context mContext;
     private ArrayList<TaskBean> mData;
     /**
@@ -37,7 +37,7 @@ public class TaskListAdapter extends CommonAdapter {
 
     public synchronized void setData(int type, ArrayList<TaskBean> data) {
         Log.d(TAG, "setData:" + data);
-        if (type == TYPE_NORMAL_TASK) {
+        if (type == TaskBean.ITEM_TYPE_TASK) {
             mData.addAll(0, data);
         } else {
             mData.addAll(data);
@@ -142,7 +142,7 @@ public class TaskListAdapter extends CommonAdapter {
      */
     private View newView(ViewHolder viewHolder, int type) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        if (type == TaskBean.ITEM_TYPE_TASK) {
+        if (type != TaskBean.ITEM_TYPE_APP) {
             View view = inflater.inflate(R.layout.task_list_item, null);
             viewHolder.mAppIconView = (ImageView) view
                     .findViewById(R.id.iv_logo);

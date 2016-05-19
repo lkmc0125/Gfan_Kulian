@@ -102,13 +102,13 @@ public class TaskListActivity extends LazyloadListActivity implements
         boolean isLoaded = false;
         if (taskList != null && taskList.size() > 0) {
             Log.d(TAG,"preloaded task size = " + taskList.size());
-            mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK, taskList);
+            mAdapter.setData(TaskBean.ITEM_TYPE_TASK, taskList);
             isLoaded = true;
         }
         ArrayList<TaskBean> gzhTaskList = Utils.getPreloadedGzhTaskList();
         if (gzhTaskList != null && gzhTaskList.size() > 0) {
             Log.d(TAG,"preloaded gzh task size: " + gzhTaskList.size());
-            mAdapter.setData(TaskListAdapter.TYPE_GZH_TASK, gzhTaskList);
+            mAdapter.setData(TaskBean.ITEM_TYPE_GZHTASK, gzhTaskList);
             
             isLoaded = true;
         }
@@ -143,16 +143,12 @@ public class TaskListActivity extends LazyloadListActivity implements
         TaskListBean result = (TaskListBean) obj;
         if(result.getTasklist() != null) {
             Log.d(TAG, "size = " + result.getTasklist().size());
-//            TaskBean bean = new TaskBean();
-//            bean.setType(TaskBean.ITEM_TYPE_TITLE);
-//            bean.setTitle(getResources().getString(R.string.title_task_todo));
-            for(TaskBean item : result.getTasklist()) {
+            for (TaskBean item : result.getTasklist()) {
                 //set remain num to 1 for normal task
                 item.setRemain_tasknum(1);
-                item.setTaskType(TaskListAdapter.TYPE_NORMAL_TASK);
+                item.setTaskType(TaskBean.ITEM_TYPE_TASK);
             }
-//            result.getTasklist().add(0, bean);
-            mAdapter.setData(TaskListAdapter.TYPE_NORMAL_TASK,result.getTasklist());
+            mAdapter.setData(TaskBean.ITEM_TYPE_TASK, result.getTasklist());
             mAdapter.notifyDataSetChanged();
         }else {
             Log.d(TAG, "no data from server");
@@ -259,7 +255,7 @@ public class TaskListActivity extends LazyloadListActivity implements
                     availableList.addAll(finishedList);
                 }
                 Log.d(TAG, "onSuccess done");
-                mAdapter.setData(TaskListAdapter.TYPE_GZH_TASK, availableList);
+                mAdapter.setData(TaskBean.ITEM_TYPE_GZHTASK, availableList);
                 mAdapter.notifyDataSetChanged();
             }else {
                 Log.d(TAG, "no data from server");

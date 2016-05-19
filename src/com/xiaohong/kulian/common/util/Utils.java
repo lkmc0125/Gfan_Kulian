@@ -1568,7 +1568,7 @@ public class Utils {
                         for (TaskBean item : result.getTasklist()) {
                             // set remain num to 1 for normal task
                             item.setRemain_tasknum(1);
-                            item.setTaskType(TaskListAdapter.TYPE_NORMAL_TASK);
+                            item.setTaskType(TaskBean.ITEM_TYPE_TASK);
                         }
                     } else {
                         Log.d(TAG, "no data from server");
@@ -1590,6 +1590,7 @@ public class Utils {
                                 + result.getTasklist().size());
                         for (int i = 0; i < result.getTasklist().size(); i++) {
                             TaskBean bean = result.getTasklist().get(i);
+                            bean.setTaskType(TaskBean.ITEM_TYPE_GZHTASK);
                             if (bean.getRemain_tasknum() == 0) {
                                 finishedList.add(bean);
                             } else {
