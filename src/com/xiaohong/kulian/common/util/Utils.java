@@ -1437,7 +1437,7 @@ public class Utils {
             sLoadAppAndTaskApiResponseListener =
                     new LoadAppAndTaskApiResponseListener(context, handler);
         }
-        MarketAPI.getAppList(context, sLoadAppAndTaskApiResponseListener, sStartPage, Constants.CATEGORY_RCMD);
+        MarketAPI.getAppList(context, sLoadAppAndTaskApiResponseListener, sStartPage, Constants.CATEGORY_APP);
     }
 
     public final static int AD_PER_NUMBER = 10;

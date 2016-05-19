@@ -35,7 +35,7 @@ public class TaskListAdapter extends CommonAdapter {
 
     public synchronized void setData(int type, ArrayList<Object> data) {
         Log.d(TAG, "setData:" + data);
-        if (type == TaskBean.ITEM_TYPE_WEB_TASK) {
+        if (type == TaskBean.ITEM_TYPE_APP_TASK) {
             mData.addAll(0, data);
         } else {
             mData.addAll(data);

@@ -115,11 +115,13 @@ public class ApiResponseFactory {
                 
                 // 获取应用详细
                 requestMethod = "ACTION_GET_PRODUCT_DETAIL";
+                //Log.d("freetest", "inputBody = " + inputBody);
                 result = gson.fromJson(inputBody, AppDetailBean.class);
                 break;
 
             case MarketAPI.ACTION_GET_APP_LIST:
                 // 获取app列表
+                //Log.d("freetest", "app llist inputBody = " + inputBody);
                 requestMethod = "ACTION_GET_APP_LIST";
                 result = gson.fromJson(inputBody, AppListBean.class);
                 break;

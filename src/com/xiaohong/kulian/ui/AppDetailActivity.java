@@ -137,6 +137,13 @@ public class AppDetailActivity extends Activity
         mCoinNum = getIntent().getIntExtra(Constants.EXTRA_COIN_NUM, 0);
         mPackageName = getIntent().getStringExtra(Constants.EXTRA_PACKAGE_NAME);
         mImageLoader = ImageLoader.getInstance();
+        /*Log.d(TAG, "appId = " + appId);
+        Log.d(TAG, "category = " + category);
+        Log.d(TAG, "mCoinNum = " + mCoinNum);
+        Log.d(TAG, "mPackageName = " + mPackageName);
+        Log.d(TAG, "mAppNameTv = " + mAppNameTv);
+        Log.d(TAG, "mAppNameTv = " + mAppNameTv);*/
+        
         MarketAPI.getProductDetailWithId(getApplicationContext(),
                 new AppDetailApiRequestListener(), appId, category);
     }
@@ -215,6 +222,11 @@ public class AppDetailActivity extends Activity
             mSession.addObserver(AppDetailActivity.this);
             AppDetailBean appDetail = (AppDetailBean) obj;
             mDetailInfo = appDetail.getDetailInfo();
+            if(mDetailInfo == null) {
+                Log.d(TAG, "mDetailInfo is null finish");
+                finish();
+                return;
+            }
             mAppNameTv.setText(mDetailInfo.getAppname());
             // TODO
             mAppVersionTv.setText("版本：v" + mDetailInfo.getAppversion());
