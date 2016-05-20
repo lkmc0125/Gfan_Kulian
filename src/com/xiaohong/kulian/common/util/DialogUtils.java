@@ -1,8 +1,11 @@
 package com.xiaohong.kulian.common.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +14,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -43,6 +47,22 @@ public class DialogUtils {
         intent.putExtra(DialogUtils.KEY_DIALOG_TITLE, title);
         intent.putExtra(DialogUtils.KEY_DIALOG_MESSAGE, message);
         context.startActivity(intent);
+    }
+    
+    @SuppressLint("NewApi")
+    public static void showNotification(Context context,
+            String title, String content) {
+        Notification.Builder builder = new Notification.Builder(context);
+        builder.setContentTitle(title);
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.push);
+        Notification notification = builder.build();
+        NotificationManager nm = (NotificationManager) 
+                context.getSystemService(
+                        Context.NOTIFICATION_SERVICE);
+        nm.notify(R.id.account_title, notification);
+        Log.d("freetest", "notification notified");
+        
     }
 
     public static interface WarningDialogListener {

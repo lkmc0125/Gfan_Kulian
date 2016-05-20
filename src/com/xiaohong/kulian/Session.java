@@ -1268,6 +1268,7 @@ public class Session extends Observable {
         Log.d(TAG, "notifyCoinUpdated added_coin = " + added_coin);
 //        if (added_coin > 0) {
             DialogUtils.showMessage(mContext, "金币奖励", "您获得了" + added_coin + "个金币");
+            //DialogUtils.showNotification(mContext, "金币奖励", "您获得了" + added_coin + "个金币");
             coinNum = coinNum + added_coin;
             for (OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
                 listener.onCoinUpdate(coinNum);
