@@ -91,10 +91,9 @@ public class TaskListActivity extends LazyloadListActivity implements
             }
             mAdapter.setAppData(array);
         } else {
-            MarketAPI.getAppList(getApplicationContext(), this, getStartPage(),
-                    Constants.CATEGORY_APP);
+            MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), Constants.CATEGORY_RCMD);
         }
-        
+
         ArrayList<TaskBean> taskList = Utils.getPreloadedTaskList();
         boolean isLoaded = false;
         if (taskList != null && taskList.size() > 0) {
@@ -243,7 +242,7 @@ public class TaskListActivity extends LazyloadListActivity implements
                 Intent detailIntent = new Intent(getApplicationContext(),
                         AppDetailActivity.class);
                 detailIntent.putExtra(Constants.EXTRA_PRODUCT_ID, pid);
-                detailIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_APP);
+                detailIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
                 detailIntent.putExtra(Constants.EXTRA_COIN_NUM, item.getGiveCoin());
                 detailIntent.putExtra(Constants.EXTRA_PACKAGE_NAME, item.getPackageName());
                 startActivity(detailIntent);

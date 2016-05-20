@@ -13,10 +13,11 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
+import android.util.Log;
+
 public class ApkUtil {
 
-    private static final Namespace NS = Namespace
-            .getNamespace("http://schemas.android.com/apk/res/android");
+    private static final Namespace NS = Namespace.getNamespace("http://schemas.android.com/apk/res/android");
 
     @SuppressWarnings("unchecked")
     public static ApkInfo getApkInfo(String apkPath) {
@@ -27,14 +28,15 @@ public class ApkUtil {
             document = builder.build(getXmlInputStream(apkPath));
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d("getApkInfo", apkPath + " get document failed");
+            return null;
         }
         Element root = document.getRootElement();//根节点-->manifest
         apkInfo.setVersionCode(root.getAttributeValue("versionCode", NS));
         apkInfo.setVersionName(root.getAttributeValue("versionName", NS));
         apkInfo.setApkPackage(root.getAttributeValue("package", NS));
         Element elemUseSdk = root.getChild("uses-sdk");//子节点-->uses-sdk
-        apkInfo.setMinSdkVersion(elemUseSdk.getAttributeValue("minSdkVersion",
-                NS));
+        apkInfo.setMinSdkVersion(elemUseSdk.getAttributeValue("minSdkVersion", NS));
         List listPermission = root.getChildren("uses-permission");//子节点是个集合
         List permissions = new ArrayList();
         for (Object object : listPermission) {
@@ -76,6 +78,10 @@ public class ApkUtil {
     }
 
     private static InputStream getXmlInputStream(String apkPath) {
+        if (apkPath == null) {
+            Log.d("ApkUtil", "getXmlInputStream: apkPath is null");
+            return null;
+        }
         InputStream inputStream = null;
         InputStream xmlInputStream = null;
         ZipFile zipFile = null;

@@ -49,9 +49,12 @@ import java.util.Observable;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.content.AsyncQueryHandler;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -85,6 +88,7 @@ import com.xiaohong.kulian.common.util.Pair;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.DownloadInfo;
 import com.xiaohong.kulian.common.vo.UpgradeInfo;
+import com.xiaohong.kulian.common.widget.CustomDialog;
 
 /**
  * 
@@ -1259,16 +1263,16 @@ public class Session extends Observable {
             listener.onCoinUpdate(coinNum);
         }
     }
-    
+
     public void notifyCoinUpdated(int added_coin) {
         Log.d(TAG, "notifyCoinUpdated added_coin = " + added_coin);
-        if(added_coin > 0) {
+//        if (added_coin > 0) {
             DialogUtils.showMessage(mContext, "金币奖励", "您获得了" + added_coin + "个金币");
-        }
-        coinNum = coinNum + added_coin;
-        for(OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
-            listener.onCoinUpdate(coinNum);
-        }
+            coinNum = coinNum + added_coin;
+            for (OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
+                listener.onCoinUpdate(coinNum);
+            }
+//        }
     }
 
     /**

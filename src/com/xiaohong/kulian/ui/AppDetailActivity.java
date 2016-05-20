@@ -125,7 +125,7 @@ public class AppDetailActivity extends Activity
         mSession.addOnAppInstalledListener(this);
 //        String appId = getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID);
 //        String category = getIntent().getStringExtra(Constants.EXTRA_CATEGORY);
-        if(getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID)!=null){
+        if (getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID) != null) {
             appId = getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID);
             category = getIntent().getStringExtra(Constants.EXTRA_CATEGORY);
         }
@@ -394,16 +394,16 @@ public class AppDetailActivity extends Activity
         DownloadInfo downloadInfo = mSession.getDownloadingList().get(
                 mDetailInfo.getPackagename());
         Log.d(TAG, "handleActionTvClicked mStatus = " + mStatus);
-        if(mStatus == STATUS_WAITING_INSTALL) {
-            //安装
+        if (mStatus == STATUS_WAITING_INSTALL) {
+            // 安装
             Utils.installApk(getApplicationContext(), new File(mFilePath));
-        }else if(mStatus == STATUS_WAITING_OPEN) {
-            //打开
-            MarketAPI.reportAppLaunched(getApplicationContext(), this, mDetailInfo.getPackagename());
-            Utils.openApkByPackageName(getApplicationContext(),
-                    mDetailInfo.getPackagename());
-        }else if(mStatus == STATUS_PAUSE) {
-            //继续
+        } else if (mStatus == STATUS_WAITING_OPEN) {
+            // 打开
+            Utils.openApkByPackageName(getApplicationContext(), mDetailInfo.getPackagename());
+//            MarketAPI.reportAppLaunched(getApplicationContext(), this, mDetailInfo.getPackagename());
+            Utils.checkAppRunningStatus(getApplicationContext(), mDetailInfo.getPackagename());
+        } else if (mStatus == STATUS_PAUSE) {
+            // 继续
             Log.d(TAG, "continue downloading");
             mSession.addObserver(this);
             mIsDownloading = true;
@@ -412,8 +412,8 @@ public class AppDetailActivity extends Activity
             showDownloadingView(downloadInfo);
             mSession.getDownloadManager().resumeDownload(mDownloadId);
             
-        }else if(mStatus == STATUS_DOWNLOADING) {
-            //暂停
+        } else if (mStatus == STATUS_DOWNLOADING) {
+            // 暂停
             mSession.deleteObserver(this);
             Log.d(TAG, "goto pause status");
             mIsDownloading = false;
@@ -421,8 +421,8 @@ public class AppDetailActivity extends Activity
             showContinueView();
             mSession.getDownloadManager().pauseDownload(mDownloadId);
 
-        }else {
-            //点击后开始下载
+        } else {
+            // 点击后开始下载
             Log.d(TAG, "begin download");
             mSession.addObserver(this);
             mIsDownloading = true;
@@ -603,8 +603,9 @@ public class AppDetailActivity extends Activity
     @Override
     public void onAppInstalled(String packageName) {
         Log.d(TAG, "onAppInstalled packageName = " + packageName);
-        if(mPackageName != null && mPackageName.equals(packageName)) {
+        if (mPackageName != null && mPackageName.equals(packageName)) {
             showOpenView();
+            mStatus = STATUS_WAITING_OPEN;
         }
     }
 /*    @Override

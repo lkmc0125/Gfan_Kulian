@@ -40,7 +40,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -79,7 +81,10 @@ import aga.fdf.grd.os.df.AppSummaryObject;
 import aga.fdf.grd.os.df.AppSummaryObjectList;
 import aga.fdf.grd.os.df.DiyOfferWallManager;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.app.DownloadManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -94,6 +99,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Message;
 import android.renderscript.Allocation;
@@ -1106,7 +1112,7 @@ public class Utils {
         }
         return "";
     }
-    
+
     public static void clearCache(Context context) {
         File file = Environment.getDownloadCacheDirectory();
         File[] files = file.listFiles();
@@ -1300,9 +1306,9 @@ public class Utils {
     public static boolean openApkByPackageName(Context context, 
             String packageName) {
         PackageManager packageManager = context.getPackageManager();
-        Intent intent=new Intent();
-        intent =packageManager.getLaunchIntentForPackage(packageName);
-        if(intent==null){
+        Intent intent = new Intent();
+        intent = packageManager.getLaunchIntentForPackage(packageName);
+        if (intent == null) {
             return false;
         }
         context.startActivity(intent);
@@ -1437,7 +1443,7 @@ public class Utils {
             sLoadAppAndTaskApiResponseListener =
                     new LoadAppAndTaskApiResponseListener(context, handler);
         }
-        MarketAPI.getAppList(context, sLoadAppAndTaskApiResponseListener, sStartPage, Constants.CATEGORY_APP);
+        MarketAPI.getAppList(context, sLoadAppAndTaskApiResponseListener, sStartPage, Constants.CATEGORY_RCMD);
     }
 
     public final static int AD_PER_NUMBER = 10;
@@ -1519,6 +1525,7 @@ public class Utils {
         sIsTaskLoading = false;
         sTaskList.clear();
         sGzhTaskList.clear();
+        sAppList.clear();
     }
     
     public static ArrayList<AppBean> getPreloadedAppList() {
@@ -1900,11 +1907,69 @@ public class Utils {
                     return null;
                 }
                 File apkList [] = file.listFiles();
-                for(File apk : apkList) {
+                for (File apk : apkList) {
                     ApkInfo apkInfo = ApkUtil.getApkInfo(apk.getAbsolutePath());
-                    if(packageName.equals(apkInfo.getApkPackage())) {
-                        Log.d(TAG, apkInfo.getApkName() + "removed");
+                    if (apkInfo != null && packageName.equals(apkInfo.getApkPackage())) {
+                        Log.d(TAG, apkInfo.getApkName() + " removed");
                         deleteFile(apkInfo.getApkName());
+                        return null;
+                    }
+                }
+                return null;
+            }
+            
+        }.execute();
+    }
+    
+    public static void checkAppRunningStatus(final Context context, final String packageName) {
+        if(packageName == null || packageName.equals("")) {
+            Log.w(TAG, "checkAppRunningStatus bad package name:" + packageName);
+            return;
+        }
+        new AsyncTask<Void,Void,Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                // 1秒检测一次，检测10次
+                for (int i = 0; i < 10; i++) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+                    boolean isAppRunning = false;
+                    String[] activePackages;
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) { //  > Android 5.0
+                        final List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+                        for (ActivityManager.RunningAppProcessInfo processInfo : processInfos) {
+                            if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                                for (String pkgName : processInfo.pkgList) {
+                                    if (pkgName.equals(packageName)) {
+                                        isAppRunning = true;
+                                        break;
+                                    }
+                                }
+                                if (isAppRunning) {
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        final List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(10);
+                        for (RunningTaskInfo info : list) {
+                            if (info.topActivity.getPackageName().equals(packageName)
+                                    || info.baseActivity.getPackageName().equals(packageName)) {
+                                Log.i(TAG, info.topActivity.getPackageName() + " info.baseActivity.getPackageName()="
+                                        + info.baseActivity.getPackageName());
+                                isAppRunning = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isAppRunning) {
+                        Session.get(context).reportAppLaunched(packageName);
                         return null;
                     }
                 }

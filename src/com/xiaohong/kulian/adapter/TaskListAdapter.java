@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TaskListAdapter extends CommonAdapter {
@@ -83,8 +84,7 @@ public class TaskListAdapter extends CommonAdapter {
                 || !(item instanceof AppBean && ((ViewHolder) convertView.getTag()).type == TaskBean.ITEM_TYPE_APP_TASK)
                 ) {
             holder = new ViewHolder();
-
-          convertView = newView(holder, item instanceof TaskBean ? TaskBean.ITEM_TYPE_WEB_TASK : TaskBean.ITEM_TYPE_APP_TASK);
+            convertView = newView(holder, item instanceof TaskBean ? TaskBean.ITEM_TYPE_WEB_TASK : TaskBean.ITEM_TYPE_APP_TASK);
 
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -106,18 +106,9 @@ public class TaskListAdapter extends CommonAdapter {
         private TextView mActionView; //显示打开查看的view
         private TextView mStatusView;
         private TextView mAppTitleView;
+        private ProgressBar mProgressBar;
+        private TextView mAppSizeView; // 应用大小
         private int type;
-    }
-
-    /**
-     * 显示务已结束textview
-     * 
-     * @param viewHolder
-     */
-    private void showStatusViews(ViewHolder viewHolder) {
-        // viewHolder.mAppIconView.setVisibility(View.VISIBLE);
-        // viewHolder.mAppDescView.setVisibility(View.VISIBLE);
-        viewHolder.mStatusView.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("NewApi")
@@ -130,21 +121,7 @@ public class TaskListAdapter extends CommonAdapter {
     @SuppressLint("NewApi")
     private void showActionViews(ViewHolder viewHolder) {
         viewHolder.mGoldView.setVisibility(View.VISIBLE);
-//        Bitmap background = BitmapFactory.decodeResource(mContext.getResources(), 
-//                R.drawable.task_action_view_border);
-//        BitmapDrawable drawable = new BitmapDrawable(background);
-//        viewHolder.mActionView.setBackground(drawable);
         viewHolder.mActionView.setText(R.string.app_item_action_view);
-    }
-    
-    /**
-     * 隐藏务已结束textview
-     * 
-     * @param viewHolder
-     */
-    private void hideStatusViews(ViewHolder viewHolder) {
-        viewHolder.mStatusView.setVisibility(View.GONE);
-        viewHolder.mAppTitleView.setVisibility(View.GONE);
     }
 
     /**
@@ -157,7 +134,7 @@ public class TaskListAdapter extends CommonAdapter {
     private View newView(ViewHolder viewHolder, int type) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
 //        if (type != TaskBean.ITEM_TYPE_APP_TASK) {
-            View view = inflater.inflate(R.layout.task_list_item, null);
+            View view = inflater.inflate(R.layout.common_product_list_item, null);
             viewHolder.mAppIconView = (ImageView) view
                     .findViewById(R.id.iv_logo);
             viewHolder.mAppDescView = (TextView) view
@@ -169,6 +146,8 @@ public class TaskListAdapter extends CommonAdapter {
                     .findViewById(R.id.tv_status);
             viewHolder.mAppTitleView = (TextView) view.findViewById(R.id.tv_name);
             viewHolder.type = TaskBean.ITEM_TYPE_WEB_TASK;
+            viewHolder.mProgressBar = (ProgressBar) view.findViewById(R.id.lvitem_pb_download);
+            viewHolder.mAppSizeView = (TextView) view.findViewById(R.id.tv_size);
             view.setTag(viewHolder);
             return view;
 //        }
@@ -184,7 +163,7 @@ public class TaskListAdapter extends CommonAdapter {
     private void bindView(int position, ViewHolder holder) {
         int type = holder.type;
         Object obj = mData.get(position);
-        
+
         if (obj instanceof TaskBean) {
             TaskBean item = (TaskBean)obj;
             if (type == TaskBean.ITEM_TYPE_WEB_TASK) {
@@ -197,17 +176,21 @@ public class TaskListAdapter extends CommonAdapter {
                             holder.mAppIconView, Utils.sDisplayImageOptions);
                 }
                 holder.mGoldView.setText("+" + item.getCoin_num());
-                hideStatusViews(holder);
+                holder.mStatusView.setVisibility(View.GONE);
+                holder.mAppTitleView.setVisibility(View.GONE);
+                holder.mProgressBar.setVisibility(View.GONE);
+                holder.mAppSizeView.setVisibility(View.GONE);
                 if (item.getRemain_tasknum() == 0) {
                     hideActionViews(holder);
                 } else {
                     showActionViews(holder);
                 }
-            }   
+            }
         } else if (obj instanceof AppBean) {
             AppBean item = (AppBean)obj;
             holder.mAppTitleView.setText(item.getAppName());
             holder.mAppDescView.setText(item.getBriefSummary());
+            holder.mAppSizeView.setText(item.getAppSize());
             if (item.getAppLogo() != null) {
                 mImageLoader.displayImage(item.getAppLogo(),
                         holder.mAppIconView, Utils.sDisplayImageOptions);
@@ -217,6 +200,8 @@ public class TaskListAdapter extends CommonAdapter {
             }
             holder.mGoldView.setText("+" + item.getGiveCoin());
             showActionViews(holder);
+            holder.mStatusView.setVisibility(View.GONE);
+            holder.mProgressBar.setVisibility(View.INVISIBLE);
         }
     }
 
