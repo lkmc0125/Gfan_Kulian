@@ -1930,8 +1930,8 @@ public class Utils {
 
             @Override
             protected Void doInBackground(Void... params) {
-                // 1秒检测一次，检测10次
-                for (int i = 0; i < 10; i++) {
+                // 隔1秒检测一次
+                for (int i = 0; i < 30; i++) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -1960,8 +1960,6 @@ public class Utils {
                         for (RunningTaskInfo info : list) {
                             if (info.topActivity.getPackageName().equals(packageName)
                                     || info.baseActivity.getPackageName().equals(packageName)) {
-                                Log.i(TAG, info.topActivity.getPackageName() + " info.baseActivity.getPackageName()="
-                                        + info.baseActivity.getPackageName());
                                 isAppRunning = true;
                                 break;
                             }
@@ -1969,6 +1967,7 @@ public class Utils {
                     }
 
                     if (isAppRunning) {
+                        Log.i(TAG, "checkAppRunningStatus: " + packageName + " is running!");
                         Session.get(context).reportAppLaunched(packageName);
                         return null;
                     }

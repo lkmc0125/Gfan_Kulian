@@ -140,6 +140,7 @@ public class HomeTabActivity extends BaseTabActivity implements
                             packageName);
                 } else {
                     mSession.addInstalledApp(packageName);
+                    Utils.checkAppRunningStatus(context, packageName);
                 }
                 mSession.getDownloadingList().remove(packageName);
 

@@ -121,7 +121,7 @@ public class AppDetailActivity extends Activity
         mSession = Session.get(getApplicationContext());
         //mSession.addObserver(this);
         initViews();
-        regReceiver();
+//        regReceiver();
         mSession.addOnAppInstalledListener(this);
 //        String appId = getIntent().getStringExtra(Constants.EXTRA_PRODUCT_ID);
 //        String category = getIntent().getStringExtra(Constants.EXTRA_CATEGORY);
@@ -182,7 +182,7 @@ public class AppDetailActivity extends Activity
     protected void onDestroy() {
         mSession.removeOnAppInstalledListener(this);
         mSession.deleteObserver(this);
-        unregReceiver();
+//        unregReceiver();
         super.onDestroy();
     }
 
@@ -401,7 +401,6 @@ public class AppDetailActivity extends Activity
         } else if (mStatus == STATUS_WAITING_OPEN) {
             // 打开
             Utils.openApkByPackageName(getApplicationContext(), mDetailInfo.getPackagename());
-//            MarketAPI.reportAppLaunched(getApplicationContext(), this, mDetailInfo.getPackagename());
             Utils.checkAppRunningStatus(getApplicationContext(), mDetailInfo.getPackagename());
         } else if (mStatus == STATUS_PAUSE) {
             // 继续
@@ -623,19 +622,19 @@ public class AppDetailActivity extends Activity
         // TODO Auto-generated method stub
         super.onSaveInstanceState(outState);
     }*/
-    
+    /*
     private void regReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_PACKAGE_FIRST_LAUNCH);
         filter.addDataScheme("package");
-        registerReceiver(mAppLanchReceiver, filter);
+        registerReceiver(mAppLaunchReceiver, filter);
     }
     
     private void unregReceiver() {
-        unregisterReceiver(mAppLanchReceiver);
+        unregisterReceiver(mAppLaunchReceiver);
     }
     
-    private BroadcastReceiver mAppLanchReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mAppLaunchReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -649,7 +648,7 @@ public class AppDetailActivity extends Activity
                     packageManager = context.getPackageManager();
                     applicationInfo = packageManager.getApplicationInfo(packageName, 0);
                     String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
-                    Log.d(TAG, "Lanched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
+                    Log.d(TAG, "Launched [" + applicationName + "] pkg-name: "   + applicationInfo.packageName);
 //                    Toast.makeText(context, "运行成功: " + applicationName, Toast.LENGTH_LONG).show();
                     mSession.reportAppLaunched(applicationInfo.packageName);
                 } catch (PackageManager.NameNotFoundException e) {
@@ -658,7 +657,7 @@ public class AppDetailActivity extends Activity
             }
         }
     };
-    
+    */
     @Override
     protected void onPause() {
         Log.d(TAG, "onPause");
