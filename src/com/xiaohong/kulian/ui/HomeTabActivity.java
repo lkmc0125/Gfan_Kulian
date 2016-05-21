@@ -815,4 +815,18 @@ public class HomeTabActivity extends BaseTabActivity implements
             startActivity(intent);
         }
     }
+    
+    @Override
+    protected void onPause() {
+        //Log.d(TAG, "onPause");
+        mSession.pause();
+        super.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+        //Log.d(TAG, "onResume");
+        super.onResume();
+        mSession.resume();
+    }
 }

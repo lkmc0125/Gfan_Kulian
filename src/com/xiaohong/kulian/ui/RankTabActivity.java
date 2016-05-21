@@ -181,4 +181,16 @@ action=user.get("type").toString();
             Utils.trackEvent(getApplicationContext(), Constants.GROUP_6, Constants.CLICK_RANK_POP);
         }
     }
+    
+    @Override
+    protected void onPause() {
+        //Log.d(TAG, "onPause");
+        super.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+        //Log.d(TAG, "onResume");
+        super.onResume();
+    }
 }

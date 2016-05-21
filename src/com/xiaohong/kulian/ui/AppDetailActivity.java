@@ -368,10 +368,10 @@ public class AppDetailActivity extends Activity
         if (data instanceof HashMap) {
             HashMap<String, DownloadInfo> mDownloadingTask = (HashMap<String, DownloadInfo>) data;
             DownloadInfo info = mDownloadingTask.get(mDetailInfo.getPackagename());
-            Log.d(TAG, "download progress update:" + info);
+            //Log.d(TAG, "download progress update:" + info);
             if (info != null) {
-                Log.d(TAG, "download progress update:" + info.mProgress);
-                Log.d(TAG, "download progress update:" + info.mStatus);
+                //Log.d(TAG, "download progress update:" + info.mProgress);
+                //Log.d(TAG, "download progress update:" + info.mStatus);
                 if (info.mStatus == DownloadManager.Impl.STATUS_SUCCESS) {
                     // 已经下载成功
                     mProgressBar.setText("安装");
@@ -379,6 +379,7 @@ public class AppDetailActivity extends Activity
                     // mProduct.setFilePath(info.mFilePath);
                 } else if (DownloadManager.Impl.isStatusError(info.mStatus)) {
                     // 下载失败
+                    Log.w(TAG, "Download fail");
 
                 } else if(info.mProgress != null){
                     // 下载中
@@ -658,6 +659,19 @@ public class AppDetailActivity extends Activity
         }
     };
     
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause");
+        mSession.pause();
+        super.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume");
+        super.onResume();
+        mSession.resume();
+    }
 
 
 }

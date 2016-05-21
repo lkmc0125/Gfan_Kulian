@@ -61,7 +61,7 @@ public class DialogUtils {
                 context.getSystemService(
                         Context.NOTIFICATION_SERVICE);
         nm.notify(R.id.account_title, notification);
-        Log.d("freetest", "notification notified");
+        //Log.d("freetest", "notification notified");
         
     }
 

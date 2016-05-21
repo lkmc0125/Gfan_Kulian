@@ -1267,7 +1267,17 @@ public class Session extends Observable {
     public void notifyCoinUpdated(int added_coin) {
         Log.d(TAG, "notifyCoinUpdated added_coin = " + added_coin);
 //        if (added_coin > 0) {
-            DialogUtils.showMessage(mContext, "金币奖励", "您获得了" + added_coin + "个金币");
+        if(mAPPStatus == APPStatus.PAUSED) {
+            mHasDialogToBeShown = true;
+            mDialogPara.mContext = mContext;
+            mDialogPara.mTitle = "金币奖励";
+            mDialogPara.mContent = "您获得了" + added_coin + "个金币";
+        }else {
+            mHasDialogToBeShown = false;
+            DialogUtils.showMessage(mContext, "金币奖励", 
+                    "您获得了" + added_coin + "个金币");
+        }
+            
             //DialogUtils.showNotification(mContext, "金币奖励", "您获得了" + added_coin + "个金币");
             coinNum = coinNum + added_coin;
             for (OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
@@ -1410,6 +1420,44 @@ public class Session extends Observable {
             } else {
                 return false;
             }
+        }
+    }
+    
+    /**
+     * 当收到金币改变的通知的时候，如果APP在pause状态
+     * 则不弹出dialog
+     * 主要监听AppDetailActivity 和HomeTabActivity
+     * @author free
+     *
+     */
+    private static enum APPStatus {
+        UNINITED,
+        RESUMED,
+        PAUSED
+    };
+    
+    private static class DialogPara{
+        private Context mContext;
+        private String mTitle;
+        private String mContent;
+    }
+    
+    private boolean mHasDialogToBeShown = false;
+    
+    private DialogPara mDialogPara = new DialogPara();
+    
+    private APPStatus mAPPStatus = APPStatus.UNINITED;
+    
+    public void pause() {
+        mAPPStatus = APPStatus.PAUSED;
+    }
+    
+    public void resume() {
+        mAPPStatus = APPStatus.RESUMED;
+        if(mHasDialogToBeShown == true) {
+            DialogUtils.showMessage(mDialogPara.mContext, mDialogPara.mTitle, 
+                    mDialogPara.mContent);
+            mHasDialogToBeShown = false;
         }
     }
 }
