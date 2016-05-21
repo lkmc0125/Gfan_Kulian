@@ -1266,24 +1266,24 @@ public class Session extends Observable {
 
     public void notifyCoinUpdated(int added_coin) {
         Log.d(TAG, "notifyCoinUpdated added_coin = " + added_coin);
-//        if (added_coin > 0) {
-        if(mAPPStatus == APPStatus.PAUSED) {
-            mHasDialogToBeShown = true;
-            mDialogPara.mContext = mContext;
-            mDialogPara.mTitle = "金币奖励";
-            mDialogPara.mContent = "您获得了" + added_coin + "个金币";
-        }else {
-            mHasDialogToBeShown = false;
-            DialogUtils.showMessage(mContext, "金币奖励", 
-                    "您获得了" + added_coin + "个金币");
-        }
-            
-            //DialogUtils.showNotification(mContext, "金币奖励", "您获得了" + added_coin + "个金币");
+        if (added_coin > 0) {
+            if (mAPPStatus == APPStatus.PAUSED) {
+                mHasDialogToShow = true;
+                mDialogPara.mContext = mContext;
+                mDialogPara.mTitle = "金币奖励";
+                mDialogPara.mAddedCoinNum += added_coin;
+                mDialogPara.mContent = "您获得了" + mDialogPara.mAddedCoinNum + "个金币";
+            } else {
+                mHasDialogToShow = false;
+                DialogUtils.showMessage(mContext, "金币奖励", 
+                        "您获得了" + added_coin + "个金币");
+            }
+
             coinNum = coinNum + added_coin;
             for (OnCoinUpdatedListener listener : mOnCoinUpdatedListener) {
                 listener.onCoinUpdate(coinNum);
             }
-//        }
+        }
     }
 
     /**
@@ -1440,9 +1440,10 @@ public class Session extends Observable {
         private Context mContext;
         private String mTitle;
         private String mContent;
+        private int mAddedCoinNum = 0;
     }
     
-    private boolean mHasDialogToBeShown = false;
+    private boolean mHasDialogToShow = false;
     
     private DialogPara mDialogPara = new DialogPara();
     
@@ -1454,10 +1455,11 @@ public class Session extends Observable {
     
     public void resume() {
         mAPPStatus = APPStatus.RESUMED;
-        if(mHasDialogToBeShown == true) {
+        if (mHasDialogToShow == true) {
             DialogUtils.showMessage(mDialogPara.mContext, mDialogPara.mTitle, 
                     mDialogPara.mContent);
-            mHasDialogToBeShown = false;
+            mDialogPara.mAddedCoinNum = 0;
+            mHasDialogToShow = false;
         }
     }
 }
