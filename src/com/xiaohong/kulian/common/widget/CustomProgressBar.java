@@ -45,7 +45,7 @@ public class CustomProgressBar extends ProgressBar {
         }
         case PROCESSING:
         {
-            this.mPaint.setColor(getResources().getColor(R.color.tab_bg_color));
+            this.mPaint.setColor(getResources().getColor(R.color.white));
             int color = mContext.getResources().getColor(
                     R.color.download_button_blue_color);
             ClipDrawable d = new ClipDrawable(new ColorDrawable(color), Gravity.LEFT, ClipDrawable.HORIZONTAL);
@@ -55,7 +55,7 @@ public class CustomProgressBar extends ProgressBar {
         }
         case PAUSED:
         {
-            this.mPaint.setColor(getResources().getColor(R.color.tab_bg_color));
+            this.mPaint.setColor(getResources().getColor(R.color.white));
             int color = mContext.getResources().getColor(
                     R.color.download_button_yellow_color);
             ClipDrawable d = new ClipDrawable(new ColorDrawable(color), Gravity.LEFT, ClipDrawable.HORIZONTAL);

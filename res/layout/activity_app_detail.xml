@@ -280,6 +280,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
+		android:background="#802f83e9"
                 android:max="100"
                 android:progressDrawable="@drawable/custom_progressbar"
                 android:visibility="visible" />

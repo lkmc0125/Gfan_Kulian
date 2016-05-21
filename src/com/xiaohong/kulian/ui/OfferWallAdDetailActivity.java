@@ -12,19 +12,16 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -41,7 +38,6 @@ import com.xiaohong.kulian.common.widget.CustomProgressBar;
 
 import aga.fdf.grd.os.PointsChangeNotify;
 import aga.fdf.grd.os.PointsManager;
-import aga.fdf.grd.os.df.AdDownloadStatus;
 import aga.fdf.grd.os.df.DiyAppNotify;
 import aga.fdf.grd.os.df.AdExtraTaskStatus;
 import aga.fdf.grd.os.df.AdTaskStatus;
@@ -51,9 +47,7 @@ import aga.fdf.grd.os.df.AppExtraTaskObject;
 import aga.fdf.grd.os.df.AppExtraTaskObjectList;
 import aga.fdf.grd.os.df.AppSummaryObject;
 import aga.fdf.grd.os.df.DiyOfferWallManager;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class OfferWallAdDetailActivity extends BaseActivity
@@ -64,55 +58,24 @@ public class OfferWallAdDetailActivity extends BaseActivity
             PointsChangeNotify {
 
     public AppSummaryObject appSumObject;
-
     private ImageView appIcon;
-
-    private TextView rewardCount;
-
     private TextView appName;
-
     private TextView appVersion;
-    
     private TextView appCoinNumTv;
-
     private TextView appDesc;
-
     private GridView gridView;
-
     private ListView listView;
-
     private GridViewAdapter gvAdapter;
-
     private ListViewAdapter_TaskDesc lvAdapter;
-
     private AppDetailObject appDetailObject;
-
     private ArrayList<Bitmap> bmLists;
-
-    /**
-     * 任务描述列表的数据列表
-     */
     private ArrayList<TaskDescObject> mTaskDescList;
-
     private boolean isPackageExist = false;
-
     private final static Handler handler = new Handler();
-    
-    /**
-     * 应用详情图片
-     */
-    
-    private ArrayList<ImageView> mAppPicViews = new ArrayList<ImageView>();
     private ImageLoader mImageLoader;
     private RelativeLayout mHeaderViewLayout;
-    /**
-     * 下载条
-     */
     private CustomProgressBar mProgressBar;
-    /**
-     * 返回
-     */
-    private LinearLayout back_layout;
+    private LinearLayout back_layout; // back btn
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -571,13 +534,13 @@ public class OfferWallAdDetailActivity extends BaseActivity
             this.mProgressBar.setProgress(percent);
             this.mProgressBar.setText(getDisplayText(String.format(
                     "正在下载（%d%%）", percent)).toString());
-            mProgressBar.setBackgroundColor(Color.parseColor("802f83e9"));
+//            mProgressBar.setBackgroundColor(Color.parseColor("802f83e9"));
             mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
         } catch (Throwable e) {
             Log.d("Youmi", "", e);
         }
-
     }
+
     private CharSequence getDisplayText(String str) {
         return Html.fromHtml("<font color='#2C78D4'>"+str+"</font>");
     }
@@ -604,7 +567,6 @@ public class OfferWallAdDetailActivity extends BaseActivity
     @Override
     public void onPointBalanceChange(float arg0) {
         // TODO Auto-generated method stub
-
     }
 
     public void update_image(){
@@ -614,14 +576,12 @@ public class OfferWallAdDetailActivity extends BaseActivity
                     @Override
                     public void onLoadingStarted(String arg0, View arg1) {
                         // TODO Auto-generated method stub
-
                     }
 
                     @Override
                     public void onLoadingFailed(String arg0, View arg1,
                             FailReason arg2) {
                         // TODO Auto-generated method stub
-
                     }
 
                     @Override
@@ -636,21 +596,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
                     @Override
                     public void onLoadingCancelled(String arg0, View arg1) {
                         // TODO Auto-generated method stub
-
                     }
                 });
-        /*String[] pics = appDetailObject.getScreenShotUrls();
-        int size = pics.length;
-        // 最多显示5张
-        if (size > 5) {
-            size = 5;
-        }
-        System.out.println("appDetailObject.getScreenShotUrls()"+Arrays.toString(appDetailObject.getScreenShotUrls()));
-        for (int i = 0; i < size; i++) {
-            mImageLoader.displayImage(pics[i], mAppPicViews.get(i),
-                    Utils.sDisplayImageOptions);
-            mAppPicViews.get(i).setVisibility(View.VISIBLE);
-        }*/
     }
     
     public static Bitmap getImageTopPart(Bitmap bitmap) {
@@ -672,7 +619,6 @@ public class OfferWallAdDetailActivity extends BaseActivity
         @Override
         protected Bitmap doInBackground(Void... params) {
             return Utils.doFastBlur(mBitmap, 25, false);
-            //return Utils.blurBitmap(getApplicationContext(), mBitmap);
         }
 
         @SuppressLint("NewApi")
