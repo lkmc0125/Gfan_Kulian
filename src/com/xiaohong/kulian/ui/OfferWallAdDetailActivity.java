@@ -76,6 +76,7 @@ public class OfferWallAdDetailActivity extends BaseActivity
     private RelativeLayout mHeaderViewLayout;
     private CustomProgressBar mProgressBar;
     private LinearLayout back_layout; // back btn
+    private String Status_value="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,11 @@ public class OfferWallAdDetailActivity extends BaseActivity
             return;
         }
         appSumObject = (AppSummaryObject) obj;
+        System.out.println("getIntent()"+getIntent().hasExtra("status"));
+        System.out.println("getIntent()"+getIntent().getStringExtra("status"));
+        if(getIntent().hasExtra("status")){
+            Status_value=getIntent().getStringExtra("status");
+        }
 
         // 检查这个应用是否已经存在于手机中
         isPackageExist = Utils.isApkInstalled(this,
@@ -239,7 +245,11 @@ public class OfferWallAdDetailActivity extends BaseActivity
                 if (isPackageExist) {
                     mProgressBar.setText("打开");
                     mProgressBar.setStatus(CustomProgressBar.Status.INSTALLED);
-                } else {
+                } else if(Status_value.equals("安装")){
+                    this.mProgressBar.setStatus(CustomProgressBar.Status.FINISHED);
+                    this.mProgressBar.setText("安装");
+                }
+                else {
                     mProgressBar.setText("下载安装(" + appSumObject.getAppSize() + ")");
                     mProgressBar.setStatus(CustomProgressBar.Status.INITIAL);
                 }
@@ -534,8 +544,10 @@ public class OfferWallAdDetailActivity extends BaseActivity
             this.mProgressBar.setProgress(percent);
             this.mProgressBar.setText(getDisplayText(String.format(
                     "正在下载（%d%%）", percent)).toString());
-//            mProgressBar.setBackgroundColor(Color.parseColor("802f83e9"));
+            mProgressBar.setBackgroundColor(Color.parseColor("802f83e9"));
+//            mProgressBar.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.download_button_progressbar_color));
             mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
+            
         } catch (Throwable e) {
             Log.d("Youmi", "", e);
         }

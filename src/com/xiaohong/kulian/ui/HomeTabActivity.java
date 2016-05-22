@@ -820,7 +820,9 @@ public class HomeTabActivity extends BaseTabActivity implements
     @Override
     protected void onPause() {
         //Log.d(TAG, "onPause");
-        mSession.pause();
+        if(mSession!=null){
+            mSession.pause();
+        }
         super.onPause();
     }
     

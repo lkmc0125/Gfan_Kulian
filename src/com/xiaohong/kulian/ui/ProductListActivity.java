@@ -170,6 +170,8 @@ public class ProductListActivity extends BaseActivity implements
         Intent intent = new Intent(this, OfferWallAdDetailActivity.class);
         intent.putExtra("ad", mLvAdapter.getItem(position)
                 .getAppSummaryObject());
+      //added by albert 2016/5/22
+        intent.putExtra("status", mLvAdapter.getStatus(position));
         startActivity(intent);
     }
 

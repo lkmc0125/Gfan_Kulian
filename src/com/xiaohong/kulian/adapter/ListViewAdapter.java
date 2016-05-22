@@ -88,6 +88,13 @@ public class ListViewAdapter extends BaseAdapter implements DiyAppNotify {
         }
         return mCustomObjectArrayList.get(position);
     }
+    //added by albert 2016/5/22
+    public String getStatus(int position){
+        if (mViewHolderList == null || mViewHolderList.size()==0) {
+            return "";
+        }
+        return this.mViewHolderList.get(getItem(position).getAppSummaryObject().getAdId()).mActionView.getText().toString();
+    }
 
     @Override
     public long getItemId(int position) {
