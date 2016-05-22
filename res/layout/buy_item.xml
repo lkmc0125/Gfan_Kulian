@@ -39,23 +39,72 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:orientation="horizontal" >
+                android:orientation="vertical" >
+                <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dip"
+                android:orientation="vertical"
+                >
+					<RelativeLayout
+					    android:id="@+id/money_new_layout"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:orientation="horizontal" >
+		                
+		                <TextView
+		                    android:id="@+id/moneytv"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/five"
+		                    android:layout_centerVertical="true"
+		                    android:textColor="#2C78D4"
+		                    android:textSize="18sp" />
+		
+		                <TextView
+		                    android:id="@+id/moneyunittv"
+		                    android:layout_width="wrap_content"
+		                    android:layout_toRightOf="@+id/moneytv"
+		                    android:layout_height="wrap_content"
+		                    android:layout_centerVertical="true"
+		                    android:text="@string/moneyunit"
+		                    android:textColor="#595959"
+		                    android:textSize="12sp" />
+	                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/moneytv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/five"
-                    android:textColor="#2C78D4"
-                    android:textSize="18sp" />
+	                <RelativeLayout
+	                    android:id="@+id/money_old_layout"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                   	android:layout_below="@+id/money_new_layout"
+	                    android:orientation="horizontal" >
+						<View 
+		                    android:layout_width="20dip"
+		                    android:layout_height="1dip"
+		                    android:layout_centerInParent="true"
+		                    android:background="#FF4C00"
+		                    />
+	                    <TextView
+	                        android:id="@+id/moneytv_old"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:text="@string/five"
+	                        android:layout_centerVertical="true"
+	                        android:textColor="#2C78D4"
+	                        android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/moneyunittv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/moneyunit"
-                    android:textColor="#595959"
-                    android:textSize="12sp" />
+	                    <TextView
+	                        android:id="@+id/moneyunittv_old"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_toRightOf="@+id/moneytv_old"
+	                        android:layout_centerVertical="true"
+	                        android:text="@string/moneyunit"
+	                        android:textColor="#595959"
+	                        android:textSize="10sp" />
+	                </RelativeLayout>
+
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

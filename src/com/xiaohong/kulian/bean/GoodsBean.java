@@ -5,7 +5,14 @@ public class GoodsBean {
     private String name;
     private int price; // cent
     private int gift_coin;//奖励的金币
+    private int original_price;
 
+    public int getOriginal_price() {
+        return original_price;
+    }
+    public void setOriginal_price(int original_price) {
+        this.original_price = original_price;
+    }
     public void setGoodsId(Integer goodsId) {
         this.goods_id = goodsId;
     }
