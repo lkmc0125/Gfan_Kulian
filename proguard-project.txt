@@ -45,6 +45,10 @@
 -libraryjars libs/protobuf.jar
 -libraryjars libs/open-client.jar
 -libraryjars libs/umeng-analytics-v5.6.4.jar
+-libraryjars libs/commons-logging-1.1.1.jar    #忽略jar包  
+
+-dontwarn org.apache.**                        #不警告此包  
+-keep class org.apache.** {*;}                 #保留此包下代码不进行混淆  
 
 -keep public class * extends android.app.Fragment  
 -keep public class * extends android.app.Activity
