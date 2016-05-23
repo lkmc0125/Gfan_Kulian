@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/cointv"
-            android:layout_width="wrap_content"
+            android:layout_width="50dip"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="3"
@@ -43,13 +43,16 @@
                 <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:padding="2dip"
+                android:layout_margin="2dip"
                 android:orientation="vertical"
                 >
 					<RelativeLayout
 					    android:id="@+id/money_new_layout"
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
+		                android:gravity="center_vertical"
 		                android:orientation="horizontal" >
 		                
 		                <TextView
@@ -77,7 +80,9 @@
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
 	                   	android:layout_below="@+id/money_new_layout"
-	                    android:orientation="horizontal" >
+	                    android:orientation="horizontal" 
+	                    android:gravity="center_vertical"
+	                    >
 						<View 
 		                    android:layout_width="20dip"
 		                    android:layout_height="1dip"
@@ -113,6 +118,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="3"
+        android:layout_marginBottom="5dip"
         android:orientation="horizontal" >
 
         <TextView

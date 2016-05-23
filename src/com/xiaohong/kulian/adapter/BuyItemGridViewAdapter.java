@@ -123,8 +123,8 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
         holder.mGiveCoinNumTv.setText(item.getGiftCoin() + "");
         holder.mCoinTv.setText(item.getName());
         if(item.getGiftCoin()==0){
-            holder.mGiveCoinTv.setVisibility(View.GONE);
-            holder.mGiveCoinNumTv.setVisibility(View.GONE);
+            holder.mGiveCoinTv.setVisibility(View.INVISIBLE);
+            holder.mGiveCoinNumTv.setVisibility(View.INVISIBLE);
         }else{
             holder.mGiveCoinTv.setVisibility(View.VISIBLE);
             holder.mGiveCoinNumTv.setVisibility(View.VISIBLE);
