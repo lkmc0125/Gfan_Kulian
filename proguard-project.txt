@@ -43,7 +43,7 @@
 -libraryjars libs/gson-2.3.1.jar
 -libraryjars libs/libammsdk.jar
 -libraryjars libs/protobuf.jar
--libraryjars libs/ruijie-open-client.jar
+-libraryjars libs/open-client.jar
 -libraryjars libs/umeng-analytics-v5.6.4.jar
 
 -keep public class * extends android.app.Fragment  

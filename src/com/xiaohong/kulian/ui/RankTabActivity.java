@@ -105,9 +105,9 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
             action = intent.getAction();
             System.out.println("mCheckAllReceiver"+intent.getAction());
             if (action.equals(Constants.BROADCAST_CATEGORY_TASK)) {
-                mTabHost.setCurrentTab(1);
-            } else if (action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
                 mTabHost.setCurrentTab(0);
+            } else if (action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
+                mTabHost.setCurrentTab(1);
             } 
         }
     };
@@ -116,41 +116,41 @@ public class RankTabActivity extends BaseTabActivity implements OnTabChangeListe
         mTabHost = (TabHost) this.findViewById(android.R.id.tabhost);
         mTabHost.setup();
 
-        Intent gameIntent = new Intent(getApplicationContext(),
-                ProductListActivity.class);
-        gameIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
-        gameIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
-        TabSpec tab2 = mTabHost
-                .newTabSpec(Constants.CATEGORY_APP)
-                .setIndicator(
-                        Utils.createMakeMoneyPageTabView(getApplicationContext(),
-                                getString(R.string.rank_tab_app)))
-                .setContent(gameIntent);
-        mTabHost.addTab(tab2);
-
-        Intent growIntent = new Intent(getApplicationContext(),
+        Intent taskIntent = new Intent(getApplicationContext(),
                 TaskListActivity.class);
-        growIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);
-        growIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
-        TabSpec tab4 = mTabHost
+        taskIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_TASK);
+        taskIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
+        TabSpec tab0 = mTabHost
                 .newTabSpec(Constants.CATEGORY_TASK)
                 .setIndicator(
                         Utils.createMakeMoneyPageTabView(getApplicationContext(),
                                 getString(R.string.rank_tab_task)))
-                .setContent(growIntent);
-        mTabHost.addTab(tab4);
+                .setContent(taskIntent);
+        mTabHost.addTab(tab0);
+
+        Intent appIntent = new Intent(getApplicationContext(),
+                ProductListActivity.class);
+        appIntent.putExtra(Constants.EXTRA_CATEGORY, Constants.CATEGORY_RCMD);
+        appIntent.putExtra(Constants.EXTRA_MAX_ITEMS, MAX_ITEMS);
+        TabSpec tab1 = mTabHost
+                .newTabSpec(Constants.CATEGORY_APP)
+                .setIndicator(
+                        Utils.createMakeMoneyPageTabView(getApplicationContext(),
+                                getString(R.string.rank_tab_app)))
+                .setContent(appIntent);
+        mTabHost.addTab(tab1);
+
         mTabHost.setOnTabChangedListener(this);
         changeTabStyle();
-        MySharedpreference mySharedpreference = new MySharedpreference
-                (this);
-Map<String, Object> user=new HashMap<String, Object>();
-user=mySharedpreference.getMessage();
-action=user.get("type").toString();
+        MySharedpreference mySharedpreference = new MySharedpreference(this);
+        Map<String, Object> user = new HashMap<String, Object>();
+        user = mySharedpreference.getMessage();
+        action = user.get("type").toString();
         if (action.equals(Constants.BROADCAST_CATEGORY_TASK)) {
-            mTabHost.setCurrentTab(1);
-        } else if (action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
             mTabHost.setCurrentTab(0);
-        } 
+        } else if (action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
+            mTabHost.setCurrentTab(1);
+        }
     }
 
     private void changeTabStyle() {
