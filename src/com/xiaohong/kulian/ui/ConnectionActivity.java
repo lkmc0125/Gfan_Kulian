@@ -70,6 +70,7 @@ public class ConnectionActivity extends BaseActivity implements
     private Integer mLoginRetryCount = 0;
     private String mCurrentSSID;
     private MyBroadcastReceiver mConnectionReceiver;
+    private boolean isLeftTimeDialogShown = false;
     /**
      * 连接状态页面
      */
@@ -238,11 +239,13 @@ public class ConnectionActivity extends BaseActivity implements
                                                              // today
                     Utils.makeEventToast(getApplicationContext(),
                             obj.getString("ret_msg"), false);
-                } else if (obj.getInt("ret_code") == 3002) { // 3002 means
+                } else if (obj.getInt("ret_code") == 3002
+                        && isLeftTimeDialogShown == false) { // 3002 means
                                                              // 使用上网时间包
                     int remainTime = obj.getInt("remain_time");
                     mSession.setRemainTime(remainTime);
                     mSession.setIsCountDown(true);
+                    isLeftTimeDialogShown = true;
                     String leftTime = remainTime / (3600 * 24) + "天"
                             + (remainTime % (3600 * 24)) / 3600 + "时"
                             + ((remainTime % 3600) / 60) + "分";

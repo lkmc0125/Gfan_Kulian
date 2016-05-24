@@ -85,6 +85,7 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
             holder.mCoinTv = (TextView) convertView.findViewById(R.id.cointv);
             holder.mMoneyTv = (TextView) convertView.findViewById(R.id.moneytv);
             holder.mMoneyUnitTv = (TextView) convertView.findViewById(R.id.moneyunittv);
+            holder.mGiveCoinLayout= (LinearLayout) convertView.findViewById(R.id.givecoin_layout); 
             holder.mGiveCoinTv = (TextView) convertView.findViewById(R.id.givecointv);
             holder.mGiveCoinNumTv = (TextView) convertView.findViewById(R.id.givecoinnumtv);
             //added by albert 2016/5/22
@@ -98,10 +99,10 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
         if(mSelectedPos == position) {
             if(mData.get(position).getGiftCoin()==0){
                 holder.mCoinLayout
-                .setBackgroundResource(R.drawable.coincheckedbg1);
+                .setBackgroundResource(R.drawable.coincheckedbg);
             }else{
-            holder.mCoinLayout
-            .setBackgroundResource(R.drawable.coincheckedbg);
+                holder.mCoinLayout
+                .setBackgroundResource(R.drawable.coincheckedbg1);
             }
             holder.mCoinTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color));
             holder.mMoneyTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color));
@@ -113,10 +114,10 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
         }else {
             if(mData.get(position).getGiftCoin()==0){
                 holder.mCoinLayout
-                .setBackgroundResource(R.drawable.coindefaultbg1);
+                .setBackgroundResource(R.drawable.coindefaultbg);
             }else{
-            holder.mCoinLayout
-            .setBackgroundResource(R.drawable.coindefaultbg);
+                holder.mCoinLayout
+                .setBackgroundResource(R.drawable.coindefaultbg1);
             }
             
             holder.mCoinTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
@@ -134,12 +135,9 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
         holder.mGiveCoinNumTv.setText(item.getGiftCoin() + "");
         holder.mCoinTv.setText(item.getName());
         if(item.getGiftCoin()==0){
-            holder.mGiveCoinTv.setVisibility(View.INVISIBLE);
-            holder.mGiveCoinNumTv.setVisibility(View.INVISIBLE);
+            holder.mGiveCoinLayout.setVisibility(View.GONE);
         }else{
-            holder.mCoinLayout.setBackgroundResource(R.drawable.buy_money_item_background1);
-            holder.mGiveCoinTv.setVisibility(View.VISIBLE);
-            holder.mGiveCoinNumTv.setVisibility(View.VISIBLE);
+            holder.mGiveCoinLayout.setVisibility(View.VISIBLE);
         }
         if (item.getPrice() % 100 == 0) {
             holder.mMoneyTv.setText(item.getPrice()/100+"");
@@ -161,6 +159,7 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
         private TextView mCoinTv;
         private TextView mMoneyTv;
         private TextView mMoneyUnitTv;
+        private LinearLayout mGiveCoinLayout;
         private TextView mGiveCoinTv;//赠送金币文本框需要修改字体颜色
         private TextView mGiveCoinNumTv;//显示赠送的金币数目的文本框
         private TextView moneytv_old;
