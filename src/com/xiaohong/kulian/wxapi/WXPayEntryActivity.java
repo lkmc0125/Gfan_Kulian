@@ -149,11 +149,12 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
         case MarketAPI.ACTION_REPORT_ORDER_PAY:
             ReportResultBean bean = (ReportResultBean)obj;
             if (bean.getRetCode() == 0) {
-
-//                DialogUtils.showMessage(this, "购买成功", "上网时长总计"+String.valueOf(bean.getRemainTime())+"秒");
-                Session session = Session.get(getApplicationContext()); 
+                Session session = Session.get(getApplicationContext());
                 session.setRemainTime(bean.getRemainTime());
-                session.notifyCoinUpdated(bean.getAddedCoinNum());
+                session.notifyCoinUpdated(bean.getAddedCoinNum() + bean.getRefundCoinNum());
+                if (bean.getRefundCoinNum() > 0) {
+                    DialogUtils.showMessage(this, null, "今日上网金币已退还");
+                }
             }
             confirmBtn.setEnabled(true);
             findViewById(R.id.progressbar).setVisibility(View.GONE);

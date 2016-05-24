@@ -32,10 +32,16 @@ public class ApkUtil {
             return null;
         }
         Element root = document.getRootElement();//根节点-->manifest
+        if (root == null) {
+            return null;
+        }
         apkInfo.setVersionCode(root.getAttributeValue("versionCode", NS));
         apkInfo.setVersionName(root.getAttributeValue("versionName", NS));
         apkInfo.setApkPackage(root.getAttributeValue("package", NS));
         Element elemUseSdk = root.getChild("uses-sdk");//子节点-->uses-sdk
+        if (elemUseSdk == null) {
+            return null;
+        }
         apkInfo.setMinSdkVersion(elemUseSdk.getAttributeValue("minSdkVersion", NS));
         List listPermission = root.getChildren("uses-permission");//子节点是个集合
         List permissions = new ArrayList();
