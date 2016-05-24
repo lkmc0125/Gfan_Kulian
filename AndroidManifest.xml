@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xiaohong.kulian"
-    android:versionCode="99"
-    android:versionName="2.2" >
+    android:versionCode="100"
+    android:versionName="2.3" >
 
     <application
         android:name=".WifiKulianApp"
