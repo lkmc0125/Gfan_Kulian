@@ -96,8 +96,13 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if(mSelectedPos == position) {
+            if(mData.get(position).getGiftCoin()==0){
+                holder.mCoinLayout
+                .setBackgroundResource(R.drawable.coincheckedbg1);
+            }else{
             holder.mCoinLayout
             .setBackgroundResource(R.drawable.coincheckedbg);
+            }
             holder.mCoinTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color));
             holder.mMoneyTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color));
             holder.mMoneyUnitTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color));
@@ -106,8 +111,14 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
             holder.moneytv_old.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color_original));
             holder.moneyunittv_old.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_selected_color_original));
         }else {
+            if(mData.get(position).getGiftCoin()==0){
+                holder.mCoinLayout
+                .setBackgroundResource(R.drawable.coindefaultbg1);
+            }else{
             holder.mCoinLayout
             .setBackgroundResource(R.drawable.coindefaultbg);
+            }
+            
             holder.mCoinTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
             holder.mMoneyTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_un_selected_blue_color));
             holder.mMoneyUnitTv.setTextColor(mContext.getResources().getColor(R.color.buy_coin_item_un_selected_black_color));
@@ -126,6 +137,7 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
             holder.mGiveCoinTv.setVisibility(View.INVISIBLE);
             holder.mGiveCoinNumTv.setVisibility(View.INVISIBLE);
         }else{
+            holder.mCoinLayout.setBackgroundResource(R.drawable.buy_money_item_background1);
             holder.mGiveCoinTv.setVisibility(View.VISIBLE);
             holder.mGiveCoinNumTv.setVisibility(View.VISIBLE);
         }
