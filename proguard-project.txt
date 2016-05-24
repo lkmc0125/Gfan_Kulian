@@ -61,6 +61,8 @@
 -keep public class * extends android.support.v4.**
 -keep public class com.android.vending.licensing.ILicensingService
 
+-dontwarn org.apache.**
+-keep class org.apache.** {*;}
 -keep class com.android.vending.licensing.ILicensingService  
 -keep class android.support.v4.** { *; }    
 -keep class org.apache.commons.net.** { *; }    
