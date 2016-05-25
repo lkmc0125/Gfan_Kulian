@@ -129,6 +129,10 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener, 
     }
 
     private String getTaskName() {
+        //fix NullPointerException
+        if(mTaskBean == null) {
+            return "";
+        }
         String name = mTaskBean.getName();
         int startIndex = name.indexOf('\'');
         int endIndex = name.lastIndexOf('\'');

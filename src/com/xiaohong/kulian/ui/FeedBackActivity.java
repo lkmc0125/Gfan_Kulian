@@ -3,6 +3,9 @@
  */
 package com.xiaohong.kulian.ui;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,12 +76,21 @@ public class FeedBackActivity extends BaseActivity {
     }
 
     private void sendFeedback(String content) {
+        //Fix IllegalArgumentException
+        String encodingContent = content;
+        try {
+            encodingContent = URLEncoder.encode(content, "UTF-8");
+            //Log.d(TAG, "encodingContent = " + encodingContent);
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        }
         String url = "http://www.dspmind.com/feedback/app_feedback.php?platform=Android&token=LUZ9EUzkELCyPIXLNrWrDbqzX&device_info="
                 + mSession.getModel()
                 + "&app_version="
                 + mSession.getVersionName()
                 + "Build"
-                + mSession.getVersionCode() + "&feedback=" + content;
+                + mSession.getVersionCode() + "&feedback=" + encodingContent
+                + "&feedbackencoded=1";
         if (mSession.isLogin()) {
             url = url + "&phone_number=" + mSession.getUserName();
         }
