@@ -33,7 +33,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
 
-        <!-- 排行页 -->
+        <!-- 任务列表 -->
         <activity
             android:name=".ui.RankTabActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -46,12 +46,12 @@
             android:name=".ui.TaskListActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
+        <!-- 应用详情 -->
         <activity
             android:name=".ui.OfferWallAdDetailActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:exported="false" >
         </activity>
-        <!-- 应用详情 -->
         <activity
             android:name=".ui.AppDetailActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -68,11 +68,6 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light" />
-        <activity
-            android:name=".ui.FeedBackActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <!-- 个人中心页 -->
         <activity
@@ -87,6 +82,12 @@
             android:name=".ui.MessageListActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.FeedBackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        
         <!-- 购买金币 -->
         <activity
             android:name=".ui.BuyingEntryActivity"
@@ -106,7 +107,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTask" />
 
         <!-- 用于显示Dialog -->
         <activity
