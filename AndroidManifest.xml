@@ -74,10 +74,10 @@
             android:name=".ui.PersonalAccountActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
-        <activity
+        <!-- <activity
             android:name=".ui.PayMainActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" /> -->
         <activity
             android:name=".ui.MessageListActivity"
             android:configChanges="keyboardHidden|orientation"
