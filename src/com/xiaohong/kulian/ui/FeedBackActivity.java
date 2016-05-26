@@ -90,7 +90,7 @@ public class FeedBackActivity extends BaseActivity {
                 + mSession.getVersionName()
                 + "Build"
                 + mSession.getVersionCode() + "&feedback=" + encodingContent
-                + "&feedbackencoded=1";
+                + "&encoded=1";
         if (mSession.isLogin()) {
             url = url + "&phone_number=" + mSession.getUserName();
         }
