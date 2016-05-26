@@ -132,5 +132,17 @@ public class MobileSecurePayer {
 			intent.setClassName(packageName, className);
 			mActivity.startActivity(intent);
 		}
+
+        @Override
+        public boolean isHideLoadingScreen() throws RemoteException {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        @Override
+        public void payEnd(boolean arg0, String arg1) throws RemoteException {
+            // TODO Auto-generated method stub
+            
+        }
 	};
 }
