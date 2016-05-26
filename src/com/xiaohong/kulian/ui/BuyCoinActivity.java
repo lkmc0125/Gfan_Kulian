@@ -95,7 +95,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
             textView_remark.setVisibility(View.VISIBLE);
         }
 
-        mWechatPayTv = (TextView) findViewById(R.id.wechatpaytv);
+        mWechatPayTv = (TextView) findViewById(R.id.payment_choice_info_button);
         mWechatPayTv.setVisibility(View.INVISIBLE);
         mWechatPayTv.setEnabled(false);
         mWechatPayTv.setOnClickListener(this);
@@ -133,13 +133,21 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         case R.id.back_btn:
             finish();
             break;
-        case R.id.wechatpaytv:
-            if (isBuyForOther == true && checkUserName() == true) {
-                mOtherAccount = userNameEditText.getText().toString();
-                doWechatPay();
-            } else if (isBuyForOther == false) {
-                doWechatPay();
-            }
+        case R.id.payment_choice_info_button:
+//            Utils.gotoBuyCoinPaymentChoiceActivity(BuyCoinActivity.this);
+            Intent intent = new Intent(BuyCoinActivity.this, BuyCoinPaymentChoiceActivity.class);
+            intent.putExtra("pay_account", mSession.getUserName());
+            intent.putExtra("pay_time", mAdapter.getSelectedGoodsName());
+            intent.putExtra("pay_money", mAdapter.getSelectedGoodsprice());
+            intent.putExtra("pay_remark", mAdapter.getSelectedGoodsName());
+            startActivity(intent);
+//            mSession.getUserName() + "&type=1&goods_id=" + mAdapter.getSelectedGoodsId();
+//            if (isBuyForOther == true && checkUserName() == true) {
+//                mOtherAccount = userNameEditText.getText().toString();
+//                doWechatPay();
+//            } else if (isBuyForOther == false) {
+//                doWechatPay();
+//            }
             break;
         case R.id.no_data:
             getGoodsList();

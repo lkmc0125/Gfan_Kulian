@@ -501,5 +501,22 @@
     <string name="person_account_other_account_prompt_hint">请认真核对好充值手机号，一旦充错，恕不退款。</string>
     <string name="person_account_other_account_buy_prompt_hint">上网时间将在充值后即刻生效。若当前的上网时间尚未到期，我们将为您自动累加。</string>
     <string name="person_account_other_account_remark_prompt_hint">注：金币将发放至付款方账号内</string>
+    
+     <!-- 选择支付方式页面 -->
+     <string name="payment_choice_info_button">请选择支付方式</string>
+    <string name="payment_choice_title">支付确认</string>
+    <string name="payment_choice_detail">支付明细：</string>
+    <string name="payment_pay_time_text">充值时间：</string>
+    <string name="payment_pay_money_text">充值金额：</string>
+    <string name="payment_pay_acount_text">充值账号：</string>
+    <string name="payment_pay_remark_text">备&#160;&#160;&#160;&#160;&#160;&#160;注：</string>
+    <string name="payment_pay_time_value"> </string>
+    <string name="payment_pay_money_value"> </string>
+    <string name="payment_pay_acount_value"> </string>
+    <string name="payment_pay_remark_value"></string>
+    <string name="payment_choice_describ">请选择您的支付方式：</string>
+    <string name="payment_choice_wetchat_pay">微信支付：</string>
+    <string name="payment_choice_alipay_pay">支付宝支付：</string>
+    <string name="payment_choice_pay_button">确认支付</string>
 
 </resources>

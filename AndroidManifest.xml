@@ -101,6 +101,10 @@
             android:name=".ui.BuyCoinActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.BuyCoinPaymentChoiceActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
         <!-- 注册页 -->
         <activity
             android:name=".ui.RegisterActivity"

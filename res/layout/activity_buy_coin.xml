@@ -157,16 +157,16 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/wechatpaytv"
+                android:id="@+id/payment_choice_info_button"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/confirm_btn_bg_selector"
+                android:background="@drawable/confirm_btn_bg_selector_blue"
                 android:gravity="center"
-                android:text="@string/wechatpay"
+                android:text="@string/payment_choice_info_button"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp" />
         </LinearLayout>

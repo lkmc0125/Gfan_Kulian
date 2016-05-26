@@ -40,9 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -83,8 +81,6 @@ import aga.fdf.grd.os.df.DiyOfferWallManager;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.app.DownloadManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -93,7 +89,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -101,7 +96,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Message;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -118,23 +112,21 @@ import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.igexin.a.a.a.a;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Constants;
+import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
-import com.xiaohong.kulian.adapter.TaskListAdapter;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.AppListBean;
 import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.bean.TaskListBean;
 import com.xiaohong.kulian.common.AndroidHttpClient;
-import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
+import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.ui.BuyCoinActivity;
+import com.xiaohong.kulian.ui.BuyCoinPaymentChoiceActivity;
 import com.xiaohong.kulian.ui.BuyingEntryActivity;
-import com.xiaohong.kulian.ui.ProductListActivity;
 
 /**
  * Common Utils for the application
@@ -1384,6 +1376,16 @@ public class Utils {
      */
     public static void gotoBuyCoinPage(Context context) {
         Intent intent = new Intent(context, BuyCoinActivity.class);
+        context.startActivity(intent);
+    }
+    
+    /**
+     * Go to BuyCoinPaymentChoiceActivity 
+     * @param context A context which should be a Activity context
+     * modifyed by albert 2016/05/26
+     */
+    public static void gotoBuyCoinPaymentChoiceActivity(Context context) {
+        Intent intent = new Intent(context, BuyCoinPaymentChoiceActivity.class);
         context.startActivity(intent);
     }
     
