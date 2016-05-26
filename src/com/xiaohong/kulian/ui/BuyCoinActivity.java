@@ -1,5 +1,7 @@
 package com.xiaohong.kulian.ui;
 
+import java.text.DecimalFormat;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -138,7 +140,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
             Intent intent = new Intent(BuyCoinActivity.this, BuyCoinPaymentChoiceActivity.class);
             intent.putExtra("pay_account", mSession.getUserName());
             intent.putExtra("pay_time", mAdapter.getSelectedGoodsName());
-            intent.putExtra("pay_money", mAdapter.getSelectedGoodsprice());
+            intent.putExtra("pay_money", getprice(mAdapter.getSelectedGoodsprice())+"元");
             intent.putExtra("pay_remark", mAdapter.getSelectedGoodsName());
             startActivity(intent);
 //            mSession.getUserName() + "&type=1&goods_id=" + mAdapter.getSelectedGoodsId();
@@ -318,5 +320,15 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
 
     private CharSequence getDisplayText(int resId) {
         return Html.fromHtml("<font color='#2C78D4'>"+getString(resId)+"</font>");
+    }
+    private String getprice(int price){
+        String str="";
+        if (price % 100 == 0) {
+            str=(price/100+"");
+        } else {
+            float price1 = (float)price/100.f;
+            str=(new DecimalFormat("#0.00").format(price1));
+        }
+        return str;
     }
 }

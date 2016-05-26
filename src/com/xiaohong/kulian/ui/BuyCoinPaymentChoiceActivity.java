@@ -62,6 +62,18 @@ OnItemClickListener, OnFocusChangeListener {
         textView_pay_money=(TextView)this.findViewById(R.id.payment_pay_money_value);
         textView_pay_account=(TextView)this.findViewById(R.id.payment_pay_acount_value);
         textView_pay_remark=(TextView)this.findViewById(R.id.payment_pay_remark_value);
+        if(pay_time!=null){
+            textView_pay_time.setText(pay_time);
+        }
+        if(pay_money!=null){
+            textView_pay_money.setText(pay_money);
+        }
+        if(pay_account!=null){
+            textView_pay_account.setText(pay_account);
+        }
+        if(pay_remark!=null){
+            textView_pay_remark.setText(pay_remark);
+        }
         checkBox_wechat=(CheckBox)this.findViewById(R.id.payment_choice_wetchat_pay_checkbox);
         checkBox_alipay=(CheckBox)this.findViewById(R.id.payment_choice_alipay_pay_checkbox);
         checkBox_wechat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
