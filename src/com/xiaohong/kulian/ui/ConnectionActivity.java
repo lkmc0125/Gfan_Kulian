@@ -44,6 +44,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.Session.OnCoinUpdatedListener;
 import com.xiaohong.kulian.Session.OnLoginListener;
 import com.xiaohong.kulian.adapter.ConnectionAppGridAdapter;
 import com.xiaohong.kulian.bean.MessageBean;
@@ -62,7 +63,8 @@ import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.CustomDialog;
 import com.xiaohong.kulian.common.widget.RoundImageView;
 public class ConnectionActivity extends BaseActivity implements
-        ApiRequestListener, OnClickListener, AppSummaryDataInterface, OnLoginListener {
+        ApiRequestListener, OnClickListener, AppSummaryDataInterface,
+        OnLoginListener, OnCoinUpdatedListener {
     private static final String TAG = "ConnectionActivity";
 
     private WifiAuthentication mAuth;
@@ -126,6 +128,7 @@ public class ConnectionActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_main_layout);
         initView();
+        mSession.addOnCoinUpdateListener(this);
         registerConnection();
         mWifiAdmin = new WifiAdmin(getApplicationContext());
         mAuth = new WifiAuthentication(ConnectionActivity.this);
@@ -144,6 +147,7 @@ public class ConnectionActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         mSession.removeLoginListener(this);
+        mSession.removeOnCoinUpdateListener(this);
         super.onDestroy();
     }
     
@@ -909,5 +913,10 @@ public class ConnectionActivity extends BaseActivity implements
     public void onLoginFailed(int retCode, String retMsg) {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    public void onCoinUpdate(int newTotalCoinNum) {
+        textView_coin_num.setText(newTotalCoinNum + "");
     }
 }

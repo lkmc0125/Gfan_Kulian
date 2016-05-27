@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.alipay.sdk.app.PayTask;
+import com.google.gson.Gson;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -15,6 +16,7 @@ import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.adapter.BuyItemGridViewAdapter;
 import com.xiaohong.kulian.bean.GoodsListBean;
+import com.xiaohong.kulian.bean.WeChatGoodsBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.util.DialogUtils;
@@ -180,6 +182,8 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         Log.d(TAG, "doWechatPay url = " + url);
         final String goodsName = mAdapter.getSelectedGoodsName();
         final int goodsId = mAdapter.getSelectedGoodsId();
+        final int goodsPrice = mAdapter.getSelectedGoodsprice();
+        final int goodsGift = mAdapter.getSelectedGoodsGift();
         Toast.makeText(getApplicationContext(), "请稍候...", Toast.LENGTH_SHORT)
                 .show();
         new AsyncTask<Void, Void, Void>() {
@@ -212,15 +216,20 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                             req.timeStamp = json.getString("timeStamp");
                             req.packageValue = json.getString("packageValue");
                             req.sign = json.getString("sign");
-                            req.extData = "{\"goods_name\":\"" + goodsName
-                                    +"\", \"goods_id\":" + goodsId
-                                    +", \"out_trade_no\":\"" + json.getString("out_trade_no") + "\"";
+                            WeChatGoodsBean goodsBean = new WeChatGoodsBean();
+                            goodsBean.setGoods_name(goodsName);
+                            goodsBean.setGoods_id(goodsId);
+                            goodsBean.setOut_trade_no(
+                                    json.getString("out_trade_no"));
+                            goodsBean.setGoods_gift(goodsGift);
+                            goodsBean.setGoods_price(goodsPrice);
                             if(mOtherAccount != null) {
-                                req.extData += ", \"other_account\":\"" + mOtherAccount + "\"";
+                                goodsBean.setOther_account(mOtherAccount);
                             }else {
-                                req.extData += ", \"other_account\":\"" + "\"";
+                                goodsBean.setOther_account("");
                             }
-                            req.extData += "}";
+                            Gson gson = new Gson();
+                            req.extData = gson.toJson(goodsBean);
                             mWxApi.sendReq(req);
                         } else {
                             DialogUtils.showMessage(getApplicationContext(),

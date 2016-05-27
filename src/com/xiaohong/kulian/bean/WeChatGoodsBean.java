@@ -37,9 +37,35 @@ public class WeChatGoodsBean {
         this.other_account = other_account;
     }
 
+    public int getGoods_price() {
+        return goods_price;
+    }
+
+    public void setGoods_price(int goods_price) {
+        this.goods_price = goods_price;
+    }
+
+    public int getGoods_gift() {
+        return goods_gift;
+    }
+
+    public void setGoods_gift(int goods_gift) {
+        this.goods_gift = goods_gift;
+    }
+
+
+
 
     private int    goods_id;
     private String goods_name;
     private String out_trade_no;
     private String other_account;
+    /**
+     * 商品的价格
+     */
+    private int goods_price;
+    /**
+     * 奖励的金币
+     */
+    private int goods_gift;
 }

@@ -48,6 +48,10 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
         return mData.get(mSelectedPos).getName();
     }
     
+    public int getSelectedGoodsGift() {
+        return mData.get(mSelectedPos).getGiftCoin();
+    }
+    
     public BuyItemGridViewAdapter(Context context, ArrayList<GoodsBean> data) {
         mContext = context;
         mData = data;

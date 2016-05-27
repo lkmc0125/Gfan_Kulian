@@ -15,7 +15,6 @@
  */
 package com.xiaohong.kulian.ui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Dialog;
@@ -30,7 +29,6 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
@@ -46,12 +44,8 @@ import com.xiaohong.kulian.Session.LeftTime;
 import com.xiaohong.kulian.Session.OnCoinUpdatedListener;
 import com.xiaohong.kulian.Session.OnLeftTimeUpdateListener;
 import com.xiaohong.kulian.Session.OnLoginListener;
-import com.xiaohong.kulian.Session.PersonalCenterStatus;
-import com.xiaohong.kulian.bean.LoginResultBean;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
-import com.xiaohong.kulian.common.util.ApkInfo;
-import com.xiaohong.kulian.common.util.ApkUtil;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.CustomDialog;
@@ -92,14 +86,14 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     @Override
     protected void onResume() {
         mSession.registerOnLeftTimeUpdateListener(mLeftTimeListener);
-        mSession.addOnCoinUpdateListener(this);
+        //mSession.addOnCoinUpdateListener(this);
         mSession.addLoginListener(this);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        mSession.removeOnCoinUpdateListener(this);
+        //mSession.removeOnCoinUpdateListener(this);
         mSession.removeOnLeftTimeUpdateListener(mLeftTimeListener);
         mSession.removeLoginListener(this);
         super.onPause();
@@ -107,6 +101,7 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
 
     @Override
     protected void onDestroy() {
+        mSession.removeOnCoinUpdateListener(this);
         super.onDestroy();
         // unregisterReceiver(mReceiver);
     }
