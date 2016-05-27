@@ -128,12 +128,11 @@ public class ConnectionActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_main_layout);
         initView();
-        mSession.addOnCoinUpdateListener(this);
         registerConnection();
         mWifiAdmin = new WifiAdmin(getApplicationContext());
         mAuth = new WifiAuthentication(ConnectionActivity.this);
         mConnectionStatus = ConnectionStatus.DISCONNECTED;
-
+        mSession.addOnCoinUpdateListener(this);
         mSession.addLoginListener(this);
         new Handler().postDelayed(new Runnable() {
             public void run() {

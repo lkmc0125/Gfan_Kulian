@@ -79,29 +79,32 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         setContentView(R.layout.activity_person_account_fragment_layout);
 
         initView();
+        mSession.registerOnLeftTimeUpdateListener(mLeftTimeListener);
         mSession.addOnCoinUpdateListener(this);
         mSession.addLoginListener(this);
     }
 
     @Override
     protected void onResume() {
-        mSession.registerOnLeftTimeUpdateListener(mLeftTimeListener);
+        //mSession.registerOnLeftTimeUpdateListener(mLeftTimeListener);
         //mSession.addOnCoinUpdateListener(this);
-        mSession.addLoginListener(this);
+        //mSession.addLoginListener(this);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
         //mSession.removeOnCoinUpdateListener(this);
-        mSession.removeOnLeftTimeUpdateListener(mLeftTimeListener);
-        mSession.removeLoginListener(this);
+        //mSession.removeOnLeftTimeUpdateListener(mLeftTimeListener);
+        //mSession.removeLoginListener(this);
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         mSession.removeOnCoinUpdateListener(this);
+        mSession.removeOnLeftTimeUpdateListener(mLeftTimeListener);
+        mSession.removeLoginListener(this);
         super.onDestroy();
         // unregisterReceiver(mReceiver);
     }
