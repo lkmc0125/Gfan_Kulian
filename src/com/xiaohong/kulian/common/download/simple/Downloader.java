@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -40,8 +43,8 @@ public class Downloader {
         mDownloadFinishedMap = new HashMap<String, String>();
         downloadmanager = (DownloadManager) mContext
                 .getSystemService(Context.DOWNLOAD_SERVICE);
-        // mContext.registerReceiver(receiver, new
-        // IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        mContext.registerReceiver(mDownloadCompletereceiver, new
+        IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         downloadObserver = new DownloadChangeObserver(null);
         mContext.getContentResolver().registerContentObserver(CONTENT_URI,
                 true, downloadObserver);
@@ -73,7 +76,7 @@ public class Downloader {
 
     private DownloadManager downloadmanager = null;
     private DownloadChangeObserver downloadObserver;
-    // private long lastDownloadId = 0;
+    private long lastDownloadId = 0;
     public static final Uri CONTENT_URI = Uri
             .parse("content://downloads/my_downloads");
 
@@ -90,18 +93,18 @@ public class Downloader {
         }
     }
 
-    // private BroadcastReceiver receiver = new BroadcastReceiver() {
-    // @Override
-    // public void onReceive(Context context, Intent intent) {
-    // //这里可以取得下载的id，这样就可以知道哪个文件下载完成了。适用与多个下载任务的监听
-    // if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-    // {
-    // Long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,
-    // 0);
-    // Log.v("tag", "download complete broadcast: id: "+downloadId);
-    // }
-    // }
-    // };
+    private BroadcastReceiver mDownloadCompletereceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 这里可以取得下载的id，这样就可以知道哪个文件下载完成了。适用与多个下载任务的监听
+            if (intent.getAction().equals(
+                    DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
+                Long downloadId = intent.getLongExtra(
+                        DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+                Log.v("tag", "download complete broadcast: id: " + downloadId);
+            }
+        }
+    };
 
     @SuppressLint("NewApi")
     private synchronized void queryDownloadStatus() {
