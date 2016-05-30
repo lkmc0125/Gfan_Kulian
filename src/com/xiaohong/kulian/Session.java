@@ -49,12 +49,9 @@ import java.util.Observable;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
-import android.app.ActivityManager.RunningTaskInfo;
 import android.content.AsyncQueryHandler;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -81,6 +78,8 @@ import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.download.DownloadManager.Impl;
+import com.xiaohong.kulian.common.download.simple.SimpleDownloadManager;
+import com.xiaohong.kulian.common.download.simple.SimpleDownloadManager.OnDownloadStatusChangedListener;
 import com.xiaohong.kulian.common.util.DBUtils;
 import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.MarketProvider;
@@ -88,7 +87,6 @@ import com.xiaohong.kulian.common.util.Pair;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.DownloadInfo;
 import com.xiaohong.kulian.common.vo.UpgradeInfo;
-import com.xiaohong.kulian.common.widget.CustomDialog;
 
 /**
  * 
@@ -229,6 +227,8 @@ public class Session extends Observable {
 
     /** Download Manager */
     private DownloadManager mDownloadManager;
+    
+    private SimpleDownloadManager mSimpleDownloadManager;
 
     /** The singleton instance */
     private static Session mInstance;
@@ -312,6 +312,7 @@ public class Session extends Observable {
             } catch (UnsupportedEncodingException e) {
             }
             mDownloadManager = new DownloadManager(context.getContentResolver(), getPackageName());
+            mSimpleDownloadManager = SimpleDownloadManager.getInstance(mContext);
 
             readSettings();
         }
@@ -695,6 +696,10 @@ public class Session extends Observable {
             mDownloadManager = new DownloadManager(mContext.getContentResolver(), getPackageName());
         }
         return mDownloadManager;
+    }
+    
+    public SimpleDownloadManager getSimpleDownloadManager() {
+        return mSimpleDownloadManager;
     }
 
     public boolean isDeviceBinded() {
@@ -1461,5 +1466,17 @@ public class Session extends Observable {
             mDialogPara.mAddedCoinNum = 0;
             mHasDialogToShow = false;
         }
+    }
+
+    public void addOnDownloadStatusChangedListener(
+            OnDownloadStatusChangedListener listener) {
+        //Log.d(TAG, "addOnDownloadStatusChangedListener");
+        mSimpleDownloadManager.addOnDownloadStatusChangedListener(listener);
+    }
+    
+    public void removeOnDownloadStatusChangedListener(
+            OnDownloadStatusChangedListener listener) {
+        //Log.d(TAG, "removeOnDownloadStatusChangedListener");
+        mSimpleDownloadManager.removeOnDownloadStatusChangedListener(listener);
     }
 }

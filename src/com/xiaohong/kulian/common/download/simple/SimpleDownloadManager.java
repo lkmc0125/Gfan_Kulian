@@ -273,4 +273,18 @@ public class SimpleDownloadManager {
             listener.onDownloadStatusChanged(downloadId, status);
         }
     }
+    
+    /**
+     * Get download id by url
+     * @param url
+     * @return
+     */
+    public long getDownloadId(String url) {
+        Long id = mUrlIdsMap.get(url);
+        if(id == null) {
+            return -1;
+        }else {
+            return id;
+        }
+    }
 }
