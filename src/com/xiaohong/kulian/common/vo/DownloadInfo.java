@@ -25,7 +25,7 @@ package com.xiaohong.kulian.common.vo;
  *
  */
 public class DownloadInfo {
-    /** DB id*/
+    /** DB id, download id*/
     public long id;
     /** 应用名*/
     public String mAppName;

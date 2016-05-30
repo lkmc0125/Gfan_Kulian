@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
@@ -782,6 +783,7 @@ public class Session extends Observable {
     }
 
     public void close() {
+        pauseAllDownloads();
         mSessionManager.writePreferenceQuickly();
         mDownloadingCursor.unregisterContentObserver(mCursorObserver);
         mDownloadingCursor.close();
@@ -1478,5 +1480,20 @@ public class Session extends Observable {
             OnDownloadStatusChangedListener listener) {
         //Log.d(TAG, "removeOnDownloadStatusChangedListener");
         mSimpleDownloadManager.removeOnDownloadStatusChangedListener(listener);
+    }
+
+    /**
+     * Pause all downloading item
+     */
+    private void pauseAllDownloads() {
+        if(mDownloadingList == null) {
+            Log.d(TAG, "pauseAllDownloads mDownloadingList is null");
+            return;
+        }
+        Collection<DownloadInfo> downloadInfos = mDownloadingList.values();
+        for(DownloadInfo downloadInfo : downloadInfos) {
+            getDownloadManager().pauseDownload(downloadInfo.id);
+        }
+        
     }
 }
