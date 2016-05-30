@@ -2,6 +2,7 @@ package com.xiaohong.kulian.common.download.simple;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,10 +25,15 @@ import android.util.Log;
  *
  */
 public class SimpleDownloadManager {
+    public static final String DEFAULT_MARKET_SUBDIR = "kulian/market";
     private static final String TAG = "SimpleDownloadManager";
     private Timer mTimer;
     private Context mContext;
     private CopyOnWriteArrayList<String> mDownloadIds;
+    /**
+     * This map is used to find id by download id
+     */
+    private HashMap<String, Long> mUrlIdsMap = new HashMap<String, Long>();
     private HashMap<String, String> mDownloadFinishedMap; // key:id, value:apk
                                                           // path
     private ArrayList<OnDownloadStatusChangedListener> mOnDownloadStatusChangedListenerList
@@ -61,11 +67,18 @@ public class SimpleDownloadManager {
     
     public void addOnDownloadStatusChangedListener(
             OnDownloadStatusChangedListener listener) {
-        mOnDownloadStatusChangedListenerList.add(listener);
+        Log.d(TAG, "addOnDownloadStatusChangedListener");
+        if(!mOnDownloadStatusChangedListenerList.contains(listener)) {
+            mOnDownloadStatusChangedListenerList.add(listener);
+        }else {
+            Log.d(TAG, "listener is in the list");
+        }
+        
     }
     
     public void removeOnDownloadStatusChangedListener(
             OnDownloadStatusChangedListener listener) {
+        Log.d(TAG, "removeOnDownloadStatusChangedListener");
         mOnDownloadStatusChangedListenerList.remove(listener);
     }
 
@@ -81,7 +94,8 @@ public class SimpleDownloadManager {
     public synchronized long downloadApk(String url, String appName)
             throws MalformedURLException {
         Uri uri = Uri.parse(url);
-        Environment.getExternalStoragePublicDirectory(SimpleDownloadConstants.DEFAULT_MARKET_SUBDIR).mkdir();
+        Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS).mkdir();
 
         Request request = new DownloadManager.Request(uri)
                 .setAllowedNetworkTypes(
@@ -96,8 +110,36 @@ public class SimpleDownloadManager {
 
         long downloadId = mDownloadManager.enqueue(request);
         mDownloadIds.add(Long.toString(downloadId));
+        mUrlIdsMap.put(url, downloadId);
         startTimer();
+        Log.d(TAG, "downloadApk downloadId = " + downloadId);
         return downloadId;
+    }
+
+    /**
+     * Stop a download by id
+     * @param id
+     */
+    @SuppressLint("NewApi")
+    public void stopDownloadApk(long id) {
+        mDownloadManager.remove(id);
+        mDownloadIds.remove(id);
+        Collection<Long> ids = mUrlIdsMap.values();
+        ids.remove(id);
+    }
+    
+    /**
+     * Stop a download by a url
+     * @param url
+     */
+    @SuppressLint("NewApi")
+    public void stopDownloadApk(String url) {
+        Long id = mUrlIdsMap.get(url);
+        if(id != null) {
+            mDownloadManager.remove(id);
+            mUrlIdsMap.remove(url);
+            mDownloadIds.remove(id);
+        }
     }
     
     @SuppressLint("NewApi")
@@ -114,8 +156,10 @@ public class SimpleDownloadManager {
                 .setAllowedOverRoaming(false)
                 .setTitle(appName)
                 .setDestinationInExternalPublicDir(
-                        Environment.DIRECTORY_DOWNLOADS,
-                        "_" + (int) (Math.random() * 100000) + ".apk");
+                        "kulian",
+                        "market" + "/" + appName + ".apk");
+        /*File file =  new File("kulian",
+                "market" + "/" + appName + ".apk");*/
 
         long downloadId = mDownloadManager.enqueue(request);
         mDownloadIds.add(Long.toString(downloadId));
@@ -214,8 +258,10 @@ public class SimpleDownloadManager {
     
     private void notifyProgressUpdate(long downloadId, int progress) {
         Log.d(TAG, "notifyProgressUpdate downloadId = " + 
-                downloadId + ", progress = " + progress);
+                downloadId + ", progress = " + progress + 
+                ", listener size=" + mOnDownloadStatusChangedListenerList.size());
         for(OnDownloadStatusChangedListener listener : mOnDownloadStatusChangedListenerList) {
+            Log.d(TAG, "listener = " + listener);
             listener.onProgressUpdate(downloadId, progress);
         }
     }
