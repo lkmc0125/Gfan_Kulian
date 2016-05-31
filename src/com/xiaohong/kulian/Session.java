@@ -851,7 +851,7 @@ public class Session extends Observable {
         super.setChanged();
         super.notifyObservers(new Pair<String, Object>(P_CURRENT_VERSION, currentVersion));
     }
-    
+
     /**
      * 清除上一个版本数据
      */
@@ -874,26 +874,27 @@ public class Session extends Observable {
     }
 
     public String getDefaultChargeType() {
-    	return mDefaultChargeType;
-	}
+        return mDefaultChargeType;
+    }
 
-	public void setDefaultChargeType(String type) {
-		mDefaultChargeType = type;
-		super.setChanged();
-        super.notifyObservers(new Pair<String, Object>(P_DEFAULT_CHARGE_TYPE, type));
-	}
-	
-	/** 创建下载数据结果集*/
-	private static final int CURSOR_CREATED = 0;
-	/** 更新下载数据结果集*/
-	private static final int CURSOR_CHANGED = 1;
-	/** 产品更新 */
-	private static final int CURSOR_UPDATE = 2;
-	/** 下载列表更新 */
-	private static final int UPDATE_LIST = 3;
-	
-	private static final int ADD_COIN = 4;
-	
+    public void setDefaultChargeType(String type) {
+        mDefaultChargeType = type;
+        super.setChanged();
+        super.notifyObservers(new Pair<String, Object>(P_DEFAULT_CHARGE_TYPE,
+                type));
+    }
+
+    /** 创建下载数据结果集 */
+    private static final int CURSOR_CREATED = 0;
+    /** 更新下载数据结果集 */
+    private static final int CURSOR_CHANGED = 1;
+    /** 产品更新 */
+    private static final int CURSOR_UPDATE = 2;
+    /** 下载列表更新 */
+    private static final int UPDATE_LIST = 3;
+
+    private static final int ADD_COIN = 4;
+
     private Handler mHandler = new Handler() {
 
         @Override
@@ -903,7 +904,7 @@ public class Session extends Observable {
 
             case CURSOR_CREATED:
 
-                mDownloadingList = new HashMap<String, DownloadInfo>();
+                mDownloadingList.clear();
                 startQuery();
                 break;
 
@@ -935,8 +936,9 @@ public class Session extends Observable {
             }
         }
     };
-	
-    private HashMap<String, DownloadInfo> mDownloadingList;
+
+    private final HashMap<String, DownloadInfo> mDownloadingList = 
+            new HashMap<String, DownloadInfo>();;
     /** The application list which user can update */
     private HashMap<String, UpgradeInfo> mUpdateApps = new HashMap<String, UpgradeInfo>();
     private Cursor mDownloadingCursor;
@@ -1012,7 +1014,7 @@ public class Session extends Observable {
 
         if (cursor.getCount() > 0) {
             // 检索有结果
-            mDownloadingList = new HashMap<String, DownloadInfo>();
+            mDownloadingList.clear();
         } else {
             return;
         }
@@ -1030,11 +1032,32 @@ public class Session extends Observable {
             
             int source = cursor.getInt(cursor
                     .getColumnIndex(DownloadManager.Impl.COLUMN_SOURCE));
+            int control = cursor.getInt(cursor.getColumnIndex(
+                    DownloadManager.Impl.COLUMN_CONTROL));
+            //Log.d(TAG, "control = " + control);
+            if(control == DownloadManager.Impl.CONTROL_PAUSED) {
+             // downloading progress
+                long currentBytes = cursor.getInt(cursor
+                        .getColumnIndex(DownloadManager.Impl.COLUMN_CURRENT_BYTES));
+                long totalBytes = cursor.getInt(cursor
+                        .getColumnIndex(DownloadManager.Impl.COLUMN_TOTAL_BYTES));
+                infoItem.mTotalSize = totalBytes;
+                infoItem.mCurrentSize = currentBytes;
+                int progress = (int) ((float) currentBytes / (float) totalBytes * 100);
+                infoItem.mProgress = progress + "%";
+                infoItem.mProgressNumber = progress;
+                infoItem.mProgressLevel = Constants.STATUS_PAUSE;
+                infoItem.mStatus = DownloadManager.Impl.STATUS_PAUSED_BY_APP;
+                /*Log.d(TAG, "progress = " + progress);
+                Log.d(TAG, "app name = " + infoItem.mAppName);
+                Log.d(TAG, "mPackageName = " + infoItem.mPackageName);
+                Log.d(TAG, "id = " + infoItem.id);*/
+            }else {
+                infoItem.mStatus = cursor.getInt(cursor
+                        .getColumnIndex(DownloadManager.Impl.COLUMN_STATUS));
+            }
             infoItem.mIconUrl = cursor.getString(cursor
                         .getColumnIndex(DownloadManager.Impl.COLUMN_NOTIFICATION_EXTRAS));
-
-            infoItem.mStatus = cursor.getInt(cursor
-                    .getColumnIndex(DownloadManager.Impl.COLUMN_STATUS));
             mDownloadingList.put(packageName, infoItem);
 
             if (DownloadManager.Impl.isStatusRunning(infoItem.mStatus)) {
@@ -1154,7 +1177,7 @@ public class Session extends Observable {
             MarketAPI.reportAppLaunched(mContext, mReportApiRequestListener, packagename);
 //        }
     }
-    
+
     private class ReportApiRequestListener implements ApiRequestListener {
 
         @Override

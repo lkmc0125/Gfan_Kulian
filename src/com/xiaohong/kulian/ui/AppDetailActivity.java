@@ -261,20 +261,24 @@ public class AppDetailActivity extends Activity
                 Log.d(TAG, "mIsDownloading:" + mIsDownloading);
                 mDownloadId = downloadInfo.id;
                 Log.d(TAG, "mDownloadId-" + mDownloadId);
+                Log.d(TAG, "downloadInfo.mStatus-" + downloadInfo.mStatus);
                 if (downloadInfo.mFilePath != null
                         && !downloadInfo.mFilePath.equals("")) {
                     mStatus = STATUS_WAITING_INSTALL;
                     mFilePath = downloadInfo.mFilePath;
                     showInstallView();
-                } else /*if (mIsDownloading == true)*/ {
+                } else if (DownloadManager.Impl.isStatusRunning(downloadInfo.mStatus)) {
+                    //downloading
                     mStatus = STATUS_DOWNLOADING;
                     mIsDownloading = true;
                     mProgressBar.setStatus(CustomProgressBar.Status.PROCESSING);
                     showDownloadingView(downloadInfo);
-                }/* else {
+                } else if(DownloadManager.Impl.isStatusPaused(downloadInfo.mStatus)){
                     mStatus = STATUS_PAUSE;
                     showContinueView();
-                }*/
+                }else {
+                    Log.d(TAG, "unkown case");
+                }
             } else if (Utils.isApkDownloaded(mDetailInfo.getAppname())) {
                 mStatus = STATUS_WAITING_INSTALL;
                 mFilePath = Utils.getDownloadedAppPath(mDetailInfo.getAppname());

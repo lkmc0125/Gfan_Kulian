@@ -927,6 +927,15 @@ public class DownloadManager {
         }
 
         /**
+         * Check if the status is paused by user
+         * @param status
+         * @return
+         */
+        public static boolean isStatusPaused(int status) {
+            return status == STATUS_PAUSED_BY_APP ;
+        }
+
+        /**
          * Returns whether the status is a success (i.e. 2xx).
          */
         public static boolean isStatusSuccess(int status) {
