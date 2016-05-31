@@ -1,5 +1,19 @@
 package com.xiaohong.kulian.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import aga.fdf.grd.os.PointsChangeNotify;
+import aga.fdf.grd.os.PointsManager;
+import aga.fdf.grd.os.df.AdExtraTaskStatus;
+import aga.fdf.grd.os.df.AdTaskStatus;
+import aga.fdf.grd.os.df.AppDetailDataInterface;
+import aga.fdf.grd.os.df.AppDetailObject;
+import aga.fdf.grd.os.df.AppExtraTaskObject;
+import aga.fdf.grd.os.df.AppExtraTaskObjectList;
+import aga.fdf.grd.os.df.AppSummaryObject;
+import aga.fdf.grd.os.df.DiyAppNotify;
+import aga.fdf.grd.os.df.DiyOfferWallManager;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,36 +33,24 @@ import android.view.View.OnClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.adapter.GridViewAdapter;
 import com.xiaohong.kulian.adapter.ListViewAdapter_TaskDesc;
+import com.xiaohong.kulian.adapter.ListViewAdapter_TaskDesc_footview;
 import com.xiaohong.kulian.common.util.BitmapDownloadListener;
 import com.xiaohong.kulian.common.util.BitmapLoaderManager;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.vo.TaskDescObject;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.CustomProgressBar;
-
-import aga.fdf.grd.os.PointsChangeNotify;
-import aga.fdf.grd.os.PointsManager;
-import aga.fdf.grd.os.df.DiyAppNotify;
-import aga.fdf.grd.os.df.AdExtraTaskStatus;
-import aga.fdf.grd.os.df.AdTaskStatus;
-import aga.fdf.grd.os.df.AppDetailDataInterface;
-import aga.fdf.grd.os.df.AppDetailObject;
-import aga.fdf.grd.os.df.AppExtraTaskObject;
-import aga.fdf.grd.os.df.AppExtraTaskObjectList;
-import aga.fdf.grd.os.df.AppSummaryObject;
-import aga.fdf.grd.os.df.DiyOfferWallManager;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OfferWallAdDetailActivity extends BaseActivity
         implements
@@ -156,9 +158,13 @@ public class OfferWallAdDetailActivity extends BaseActivity
 
         listView = (ListView) findViewById(R.id.detailpage_listview);
         listView.setEnabled(false);
-        lvAdapter = new ListViewAdapter_TaskDesc(
+        /*lvAdapter = new ListViewAdapter_TaskDesc(
                 OfferWallAdDetailActivity.this, null);
-        listView.setAdapter(lvAdapter);
+        listView.setAdapter(lvAdapter);       
+        ListViewAdapter_TaskDesc_footview mFootviewAdapter = 
+                new ListViewAdapter_TaskDesc_footview(this, listview);
+        listview.setAdapter(mFootviewAdapter);
+        mFootviewAdapter.setAdapterData(mStationImages);*/
     }
 
     /**
@@ -465,8 +471,20 @@ public class OfferWallAdDetailActivity extends BaseActivity
     private void updateListView(List<TaskDescObject> list) {
         if (list != null && !list.isEmpty()) {
             listView.setVisibility(View.VISIBLE);
-            lvAdapter.setData(list);
-            lvAdapter.notifyDataSetChanged();
+//            lvAdapter.setData(list);
+//            lvAdapter.notifyDataSetChanged();
+            int DEFAULT_SHOW_COUNT=0;
+            for (int i = 0,j=0; i < 3; j++) {
+                if(list.get(j).getStatus()==AdExtraTaskStatus.NOT_START){
+                    i++;
+                }
+                DEFAULT_SHOW_COUNT++;
+            }
+            ListViewAdapter_TaskDesc_footview mFootviewAdapter = 
+                    new ListViewAdapter_TaskDesc_footview
+                    (this, listView,DEFAULT_SHOW_COUNT);
+            listView.setAdapter(mFootviewAdapter);
+            mFootviewAdapter.setAdapterData(list);
         } else {
             listView.setVisibility(View.GONE);
         }
