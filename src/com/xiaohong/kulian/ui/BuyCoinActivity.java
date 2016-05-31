@@ -145,10 +145,24 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         case R.id.payment_choice_info_button:
 //            Utils.gotoBuyCoinPaymentChoiceActivity(BuyCoinActivity.this);
             Intent intent = new Intent(BuyCoinActivity.this, BuyCoinPaymentChoiceActivity.class);
+            String remark=textView_remark==null?"":textView_remark.getText().toString();
             intent.putExtra("pay_account", mSession.getUserName());
             intent.putExtra("pay_time", mAdapter.getSelectedGoodsName());
             intent.putExtra("pay_money", getprice(mAdapter.getSelectedGoodsprice())+"元");
-            intent.putExtra("pay_remark", mAdapter.getSelectedGoodsName());
+            intent.putExtra("pay_remark", remark);
+            intent.putExtra("isBuyForOther", isBuyForOther);
+            if (isBuyForOther == true && checkUserName() == true) {
+                mOtherAccount = userNameEditText.getText().toString();
+            }
+            if(mOtherAccount != null) {
+                intent.putExtra("mOtherAccount", mOtherAccount);
+            }else{
+                intent.putExtra("mOtherAccount", "");
+            }
+            
+            Bundle bundle=new Bundle();
+            bundle.putSerializable("GoodsBean", mAdapter.getSelectedGoodsBean());
+            intent.putExtras(bundle);
             startActivity(intent);
 //            mSession.getUserName() + "&type=1&goods_id=" + mAdapter.getSelectedGoodsId();
 //            if (isBuyForOther == true && checkUserName() == true) {

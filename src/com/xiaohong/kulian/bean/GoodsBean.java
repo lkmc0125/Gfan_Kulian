@@ -1,6 +1,9 @@
 package com.xiaohong.kulian.bean;
 
-public class GoodsBean {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class GoodsBean implements Serializable {
     private int goods_id;
     private String name;
     private int price; // cent

@@ -47,7 +47,13 @@ public class BuyItemGridViewAdapter extends BaseAdapter {
     public String getSelectedGoodsName() {
         return mData.get(mSelectedPos).getName();
     }
-    
+    /**
+     * added by albert 2016/06/01
+     * @return
+     */
+    public GoodsBean getSelectedGoodsBean(){
+        return mData.get(mSelectedPos);
+    }
     public int getSelectedGoodsGift() {
         return mData.get(mSelectedPos).getGiftCoin();
     }
