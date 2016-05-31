@@ -1,6 +1,9 @@
 package com.xiaohong.kulian.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,11 +32,13 @@ import com.xiaohong.kulian.common.ApiAsyncTask;
 import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.Utils;
+import com.xiaohong.kulian.common.vo.DownloadInfo;
 import com.xiaohong.kulian.common.widget.LazyloadListActivity;
 import com.xiaohong.kulian.common.widget.LoadingDrawable;
 
 public class TaskListActivity extends LazyloadListActivity implements
-        ApiRequestListener, OnItemClickListener, OnClickListener {
+        ApiRequestListener, OnItemClickListener, OnClickListener,
+        Observer{
 
     private static final String TAG = "TaskListActivity";
     // Loading
@@ -331,6 +336,33 @@ public class TaskListActivity extends LazyloadListActivity implements
     @Override
     public void loadMore() {
         // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void onPause() {
+        mSession.deleteObserver(this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSession.addObserver(this);
+    }
+
+    /**
+     * Implements Observer
+     */
+    @Override
+    public void update(Observable observable, Object data) {
+        if (data instanceof HashMap) {
+            HashMap<String, DownloadInfo> downloadingTask = 
+                    (HashMap<String, DownloadInfo>) data;
+            //The map's key is package name and value is DownloadInfo
+            mAdapter.setDownloadingTaskMap(downloadingTask);
+        }
+        
         
     }
 }

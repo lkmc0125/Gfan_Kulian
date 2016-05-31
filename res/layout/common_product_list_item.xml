@@ -122,7 +122,7 @@
             android:id="@+id/lvitem_pb_download"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
-            android:layout_height="1dp"
+            android:layout_height="2dp"
             android:layout_gravity="bottom"
             android:layout_below="@id/tv_size"
             android:layout_toRightOf="@id/iv_logo"

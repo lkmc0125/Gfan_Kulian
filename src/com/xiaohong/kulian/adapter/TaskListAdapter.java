@@ -2,13 +2,16 @@
 package com.xiaohong.kulian.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.adapter.TabAppListAdapter.LazyloadListener;
 import com.xiaohong.kulian.bean.AppBean;
 import com.xiaohong.kulian.bean.TaskBean;
+import com.xiaohong.kulian.common.download.DownloadManager;
 import com.xiaohong.kulian.common.util.Utils;
+import com.xiaohong.kulian.common.vo.DownloadInfo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,6 +33,8 @@ public class TaskListAdapter extends CommonAdapter {
      * A ImageLoader instance to load image from cache or network
      */
     private ImageLoader mImageLoader = ImageLoader.getInstance();
+    private final HashMap<String, DownloadInfo> mDownloadingTaskMap = new
+            HashMap<String, DownloadInfo>();
 
     public TaskListAdapter(Context context) {
         mContext = context;
@@ -77,7 +82,7 @@ public class TaskListAdapter extends CommonAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        // Log.d(TAG, "getView pos = " + position);
+        //Log.d(TAG, "getView pos = " + position);
         Object item = mData.get(position);
         if (convertView == null
                 || !(item instanceof TaskBean && ((ViewHolder) convertView.getTag()).type == TaskBean.ITEM_TYPE_WEB_TASK)
@@ -201,12 +206,27 @@ public class TaskListAdapter extends CommonAdapter {
             holder.mGoldView.setText("+" + item.getGiveCoin());
             showActionViews(holder);
             holder.mStatusView.setVisibility(View.GONE);
-            holder.mProgressBar.setVisibility(View.INVISIBLE);
+            DownloadInfo downloadInfo = mDownloadingTaskMap.get(item.getPackageName());
+            if(downloadInfo != null &&
+                    DownloadManager.Impl.isStatusRunning(downloadInfo.mStatus)) {
+                holder.mProgressBar.setVisibility(View.VISIBLE);
+                holder.mProgressBar.setProgress(downloadInfo.mProgressNumber);
+            }else {
+                holder.mProgressBar.setVisibility(View.INVISIBLE);
+            }
+            
         }
     }
 
     public ArrayList<Object> getData() {
         return mData;
+    }
+    
+    public void setDownloadingTaskMap(HashMap<String, DownloadInfo> map) {
+        mDownloadingTaskMap.clear();
+        mDownloadingTaskMap.putAll(map);
+        Log.d(TAG, "setDownloadingTaskMap notifyDataSetChanged");
+        notifyDataSetChanged();
     }
 
 }
