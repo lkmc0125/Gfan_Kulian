@@ -786,6 +786,10 @@ public class Session extends Observable {
         pauseAllDownloads();
         mSessionManager.writePreferenceQuickly();
         mDownloadingCursor.unregisterContentObserver(mCursorObserver);
+        mHandler.removeMessages(CURSOR_CREATED);
+        mHandler.removeMessages(CURSOR_CHANGED);
+        mHandler.removeMessages(CURSOR_UPDATE);
+        mHandler.removeMessages(UPDATE_LIST);
         mDownloadingCursor.close();
         mInstance = null;
     }
