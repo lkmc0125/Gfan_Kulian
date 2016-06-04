@@ -120,6 +120,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/CoinTipsDialog"
             android:windowSoftInputMode="adjustResize" />
+        
+        <activity
+            android:name=".ui.guide.GuideActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" 
+            android:exported="true">
+        </activity>
 
         <!-- webView -->
         <activity
