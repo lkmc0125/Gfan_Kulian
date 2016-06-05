@@ -520,5 +520,24 @@
     <string name="payment_choice_pay_button">确认支付</string>
     <!-- 有米详情页面 -->
     <string name="more_task_button_info">更多任务</string>
+    <!-- 帮助页面 -->
+    <string name="help_first_page_sign_info">每日签到</string>
+    <string name="help_first_page_content_info01">您可以在应用的底部导航"连接"和"个人中心"页面找到每日签到的入口;</string>
+    <string name="help_first_page_content_info02">点击"每日签到",即可完成每日签到可以轻松获得金币</string>
+    <string name="help_second_page_title_info">金币的使用</string>
+    <string name="help_second_page_content_info01">金币可以用来兑换上网时间，您可以在应用底部导航的"连接"和"个人中心"页面找到金币兑换入口;</string>
+    <string name="help_second_page_content_info02">点击"兑换时间",消耗金币即可获得上网时间;</string>
+    <string name="help_second_page_content_info03">所以想要获得充足的上网时间，就要加油赚取金币了哦！</string>
+    <string name="help_third_page_title_info">金币的赚取</string>
+    <string name="help_third_page_content_info01">进入应用底部导航"赚金币"页面;</string>
+    <string name="help_third_page_content_info02">您可以通过完成推荐任务或下载应用两种方式赚取金币:</string>
+    <string name="help_fouth_page_title_info">购买上网时间</string>
+    <string name="help_fouth_page_content_info01">除了通过金币兑换上网时间之外，您还可以通过"连接"和"个人中心"页面找到直接购买上网时间的入口;</string>
+    <string name="help_fouth_page_content_info02">点击"购买时间",即可进入购买时间的专属页面;</string>
+    <string name="help_fouth_page_content_info03">支持以下三种购买时间的方式:</string>
+    <string name="help_fifth_page_title_info">问题与反馈</string>
+    <string name="help_fifth_page_content_info01">在底部导航"个人中心"页面中可以查看"常见问题",它将帮助您更好的使用我们的应用;</string>
+    <string name="help_fifth_page_content_info02">您也可以通过"个人中心"页面的"意见反馈"向我们提出使用当中的问题，帮助我们更好优化产品体验。</string>
+    <string name="help_fifth_page_content_info03">感谢您的阅读。</string>
 
 </resources>
