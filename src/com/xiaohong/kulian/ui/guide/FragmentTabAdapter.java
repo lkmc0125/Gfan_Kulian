@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.xiaohong.kulian.R;
+
 public class FragmentTabAdapter extends FragmentPagerAdapter {
 
     private List<SinglePage> mGuideContent;
@@ -64,12 +66,22 @@ public class FragmentTabAdapter extends FragmentPagerAdapter {
             if(mLayoutResId != 0) {
                 //inlfate view from xml
                 View v = inflater.inflate(mLayoutResId, null);
+                ImageView imageView_back=(ImageView)v.findViewById(R.id.ImageView_Cancel);
+                imageView_back.setOnClickListener(new View.OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        getActivity().finish();
+                    }
+                });
                 return v;
             }
             ImageView iv = new ImageView(getActivity());
             if (mBg != null) {
                 iv.setBackground(mBg);
             }
+            
             return iv;
         }
 

@@ -70,6 +70,7 @@ public class ListViewAdapter_TaskDesc_footview extends BaseAdapter{
                 for (int i = 0; i < DEFAULT_SHOW_COUNT; i++) {
                     mShowObjects.add(mAllObjects.get(i));
                 }
+                btn_loadmore.setText((mShowObjects.size()+1)+"     "+"更多任务");
             }
         }
         notifyDataSetChanged();
@@ -84,13 +85,14 @@ public class ListViewAdapter_TaskDesc_footview extends BaseAdapter{
         if( shrink ) {
             shrink = false;
             mShowObjects.addAll(mAllObjects);
-            btn_loadmore.setText("收起任务");
+//            btn_loadmore.setText("收起任务");
+            btn_loadmore.setText((mShowObjects.size()+1)+"     "+"收起任务");
         } else {
             shrink = true;
             for (int i = 0; i < DEFAULT_SHOW_COUNT; i++) {
                 mShowObjects.add(mAllObjects.get(i));
             }
-            btn_loadmore.setText("更多任务");
+            btn_loadmore.setText((mShowObjects.size()+1)+"   "+"更多任务");
         }
         notifyDataSetChanged();
         setListViewHeightBasedOnChildren(mListView);

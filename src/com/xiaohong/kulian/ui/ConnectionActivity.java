@@ -62,6 +62,7 @@ import com.xiaohong.kulian.common.widget.AutoScrollTextViewH;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.CustomDialog;
 import com.xiaohong.kulian.common.widget.RoundImageView;
+import com.xiaohong.kulian.ui.guide.GuideActivity;
 public class ConnectionActivity extends BaseActivity implements
         ApiRequestListener, OnClickListener, AppSummaryDataInterface,
         OnLoginListener, OnCoinUpdatedListener {
@@ -108,6 +109,10 @@ public class ConnectionActivity extends BaseActivity implements
     private TaskBean taskBean;
 
     private UpdateLeftTimeThread mCountDownThread;
+    /**
+     * 帮助点击按钮
+     */
+    private ImageView imageView_help;
     
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -192,6 +197,11 @@ public class ConnectionActivity extends BaseActivity implements
 
         RelativeLayout humorLayout = (RelativeLayout) findViewById(R.id.connection_recommend_humor_layout);
         humorLayout.setOnClickListener(this);
+        /**
+         * 帮助按钮
+         */
+        imageView_help=(ImageView)findViewById(R.id.help_info_icon);
+        imageView_help.setOnClickListener(this);
     }
 
     // 检查外网是否通
@@ -583,7 +593,7 @@ public class ConnectionActivity extends BaseActivity implements
                 authentication();
                 break;
             case HONGWIFI_AUTHED:
-                break;
+                break;           
             default:
                 break;
             }
@@ -678,6 +688,12 @@ public class ConnectionActivity extends BaseActivity implements
                 MessageIntent.putExtra("extra.title", Message);
                 startActivity(MessageIntent);
             }
+            break;
+        //帮助页面点击事件
+        case R.id.help_info_icon:
+            Intent intent=new Intent(ConnectionActivity.this, 
+                    GuideActivity.class);
+            startActivity(intent);
             break;
         default:
             break;

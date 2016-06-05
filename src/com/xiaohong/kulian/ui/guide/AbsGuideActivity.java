@@ -1,8 +1,12 @@
 package com.xiaohong.kulian.ui.guide;
 
 import java.util.List;
+
+import com.xiaohong.kulian.R;
+
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -44,11 +48,11 @@ public abstract class AbsGuideActivity extends FragmentActivity {
         FragmentPagerAdapter adapter = new FragmentTabAdapter(this, guideContent);
         pager.setAdapter(adapter);
 
-        GuideView guideView = new GuideView(this, guideContent, drawDot(), dotDefault(), dotSelected());
-        pager.setOnPageChangeListener(guideView);
-
-        container.addView(guideView, new LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT));
+//        GuideView guideView = new GuideView(this, guideContent, drawDot(), dotDefault(), dotSelected());
+//        pager.setOnPageChangeListener(guideView);
+//
+//        container.addView(guideView, new LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+//                FrameLayout.LayoutParams.MATCH_PARENT));
     }
 
     abstract public List<SinglePage> buildGuideContent();

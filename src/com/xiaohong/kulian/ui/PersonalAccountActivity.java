@@ -33,6 +33,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 import com.xiaohong.kulian.common.widget.CustomDialog;
+import com.xiaohong.kulian.ui.guide.GuideActivity;
 
 /**
  * this view is displaying for login success to personal center
@@ -72,7 +74,11 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
     private ImageView mSignIv;
     private TextView mSignOrLeftTimeTv;
     private LeftTimeListener mLeftTimeListener = new LeftTimeListener();
-
+    /**
+     * 帮助点击按钮
+     */
+    private ImageView imageView_help;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +147,11 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
         mSignOrLeftTimeTv = (TextView) findViewById(R.id.sign_in_text);
         
         onLoginStatusChanged();
+        /**
+         * 帮助按钮
+         */
+        imageView_help=(ImageView)findViewById(R.id.help_info_icon);
+        imageView_help.setOnClickListener(this);
     }
 
     @Override
@@ -309,6 +320,12 @@ public class PersonalAccountActivity extends BaseActivity implements android.vie
             break;
         case R.id.buy_layout:
             Utils.gotoBuyingEntryPage(PersonalAccountActivity.this);
+            break;
+          //帮助页面点击事件
+        case R.id.help_info_icon:
+            Intent intent=new Intent(PersonalAccountActivity.this, 
+                    GuideActivity.class);
+            startActivity(intent);
             break;
         default:
             break;
