@@ -124,7 +124,7 @@
         <activity
             android:name=".ui.guide.GuideActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.NoTitleBar"
+            android:theme="@style/CoinTipsDialog"
             android:screenOrientation="portrait" 
             android:exported="true">
         </activity>
