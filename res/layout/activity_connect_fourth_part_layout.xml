@@ -44,7 +44,9 @@
             android:layout_toLeftOf="@+id/connection_recommend_task_img"
             android:text="@string/connection_recommend_all_task"
             android:textColor="#939393"
-            android:textSize="13sp" />
+            android:textSize="13sp" 
+            android:visibility="gone"           
+            />
 
     </RelativeLayout>
 
