@@ -781,6 +781,7 @@ public class HomeTabActivity extends BaseTabActivity implements
         Utils.clearPreloadedYoumiData();
         Utils.clearPreloadedTaskData();
         finish();
+        System.exit(0);
     }
 
     /**
