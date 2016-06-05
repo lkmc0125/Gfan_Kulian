@@ -20,8 +20,7 @@ public class GuideActivity extends AbsGuideActivity {
         List<SinglePage> guideContent = new ArrayList<SinglePage>();
 
         SinglePage page01 = new SinglePage();
-        page01.mLayoutResId = R.layout.activity_help_module_first_layout;
-        page01.mBackground=getResources().getDrawable(R.drawable.fragment_bg);
+        page01.mLayoutResId = R.layout.activity_help_module_first_layout;       
         guideContent.add(page01);
 
         SinglePage page02 = new SinglePage();
@@ -46,11 +45,13 @@ public class GuideActivity extends AbsGuideActivity {
 
     @Override
     public Bitmap dotDefault() {
+//        return BitmapFactory.decodeResource(getResources(), R.drawable.help_shape_circle_dot_white);
         return BitmapFactory.decodeResource(getResources(), R.drawable.ic_dot_default);
     }
 
     @Override
     public Bitmap dotSelected() {
+//        return BitmapFactory.decodeResource(getResources(), R.drawable.help_shape_circle_dot_blue);
         return BitmapFactory.decodeResource(getResources(), R.drawable.ic_dot_selected);
     }
 

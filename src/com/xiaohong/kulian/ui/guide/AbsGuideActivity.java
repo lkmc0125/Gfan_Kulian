@@ -2,8 +2,6 @@ package com.xiaohong.kulian.ui.guide;
 
 import java.util.List;
 
-import com.xiaohong.kulian.R;
-
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -11,9 +9,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import com.xiaohong.kulian.R;
 
 /**
  * The user must extends this class to implements guide requirement
@@ -36,7 +40,8 @@ public abstract class AbsGuideActivity extends FragmentActivity {
         }
 
         // prepare views
-        FrameLayout container = new FrameLayout(this);
+//        FrameLayout container = new FrameLayout(this);
+        RelativeLayout container = new RelativeLayout(this);
         ViewPager pager = new ViewPager(this);
         pager.setId(getPagerId());
 
@@ -44,15 +49,32 @@ public abstract class AbsGuideActivity extends FragmentActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
         setContentView(container);
+        container.setBackgroundColor(Color.parseColor("#00ffffff"));
+        container.setAlpha(0.9f);
 
         FragmentPagerAdapter adapter = new FragmentTabAdapter(this, guideContent);
         pager.setAdapter(adapter);
 
-//        GuideView guideView = new GuideView(this, guideContent, drawDot(), dotDefault(), dotSelected());
-//        pager.setOnPageChangeListener(guideView);
-//
-//        container.addView(guideView, new LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-//                FrameLayout.LayoutParams.MATCH_PARENT));
+        GuideView guideView = new GuideView(this, guideContent, drawDot(), dotDefault(), dotSelected());
+        pager.setOnPageChangeListener(guideView);
+        container.addView(guideView, new LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT));
+        ImageView imageView=new ImageView(this);
+        imageView.setBackgroundResource(R.drawable.closeicon);
+        RelativeLayout.LayoutParams params=
+                new RelativeLayout.LayoutParams(120,120);
+        params.rightMargin=48;
+        params.topMargin=45;
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        container.addView(imageView, params);
+        imageView.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                AbsGuideActivity.this.finish();
+                
+            }
+        });
     }
 
     abstract public List<SinglePage> buildGuideContent();
