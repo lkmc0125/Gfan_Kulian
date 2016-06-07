@@ -219,9 +219,8 @@ public class TaskListActivity extends LazyloadListActivity implements
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
-        
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         ArrayList<Object> list = mAdapter.getData();
         if (list != null) {
             Object obj = list.get(position);

@@ -30,6 +30,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -395,8 +396,8 @@ public class ConnectionActivity extends BaseActivity implements
     }
 
     private void checkLogin() {
-        if (mSession.isLogin() == false && mSession.getUserName().length() > 0
-                && mSession.getPassword().length() > 0) {
+        if (mSession.isLogin() == false && TextUtils.isEmpty(mSession.getUserName()) == false
+                && TextUtils.isEmpty(mSession.getPassword()) == false) {
             mSession.login();
         } else if (mSession.isLogin() == false) {
             Intent intent = new Intent(getApplicationContext(),
@@ -561,8 +562,7 @@ public class ConnectionActivity extends BaseActivity implements
             if (isHongWifi(scanResult.SSID)) {
                 String encryptType = mWifiAdmin
                         .wifiEncryptType(scanResult.capabilities);
-                if (encryptType.length() > 0) { // only connect to no password
-                                                // wifi
+                if (encryptType.length() > 0) { // only connect to no password wifi
                     continue;
                 }
                 return scanResult;
@@ -703,16 +703,6 @@ public class ConnectionActivity extends BaseActivity implements
     }
 
     private boolean autoLogin() {
-//        if (mSession.getUserName() != null
-//                && mSession.getUserName().length() > 0
-//                && mSession.getPassword() != null
-//                && mSession.getPassword().length() > 0) {
-//            MarketAPI.login(getApplicationContext(), this,
-//                    mSession.getUserName(), mSession.getPassword());
-//            return true;
-//        } else {
-//            return false;
-//        }
         return mSession.login();
     }
 

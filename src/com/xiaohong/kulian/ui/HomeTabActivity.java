@@ -217,9 +217,7 @@ public class HomeTabActivity extends BaseTabActivity implements
         public void onReceive(Context context, Intent intent) {
 
             String action = intent.getAction();
-            if (action.equals(Constants.BROADCAST_CATEGORY_TASK)) {
-                mTabHost.setCurrentTab(1);
-            } else if (action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
+            if (action.equals(Constants.BROADCAST_CATEGORY_TASK) || action.equals(Constants.BROADCAST_CATEGORY_RCMD)) {
                 mTabHost.setCurrentTab(1);
             } 
         }

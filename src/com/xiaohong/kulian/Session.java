@@ -1330,8 +1330,7 @@ public class Session extends Observable {
     }
 
     public boolean login() {
-        if (getUserName() != null && getUserName().length() > 0 && getPassword() != null
-                && getPassword().length() > 0) {
+        if (TextUtils.isEmpty(getUserName()) == false && TextUtils.isEmpty(getPassword()) == false) {
             MarketAPI.login(mContext, mReportApiRequestListener, getUserName(), getPassword());
             return true;
         } else {

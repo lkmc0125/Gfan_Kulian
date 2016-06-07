@@ -1,17 +1,29 @@
 package com.xiaohong.kulian.ui;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+
+import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.bean.TaskBean;
 import com.xiaohong.kulian.common.util.TopBar;
+import com.xiaohong.kulian.common.util.Utils;
 import com.xiaohong.kulian.common.widget.BaseActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.DownloadListener;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -55,12 +67,37 @@ public class WebviewActivity extends BaseActivity {
         webSettings.setSupportZoom(false);
         webView.setDownloadListener(new MyWebViewDownLoadListener()); 
         webView.setWebViewClient(new WebViewClient() {
-                // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
-                    return true;
+            // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                "kuliangzhtask://taskid=1"
+                if (url.startsWith("kuliangzhtask://")) {
+                    String taskid = url.replaceAll("kuliangzhtask://taskid=","");
+                    if (TextUtils.isEmpty(taskid) == false) {
+                        ArrayList<TaskBean> taskList = Utils.getPreloadedGzhTaskList();
+                        if (taskList != null) {
+                            for (int position = 0; position < taskList.size(); position++) {
+                                Object obj = taskList.get(position);
+                                TaskBean item = (TaskBean)obj;
+                                int a = item.getId();
+                                int b = Integer.parseInt(taskid);
+                                if (item.getId() == Integer.parseInt(taskid)) {
+                                    Intent intent = new Intent(WebviewActivity.this, GzhTaskDetailActivity.class);
+                                    intent.putExtra(Constants.EXTRA_TASK_BEAN, item);
+                                    startActivity(intent);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    Intent growIntent = new Intent();
+                    growIntent.setAction(Constants.BROADCAST_CATEGORY_TASK);
+                    sendBroadcast(growIntent);
+                } else {
+                    view.loadUrl(url);    
                 }
-                });
+                return true;
+            }
+        });
         webView.loadUrl(url);
     }
 
