@@ -70,6 +70,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.TabWidget;
 
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.bean.LoginResultBean;
@@ -281,6 +282,19 @@ public class Session extends Observable {
     
     private PersonalCenterStatus mPersonalCenterStatus = PersonalCenterStatus.SHOW_SIGN_IN;
     
+    /**
+     * 连接、赚金币、个人中心的tab高度
+     */
+    private TabWidget mMainPageTabWidget = null;
+
+
+    public TabWidget getMainPageTabWidget() {
+        return mMainPageTabWidget;
+    }
+
+    public void setMainPageTabWidget(TabWidget mainTabWidget) {
+        mMainPageTabWidget = mainTabWidget;
+    }
 
     public PersonalCenterStatus getPersonalCenterStatus() {
         return mPersonalCenterStatus;

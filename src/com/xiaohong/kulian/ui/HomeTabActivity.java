@@ -352,6 +352,9 @@ public class HomeTabActivity extends BaseTabActivity implements
                 });
         mTabHost.setOnTabChangedListener(this);
         updateTab(mTabHost);
+        //int tabHeight = mTabHost.getTabWidget().getHeight();
+        //Log.d(TAG, "tabHeight = " + tabHeight);
+        mSession.setMainPageTabWidget(mTabHost.getTabWidget());
     }
 
     @Override
