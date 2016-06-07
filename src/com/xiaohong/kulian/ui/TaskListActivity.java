@@ -227,9 +227,9 @@ public class TaskListActivity extends LazyloadListActivity implements
             if (obj instanceof TaskBean) {
                 TaskBean item = (TaskBean)obj; 
                 String clickUrl = item.getClick_url();
-                if(clickUrl != null && !clickUrl.equals("")) {
+                if (clickUrl != null && !clickUrl.equals("")) {
                     openWebView(clickUrl, item.getName());
-                }else {
+                } else {
                     if (!mSession.isLogin()) {
                         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                         startActivity(intent);

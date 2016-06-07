@@ -23,9 +23,9 @@ public class GuideActivity extends AbsGuideActivity {
         page01.mLayoutResId = R.layout.activity_help_module_first_layout;       
         guideContent.add(page01);
 
-        SinglePage page02 = new SinglePage();
-        page02.mLayoutResId = R.layout.activity_help_module_second_layout;
-        guideContent.add(page02);
+//        SinglePage page02 = new SinglePage();
+//        page02.mLayoutResId = R.layout.activity_help_module_second_layout;
+//        guideContent.add(page02);
 
         SinglePage page03 = new SinglePage();
         page03.mLayoutResId = R.layout.activity_help_module_third_layout;

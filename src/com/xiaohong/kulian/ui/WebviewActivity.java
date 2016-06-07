@@ -78,8 +78,6 @@ public class WebviewActivity extends BaseActivity {
                             for (int position = 0; position < taskList.size(); position++) {
                                 Object obj = taskList.get(position);
                                 TaskBean item = (TaskBean)obj;
-                                int a = item.getId();
-                                int b = Integer.parseInt(taskid);
                                 if (item.getId() == Integer.parseInt(taskid)) {
                                     Intent intent = new Intent(WebviewActivity.this, GzhTaskDetailActivity.class);
                                     intent.putExtra(Constants.EXTRA_TASK_BEAN, item);
@@ -89,9 +87,6 @@ public class WebviewActivity extends BaseActivity {
                             }
                         }
                     }
-                    Intent growIntent = new Intent();
-                    growIntent.setAction(Constants.BROADCAST_CATEGORY_TASK);
-                    sendBroadcast(growIntent);
                 } else {
                     view.loadUrl(url);    
                 }

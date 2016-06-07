@@ -23,7 +23,7 @@
         	android:layout_height="wrap_content"
         	android:textSize="18sp"
         	android:text="@string/help_third_page_title_info"
-        	android:drawableLeft="@drawable/titleno3"
+        	android:drawableLeft="@drawable/titleno2"
         	android:drawablePadding="5dip"
         	android:gravity="center_vertical"
 		    />

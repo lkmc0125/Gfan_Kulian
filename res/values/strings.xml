@@ -529,9 +529,9 @@
     <string name="help_third_page_content_info01">进入应用底部导航"赚金币"页面;</string>
     <string name="help_third_page_content_info02">您可以通过完成推荐任务或下载应用两种方式赚取金币:</string>
     <string name="help_fouth_page_title_info">购买上网时间</string>
-    <string name="help_fouth_page_content_info01">除了通过金币兑换上网时间之外，您还可以通过"连接"和"个人中心"页面找到直接购买上网时间的入口;</string>
+    <string name="help_fouth_page_content_info01">您可以通过"连接"和"个人中心"页面找到直接购买上网时间的入口;</string>
     <string name="help_fouth_page_content_info02">点击"购买时间",即可进入购买时间的专属页面;</string>
-    <string name="help_fouth_page_content_info03">支持以下三种购买时间的方式:</string>
+    <string name="help_fouth_page_content_info03">支持以下购买时间的方式:</string>
     <string name="help_fifth_page_title_info">问题与反馈</string>
     <string name="help_fifth_page_content_info01">在底部导航"个人中心"页面中可以查看"常见问题",它将帮助您更好的使用我们的应用;</string>
     <string name="help_fifth_page_content_info02">您也可以通过"个人中心"页面的"意见反馈"向我们提出使用当中的问题，帮助我们更好优化产品体验。</string>
