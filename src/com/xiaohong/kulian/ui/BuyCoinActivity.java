@@ -2,51 +2,29 @@ package com.xiaohong.kulian.ui;
 
 import java.text.DecimalFormat;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.alipay.sdk.app.PayTask;
-import com.google.gson.Gson;
-import com.tencent.mm.sdk.constants.Build;
-import com.tencent.mm.sdk.modelpay.PayReq;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
 import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.adapter.BuyItemGridViewAdapter;
 import com.xiaohong.kulian.bean.GoodsListBean;
-import com.xiaohong.kulian.bean.WeChatGoodsBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.MarketAPI;
-import com.xiaohong.kulian.common.util.DialogUtils;
-import com.xiaohong.kulian.common.util.PayResult;
 import com.xiaohong.kulian.common.util.TopBar;
-import com.xiaohong.kulian.common.util.Utils;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 购买金币的页面
@@ -57,8 +35,6 @@ import android.widget.Toast;
 public class BuyCoinActivity extends Activity implements OnClickListener, ApiRequestListener,
     OnItemClickListener, OnFocusChangeListener {
     private static final String TAG = "BuyCoinActivity";
-
-    private IWXAPI mWxApi;
 
     private TextView mWechatPayTv;
 
@@ -108,13 +84,6 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         mWechatPayTv.setVisibility(View.INVISIBLE);
         mWechatPayTv.setEnabled(false);
         mWechatPayTv.setOnClickListener(this);
-
-        mWxApi = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
-        mWxApi.registerApp(Constants.APP_ID);
-        mIsPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
-        if (!mIsPaySupported) {
-            mWechatPayTv.setText("仅支持微信支付");
-        }
 
         mContentScrollView = (ScrollView) findViewById(R.id.content_scroll_view);
         mRetryTv = (TextView) findViewById(R.id.no_data);
@@ -193,11 +162,10 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
 
                     mAdapter = new BuyItemGridViewAdapter(getApplicationContext(), mGoodsList.getGoodsList());
                     mGridView.setAdapter(mAdapter);
-                    if (mIsPaySupported) {
-                        mWechatPayTv.setEnabled(true);
-                    }
                     mGridView.setOnItemClickListener(BuyCoinActivity.this);
+                    mWechatPayTv.setEnabled(true);
                     mWechatPayTv.setVisibility(View.VISIBLE);
+
                 } else {
                     mRetryTv.setVisibility(View.VISIBLE);
                     mContentScrollView.setVisibility(View.GONE);

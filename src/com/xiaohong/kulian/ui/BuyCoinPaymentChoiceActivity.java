@@ -125,7 +125,7 @@ OnItemClickListener, OnFocusChangeListener {
                 }
             }
         });
-
+        checkBox_alipay.setChecked(true);
         mWechatPayTv = (TextView) findViewById(R.id.payment_choice_pay_button);
 //        mWechatPayTv.setVisibility(View.INVISIBLE);
 //        mWechatPayTv.setEnabled(false);
