@@ -68,5 +68,4 @@
     <!-- 倒计时时间值的颜色：3天2时9分 指3,2,9的颜色 -->
     <color name="left_time_txt_color">#367ed6</color> <!-- todo tmp -->
     
-    
 </resources>

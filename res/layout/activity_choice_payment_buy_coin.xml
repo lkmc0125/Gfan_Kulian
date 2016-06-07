@@ -199,51 +199,8 @@
                 android:background="@drawable/edit_text_bg"
                 android:orientation="vertical"
                 android:visibility="visible" >
-		    	<RelativeLayout 		    	    
-		    	    android:layout_width="fill_parent"
-		    	    android:layout_height="48dip"
-		    	    android:background="@null"
-		    	    android:orientation="horizontal"
-		    	    >
-						 <ImageView
-				   	        android:contentDescription="@null"
-							android:id="@+id/payment_choice_wetchat_pay_img"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_alignParentLeft="true"
-							android:layout_centerInParent="true"
-							android:layout_marginLeft="15dip"
-							android:background="@drawable/wechaticon"
-							 />
-
-			    	    <TextView 
-			    	        android:layout_width="wrap_content"
-			    	        android:layout_height="fill_parent"
-			    	        android:gravity="left|center"
-			    	        android:text="@string/payment_choice_wetchat_pay"
-			    	        android:textSize="14sp"
-			    	        android:layout_marginLeft="5dip"
-			    	        android:textColor="#595959"
-			    	        android:layout_toRightOf="@+id/payment_choice_wetchat_pay_img"
-			    	        /> 
-		    	        <CheckBox 
-			    	        android:layout_width="15dip"
-			    	        android:layout_height="15dip"
-			    	        android:id="@+id/payment_choice_wetchat_pay_checkbox"
-			    	        android:button="@null"
-			    	        android:background="@drawable/pay_yue_checkbox_bg"
-			    	        android:layout_alignParentRight="true"
-			    	        android:layout_centerInParent="true"
-			    	        android:layout_marginRight="15dip"
-			    	        android:checked="false"
-			    	        />
-		    	        
-		    	</RelativeLayout>
-		    	<View
-	                android:layout_width="fill_parent"
-	                android:layout_height="1dp"
-	                android:background="#E8E8E8" />
-		    	<RelativeLayout 		    	    
+		    	<RelativeLayout 
+		    	    android:id="@+id/payment_choice_alipay_pay_layout"			    	    
 		    	    android:layout_width="fill_parent"
 		    	    android:layout_height="48dip"
 		    	    android:background="@null"
@@ -274,6 +231,52 @@
 			    	        android:layout_width="15dip"
 			    	        android:layout_height="15dip"
 			    	        android:id="@+id/payment_choice_alipay_pay_checkbox"
+			    	        android:button="@null"
+			    	        android:background="@drawable/pay_yue_checkbox_bg"
+			    	        android:layout_alignParentRight="true"
+			    	        android:layout_centerInParent="true"
+			    	        android:layout_marginRight="15dip"
+			    	        android:checked="true"
+			    	        />
+		    	        
+		    	</RelativeLayout>
+		    	
+		    	<View
+	                android:layout_width="fill_parent"
+	                android:layout_height="1dp"
+	                android:background="#E8E8E8" />
+		    	<RelativeLayout 	
+		    	    android:id="@+id/payment_choice_wetchat_pay_layout"	    	    
+		    	    android:layout_width="fill_parent"
+		    	    android:layout_height="48dip"
+		    	    android:background="@null"
+		    	    android:orientation="horizontal"
+		    	    >
+						 <ImageView
+				   	        android:contentDescription="@null"
+							android:id="@+id/payment_choice_wetchat_pay_img"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignParentLeft="true"
+							android:layout_centerInParent="true"
+							android:layout_marginLeft="15dip"
+							android:background="@drawable/wechaticon"
+							 />
+
+			    	    <TextView 
+			    	        android:layout_width="wrap_content"
+			    	        android:layout_height="fill_parent"
+			    	        android:gravity="left|center"
+			    	        android:text="@string/payment_choice_wetchat_pay"
+			    	        android:textSize="14sp"
+			    	        android:layout_marginLeft="5dip"
+			    	        android:textColor="#595959"
+			    	        android:layout_toRightOf="@+id/payment_choice_wetchat_pay_img"
+			    	        /> 
+		    	        <CheckBox 
+			    	        android:layout_width="15dip"
+			    	        android:layout_height="15dip"
+			    	        android:id="@+id/payment_choice_wetchat_pay_checkbox"
 			    	        android:button="@null"
 			    	        android:background="@drawable/pay_yue_checkbox_bg"
 			    	        android:layout_alignParentRight="true"

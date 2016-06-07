@@ -47,6 +47,7 @@ OnItemClickListener, OnFocusChangeListener {
     private String TopBarTextValue="支付确认";
     private TextView textView_pay_time,textView_pay_money,textView_pay_account,textView_pay_remark;
     private CheckBox checkBox_wechat,checkBox_alipay;;
+    private RelativeLayout relativeLayout_wechat,relativeLayout_alipay;
     private TextView mWechatPayTv;
     private IWXAPI mWxApi;
     private boolean mIsPaySupported;
@@ -101,6 +102,12 @@ OnItemClickListener, OnFocusChangeListener {
             }
             textView_pay_remark.setText(pay_remark);
         }
+        relativeLayout_wechat=(RelativeLayout)this.findViewById
+                (R.id.payment_choice_wetchat_pay_layout);
+        relativeLayout_alipay=(RelativeLayout)this.findViewById
+                (R.id.payment_choice_alipay_pay_layout);
+        relativeLayout_wechat.setOnClickListener(this);
+        relativeLayout_alipay.setOnClickListener(this);
         checkBox_wechat=(CheckBox)this.findViewById(R.id.payment_choice_wetchat_pay_checkbox);
         checkBox_alipay=(CheckBox)this.findViewById(R.id.payment_choice_alipay_pay_checkbox);
         checkBox_wechat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -195,6 +202,11 @@ OnItemClickListener, OnFocusChangeListener {
                 doAliPay();
             }
             break;
+        case R.id.payment_choice_wetchat_pay_layout:
+            checkBox_wechat.setChecked(true);
+            break;
+        case R.id.payment_choice_alipay_pay_layout:
+            checkBox_alipay.setChecked(true);
         case R.id.no_data:
 //            getGoodsList();
             break;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33000000"
+    android:id="@+id/help_module_main_relativelayout"
+     >
+    <ImageView 
+        android:contentDescription="@null"
+        android:id="@+id/ImageView_Cancel_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dip"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dip"
+        android:src="@drawable/closeicon"
+        android:onClick="myonclick"
+        />
+    
+
+</RelativeLayout>
