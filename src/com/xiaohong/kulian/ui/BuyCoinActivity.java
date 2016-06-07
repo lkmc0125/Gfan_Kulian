@@ -164,13 +164,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
             bundle.putSerializable("GoodsBean", mAdapter.getSelectedGoodsBean());
             intent.putExtras(bundle);
             startActivity(intent);
-//            mSession.getUserName() + "&type=1&goods_id=" + mAdapter.getSelectedGoodsId();
-//            if (isBuyForOther == true && checkUserName() == true) {
-//                mOtherAccount = userNameEditText.getText().toString();
-//                doWechatPay();
-//            } else if (isBuyForOther == false) {
-//                doWechatPay();
-//            }
+
             break;
         case R.id.no_data:
             getGoodsList();
@@ -187,90 +181,11 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         getGoodsList();
     }
 
-    /**
-     * Wechat pay logic
-     */
-    private void doWechatPay() {
-        final String url = "http://115.159.76.147:8390/cb/getprepayid?phone_number="
-                + mSession.getUserName() + "&type=1&goods_id=" + mAdapter.getSelectedGoodsId();
-        Log.d(TAG, "doWechatPay url = " + url);
-        final String goodsName = mAdapter.getSelectedGoodsName();
-        final int goodsId = mAdapter.getSelectedGoodsId();
-        final int goodsPrice = mAdapter.getSelectedGoodsprice();
-        final int goodsGift = mAdapter.getSelectedGoodsGift();
-        Toast.makeText(getApplicationContext(), "请稍候...", Toast.LENGTH_SHORT)
-                .show();
-        new AsyncTask<Void, Void, Void>() {
-
-            protected void onPreExecute() {
-                mWechatPayTv.setEnabled(false);
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                String ret = Utils.httpGet(url);
-                if (ret != null) {
-                    Log.e(TAG, "get server pay params:" + ret);
-                    JSONObject json = null;
-                    try {
-                        json = new JSONObject(ret);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "create json object fail:" + e.getMessage());
-                        e.printStackTrace();
-                    }
-                    try {
-                        if (null != json && json.has("ret_code")
-                                && json.getInt("ret_code") == 0) {
-                            PayReq req = new PayReq();
-
-                            req.appId = json.getString("appid");
-                            req.partnerId = json.getString("partnerId");
-                            req.prepayId = json.getString("prepayId");
-                            req.nonceStr = json.getString("nonceStr");
-                            req.timeStamp = json.getString("timeStamp");
-                            req.packageValue = json.getString("packageValue");
-                            req.sign = json.getString("sign");
-                            WeChatGoodsBean goodsBean = new WeChatGoodsBean();
-                            goodsBean.setGoods_name(goodsName);
-                            goodsBean.setGoods_id(goodsId);
-                            goodsBean.setOut_trade_no(
-                                    json.getString("out_trade_no"));
-                            goodsBean.setGoods_gift(goodsGift);
-                            goodsBean.setGoods_price(goodsPrice);
-                            if(mOtherAccount != null) {
-                                goodsBean.setOther_account(mOtherAccount);
-                            }else {
-                                goodsBean.setOther_account("");
-                            }
-                            Gson gson = new Gson();
-                            req.extData = gson.toJson(goodsBean);
-                            mWxApi.sendReq(req);
-                        } else {
-                            DialogUtils.showMessage(getApplicationContext(),
-                                    "获取支付信息失败", json.getString("retmsg"));
-                        }
-                    } catch (JSONException e) {
-                        Log.e(TAG,
-                                "when do pay Jsonexception:" + e.getMessage());
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    Log.d(TAG, "connect server failed");
-                }
-                return null;
-            }
-
-            protected void onPostExecute(Void result) {
-                mWechatPayTv.setEnabled(true);
-            };
-        }.execute();
-    }
-
     @Override
     public void onSuccess(int method, Object obj) {
         switch (method) {
             case MarketAPI.ACTION_GET_GOODS_LIST:
+            {
                 mGoodsList = (GoodsListBean) obj;
                 if (mGoodsList.getGoodsList() != null) {
                     mRetryTv.setVisibility(View.GONE);
@@ -288,15 +203,10 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
                     mContentScrollView.setVisibility(View.GONE);
                 }
                 break;
-            case 10000:
-                //TODO　change 10000 to a constants
-                //get payInfo from server
-                String payInfo = ""; 
-                doAliPay(payInfo);
-                break;
+            }
             default:
                 break;
-            }
+        }
     }
 
     @Override
@@ -355,6 +265,7 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
     private CharSequence getDisplayText(int resId) {
         return Html.fromHtml("<font color='#2C78D4'>"+getString(resId)+"</font>");
     }
+    
     private String getprice(int price){
         String str="";
         if (price % 100 == 0) {
@@ -365,62 +276,4 @@ public class BuyCoinActivity extends Activity implements OnClickListener, ApiReq
         }
         return str;
     }
-    
-    /**
-     * 当选择支付宝支付后调用此函数
-     */
-    private void onAliPaySelected() {
-        //TODO call api to get order info
-        //and do the other steps when request is successful
-    }
-    /**
-     * 支付宝支付
-     * 
-     */
-    public void doAliPay(final String payInfo) {
-        new AsyncTask<Void, Void, String>() {
-
-            @Override
-            protected String doInBackground(Void... params) {
-                // 构造PayTask 对象
-                PayTask alipay = new PayTask(BuyCoinActivity.this);
-                // 调用支付接口，获取支付结果
-                String result = alipay.pay(payInfo, true);
-                return result;
-            }
-            
-            protected void onPostExecute(String result) {
-                PayResult payResult = new PayResult(result);
-                /**
-                 * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
-                 * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
-                 * docType=1) 建议商户依赖异步通知
-                 */
-                String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-                Log.d(TAG, "resultInfo = " + resultInfo);
-                String resultStatus = payResult.getResultStatus();
-                // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
-                if (TextUtils.equals(resultStatus, "9000")) {
-                    Toast.makeText(BuyCoinActivity.this, 
-                            "支付成功", Toast.LENGTH_SHORT).show();
-                } else {
-                    // 判断resultStatus 为非"9000"则代表可能支付失败
-                    // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
-                    if (TextUtils.equals(resultStatus, "8000")) {
-                        Toast.makeText(BuyCoinActivity.this, 
-                                "支付结果确认中", Toast.LENGTH_SHORT).show();
-
-                    } else {
-                        // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                        Toast.makeText(BuyCoinActivity.this, 
-                                "支付失败", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            }
-            
-        }.execute();
-    }
-    
-   
 }

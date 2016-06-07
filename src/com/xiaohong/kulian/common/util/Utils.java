@@ -81,6 +81,8 @@ import aga.fdf.grd.os.df.DiyOfferWallManager;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -1943,20 +1945,35 @@ public class Utils {
                     boolean isAppRunning = false;
                     String[] activePackages;
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) { //  > Android 5.0
-                        final List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
-                        for (ActivityManager.RunningAppProcessInfo processInfo : processInfos) {
-                            if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                                for (String pkgName : processInfo.pkgList) {
-                                    if (pkgName.equals(packageName)) {
-                                        isAppRunning = true;
-                                        break;
-                                    }
-                                }
-                                if (isAppRunning) {
-                                    break;
-                                }
-                            }
-                        }
+                        isAppRunning = true;
+//                        UsageStatsManager usageStatsManager = (UsageStatsManager)context.getSystemService(Context.USAGE_STATS_SERVICE);
+//                        long ts = System.currentTimeMillis();
+//                        List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, ts - 2000, ts);
+//                        if (queryUsageStats == null || queryUsageStats.isEmpty()) {
+//                            return null;
+//                        }
+//
+//                        UsageStats recentStats = null;
+//                        for (UsageStats usageStats : queryUsageStats) {
+//                            if (recentStats == null || recentStats.getLastTimeUsed() < usageStats.getLastTimeUsed()) {
+//                                recentStats = usageStats;
+//                            }
+//                        }
+                        
+//                        final List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+//                        for (ActivityManager.RunningAppProcessInfo processInfo : processInfos) {
+//                            if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+//                                for (String pkgName : processInfo.pkgList) {
+//                                    if (pkgName.equals(packageName)) {
+//                                        isAppRunning = true;
+//                                        break;
+//                                    }
+//                                }
+//                                if (isAppRunning) {
+//                                    break;
+//                                }
+//                            }
+//                        }
                     } else {
                         final List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(10);
                         for (RunningTaskInfo info : list) {

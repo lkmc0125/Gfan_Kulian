@@ -335,10 +335,12 @@ public class ConnectionActivity extends BaseActivity implements
 
     private boolean checkCoin() {
         if (mSession.isLogin() == false) {
-            Intent intent = new Intent(getApplicationContext(),
-                    RegisterActivity.class);
-            startActivity(intent);
-            return false;
+            if (!autoLogin()) {
+                Intent intent = new Intent(getApplicationContext(),
+                        RegisterActivity.class);
+                startActivity(intent);
+                return false;
+            }
         }
         String url = MarketAPI.API_BASE_URL + "/query_coin?phone_number="
                 + mSession.getUserName();

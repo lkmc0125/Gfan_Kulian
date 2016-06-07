@@ -35,7 +35,7 @@
 	        android:layout_marginTop="15dp"
 	        android:layout_marginLeft="2dp"
 	        android:textAppearance="@style/app_text_style1"
-	        android:text="@string/connection_recommend_task_name"/>
+	        android:text=""/>
 	
 
 	
@@ -51,7 +51,7 @@
 	        android:maxLines="2"
 	        android:ellipsize="end"
 	        android:textAppearance="@style/app_text_style2"
-	        android:text="@string/connection_recommend_task_describtion"/>
+	        android:text=""/>
 	 
 	    <!-- 金币和查看/打开 -->
 	    <LinearLayout
@@ -73,7 +73,7 @@
 	            android:textColor="#ff4c00"
 	            android:gravity="center"
 	            android:layout_gravity="center"
-	            android:text="@string/connection_recommend_task_coin">
+	            android:text="">
 	        </TextView>
 	
 	        <TextView

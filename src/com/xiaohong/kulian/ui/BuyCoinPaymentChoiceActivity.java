@@ -3,6 +3,7 @@ package com.xiaohong.kulian.ui;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.alipay.sdk.app.PayTask;
 import com.google.gson.Gson;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -14,6 +15,7 @@ import com.xiaohong.kulian.bean.GoodsBean;
 import com.xiaohong.kulian.bean.WeChatGoodsBean;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.DialogUtils;
+import com.xiaohong.kulian.common.util.PayResult;
 import com.xiaohong.kulian.common.util.TopBar;
 import com.xiaohong.kulian.common.util.Utils;
 
@@ -21,6 +23,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,7 +50,6 @@ OnItemClickListener, OnFocusChangeListener {
     private TextView mWechatPayTv;
     private IWXAPI mWxApi;
     private boolean mIsPaySupported;
-    private ScrollView mContentScrollView;
     private TextView mRetryTv;
     private String pay_time="",pay_money="",pay_account="",pay_remark="";
     private GoodsBean goodsBean;
@@ -103,41 +105,39 @@ OnItemClickListener, OnFocusChangeListener {
         checkBox_alipay=(CheckBox)this.findViewById(R.id.payment_choice_alipay_pay_checkbox);
         checkBox_wechat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked) {
-                        checkBox_alipay.setChecked(false);
-                        if (mIsPaySupported) {
-                            mWechatPayTv.setEnabled(true);
-                        }
-                        mWechatPayTv.setVisibility(View.VISIBLE);
-                    } else {
-                        mWechatPayTv.setVisibility(View.GONE);
-                    }
-                    }
-                    });
+                if (isChecked) {
+                    checkBox_alipay.setChecked(false);
+                    // if (mIsPaySupported) {
+                    // mWechatPayTv.setEnabled(true);
+                    // }
+//                    mWechatPayTv.setVisibility(View.VISIBLE);
+                    // } else {
+                    // mWechatPayTv.setVisibility(View.GONE);
+                }
+            }
+        });
         checkBox_alipay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked) {
-                        checkBox_wechat.setChecked(false);
-                    } else {
-                            
-                    }
-                    }
-                    });
+                if (isChecked) {
+                    checkBox_wechat.setChecked(false);
+                } else {
 
+                }
+            }
+        });
 
         mWechatPayTv = (TextView) findViewById(R.id.payment_choice_pay_button);
-        mWechatPayTv.setVisibility(View.INVISIBLE);
-        mWechatPayTv.setEnabled(false);
+//        mWechatPayTv.setVisibility(View.INVISIBLE);
+//        mWechatPayTv.setEnabled(false);
         mWechatPayTv.setOnClickListener(this);
 
         mWxApi = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
         mWxApi.registerApp(Constants.APP_ID);
-        mIsPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
-        if (!mIsPaySupported) {
-            mWechatPayTv.setText("仅支持微信支付");
-        }
+//        mIsPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
+//        if (!mIsPaySupported) {
+//            mWechatPayTv.setText("仅支持微信支付");
+//        }
 
-        mContentScrollView = (ScrollView) findViewById(R.id.content_scroll_view);
         mRetryTv = (TextView) findViewById(R.id.no_data);
         mRetryTv.setOnClickListener(this);
     }
@@ -188,8 +188,12 @@ OnItemClickListener, OnFocusChangeListener {
         case R.id.back_btn:
             finish();
             break;
-        case R.id.payment_choice_pay_button:        
+        case R.id.payment_choice_pay_button:
+            if (checkBox_alipay.isChecked() == false) {
                 doWechatPay();
+            } else {
+                doAliPay();
+            }
             break;
         case R.id.no_data:
 //            getGoodsList();
@@ -280,5 +284,68 @@ OnItemClickListener, OnFocusChangeListener {
         }.execute();
     }
 
+    /**
+     * 支付宝支付
+     * 
+     */
+    private void doAliPay() {
+        //get payInfo from server
+        String url = "http://115.159.76.147:8590/cb/get_alipay_sign?phone_number=13418680969&goods_id=1";
+        String ret = Utils.httpGet(url);
+        String result = null;
+        if (ret != null) {
+            try {
+                JSONObject obj1 = new JSONObject(ret);
+                if (obj1.getInt("ret_code") == 0) {
+                    result = obj1.getString("result");
+                } else {
+                    DialogUtils.showMessage(getApplicationContext(), "出错啦", obj1.getString("ret_msg"));
+                    return;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+        final String payInfo = result;
+        new AsyncTask<Void, Void, String>() {
 
+            @Override
+            protected String doInBackground(Void... params) {
+                // 构造PayTask 对象
+                PayTask alipay = new PayTask(BuyCoinPaymentChoiceActivity.this);
+                // 调用支付接口，获取支付结果
+                String result = alipay.pay(payInfo, true);
+                return result;
+            }
+
+            protected void onPostExecute(String result) {
+                PayResult payResult = new PayResult(result);
+                /**
+                 * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
+                 * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
+                 * docType=1) 建议商户依赖异步通知
+                 */
+                String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                Log.d(TAG, "resultInfo = " + resultInfo);
+                String resultStatus = payResult.getResultStatus();
+                // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                if (TextUtils.equals(resultStatus, "9000")) {
+                    Toast.makeText(BuyCoinPaymentChoiceActivity.this, 
+                            "支付成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    // 判断resultStatus 为非"9000"则代表可能支付失败
+                    // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+                    if (TextUtils.equals(resultStatus, "8000")) {
+                        Toast.makeText(BuyCoinPaymentChoiceActivity.this, 
+                                "支付结果确认中", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+                        Toast.makeText(BuyCoinPaymentChoiceActivity.this, 
+                                "支付失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }.execute();
+    }
 }
