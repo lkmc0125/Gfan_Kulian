@@ -15,8 +15,11 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiaohong.kulian.Constants;
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.Session;
 import com.xiaohong.kulian.bean.GoodsBean;
+import com.xiaohong.kulian.bean.ReportResultBean;
 import com.xiaohong.kulian.bean.WeChatGoodsBean;
+import com.xiaohong.kulian.common.MarketAPI;
 import com.xiaohong.kulian.common.ApiAsyncTask.ApiRequestListener;
 import com.xiaohong.kulian.common.util.DialogUtils;
 import com.xiaohong.kulian.common.util.PayResult;
@@ -170,26 +173,43 @@ OnItemClickListener, OnFocusChangeListener {
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
-        // TODO Auto-generated method stub
-        
+        // TODO Auto-generated method stub        
     }
 
     @Override
     public void onSuccess(int method, Object obj) {
-        // TODO Auto-generated method stub
-        
+        switch (method) {
+        case MarketAPI.ACTION_REPORT_ORDER_PAY:
+            ReportResultBean bean = (ReportResultBean)obj;
+            if (bean.getRetCode() == 0) {
+                Session session = Session.get(getApplicationContext());
+                session.setRemainTime(bean.getRemainTime());
+                session.notifyCoinUpdated(bean.getAddedCoinNum() + bean.getRefundCoinNum());
+                if (bean.getRefundCoinNum() > 0) {
+                    DialogUtils.showMessage(this, null, "今日上网金币已退还");
+                }
+                finish();
+            }
+            break;
+        default:
+            break;
+        }
     }
 
     @Override
     public void onError(int method, int statusCode) {
-        // TODO Auto-generated method stub
-        
+        switch (method) {
+        case MarketAPI.ACTION_REPORT_ORDER_PAY:
+            DialogUtils.showMessage(this, "出错啦", "支付结果同步失败，错误码"+String.valueOf(statusCode)+"，请联系客服");
+            break;
+        default:
+            break;
+        }
     }
 
     @Override
@@ -353,18 +373,36 @@ OnItemClickListener, OnFocusChangeListener {
                 String resultStatus = payResult.getResultStatus();
                 // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                 if (TextUtils.equals(resultStatus, "9000")) {
-                    Toast.makeText(BuyCoinPaymentChoiceActivity.this, 
-                            "支付成功", Toast.LENGTH_SHORT).show();
+                    String outTradeNo = payResult.getResult();
+                    int index = outTradeNo.indexOf("out_trade_no");
+                    if (index == -1) {
+                        Log.d(TAG, "pay result wrong");
+                        return;
+                    }
+                    outTradeNo = outTradeNo.substring(index, outTradeNo.length());
+                    outTradeNo = outTradeNo.replace("out_trade_no=\"", "");
+                    index = outTradeNo.indexOf("\"");
+                    outTradeNo = outTradeNo.substring(0, index);                    
+
+                    if (TextUtils.isEmpty(mOtherAccount) == false) {
+                        // this case is that buy coin for other
+                        MarketAPI.reportOrderPay(getApplicationContext(), BuyCoinPaymentChoiceActivity.this,
+                                goodsBean.getGoodsId(), outTradeNo, mOtherAccount);
+                    } else {
+                        // this case is that buy coin for self
+                        Session session = Session.get(getApplicationContext());
+                        MarketAPI.reportOrderPay(getApplicationContext(), BuyCoinPaymentChoiceActivity.this,
+                                goodsBean.getGoodsId(), outTradeNo, session.getUserName());
+                    }
+                    DialogUtils.showMessage(BuyCoinPaymentChoiceActivity.this, "支付成功", "谢谢您的支持！");
                 } else {
                     // 判断resultStatus 为非"9000"则代表可能支付失败
                     // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                     if (TextUtils.equals(resultStatus, "8000")) {
-                        Toast.makeText(BuyCoinPaymentChoiceActivity.this, 
-                                "支付结果确认中", Toast.LENGTH_SHORT).show();
+                        DialogUtils.showMessage(BuyCoinPaymentChoiceActivity.this, null, "支付结果确认中");
                     } else {
                         // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                        Toast.makeText(BuyCoinPaymentChoiceActivity.this, 
-                                "支付失败", Toast.LENGTH_SHORT).show();
+                        DialogUtils.showMessage(BuyCoinPaymentChoiceActivity.this, null, "支付失败");
                     }
                 }
             }

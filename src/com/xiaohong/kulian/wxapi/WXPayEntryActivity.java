@@ -30,7 +30,7 @@ import android.widget.TextView;
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler,
         OnClickListener, ApiRequestListener {
 
-    private static final String TAG = "MicroMsg.SDKSample.WXPayEntryActivity";
+    private static final String TAG = "WXPayEntryActivity";
 
     private IWXAPI api;
     private TextView confirmBtn;
