@@ -79,8 +79,8 @@ OnItemClickListener, OnFocusChangeListener {
             System.out.println("pay_time"+pay_remark);
         }
         initViews();
-        
     }
+
     private void initViews() {
         initTopBar(TopBarTextValue);
         textView_pay_time=(TextView)this.findViewById(R.id.payment_pay_time_value);
@@ -315,7 +315,7 @@ OnItemClickListener, OnFocusChangeListener {
                 if (obj1.getInt("ret_code") == 0) {
                     try {
                         result = URLDecoder.decode(obj1.getString("result"), "UTF-8");
-                        result += "&sign="+obj1.getString("sign")+"&sign_type="+obj1.getString("sign_type");
+                        result += "&sign=\""+obj1.getString("sign")+"\"&sign_type="+obj1.getString("sign_type");
                     } catch (UnsupportedEncodingException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
