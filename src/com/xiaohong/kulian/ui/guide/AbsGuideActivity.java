@@ -75,39 +75,15 @@ public abstract class AbsGuideActivity extends FragmentActivity{
 //        container.addView(imageView, params);
         ImageView imageView=(ImageView)AbsGuideActivity.this.findViewById
                 (R.id.ImageView_Cancel_help);
-//        imageView.performClick();
-//        System.out.println("ImageView_Cancel_help"+container.removeView(view));
-        System.out.println("ImageView_Cancel_help"+imageView.isFocusable());
-        System.out.println("ImageView_Cancel_help"+container.isFocusable());
-        
+        container.removeView(imageView);
+        container.addView(imageView);
         imageView.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
-                System.out.println("ImageView_Cancel_help001");
-                AbsGuideActivity.this.finish();
-                
+                AbsGuideActivity.this.finish();                
             }
         });
-//        container.setOnClickListener(new OnClickListener() {
-//            
-//            @Override
-//            public void onClick(View v) {
-//                System.out.println("ImageView_Cancel_help001");
-//                AbsGuideActivity.this.finish();
-//                
-//            }
-//        });
-//        imageView.setOnTouchListener(new OnTouchListener()  
-//        {  
-//            @Override  
-//            public boolean onTouch(View arg0, MotionEvent arg1)   
-//            {   
-//                System.out.println("ImageView_Cancel_help002");
-//                return true;  
-//            }             
-//        });  
-//        System.out.println("ImageView_Cancel_help"+imageView.isClickable());
     }
 
     abstract public List<SinglePage> buildGuideContent();
@@ -119,8 +95,4 @@ public abstract class AbsGuideActivity extends FragmentActivity{
     abstract public Bitmap dotSelected();
 
     abstract public int getPagerId();
-    public void myonclick(View v){
-        System.out.println("ImageView_Cancel_help001");
-        AbsGuideActivity.this.finish();
-    }
 }
