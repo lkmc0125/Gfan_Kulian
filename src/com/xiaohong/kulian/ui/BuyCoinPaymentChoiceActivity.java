@@ -1,5 +1,9 @@
 package com.xiaohong.kulian.ui;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -309,7 +313,13 @@ OnItemClickListener, OnFocusChangeListener {
             try {
                 JSONObject obj1 = new JSONObject(ret);
                 if (obj1.getInt("ret_code") == 0) {
-                    result = obj1.getString("result");
+                    try {
+                        result = URLDecoder.decode(obj1.getString("result"), "UTF-8");
+                        result += "&sign="+obj1.getString("sign")+"&sign_type="+obj1.getString("sign_type");
+                    } catch (UnsupportedEncodingException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 } else {
                     DialogUtils.showMessage(getApplicationContext(), "出错啦", obj1.getString("ret_msg"));
                     return;
