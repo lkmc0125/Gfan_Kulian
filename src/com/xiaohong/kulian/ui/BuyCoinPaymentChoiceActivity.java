@@ -100,11 +100,11 @@ OnItemClickListener, OnFocusChangeListener {
         if(pay_account!=null){
             textView_pay_account.setText(pay_account);
         }
-        if(pay_remark!=null){
+        if (pay_remark!=null){
             System.out.println("pay_remark"+pay_remark);
-            if(pay_remark.equals("")){
+            if (pay_remark.equals("")){
                 layout_remark.setVisibility(View.GONE);
-            }else{
+            } else {
                 layout_remark.setVisibility(View.VISIBLE);
             }
             textView_pay_remark.setText(pay_remark);
@@ -121,9 +121,7 @@ OnItemClickListener, OnFocusChangeListener {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     checkBox_alipay.setChecked(false);
-                    // if (mIsPaySupported) {
-                    // mWechatPayTv.setEnabled(true);
-                    // }
+                    mWechatPayTv.setEnabled(mIsPaySupported);
 //                    mWechatPayTv.setVisibility(View.VISIBLE);
                     // } else {
                     // mWechatPayTv.setVisibility(View.GONE);
@@ -134,6 +132,7 @@ OnItemClickListener, OnFocusChangeListener {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     checkBox_wechat.setChecked(false);
+                    mWechatPayTv.setEnabled(true);
                 } else {
 
                 }
@@ -147,7 +146,7 @@ OnItemClickListener, OnFocusChangeListener {
 
         mWxApi = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
         mWxApi.registerApp(Constants.APP_ID);
-//        mIsPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
+        mIsPaySupported = mWxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
 //        if (!mIsPaySupported) {
 //            mWechatPayTv.setText("仅支持微信支付");
 //        }
@@ -326,7 +325,7 @@ OnItemClickListener, OnFocusChangeListener {
      */
     private void doAliPay() {
         //get payInfo from server
-        String url = "http://115.159.76.147:8590/cb/get_alipay_sign?phone_number=13418680969&goods_id=1";
+        String url = "http://115.159.76.147:8390/cb/get_alipay_sign?phone_number="+pay_account+"&goods_id="+goodsBean.getGoodsId();
         String ret = Utils.httpGet(url);
         String result = null;
         if (ret != null) {
