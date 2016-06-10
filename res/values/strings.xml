@@ -512,8 +512,8 @@
     <string name="payment_pay_acount_value"> </string>
     <string name="payment_pay_remark_value"></string>
     <string name="payment_choice_describ">请选择您的支付方式：</string>
-    <string name="payment_choice_wetchat_pay">微信支付：</string>
-    <string name="payment_choice_alipay_pay">支付宝支付：</string>
+    <string name="payment_choice_wetchat_pay">微信支付</string>
+    <string name="payment_choice_alipay_pay">支付宝支付</string>
     <string name="payment_choice_pay_button">确认支付</string>
     <!-- 有米详情页面 -->
     <string name="more_task_button_info">更多任务</string>

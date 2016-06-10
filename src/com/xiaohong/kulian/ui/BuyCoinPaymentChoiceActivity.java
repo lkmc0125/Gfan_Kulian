@@ -401,7 +401,7 @@ OnItemClickListener, OnFocusChangeListener {
                         DialogUtils.showMessage(BuyCoinPaymentChoiceActivity.this, null, "支付结果确认中");
                     } else {
                         // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                        DialogUtils.showMessage(BuyCoinPaymentChoiceActivity.this, null, "支付失败");
+                        DialogUtils.showMessage(BuyCoinPaymentChoiceActivity.this, null, payResult.getMemo());
                     }
                 }
             }
