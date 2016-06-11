@@ -86,6 +86,18 @@ public class TaskListActivity extends LazyloadListActivity implements
     @Override
     public void doLazyload() {
 
+        ArrayList<TaskBean> taskList = Utils.getPreloadedTaskList();
+        boolean isLoaded = false;
+        if (taskList != null && taskList.size() > 0) {
+            Log.d(TAG,"preloaded task size = " + taskList.size());
+            ArrayList<Object> array = new ArrayList<Object>();
+            for (int i = 0; i < taskList.size(); i++) {
+                array.add((Object)taskList.get(i));
+            }
+            mAdapter.setTaskData(TaskBean.ITEM_TYPE_WEB_TASK, array);
+            isLoaded = true;
+        }
+
         ArrayList<AppBean> appList = Utils.getPreloadedAppList();
         if (appList != null && appList.size() > 0) {
             Log.d(TAG,"app preloaded size = " + appList.size());
@@ -99,17 +111,6 @@ public class TaskListActivity extends LazyloadListActivity implements
             MarketAPI.getAppList(getApplicationContext(), this, getStartPage(), Constants.CATEGORY_RCMD);
         }
 
-        ArrayList<TaskBean> taskList = Utils.getPreloadedTaskList();
-        boolean isLoaded = false;
-        if (taskList != null && taskList.size() > 0) {
-            Log.d(TAG,"preloaded task size = " + taskList.size());
-            ArrayList<Object> array = new ArrayList<Object>();
-            for (int i = 0; i < taskList.size(); i++) {
-                array.add((Object)taskList.get(i));
-            }
-            mAdapter.setTaskData(TaskBean.ITEM_TYPE_WEB_TASK, array);
-            isLoaded = true;
-        }
         ArrayList<TaskBean> gzhTaskList = Utils.getPreloadedGzhTaskList();
         if (gzhTaskList != null && gzhTaskList.size() > 0) {
             Log.d(TAG,"preloaded gzh task size: " + gzhTaskList.size());
@@ -225,10 +226,10 @@ public class TaskListActivity extends LazyloadListActivity implements
         if (list != null) {
             Object obj = list.get(position);
             if (obj instanceof TaskBean) {
-                TaskBean item = (TaskBean)obj; 
+                TaskBean item = (TaskBean)obj;
                 String clickUrl = item.getClick_url();
                 if (clickUrl != null && !clickUrl.equals("")) {
-                    openWebView(clickUrl, item.getName());
+                    openWebView(clickUrl + "&phone_number=" + mSession.getUserName(), item.getName());
                 } else {
                     if (!mSession.isLogin()) {
                         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);

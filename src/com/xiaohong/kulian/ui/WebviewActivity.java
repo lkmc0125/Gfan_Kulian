@@ -64,7 +64,14 @@ public class WebviewActivity extends BaseActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setBuiltInZoomControls(false);
-        webSettings.setSupportZoom(false);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setAllowFileAccess(true);// 设置允许访问文件数据
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(true);
+        
         webView.setDownloadListener(new MyWebViewDownLoadListener()); 
         webView.setWebViewClient(new WebViewClient() {
             // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
@@ -88,7 +95,7 @@ public class WebviewActivity extends BaseActivity {
                         }
                     }
                 } else {
-                    view.loadUrl(url);    
+                    view.loadUrl(url);
                 }
                 return true;
             }
