@@ -66,11 +66,13 @@ public class WebviewActivity extends BaseActivity {
         webSettings.setBuiltInZoomControls(false);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setAllowFileAccess(true);// 设置允许访问文件数据
-        webSettings.setSupportZoom(true);
-        webSettings.setBuiltInZoomControls(true);
+        webSettings.setSupportZoom(false);
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setDomStorageEnabled(true);
         webSettings.setDatabaseEnabled(true);
+        
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
         
         webView.setDownloadListener(new MyWebViewDownLoadListener()); 
         webView.setWebViewClient(new WebViewClient() {
