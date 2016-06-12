@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,7 +54,7 @@ public class GzhTaskDetailActivity extends Activity implements OnClickListener, 
         mTaskNameTv = (TextView) findViewById(R.id.task_name_tv);
         mTaskNameTv.setText(getTaskName());
         mTaskDescTv = (TextView) findViewById(R.id.task_desc_tv);
-        mTaskDescTv.setText(mTaskBean.getDesc());        
+        mTaskDescTv.setText(TextUtils.isEmpty(mTaskBean.getDesc())?"":mTaskBean.getDesc());
         mTaskWeixinTv = (TextView) findViewById(R.id.task_weixin_id_tv);
         mTaskWeixinTv.setText(mTaskBean.getWeixin_id());
         mTaskCoinNumTv = (TextView) findViewById(R.id.task_coin_num_tv);
