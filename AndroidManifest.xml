@@ -74,10 +74,6 @@
             android:name=".ui.PersonalAccountActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
-        <!-- <activity
-            android:name=".ui.PayMainActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" /> -->
         <activity
             android:name=".ui.MessageListActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -91,10 +87,6 @@
         <!-- 购买金币 -->
         <activity
             android:name=".ui.BuyingEntryActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.OtherAccountActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity

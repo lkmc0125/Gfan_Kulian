@@ -682,7 +682,9 @@ public class HomeTabActivity extends BaseTabActivity implements
         } else if (method == MarketAPI.ACTION_GET_SSID_LIST) {
             if (obj != null) {
                 ArrayList<String> ssidList = (ArrayList<String>) obj;
-                mSession.setSSIDList(ssidList);
+                if (ssidList != null) {
+                    mSession.setSSIDList(ssidList);                    
+                }
             }
         }
     }
@@ -773,12 +775,12 @@ public class HomeTabActivity extends BaseTabActivity implements
             if (mSession.isAutoClearCache()) {
                 Utils.clearCache(getApplicationContext());
             }
+            mSession.close();
+            mSession = null;
         }
         // 关闭HTTP资源
         HttpClientFactory.get().close();
         // 回收Session
-        mSession.close();
-        mSession = null;
         Utils.clearPreloadedYoumiData();
         Utils.clearPreloadedTaskData();
         finish();
