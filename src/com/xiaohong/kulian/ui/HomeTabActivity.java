@@ -57,6 +57,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
@@ -180,7 +181,8 @@ public class HomeTabActivity extends BaseTabActivity implements
             String action = intent.getAction();
             if (action.equals(Constants.BROADCAST_FORCE_EXIT)) {
                 // 强制退出
-                 exit();
+                android.os.Process.killProcess(android.os.Process.myPid()); 
+                System.exit(0);   //常规java、c#的标准退出法，返回值为0代表正常退出
             } else if (action.equals(Constants.BROADCAST_REMIND_LATTER)) {
                 // do nothing
             } else if (action.equals(Constants.BROADCAST_DOWNLOAD_OPT)) { // 提示升级
@@ -592,8 +594,8 @@ public class HomeTabActivity extends BaseTabActivity implements
             String forceUpdateDesc = mSession.getUpdateVersionDesc();
             return new CustomDialog.Builder(this)
                     .setTitle(R.string.find_new_version)
-                    .setMessage(
-                            getString(R.string.update_prompt) + forceUpdateDesc)
+                    .setOnKeyListener(CustomDialog.keylistener)
+                    .setMessage(getString(R.string.update_prompt) + forceUpdateDesc)
                     .setPositiveButton(R.string.btn_yes,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,

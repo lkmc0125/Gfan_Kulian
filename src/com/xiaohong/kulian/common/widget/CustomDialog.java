@@ -1,10 +1,13 @@
 package com.xiaohong.kulian.common.widget;
 
 import com.xiaohong.kulian.R;
+import com.xiaohong.kulian.common.widget.CustomDialog.Builder;
 
 import android.app.Dialog;  
 import android.content.Context;  
 import android.content.DialogInterface;  
+import android.content.DialogInterface.OnKeyListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;  
 import android.view.View;  
 import android.view.ViewGroup.LayoutParams;  
@@ -14,15 +17,26 @@ import android.widget.TextView;
     
   
 public class CustomDialog extends Dialog {  
-  
+
+    public static OnKeyListener keylistener = new DialogInterface.OnKeyListener(){
+        @Override
+        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
+
     public CustomDialog(Context context) {  
         super(context);  
-    }  
-  
+    }
+
     public CustomDialog(Context context, int theme) {  
         super(context, theme);  
-    }  
-  
+    }
+
     public static class Builder {  
         private Context context;  
         private String title;  
@@ -32,16 +46,16 @@ public class CustomDialog extends Dialog {
         private View contentView;  
         private DialogInterface.OnClickListener positiveButtonClickListener;  
         private DialogInterface.OnClickListener negativeButtonClickListener;  
-  
+        private OnKeyListener keyListener;
         public Builder(Context context) {  
-            this.context = context;  
+            this.context = context;
         }  
-  
+
         public Builder setMessage(String message) {  
             this.message = message;  
             return this;  
         }  
-  
+
         /** 
          * Set the Dialog message from resource 
          *  
@@ -117,11 +131,12 @@ public class CustomDialog extends Dialog {
             return this;  
         }  
   
-        public CustomDialog create() {  
+        public CustomDialog create() {
+
             LayoutInflater inflater = (LayoutInflater) context  
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);  
             // instantiate the dialog with the custom Theme  
-            final CustomDialog dialog = new CustomDialog(context,R.style.Dialog);  
+            final CustomDialog dialog = new CustomDialog(context,R.style.Dialog);
             View layout = inflater.inflate(R.layout.dialog_normal_layout, null);  
             dialog.addContentView(layout, new LayoutParams(  
                     LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));  
@@ -160,27 +175,33 @@ public class CustomDialog extends Dialog {
                                 public void onClick(View v) {  
                                     negativeButtonClickListener.onClick(dialog,  
                                             DialogInterface.BUTTON_NEGATIVE);  
-                                }  
-                            });  
-                }  
-            } else {  
+                                }
+                            });
+                }
+            } else {
                 // if no confirm button just set the visibility to GONE  
                 layout.findViewById(R.id.negativeButton).setVisibility(  
-                        View.GONE);  
-            }  
-            // set the content message  
-            if (message != null) {  
-                ((TextView) layout.findViewById(R.id.message)).setText(message);  
-            } else if (contentView != null) {  
+                        View.GONE);
+            }
+            // set the content message
+            if (message != null) {
+                ((TextView) layout.findViewById(R.id.message)).setText(message);
+            } else if (contentView != null) {
                 // if no message set  
                 // add the contentView to the dialog body  
                 ((LinearLayout) layout.findViewById(R.id.content))  
-                        .removeAllViews();  
+                        .removeAllViews();
                 ((LinearLayout) layout.findViewById(R.id.content))  
                         .addView(contentView, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));  
-            }  
-            dialog.setContentView(layout);  
+            }
+            dialog.setContentView(layout);
+            dialog.setOnKeyListener(keyListener);
             return dialog;  
+        }
+
+        public Builder setOnKeyListener(OnKeyListener keylistener) {
+            this.keyListener = keylistener;
+            return this;
         }  
     }  
 }  
