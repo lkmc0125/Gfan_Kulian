@@ -474,8 +474,8 @@ public class OfferWallAdDetailActivity extends BaseActivity
 //            lvAdapter.setData(list);
 //            lvAdapter.notifyDataSetChanged();
             int DEFAULT_SHOW_COUNT=0;
-            for (int i = 0,j=0; i < 3; j++) {
-                if(list.get(j).getStatus()==AdExtraTaskStatus.NOT_START){
+            for (int i = 0, j = 0; i < 3 && j < list.size(); j++) {
+                if (list.get(j).getStatus() == AdExtraTaskStatus.NOT_START){
                     i++;
                 }
                 DEFAULT_SHOW_COUNT++;
