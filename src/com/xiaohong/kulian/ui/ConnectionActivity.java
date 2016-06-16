@@ -245,7 +245,7 @@ public class ConnectionActivity extends BaseActivity implements
                 if (obj.getInt("ret_code") == 0) {
                     DialogUtils.showMessage(this, "认证成功",
                             "使用金币" + obj.getString("dec_coin_num") + "枚");
-                    mSession.setCoinNum(obj.getInt("dec_coin_num"));
+                    mSession.setCoinNum(obj.getInt("coin_num"));
                     mSession.notifyCoinUpdated();
                 } else if (obj.getInt("ret_code") == 3001) { // 3001 means
                                                              // already

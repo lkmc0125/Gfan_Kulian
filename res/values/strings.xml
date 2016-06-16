@@ -117,7 +117,7 @@
     <!-- start added by albert liu 2016-03-28 -->
     <string name="person_account_hint_name">Albert</string>
     <string name="person_account_sign_in_hint">每日签到</string>
-    <string name="person_account_gold_coins_hint">2750</string>
+    <string name="person_account_gold_coins_hint">0</string>
     <string name="person_account_pay_gold_coins_hint">购买时间</string>
     <string name="person_account_sign_in_value">今天还没有签到哦^_^</string>
     <string name="person_account_already_sign_in">今天已签到</string>
