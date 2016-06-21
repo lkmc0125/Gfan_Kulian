@@ -257,7 +257,8 @@ public class RegisterActivity extends BaseActivity
         // start observe sms
         getContentResolver().registerContentObserver(SMS_INBOX, true, mSmsObserver);
 
-        String url = MarketAPI.API_BASE_URL+"/appverifycode?phone_number="+etUsername.getText().toString();
+        String ver = String.valueOf(mSession.getVersionCode());
+        String url = MarketAPI.API_BASE_URL+"/appverifycode?phone_number="+etUsername.getText().toString()+"&ver="+ver;
         if (Utils.isLeShiMobile()) {
             url += "&leshi=1";
         }
